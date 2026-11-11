@@ -1,0 +1,2042 @@
+/* Configuración visual del contenedor de mapa */
+.leaflet-container {
+  font-family: inherit;
+  background-color: #020617;
+  /* Slate 950 */
+}
+
+/* Ocultar barra de scroll excesiva pero mantener funcionalidad */
+aside::-webkit-scrollbar {
+  width: 5px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+/* Marcadores interactivos en el mapa */
+.marcador-hito {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.marcador-hito:hover {
+  transform: scale(1.35);
+  z-index: 1000 !important;
+}
+
+/* Insignias de la expedición */
+.badge-stamp {
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, filter 0.25s ease, background-color 0.2s ease;
+}
+
+.badge-stamp:hover {
+  transform: translateY(-2px) scale(1.06);
+  border-color: #f59e0b !important;
+}
+
+.badge-stamp:active {
+  transform: scale(0.96);
+}
+
+.badge-stamp.desbloqueado {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.badge-stamp.bloqueado {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+/* Transición suave para el panel móvil deslizable */
+#panel-lateral {
+  will-change: transform;
+}
+
+/* Popups personalizados de Leaflet */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-popup-content h4 {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.leaflet-popup.popup-hito .leaflet-popup-content-wrapper {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+  padding: 4px;
+}
+
+.leaflet-popup.popup-hito .leaflet-popup-tip {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.leaflet-popup.popup-hito a.leaflet-popup-close-button {
+  color: #64748b;
+  padding: 6px;
+  top: 4px;
+  right: 4px;
+}
+
+.leaflet-popup.popup-hito a.leaflet-popup-close-button:hover {
+  color: #0f172a;
+}
+
+/* Tooltip personalizado de Leaflet */
+.leaflet-tooltip.tooltip-hito {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 9px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  line-height: 1.35;
+}
+
+.leaflet-tooltip.tooltip-hito::before {
+  border-top-color: #0f172a;
+}
+
+/* Efecto de resalte para marcador seleccionado */
+.marcador-seleccionado svg.drop-shadow-md {
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.95)) drop-shadow(0 0 3px #f59e0b) !important;
+}
+
+/* Huellas en el trazado de ruta */
+.huella-rastro,
+.marcador-huellita,
+.huella-calzado {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: none;
+}
+
+/* Tarjeta y Sellos del Pasaporte de Expedición */
+.tarjeta-pasaporte {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tarjeta-pasaporte:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+/* Estilo para imágenes y galerías */
+.foto-hito img {
+  transition: transform 0.4s ease;
+}
+
+.foto-hito:hover img {
+  transform: scale(1.04);
+}
+
+/* Selector de Capas Cartográficas */
+.btn-capa-base {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Marcador de geolocalización pulsante del explorador */
+.marcador-posicion-usuario {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.punto-posicion-centro {
+  width: 14px;
+  height: 14px;
+  background-color: #0284c7;
+  border: 2.5px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.85);
+  z-index: 2;
+}
+
+.onda-posicion {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(2, 132, 199, 0.35);
+  border-radius: 50%;
+  animation: pulsar-posicion 2s infinite ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes pulsar-posicion {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Pantalla de Bienvenida e Interactividad del Pingüino */
+/* Pantalla de Bienvenida: Pingüino Rey y Antorcha de Tierra del Fuego */
+.perspective-1000,
+#contenedor-pinguino-bienvenida {
+  perspective: 1200px;
+  perspective-origin: center center;
+}
+
+/* Atmósfera de ventisca/nieve sutil austral en Pantalla de Bienvenida */
+.copo-nieve {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 14px;
+  pointer-events: none;
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+
+.copo-nieve::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -18px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(224, 242, 254, 0.85) 0%, rgba(186, 230, 253, 0.25) 68%, transparent 100%);
+  box-shadow: 0 0 6px rgba(186, 230, 253, 0.45);
+  animation: ventiscaAustral 9s linear infinite;
+}
+
+html:not(.dark) .copo-nieve::before {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.55) 0%, rgba(14, 165, 233, 0.16) 70%, transparent 100%);
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.3);
+}
+
+.copo-1 {
+  left: 10%;
+}
+
+.copo-1::before {
+  width: 6px;
+  height: 6px;
+  opacity: 0.42;
+  animation-duration: 9.5s;
+  animation-delay: -1.5s;
+}
+
+.copo-2 {
+  left: 26%;
+}
+
+.copo-2::before {
+  width: 8px;
+  height: 8px;
+  opacity: 0.5;
+  animation-duration: 7.8s;
+  animation-delay: -4.2s;
+}
+
+.copo-3 {
+  left: 46%;
+}
+
+.copo-3::before {
+  width: 5px;
+  height: 5px;
+  opacity: 0.34;
+  animation-duration: 11s;
+  animation-delay: -6.1s;
+}
+
+.copo-4 {
+  left: 66%;
+}
+
+.copo-4::before {
+  width: 7px;
+  height: 7px;
+  opacity: 0.46;
+  animation-duration: 8.6s;
+  animation-delay: -2.7s;
+}
+
+.copo-5 {
+  left: 82%;
+}
+
+.copo-5::before {
+  width: 5.5px;
+  height: 5.5px;
+  opacity: 0.38;
+  animation-duration: 10.2s;
+  animation-delay: -7.4s;
+}
+
+.copo-6 {
+  left: 91%;
+}
+
+.copo-6::before {
+  width: 8.5px;
+  height: 8.5px;
+  opacity: 0.48;
+  animation-duration: 7.4s;
+  animation-delay: -3.3s;
+}
+
+@keyframes ventiscaAustral {
+  0% {
+    transform: translate3d(0px, -10px, 0);
+  }
+
+  25% {
+    transform: translate3d(12px, 130px, 0);
+  }
+
+  50% {
+    transform: translate3d(-10px, 270px, 0);
+  }
+
+  75% {
+    transform: translate3d(14px, 410px, 0);
+  }
+
+  100% {
+    transform: translate3d(-6px, 560px, 0);
+  }
+}
+
+#wrapper-pinguino-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floteMascota 3.6s ease-in-out infinite;
+}
+
+#wrapper-pinguino-3d:has(.pinguino-transicion-activa) {
+  animation: none;
+}
+
+@keyframes floteMascota {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Globito de diálogo interactivo sobre el pingüino */
+#burbuja-dialogo {
+  position: absolute;
+  top: -6px;
+  left: -14px;
+  max-width: 190px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #f59e0b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
+  z-index: 30;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(6px) scale(0.92);
+  transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#burbuja-dialogo::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 26px;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-right: 1.5px solid #f59e0b;
+  border-bottom: 1.5px solid #f59e0b;
+  transform: rotate(45deg);
+}
+
+html.dark #burbuja-dialogo {
+  background: #1e293b;
+  color: #fef3c7;
+  border-color: #f59e0b;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+html.dark #burbuja-dialogo::after {
+  background: #1e293b;
+}
+
+#burbuja-dialogo.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#svg-pinguino-bienvenida {
+  overflow: visible;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28));
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+}
+
+/* =========================================================
+   ANIMACIÓN: EL ALZADO DE LA ANTORCHA (LLAMA QUE ENCIENDE EL MAPA)
+   ========================================================= */
+
+/* 1. Postura erguida y señorial del torso */
+@keyframes posturaErguidaAntorcha {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+
+  100% {
+    transform: translateY(-4px) scale(1.03);
+  }
+}
+
+/* 2. Alzado ceremonial de la aleta izquierda */
+@keyframes alzarAletaIzqAntorcha {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(4px, -6px) rotate(145deg);
+  }
+}
+
+/* 3. Alzado firme de la antorcha hacia el centro-arriba */
+@keyframes alzarAntorchaCentro {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-10px, -16px) rotate(-30deg);
+  }
+}
+
+/* 4. Llama creciendo de forma expansiva */
+@keyframes llamaExpansivaAntorcha {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px #f59e0b);
+  }
+
+  55% {
+    transform: scale(1.85);
+    filter: drop-shadow(0 0 18px #fbbf24) drop-shadow(0 0 28px #f97316);
+  }
+
+  100% {
+    transform: scale(2.4);
+    filter: drop-shadow(0 0 26px #fef08a) drop-shadow(0 0 42px #f59e0b);
+  }
+}
+
+/* 5. Resplandor cálido dorado/ámbar que ilumina y disuelve la pantalla */
+@keyframes expansionResplandorFuego {
+  0% {
+    transform: translateY(-24px) scale(0.2);
+    opacity: 0;
+  }
+
+  30% {
+    transform: translateY(-12px) scale(2.8);
+    opacity: 0.9;
+  }
+
+  70% {
+    transform: scale(9.5);
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: scale(15);
+    opacity: 0;
+  }
+}
+
+/* Coreografía suave en espera + Microanimación de parpadeo */
+.cuerpo-baile {
+  transform-origin: 86px 176px;
+  transform-box: view-box;
+}
+
+.sombra-baile {
+  transform-origin: 88px 183px;
+  transform-box: view-box;
+  animation: sombraFloteMascota 3.6s ease-in-out infinite;
+}
+
+@keyframes sombraFloteMascota {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+
+  50% {
+    transform: scale(0.9);
+    opacity: 0.68;
+  }
+}
+
+.ojo-parpadeo {
+  transform-box: view-box;
+  animation: parpadeoOjos 4.6s ease-in-out infinite;
+}
+
+@keyframes parpadeoOjos {
+
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  94% {
+    transform: scaleY(0.1);
+  }
+
+  97% {
+    transform: scaleY(1);
+  }
+}
+
+.pata-baile-izq {
+  transform-origin: 67px 179px;
+  transform-box: view-box;
+}
+
+.pata-baile-der {
+  transform-origin: 103px 179px;
+  transform-box: view-box;
+}
+
+.aleta-baile-izq {
+  transform-origin: 51px 74px;
+  transform-box: view-box;
+  animation: balanceoAletaSuave 3.6s ease-in-out infinite;
+}
+
+@keyframes balanceoAletaSuave {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(3.5deg);
+  }
+}
+
+.aleta-baile-der {
+  transform-origin: 121px 74px;
+  transform-box: view-box;
+  animation: balanceoAntorchaSuave 3.6s ease-in-out infinite;
+}
+
+@keyframes balanceoAntorchaSuave {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(-2deg);
+  }
+}
+
+/* Cancelar animaciones de espera previas durante la transición */
+.pinguino-transicion-activa .sombra-baile,
+.pinguino-transicion-activa .cuerpo-baile,
+.pinguino-transicion-activa .aleta-baile-izq,
+.pinguino-transicion-activa .aleta-baile-der,
+.pinguino-transicion-activa .pata-baile-izq,
+.pinguino-transicion-activa .pata-baile-der {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Estados aplicados por JavaScript (Alzado de Antorcha y Destello Dorado) */
+.pinguino-transicion-activa.pinguino-alzado-antorcha .cuerpo-baile,
+.pinguino-alzado-antorcha .cuerpo-baile {
+  transform-origin: 86px 176px;
+  transform-box: view-box;
+  animation: posturaErguidaAntorcha 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+.pinguino-transicion-activa.pinguino-alzado-antorcha .aleta-baile-izq,
+.pinguino-alzado-antorcha .aleta-baile-izq {
+  transform-origin: 51px 74px;
+  transform-box: view-box;
+  animation: alzarAletaIzqAntorcha 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+.pinguino-transicion-activa.pinguino-alzado-antorcha .aleta-baile-der,
+.pinguino-alzado-antorcha .aleta-baile-der {
+  transform-origin: 121px 74px;
+  transform-box: view-box;
+  animation: alzarAntorchaCentro 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+.pinguino-alzado-antorcha .llama-animada {
+  transform-origin: 136px 43px;
+  transform-box: view-box;
+  animation: llamaExpansivaAntorcha 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards !important;
+}
+
+#resplandor-antorcha-fuego.resplandor-activo {
+  animation: expansionResplandorFuego 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+
+/* Animación de la Llama Viva de la Antorcha Fueguina */
+.llama-animada {
+  transform-origin: 136px 43px;
+  transform-box: view-box;
+  animation: titilarLlama 1.25s ease-in-out infinite alternate;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+@keyframes titilarLlama {
+  0% {
+    transform: scale(1) rotate(-1.5deg);
+    filter: drop-shadow(0 0 4px #ea580c);
+  }
+
+  25% {
+    transform: scale(1.08, 0.94) rotate(2deg);
+    filter: drop-shadow(0 0 8px #f97316);
+  }
+
+  50% {
+    transform: scale(0.96, 1.06) rotate(-2deg);
+    filter: drop-shadow(0 0 6px #f59e0b);
+  }
+
+  75% {
+    transform: scale(1.06, 0.98) rotate(1.5deg);
+    filter: drop-shadow(0 0 10px #fbbf24);
+  }
+
+  100% {
+    transform: scale(1.02, 1.05) rotate(-0.5deg);
+    filter: drop-shadow(0 0 12px #f59e0b);
+  }
+}
+
+/* Reacción de la antorcha al escribir el nombre del explorador */
+.halo-ambiente {
+  transform-origin: 96px 96px;
+  transform-box: view-box;
+  opacity: 0.85;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada .halo-ambiente {
+  animation: latidoHaloEntusiasmo 1.35s ease-in-out infinite;
+}
+
+@keyframes latidoHaloEntusiasmo {
+
+  0%,
+  100% {
+    transform: scale(1.04);
+    opacity: 0.88;
+  }
+
+  50% {
+    transform: scale(1.16);
+    opacity: 1;
+  }
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada:not(.pinguino-alzado-antorcha) .llama-animada {
+  animation: titilarLlamaAvivada 0.72s ease-in-out infinite alternate;
+}
+
+@keyframes titilarLlamaAvivada {
+  0% {
+    transform: scale(1.14) rotate(-2deg);
+    filter: drop-shadow(0 0 10px #fbbf24) drop-shadow(0 0 18px #f59e0b);
+  }
+
+  33% {
+    transform: scale(1.22, 1.1) rotate(2.5deg);
+    filter: drop-shadow(0 0 14px #fef08a) drop-shadow(0 0 24px #f97316);
+  }
+
+  66% {
+    transform: scale(1.12, 1.2) rotate(-2.5deg);
+    filter: drop-shadow(0 0 12px #fbbf24) drop-shadow(0 0 20px #ea580c);
+  }
+
+  100% {
+    transform: scale(1.18, 1.16) rotate(1deg);
+    filter: drop-shadow(0 0 16px #fef08a) drop-shadow(0 0 26px #f59e0b);
+  }
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada #chispas-reactivas {
+  opacity: 1;
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada .chispa-flotante-1 {
+  animation: subirChispa1 1.4s ease-out infinite;
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada .chispa-flotante-2 {
+  animation: subirChispa2 1.7s ease-out 0.35s infinite;
+}
+
+#svg-pinguino-bienvenida.antorcha-avivada .chispa-flotante-3 {
+  animation: subirChispa3 1.55s ease-out 0.65s infinite;
+}
+
+@keyframes subirChispa1 {
+  0% {
+    transform: translate(0px, 16px) scale(0.5);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-5px, -22px) scale(1.2);
+    opacity: 0;
+    filter: drop-shadow(0 0 4px #fef08a);
+  }
+}
+
+@keyframes subirChispa2 {
+  0% {
+    transform: translate(0px, 14px) scale(0.4);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: translate(7px, -20px) scale(1.15);
+    opacity: 0;
+    filter: drop-shadow(0 0 4px #fbbf24);
+  }
+}
+
+@keyframes subirChispa3 {
+  0% {
+    transform: translate(0px, 15px) scale(0.5);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translate(-8px, -18px) scale(1.1);
+    opacity: 0;
+    filter: drop-shadow(0 0 3px #f97316);
+  }
+}
+
+/* Sutil movimiento del brazo portador de la antorcha */
+#brazo-antorcha {
+  transform-origin: 19px 13px;
+  animation: balanceo-antorcha 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes balanceo-antorcha {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-2.5deg);
+  }
+}
+
+/* ============================================================
+   SISTEMA DE MODO CLARO (Light Mode) Y CONTRASTE TERRITORIAL
+   ============================================================ */
+
+/* Transición suave para cambio de tema */
+body,
+header,
+aside,
+#panel-lateral,
+#panel-detalle-hito,
+#metrica-distancia-ruta,
+.leaflet-popup-content-wrapper,
+.leaflet-tooltip {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Scrollbar en modo claro */
+html:not(.dark) aside::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+html:not(.dark) aside::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+/* Contenedor de mapa en modo claro */
+html:not(.dark) .leaflet-container {
+  background-color: #f8fafc;
+}
+
+/* Estructura general en modo claro */
+html:not(.dark) body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+html:not(.dark) header h1 {
+  color: #0f172a !important;
+}
+
+html:not(.dark) header p,
+html:not(.dark) header span.text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Botones y pastillas del encabezado en modo claro */
+html:not(.dark) header .bg-slate-800\/80,
+html:not(.dark) header .bg-slate-800,
+html:not(.dark) header .bg-slate-800\/90 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+/* Panel lateral y lista de hitos */
+html:not(.dark) aside#panel-lateral {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .bg-slate-900 {
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-950\/95,
+html:not(.dark) .bg-slate-950\/80,
+html:not(.dark) .bg-slate-950\/70,
+html:not(.dark) .bg-slate-950\/60 {
+  background-color: #f8fafc !important;
+}
+
+html:not(.dark) .bg-slate-900\/90,
+html:not(.dark) .bg-slate-900\/80 {
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-slate-800\/80,
+html:not(.dark) .bg-slate-800\/90,
+html:not(.dark) .bg-slate-800\/60 {
+  background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .border-slate-800,
+html:not(.dark) .border-slate-800\/80,
+html:not(.dark) .border-slate-700,
+html:not(.dark) .border-slate-700\/80 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Textos legibles en modo claro */
+html:not(.dark) .text-white {
+  color: #0f172a !important;
+}
+
+html:not(.dark) .text-slate-100,
+html:not(.dark) .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html:not(.dark) .text-slate-300,
+html:not(.dark) .text-slate-400 {
+  color: #64748b !important;
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+/* Campos de formulario e inputs */
+html:not(.dark) input,
+html:not(.dark) textarea,
+html:not(.dark) select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Selector de capas base y controles flotantes */
+html:not(.dark) #selector-capas-base,
+html:not(.dark) #btn-geolocalizacion {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) #btn-toggle-tema {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+html:not(.dark) .btn-capa-base {
+  color: #475569 !important;
+}
+
+html:not(.dark) .btn-capa-base.capa-activa {
+  background-color: #f59e0b !important;
+  color: #0f172a !important;
+}
+
+/* Métrica de distancia en modo claro */
+html:not(.dark) #metrica-distancia-ruta {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Popups y tooltips en modo claro */
+html:not(.dark) .leaflet-popup.popup-hito .leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+html:not(.dark) .leaflet-popup.popup-hito .leaflet-popup-tip {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) .leaflet-tooltip.tooltip-hito {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+html:not(.dark) .leaflet-tooltip.tooltip-hito::before {
+  border-top-color: #ffffff !important;
+}
+
+/* Modales en modo claro */
+html:not(.dark) #modal-pasaporte>div,
+html:not(.dark) #modal-creditos>div,
+html:not(.dark) #modal-huella>div,
+html:not(.dark) #pantalla-bienvenida>div {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Tarjeta pasaporte en modo claro */
+html:not(.dark) .tarjeta-pasaporte {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) .tarjeta-pasaporte:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ===================================================
+   CALIBRACIÓN DE ALTO CONTRASTE: MODO CLARO VS OSCURO
+   =================================================== */
+
+/* Textos base y títulos en Modo Claro */
+html:not(.dark) body {
+  background-color: #f1f5f9;
+  /* Slate 100 */
+  color: #0f172a;
+  /* Slate 900 */
+}
+
+/* Panel lateral y tarjetas en Modo Claro */
+html:not(.dark) aside,
+html:not(.dark) #panel-lateral {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  /* Slate 300 */
+}
+
+/* Encabezados y textos principales en Modo Claro */
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) strong,
+html:not(.dark) .text-white {
+  color: #0f172a !important;
+  /* Slate 900 */
+}
+
+/* Textos secundarios o descriptivos */
+html:not(.dark) .text-slate-300,
+html:not(.dark) .text-slate-400 {
+  color: #334155 !important;
+  /* Slate 700 para máxima legibilidad */
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #475569 !important;
+  /* Slate 600 */
+}
+
+/* Inputs, buscadores y selects en Modo Claro */
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+  /* Slate 400 */
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #64748b !important;
+  /* Slate 500 */
+}
+
+/* Cajas de agrupación y filtros (Estado, Categorías) */
+html:not(.dark) #filtro-estado-visita,
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-900 {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Botones inactivos de categorías y estados */
+html:not(.dark) .btn-filtro-estado:not(.active),
+html:not(.dark) .btn-filtro.bg-slate-800 {
+  background-color: #e2e8f0 !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html:not(.dark) .btn-filtro-estado:not(.active):hover,
+html:not(.dark) .btn-filtro.bg-slate-800:hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* Sellos de Expedición e Insignias */
+html:not(.dark) .badge-stamp.bloqueado {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+  opacity: 0.9 !important;
+}
+
+html:not(.dark) .badge-stamp.desbloqueado {
+  background-color: #fef3c7 !important;
+  /* Ámbar suave */
+  border-color: #f59e0b !important;
+  color: #92400e !important;
+  /* Ámbar oscuro legible */
+}
+
+/* Métricas de Travesía y Huella Consciente en Modo Claro */
+html:not(.dark) #metrica-distancia-ruta,
+html:not(.dark) #indicador-huella,
+html:not(.dark) #btn-abrir-huella-modal {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) #lbl-recorrido-total,
+html:not(.dark) #lbl-tiempo-estimado,
+html:not(.dark) #lbl-huella {
+  color: #475569 !important;
+}
+
+html:not(.dark) #valor-tiempo-estimado {
+  color: #0f172a !important;
+}
+
+/* Tarjeta informativa vacía / Pie de página legal */
+html:not(.dark) #panel-detalle-vacio,
+html:not(.dark) footer,
+html:not(.dark) .border-slate-800 {
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html:not(.dark) footer button {
+  color: #475569 !important;
+}
+
+html:not(.dark) footer button:hover {
+  color: #d97706 !important;
+}
+
+/* Resaltado del título toponímico en Modo Claro */
+html:not(.dark) .text-amber-300,
+html:not(.dark) .text-amber-400 {
+  color: #b45309 !important;
+  /* Ámbar de alto contraste */
+}
+
+/* Indicadores de Huella Consciente y Expedicionario en Modo Claro */
+html:not(.dark) #valor-huella,
+html:not(.dark) .text-emerald-300,
+html:not(.dark) .text-emerald-400 {
+  color: #047857 !important;
+  /* Emerald 700 para alto contraste */
+}
+
+html:not(.dark) #mencion-guardian {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+  border-color: #6ee7b7 !important;
+}
+
+html:not(.dark) #porcentaje-progreso,
+html:not(.dark) #nombre-explorador-display {
+  color: #b45309 !important;
+}
+
+/* ===================================================
+   ESTILOS DE SELLOS 3D VECTORIALES (PASAPORTE)
+   =================================================== */
+.sello-3d-ficha {
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.35));
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+}
+
+.badge-stamp:hover .sello-3d-ficha,
+.tarjeta-pasaporte:hover .sello-3d-ficha {
+  transform: scale(1.12) translateY(-1px);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+}
+
+/* Corrección de contraste en Modal Huella Consciente */
+html:not(.dark) #modal-huella .modal-header {
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html:not(.dark) #modal-huella .modal-header h3,
+html:not(.dark) #modal-huella .modal-header h4 {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #modal-huella .tarjeta-rango {
+  background: linear-gradient(135deg, #fefce8 0%, #f0fdf4 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html:not(.dark) #modal-huella .tarjeta-rango p {
+  color: #334155 !important;
+}
+
+html:not(.dark) #modal-huella .tarjeta-rango h4 {
+  color: #b45309 !important;
+}
+
+/* =========================================================
+   CORRECCIÓN INTEGRAL DE CONTENEDORES OSCUROS EN MODO CLARO
+   ========================================================= */
+
+/* 1. Barra flotante de selector de localidades sobre el mapa (Segmented Control) */
+html:not(.dark) #selector-localidades,
+html:not(.dark) .barra-localidades,
+html:not(.dark) #selector-capas-base {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1) !important;
+}
+
+html:not(.dark) #selector-localidades button:not(.active),
+html:not(.dark) #selector-capas-base button:not(.active) {
+  background-color: transparent !important;
+  color: #334155 !important;
+}
+
+html:not(.dark) #selector-localidades button:not(.active):hover,
+html:not(.dark) #selector-capas-base button:not(.active):hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* 2. Pestañas de Navegación del Panel Lateral (Segmented Control 3 pestañas) */
+.tabs-contenedor {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tab-btn,
+.tab-sidebar-btn {
+  user-select: none;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.tab-btn.tab-activa,
+.tab-sidebar-btn.tab-activa {
+  background-color: #ea580c;
+  color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+html:not(.dark) .tab-btn:not(.tab-activa),
+html:not(.dark) .tab-sidebar-btn:not(.tab-activa) {
+  color: #475569 !important;
+}
+
+html:not(.dark) .tab-btn:not(.tab-activa):hover,
+html:not(.dark) .tab-sidebar-btn:not(.tab-activa):hover {
+  color: #0f172a !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Scrollbars personalizados para las pestañas y detalle */
+.custom-scrollbar::-webkit-scrollbar,
+#vista-tab-explorar::-webkit-scrollbar,
+#vista-tab-pasaporte::-webkit-scrollbar,
+#vista-tab-observatorio::-webkit-scrollbar,
+#panel-detalle-hito::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track,
+#vista-tab-explorar::-webkit-scrollbar-track,
+#vista-tab-pasaporte::-webkit-scrollbar-track,
+#vista-tab-observatorio::-webkit-scrollbar-track,
+#panel-detalle-hito::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+#vista-tab-explorar::-webkit-scrollbar-thumb,
+#vista-tab-pasaporte::-webkit-scrollbar-thumb,
+#vista-tab-observatorio::-webkit-scrollbar-thumb,
+#panel-detalle-hito::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+html:not(.dark) .custom-scrollbar::-webkit-scrollbar-thumb,
+html:not(.dark) #vista-tab-explorar::-webkit-scrollbar-thumb,
+html:not(.dark) #vista-tab-pasaporte::-webkit-scrollbar-thumb,
+html:not(.dark) #vista-tab-observatorio::-webkit-scrollbar-thumb,
+html:not(.dark) #panel-detalle-hito::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+}
+
+/* Módulo de Sensibilidad Ambiental Minimalista (Fragilidad) */
+html:not(.dark) #filtro-fragilidad {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) #filtro-fragilidad:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
+}
+
+html:not(.dark) #filtro-estado-visita {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Flechas/controles laterales del scroll si existen */
+html:not(.dark) .scroll-control-btn {
+  background-color: #ffffff !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* 4. Cabecera del Modal de Libreta y Pasaporte (#modal-pasaporte) */
+html:not(.dark) #modal-pasaporte .bg-slate-900,
+html:not(.dark) #modal-pasaporte .bg-slate-950,
+html:not(.dark) #modal-pasaporte>div>div:first-child {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) #modal-pasaporte h3,
+html:not(.dark) #modal-pasaporte #modal-pasaporte-titulo,
+html:not(.dark) #modal-pasaporte .titulo-modal {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #modal-pasaporte p,
+html:not(.dark) #modal-pasaporte #modal-pasaporte-subtitulo {
+  color: #475569 !important;
+}
+
+html:not(.dark) #modal-pasaporte .pie-modal {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+/* Corrección de cuadrícula y tarjetas del Pasaporte de Expedición */
+#modal-pasaporte #rejilla-pasaporte {
+  display: grid !important;
+  grid-auto-rows: auto !important;
+  align-items: stretch !important;
+  gap: 1rem !important;
+  overflow-y: auto !important;
+}
+
+#modal-pasaporte .tarjeta-pasaporte-item {
+  height: 100%;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* Previene desbordamientos que solapen las filas contiguas */
+}
+
+#modal-pasaporte .tarjeta-pasaporte-item h4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Propiedad estándar para compatibilidad */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.35;
+  padding-bottom: 2px;
+  word-break: break-word;
+}
+
+/* =========================================================
+   ESTILOS DE IMPRESIÓN Y EXPORTACIÓN DEL PASAPORTE (PDF)
+   ========================================================= */
+@media print {
+
+  /* Ocultar elementos de interfaz ajenos al pasaporte */
+  body * {
+    visibility: hidden;
+  }
+
+  #modal-pasaporte,
+  #modal-pasaporte * {
+    visibility: visible;
+  }
+
+  #modal-pasaporte {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  #modal-pasaporte>div {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    overflow: visible !important;
+  }
+
+  /* Ocultar botones de control en la hoja impresa */
+  #btn-cerrar-modal-pasaporte,
+  #btn-cerrar-modal-pasaporte-secundario,
+  #btn-imprimir-pasaporte {
+    display: none !important;
+  }
+
+  /* Cabecera del pasaporte en impresión */
+  #modal-pasaporte .modal-header {
+    background-color: #f8fafc !important;
+    border-bottom: 2px solid #0f172a !important;
+    padding: 16px 20px !important;
+  }
+
+  #modal-pasaporte h3 {
+    color: #0f172a !important;
+    font-size: 18px !important;
+  }
+
+  #modal-pasaporte p {
+    color: #334155 !important;
+    font-size: 12px !important;
+  }
+
+  /* Cuadrícula de estampillas imprimibles */
+  #rejilla-pasaporte {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 16px 20px !important;
+  }
+
+  .tarjeta-pasaporte {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #94a3b8 !important;
+    box-shadow: none !important;
+    padding: 12px !important;
+  }
+
+  .tarjeta-pasaporte h4 {
+    color: #0f172a !important;
+    font-size: 13px !important;
+  }
+
+  .tarjeta-pasaporte p {
+    color: #334155 !important;
+    font-size: 11px !important;
+  }
+
+  .pie-modal {
+    border-top: 1px solid #cbd5e1 !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+    padding: 12px 20px !important;
+  }
+}
+
+/* =========================================================
+   REFACTORIZACIÓN UI/UX: CTA, ACORDEÓN DE FILTROS Y BOTTOM SHEET
+   ========================================================= */
+
+.btn-naranja-cta {
+  background-color: #ea580c;
+  color: #ffffff !important;
+}
+
+.btn-naranja-cta:hover {
+  background-color: #c2410c;
+}
+
+/* Acordeón de Filtros de Búsqueda */
+details.filtros-acordeon summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.25rem 0;
+}
+
+details.filtros-acordeon summary::-webkit-details-marker {
+  display: none;
+}
+
+details.filtros-acordeon[open] .acordeon-chevron {
+  transform: rotate(180deg);
+}
+
+/* Sensibilidad Ambiental Minimalista */
+.sensibilidad-minimal {
+  background-color: rgba(248, 250, 252, 0.65);
+  border: 1px solid #e2e8f0;
+}
+
+html.dark .sensibilidad-minimal {
+  background-color: rgba(15, 23, 42, 0.45);
+  border-color: #1e293b;
+}
+
+/* COMPORTAMIENTO MOBILE FIRST (< 768px): Bottom Sheet + Mapa 100dvh */
+@media (max-width: 767px) {
+  .layout-principal {
+    position: relative;
+    height: calc(100dvh - 54px);
+    width: 100vw;
+  }
+
+  #map,
+  .mapa-contenedor {
+    position: relative;
+    flex: 1;
+    height: 100dvh !important;
+    width: 100vw !important;
+    z-index: 1;
+  }
+
+  #selector-capas-base {
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: max-content;
+    z-index: 500;
+  }
+
+  #panel-lateral {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 14vh;
+    min-height: 92px;
+    border-radius: 20px 20px 0 0;
+    border-left: none !important;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.18);
+    z-index: 1000;
+    transition: height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+  }
+
+  html.dark #panel-lateral {
+    background-color: #0f172a;
+    border-top-color: #1e293b;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  #panel-lateral.expandido {
+    height: 78vh;
+  }
+
+  #bottom-sheet-drag-handle {
+    display: block;
+    width: 44px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 9999px;
+    margin: 10px auto 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  html.dark #bottom-sheet-drag-handle {
+    background: #475569;
+  }
+
+  /* Carrusel horizontal de zonas flotante sobre el mapa */
+  #selector-localidades,
+  .controles-zona {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    z-index: 500;
+  }
+
+  #selector-localidades::-webkit-scrollbar,
+  .controles-zona::-webkit-scrollbar {
+    display: none;
+  }
+
+  #btn-geolocalizacion {
+    bottom: calc(14vh + 14px);
+  }
+}
+
+/* COMPORTAMIENTO DESKTOP (>= 768px): Panel Lateral Derecho Fijo */
+@media (min-width: 768px) {
+  .layout-principal {
+    display: flex;
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+
+  #map,
+  .mapa-contenedor {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    z-index: 1;
+  }
+
+  #selector-capas-base {
+    position: absolute;
+    top: 16px;
+    left: auto;
+    right: calc(390px + 16px) !important;
+    z-index: 25;
+  }
+
+  #panel-lateral {
+    position: relative;
+    z-index: 30;
+    width: 390px;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #e2e8f0;
+  }
+
+  html.dark #panel-lateral {
+    border-left-color: #1e293b;
+  }
+
+  #bottom-sheet-drag-handle {
+    display: none;
+  }
+
+  #btn-geolocalizacion {
+    bottom: 24px;
+  }
+}
+
+/* Escritorio compacto (768px–1180px): evitar choque entre zonas y selector de capas */
+@media (min-width: 768px) and (max-width: 1180px) {
+  #selector-capas-base {
+    top: 64px;
+    left: 56px;
+    right: auto !important;
+  }
+}
+
+/* =========================================================
+   PULIDO VISUAL INTEGRAL: TARJETA, MÉTRICAS, CATEGORÍAS Y SEGMENTED CONTROL
+   ========================================================= */
+
+/* 1. Tarjeta de detalle del hito y botones icónicos circulares */
+.tarjeta-detalle-hito {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+html:not(.dark) .tarjeta-detalle-hito {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+html:not(.dark) .btn-accion-icono {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+html:not(.dark) .btn-accion-icono:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Jerarquía visual de métricas de travesía */
+.metrica-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+html:not(.dark) .metrica-label {
+  color: #64748b !important;
+}
+
+.metrica-valor {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* 2. Botonera de categorías en grilla 2x2 equilibrada */
+.contenedor-categorias-filtros {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.filtro-cat-btn.btn-cat-activo {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+  color: #ffffff !important;
+}
+
+/* Selectores de filtros secundarios (Sensibilidad Ambiental y Estado del Explorador) */
+.select-filtro-custom {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.9rem;
+}
+
+html:not(.dark) .select-filtro-custom {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* 3. Controles del mapa estilo Segmented Control */
+.segmented-control {
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(51, 65, 85, 0.75);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+
+.segmented-control>button {
+  border-radius: 0 !important;
+  border: none !important;
+  margin: 0;
+}
+
+.segmented-control>button:not(:last-child) {
+  border-right: 1px solid rgba(148, 163, 184, 0.28) !important;
+}
+
+html:not(.dark) .segmented-control>button:not(:last-child) {
+  border-right: 1px solid #cbd5e1 !important;
+}
+
+/* 5. Aire y respiro visual en el pie legal del panel lateral */
+.footer-panel-legal {
+  margin-top: 0.75rem;
+  padding-top: 1.15rem;
+  padding-bottom: 1.5rem;
+}
+
+/* =========================================================
+   BADGES Y TABLERO DE PROGRESO
+   ========================================================= */
+.badge-status-pendiente {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: #047857;
+  border: 1px solid #059669;
+}
+
+.dark .badge-status-pendiente {
+  color: #34d399;
+  border-color: #10b981;
+}
+
+.badge-status-logrado {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 9999px;
+  background-color: #059669;
+  color: #ffffff;
+  border: 1px solid #059669;
+  box-shadow: 0 0 10px rgba(5, 150, 105, 0.4);
+}
+
+/* Iconografía estándar Line-Art (Estilo Sello de Bitácora) */
+.icono-bitacora {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: text-bottom;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  margin-right: 0.35rem;
+  flex-shrink: 0;
+  transition: stroke 0.3s ease, opacity 0.2s ease;
+}
+
+button .icono-bitacora:only-child,
+span>.icono-bitacora:only-child {
+  margin-right: 0;
+}
+
+button .icono-bitacora {
+  opacity: 0.85;
+}
+
+button:hover .icono-bitacora,
+button.active .icono-bitacora,
+button.activo .icono-bitacora {
+  opacity: 1;
+}
+
+/* Pista de la barra de progreso con mejor contraste */
+.pista-progreso {
+  background-color: #cbd5e1;
+}
+
+.dark .pista-progreso {
+  background-color: #334155;
+}
+
+/* Logo oficial en barra de navegación superior (sin marco circular blanco) */
+.logo-rastro-img {
+  object-fit: contain;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+html.dark .logo-rastro-img {
+  filter: invert(1) hue-rotate(180deg) brightness(1.08) contrast(1.05) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  mix-blend-mode: screen;
+}
+
+html:not(.dark) .logo-rastro-img {
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.14));
+}
+
+.logo-rastro-img:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   ACCESIBILIDAD WEB (WCAG 2.1 AA · LECTORES DE PANTALLA Y TECLADO)
+   ========================================================= */
+/* Utilidad estándar para ocultar visualmente pero mantener legible por lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Indicador de foco de alto contraste para navegación con teclado (Tab) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+.leaflet-marker-icon:focus-visible {
+  outline: 3px solid #ea580c !important;
+  outline-offset: 2px !important;
+}
+
+/* =========================================================
+   BANNER MODO EXPEDICIÓN OFFLINE & MÓDULO FONÉTICA ORIGINARIA
+   ========================================================= */
+html:not(.dark) #banner-modo-offline {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html:not(.dark) #txt-estado-red {
+  color: #1e293b !important;
+}
+
+html:not(.dark) #btn-guardar-offline {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #c2410c !important;
+}
+
+html:not(.dark) #btn-guardar-offline:hover {
+  background-color: #fff7ed !important;
+  border-color: #fb923c !important;
+}
+
+#banner-modo-offline.modo-sin-conexion {
+  background-color: rgba(120, 53, 15, 0.35);
+  border-bottom-color: rgba(245, 158, 11, 0.4);
+}
+
+html:not(.dark) #banner-modo-offline.modo-sin-conexion {
+  background-color: #fffbeb !important;
+  border-bottom-color: #fcd34d !important;
+}
+
+html:not(.dark) .modulo-fonetica-originaria {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+/* =========================================================
+   SELLO IDENTIDAD FUEGUINA (ECONOMÍA CREATIVA Y COMERCIO JUSTO)
+   ========================================================= */
+.badge-identidad-fueguina {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(245, 158, 11, 0.2));
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.18);
+}
+
+html:not(.dark) .badge-identidad-fueguina {
+  background: linear-gradient(135deg, #f5f3ff, #fef3c7) !important;
+  color: #6d28d9 !important;
+  border-color: #c4b5fd !important;
+}
+
+.badge-identidad-popup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: rgba(139, 92, 246, 0.22);
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.bloque-comercio-justo {
+  background-color: rgba(91, 33, 182, 0.16);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+}
+
+html:not(.dark) .bloque-comercio-justo {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+}
+
+html:not(.dark) .bloque-comercio-justo .comercio-justo-titulo {
+  color: #5b21b6 !important;
+}
+
+html:not(.dark) .bloque-comercio-justo .comercio-justo-texto {
+  color: #334155 !important;
+}
+
+/* Tarjetas didácticas del Observatorio Climático */
+html:not(.dark) #vista-tab-observatorio .tarjeta-observatorio {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) #vista-tab-observatorio .obs-caja-simple {
+  color: #334155 !important;
+}
+
+/* =========================================================
+   AJUSTES DE CONTRASTE PARA POPUPS DE LEAFLET (WCAG AA/AAA)
+   ========================================================= */
+.leaflet-popup-content {
+  color: #0f172a !important;
+  font-family: inherit;
+}
+
+/* Badge Sello Identidad Fueguina legible */
+.badge-identidad-fueguina,
+.popup-badge-sello {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: 9999px;
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+  border: 1px solid #d97706 !important;
+}
+
+/* Toponimia originaria */
+.popup-toponimia {
+  color: #9a3412 !important;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* Rubro u oficio creativo */
+.popup-rubro {
+  color: #6b21a8 !important;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+/* Localidad y categoría secundaria */
+.popup-subtexto {
+  color: #475569 !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Flujo continuo sin scroll anidado en #contenedor-tarjeta-detalle */
+#contenedor-tarjeta-detalle {
+  padding-bottom: 1.5rem;
+}

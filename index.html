@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastro Austral · Atlas y Diario de Exploración Territorial</title>
+
+    <meta name="description" content="Atlas y Diario de Exploración Territorial de Tierra del Fuego. Patrimonio, senderos y economía creativa.">
+    <meta name="theme-color" content="#020617">
+    <!-- Favicon oficial Rastro Austral -->
+    <link rel="icon" type="image/jpeg" href="assets/logo-rastro-austral.jpeg" />
+    <link rel="manifest" href="./manifest.json">
+
+    <!-- Tailwind CSS vía CDN para estilos modernos y ligeros con soporte de modo oscuro por clase -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+
+    <!-- Leaflet CSS y JS para el visor cartográfico -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Generador de PDF en el cliente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Librería para Gráficos del Observatorio -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="bg-slate-950 text-slate-100 flex flex-col h-screen overflow-hidden font-sans">
+
+    <!-- Enlace de salto directo accesible (Skip Link) -->
+    <a href="#panel-lateral" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[1100] focus:px-4 focus:py-2 focus:bg-orange-600 focus:text-white focus:rounded-lg focus:font-bold focus:shadow-xl">
+      Saltar al contenido principal e hitos
+    </a>
+
+    <!-- Región en vivo para anuncios de accesibilidad (NVDA / VoiceOver / TalkBack) -->
+    <div id="anunciador-accesible" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+    <!-- Pantalla de Bienvenida / Ingreso -->
+    <div id="pantalla-bienvenida" class="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/60 dark:bg-slate-950/95 backdrop-blur-md transition-opacity duration-700">
+      <div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl text-center flex flex-col items-center">
+        <!-- Capa ambiental de nieve/escarcha austral con paralaje -->
+        <div id="capa-nieve-austral" class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl z-0" aria-hidden="true">
+          <span class="copo-nieve copo-1" data-velocidad="0.04"></span>
+          <span class="copo-nieve copo-2" data-velocidad="0.07"></span>
+          <span class="copo-nieve copo-3" data-velocidad="0.03"></span>
+          <span class="copo-nieve copo-4" data-velocidad="0.06"></span>
+          <span class="copo-nieve copo-5" data-velocidad="0.05"></span>
+          <span class="copo-nieve copo-6" data-velocidad="0.08"></span>
+        </div>
+        
+        <!-- Controles de Accesibilidad en Pantalla de Bienvenida (Idioma + Tema) -->
+        <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10">
+          <!-- Conmutador de Idioma en Bienvenida -->
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-300 dark:border-slate-700 text-xs shadow-sm">
+            <button type="button" id="btn-bienvenida-lang-es" class="px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white">ES</button>
+            <button type="button" id="btn-bienvenida-lang-en" class="px-2 py-0.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">EN</button>
+          </div>
+
+          <!-- Botón de Alternar Modo Claro / Oscuro en Bienvenida -->
+          <button id="btn-tema-bienvenida" type="button" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition border border-slate-300 dark:border-slate-700 text-sm shadow-sm flex items-center justify-center" title="Cambiar tema" data-i18n-title="tema_titulo" aria-label="Alternar tema claro y oscuro">
+            <span class="icono-tema-dinamico flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="icono-bitacora"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <!-- Contenedor del Pingüino Rey Fueguino con halo, burbuja de diálogo e interactividad -->
+        <div id="contenedor-pinguino-bienvenida" class="w-52 h-60 relative z-10 flex items-center justify-center mb-3 select-none perspective-1000 overflow-visible">
+          <!-- Globito de diálogo interactivo (oculto por defecto) -->
+          <div id="burbuja-dialogo" role="status" aria-live="polite"></div>
+
+          <!-- Destello / Resplandor cálido de la antorcha al encender el mapa -->
+          <div id="resplandor-antorcha-fuego" class="pointer-events-none absolute inset-0 m-auto w-32 h-32 rounded-full bg-gradient-to-tr from-amber-500 via-orange-400 to-yellow-200 opacity-0 scale-0 transition-none z-20 blur-xl"></div>
+
+          <!-- Escultura Ilustrada Definitiva: Pingüino Rey Fueguino con Bufanda y Antorcha -->
+          <div id="wrapper-pinguino-3d" class="relative w-52 h-60 flex items-center justify-center z-10">
+            <svg id="svg-pinguino-bienvenida" class="w-full h-full select-none overflow-visible" viewBox="0 0 180 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Halo radial cálido centrado detrás de la antorcha y el pingüino -->
+                <radialGradient id="halo_fueguino_calido" cx="58%" cy="46%" r="52%">
+                  <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.34"/>
+                  <stop offset="45%" stop-color="#fb923c" stop-opacity="0.14"/>
+                  <stop offset="75%" stop-color="#38bdf8" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#020617" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- Sombra anclada en el piso con sutil tinte cálido de la antorcha -->
+                <linearGradient id="sombra_suelo_calida" x1="0%" y1="50%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#020617" stop-opacity="0.52"/>
+                  <stop offset="65%" stop-color="#1e1b4b" stop-opacity="0.48"/>
+                  <stop offset="100%" stop-color="#b45309" stop-opacity="0.36"/>
+                </linearGradient>
+
+                <!-- Manto dorsal: luz de rebote azul fría a la izquierda + rim light ámbar potente a la derecha -->
+                <linearGradient id="manto_volumetrico" x1="0%" y1="40%" x2="100%" y2="45%">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="14%" stop-color="#1e293b"/>
+                  <stop offset="55%" stop-color="#0f172a"/>
+                  <stop offset="88%" stop-color="#334155"/>
+                  <stop offset="100%" stop-color="#f59e0b"/>
+                </linearGradient>
+
+                <!-- Rim light perimetral derecho para contraste en Dark Mode -->
+                <linearGradient id="rim_luz_calida" x1="0%" y1="0%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#64748b" stop-opacity="0.35"/>
+                  <stop offset="55%" stop-color="#334155" stop-opacity="0.15"/>
+                  <stop offset="85%" stop-color="#f59e0b" stop-opacity="0.65"/>
+                  <stop offset="100%" stop-color="#fef08a" stop-opacity="0.95"/>
+                </linearGradient>
+
+                <!-- Cabeza orgánica con sutil rebote frío izquierdo y cálido derecho -->
+                <linearGradient id="cabeza_volumetrica" x1="0%" y1="30%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="28%" stop-color="#0f172a"/>
+                  <stop offset="78%" stop-color="#090d16"/>
+                  <stop offset="100%" stop-color="#78350f"/>
+                </linearGradient>
+
+                <!-- Pecho unificado: transición suave naranja -> amarillo -> crema -> blanco níveo -->
+                <linearGradient id="pechera_unificada" x1="48%" y1="0%" x2="54%" y2="100%">
+                  <stop offset="0%" stop-color="#ea580c"/>
+                  <stop offset="16%" stop-color="#f59e0b"/>
+                  <stop offset="32%" stop-color="#fde047"/>
+                  <stop offset="50%" stop-color="#ffffff"/>
+                  <stop offset="84%" stop-color="#f8fafc"/>
+                  <stop offset="100%" stop-color="#cbd5e1"/>
+                </linearGradient>
+
+                <!-- Reflejo lateral cálido sobre el borde derecho del vientre -->
+                <linearGradient id="vientre_luz_derecha" x1="0%" y1="50%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.22"/>
+                  <stop offset="22%" stop-color="#ffffff" stop-opacity="0"/>
+                  <stop offset="78%" stop-color="#ffffff" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="#fef08a" stop-opacity="0.45"/>
+                </linearGradient>
+
+                <!-- Cachetes auriculares difuminados desde el cuello hacia la cabeza -->
+                <radialGradient id="cachete_difuminado_izq" cx="35%" cy="72%" r="65%">
+                  <stop offset="0%" stop-color="#ea580c" stop-opacity="0.95"/>
+                  <stop offset="45%" stop-color="#f59e0b" stop-opacity="0.85"/>
+                  <stop offset="80%" stop-color="#fbbf24" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+                </radialGradient>
+
+                <radialGradient id="cachete_difuminado_der" cx="65%" cy="72%" r="65%">
+                  <stop offset="0%" stop-color="#ea580c" stop-opacity="0.98"/>
+                  <stop offset="45%" stop-color="#f59e0b" stop-opacity="0.9"/>
+                  <stop offset="80%" stop-color="#fde047" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- Aletas orgánica izquierda y derecha -->
+                <linearGradient id="aleta_izquierda_fria" x1="0%" y1="30%" x2="100%" y2="60%">
+                  <stop offset="0%" stop-color="#475569"/>
+                  <stop offset="35%" stop-color="#1e293b"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+
+                <linearGradient id="aleta_derecha_calida" x1="0%" y1="50%" x2="100%" y2="40%">
+                  <stop offset="0%" stop-color="#0f172a"/>
+                  <stop offset="65%" stop-color="#1e293b"/>
+                  <stop offset="100%" stop-color="#92400e"/>
+                </linearGradient>
+
+                <!-- Patas naranjas cálidas -->
+                <linearGradient id="pata_naranja" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#b45309"/>
+                </linearGradient>
+
+                <!-- Bufanda fueguina de lana -->
+                <linearGradient id="bufanda_lana_roja" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7f1d1d"/>
+                  <stop offset="35%" stop-color="#b91c1c"/>
+                  <stop offset="75%" stop-color="#dc2626"/>
+                  <stop offset="100%" stop-color="#ef4444"/>
+                </linearGradient>
+
+                <!-- Mango de la antorcha -->
+                <linearGradient id="mango_antorcha" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#271106"/>
+                  <stop offset="50%" stop-color="#78350f"/>
+                  <stop offset="100%" stop-color="#451a03"/>
+                </linearGradient>
+
+                <!-- Núcleo de llama expansiva -->
+                <radialGradient id="llama_fuego_core" cx="45%" cy="68%" r="62%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="28%" stop-color="#fef08a"/>
+                  <stop offset="62%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#dc2626"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Halo radial cálido centrado detrás de la antorcha y el pingüino -->
+              <circle id="halo-pinguino-ambiente" class="halo-ambiente" cx="96" cy="96" r="82" fill="url(#halo_fueguino_calido)"/>
+
+              <!-- Copos de nieve fueguinos sutiles de fondo -->
+              <g id="copos-nieve-fondo" opacity="0.72">
+                <g transform="translate(26 38)" stroke="#bae6fd" stroke-width="1.1" stroke-linecap="round">
+                  <line x1="-4" y1="0" x2="4" y2="0"/>
+                  <line x1="0" y1="-4" x2="0" y2="4"/>
+                  <line x1="-2.8" y1="-2.8" x2="2.8" y2="2.8"/>
+                  <line x1="-2.8" y1="2.8" x2="2.8" y2="-2.8"/>
+                </g>
+                <g transform="translate(154 140)" stroke="#bae6fd" stroke-width="1" stroke-linecap="round">
+                  <line x1="-3.5" y1="0" x2="3.5" y2="0"/>
+                  <line x1="0" y1="-3.5" x2="0" y2="3.5"/>
+                  <line x1="-2.4" y1="-2.4" x2="2.4" y2="2.4"/>
+                  <line x1="-2.4" y1="2.4" x2="2.4" y2="-2.4"/>
+                </g>
+                <circle cx="34" cy="128" r="1.7" fill="#e0f2fe" opacity="0.8"/>
+                <circle cx="148" cy="24" r="1.5" fill="#bae6fd" opacity="0.75"/>
+                <circle cx="18" cy="84" r="1.2" fill="#e0f2fe" opacity="0.65"/>
+                <circle cx="164" cy="88" r="1.4" fill="#fef3c7" opacity="0.6"/>
+              </g>
+
+              <!-- Sombra de apoyo anclada bajo las patas con sutil tinte cálido -->
+              <ellipse id="sombra-pinguino-baile" class="sombra-baile" cx="88" cy="183" rx="48" ry="8" fill="url(#sombra_suelo_calida)" style="transform-origin: 88px 183px;"/>
+
+              <!-- Patitas anaranjadas firmes apoyadas en el suelo -->
+              <g id="patas-apoyadas">
+                <g id="pata-izq" class="pata-baile-izq" style="transform-origin: 67px 179px;">
+                  <path d="M64 173C58 173 54 176.5 54 179.5C54 182.5 58 183.5 66 183.5C74 183.5 79 182 79 178.5C79 175 71 173 64 173Z" fill="url(#pata_naranja)"/>
+                  <ellipse cx="60" cy="180" rx="2.6" ry="1.2" fill="#78350f"/>
+                  <ellipse cx="67" cy="180.5" rx="2.6" ry="1.2" fill="#78350f"/>
+                </g>
+                <g id="pata-der" class="pata-baile-der" style="transform-origin: 103px 179px;">
+                  <path d="M100 173C94 173 90 176.5 90 179.5C90 182.5 94 183.5 102 183.5C110 183.5 115 182 115 178.5C115 175 107 173 100 173Z" fill="url(#pata_naranja)"/>
+                  <ellipse cx="96" cy="180" rx="2.6" ry="1.2" fill="#78350f"/>
+                  <ellipse cx="103" cy="180.5" rx="2.6" ry="1.2" fill="#78350f"/>
+                </g>
+              </g>
+
+              <!-- Cuerpo completo en forma de gota / pera invertida -->
+              <g id="cuerpo-pinguino" class="cuerpo-baile" style="transform-origin: 86px 176px;">
+                <!-- Silueta dorsal en forma de gota: más angosta arriba, ancha y pesada abajo -->
+                <path d="M86 30C66 30 55 48 50 76C43 114 38 148 52 168C61 179 111 179 120 168C134 148 129 114 122 76C117 48 106 30 86 30Z"
+                      fill="url(#manto_volumetrico)"
+                      stroke="url(#rim_luz_calida)"
+                      stroke-width="1.5"/>
+
+                <!-- Vientre blanco amplio llegando de forma natural hacia los bordes -->
+                <path d="M86 58C68 58 59 74 52 104C46 134 49 162 66 171C78 176 94 176 106 171C123 162 126 134 120 104C113 74 104 58 86 58Z"
+                      fill="url(#pechera_unificada)"/>
+                <path d="M86 58C68 58 59 74 52 104C46 134 49 162 66 171C78 176 94 176 106 171C123 162 126 134 120 104C113 74 104 58 86 58Z"
+                      fill="url(#vientre_luz_derecha)"/>
+
+                <!-- Aleta izquierda orgánica: mismo grosor/curvatura que el brazo derecho, pegada al cuerpo -->
+                <g id="aleta-izq-pinguino" class="aleta-baile-izq" style="transform-origin: 51px 74px;">
+                  <path d="M52 72C42 82 35 104 39 128C41 136 48 135 53 122C58 108 58 86 52 72Z"
+                        fill="url(#aleta_izquierda_fria)"
+                        stroke="rgba(148,163,184,0.35)"
+                        stroke-width="1"/>
+                  <path d="M45 84C40 97 39 114 43 126" stroke="#64748b" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+                </g>
+
+                <!-- Cabeza orgánica proporcionada -->
+                <path d="M86 16C68 16 61 27 61 42C61 52 69 60 86 60C103 60 111 52 111 42C111 27 104 16 86 16Z"
+                      fill="url(#cabeza_volumetrica)"
+                      stroke="url(#rim_luz_calida)"
+                      stroke-width="1.1"/>
+
+                <!-- Cachetes auriculares difuminados suavemente desde el cuello hacia la cabeza -->
+                <path d="M62 40C58 46 58 55 64 60C70 63 76 58 75 50C74 44 68 38 62 40Z" fill="url(#cachete_difuminado_izq)"/>
+                <path d="M110 40C114 46 114 55 108 60C102 63 96 58 97 50C98 44 104 38 110 40Z" fill="url(#cachete_difuminado_der)"/>
+
+                <!-- Bufanda de lana austral a rayas cálidas -->
+                <g id="bufanda-fueguina">
+                  <!-- Caída lateral tejida sobre el pecho -->
+                  <path d="M67 62C64 72 62 84 63 93C66 95 72 95 75 92C75 82 76 72 78 63Z" fill="url(#bufanda_lana_roja)" stroke="#450a0a" stroke-width="0.6"/>
+                  <!-- Rayas cálidas en la caída -->
+                  <path d="M64 77L75 78" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M63.5 85L74.5 86" stroke="#fde68a" stroke-width="1.6" stroke-linecap="round"/>
+                  <!-- Flecos de lana -->
+                  <line x1="65" y1="93" x2="64" y2="98" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round"/>
+                  <line x1="69" y1="94" x2="69" y2="99" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+                  <line x1="73" y1="93" x2="74" y2="98" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round"/>
+                  <!-- Collarín envolvente de la bufanda -->
+                  <path d="M60 55C72 64 100 64 112 55C114 58 113 64 108 67C96 73 76 73 64 67C59 64 58 58 60 55Z" fill="url(#bufanda_lana_roja)" stroke="#450a0a" stroke-width="0.6"/>
+                  <!-- Rayas sobre el collarín -->
+                  <path d="M66 61C78 66 94 66 106 61" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+                  <path d="M71 65C82 69 90 69 101 65" stroke="#fef08a" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/>
+                </g>
+
+                <!-- Ojos expresivos con parpadeo CSS y pupilas móviles por JS -->
+                <g id="ojos-pinguino">
+                  <!-- Ojo izquierdo -->
+                  <g class="ojo-parpadeo" style="transform-origin: 74px 36px;">
+                    <ellipse cx="74" cy="36" rx="5.2" ry="6" fill="#f8fafc" stroke="#020617" stroke-width="0.9"/>
+                    <circle id="pupila-izq" class="pupila-pinguino" cx="74" cy="36" r="3.1" fill="#020617" data-base-cx="74" data-base-cy="36"/>
+                    <circle id="brillo-izq" cx="72.7" cy="34.5" r="1.2" fill="#ffffff" data-base-cx="72.7" data-base-cy="34.5"/>
+                  </g>
+                  <!-- Ojo derecho -->
+                  <g class="ojo-parpadeo" style="transform-origin: 98px 36px;">
+                    <ellipse cx="98" cy="36" rx="5.2" ry="6" fill="#f8fafc" stroke="#020617" stroke-width="0.9"/>
+                    <circle id="pupila-der" class="pupila-pinguino" cx="98" cy="36" r="3.1" fill="#020617" data-base-cx="98" data-base-cy="36"/>
+                    <circle id="brillo-der" cx="96.7" cy="34.5" r="1.2" fill="#ffffff" data-base-cx="96.7" data-base-cy="34.5"/>
+                  </g>
+                </g>
+
+                <!-- Pico con volumen, placa inferior cálida y línea clara de separación -->
+                <g id="pico-rey">
+                  <path d="M86 33L79 47C83 49.5 89 49.5 93 47L86 33Z" fill="#0f172a"/>
+                  <!-- Placa mandibular inferior con volumen -->
+                  <path d="M81 45.5L86 52.5L91 45.5C88.5 47 83.5 47 81 45.5Z" fill="#ea580c"/>
+                  <!-- Línea de separación clara y brillo inferior -->
+                  <path d="M80.5 45.5C84 47.5 88 47.5 91.5 45.5" stroke="#fdba74" stroke-width="1.1" stroke-linecap="round"/>
+                  <path d="M86 35L84 44" stroke="#64748b" stroke-width="0.8" stroke-linecap="round" opacity="0.65"/>
+                </g>
+
+                <!-- Brazo derecho anatómico sosteniendo y envolviendo naturalmente la antorcha -->
+                <g id="brazo-antorcha-envolvente" class="aleta-baile-der" style="transform-origin: 121px 74px;">
+                  <!-- Parte trasera de la aleta / pulgar sosteniendo desde atrás -->
+                  <path d="M120 72C127 78 134 93 136 112C136 116 131 118 127 112C123 102 120 88 120 72Z" fill="#0f172a"/>
+
+                  <!-- Mango cilíndrico pasando por dentro del agarre (asoma arriba y abajo) -->
+                  <rect x="131" y="54" width="6.5" height="74" rx="3.2" fill="url(#mango_antorcha)" transform="rotate(-7 131 54)"/>
+                  <rect x="127.5" y="48" width="13.5" height="7.5" rx="2.5" fill="#475569" transform="rotate(-7 127.5 48)"/>
+
+                  <!-- Aleta derecha extendida envolviendo el mango (sin parche ovalado naranja) -->
+                  <path d="M120 72C124 84 126 102 129 116C132 126 139 129 141 121C143 110 138 92 129 77C126 73 122 71 120 72Z"
+                        fill="url(#aleta_derecha_calida)"
+                        stroke="rgba(245,158,11,0.55)"
+                        stroke-width="1"/>
+                  <!-- Pliegue natural del agarre envolviendo el mango -->
+                  <path d="M127 104C132 103 137 104 139 109" stroke="#f59e0b" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+
+                  <!-- Llama Viva Fueguina con chispas -->
+                  <g id="llama-antorcha" class="llama-animada" style="transform-origin: 136px 43px;">
+                    <path d="M136 49C125 43 124 29 135 13C144 25 153 33 146 49C142 53 139 53 136 49Z"
+                          fill="url(#llama_fuego_core)"
+                          style="filter: drop-shadow(0 0 11px rgba(245, 158, 11, 0.95));"/>
+                    <path d="M136 46C130 41 129 33 136 23C141 29 146 34 142 46C139 48 138 48 136 46Z" fill="#fef08a"/>
+
+                    <!-- Chispas incandescentes -->
+                    <circle cx="149" cy="21" r="1.3" fill="#fbbf24" class="animate-ping"/>
+                    <circle cx="128" cy="17" r="1" fill="#f97316"/>
+                    <circle cx="143" cy="7" r="1.2" fill="#fef08a"/>
+
+                    <!-- Chispas reactivas al escribir el nombre del explorador -->
+                    <g id="chispas-reactivas" class="opacity-0 transition-opacity duration-300 pointer-events-none">
+                      <circle cx="124" cy="2" r="1.5" fill="#fef08a" class="chispa-flotante-1"/>
+                      <circle cx="138" cy="10" r="1.2" fill="#fbbf24" class="chispa-flotante-2"/>
+                      <circle cx="114" cy="8" r="1.1" fill="#f97316" class="chispa-flotante-3"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <h1 class="relative z-10 text-2xl font-black text-amber-500 dark:text-amber-400 tracking-tight mb-1" id="bienvenida-titulo" data-i18n="bienvenida_titulo">Bienvenido a Rastro Austral</h1>
+        <p class="relative z-10 text-xs text-slate-600 dark:text-slate-400 mb-6 max-w-xs" id="bienvenida-subtitulo" data-i18n="bienvenida_subtitulo">Atlas y Diario de Exploración Territorial de Tierra del Fuego</p>
+
+        <!-- Formulario de Ingreso -->
+        <form id="form-bienvenida" class="relative z-10 w-full space-y-4">
+          <div class="text-left">
+            <label for="input-nombre-explorador" class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" id="lbl-nombre-explorador" data-i18n="lbl_nombre_explorador">
+              Nombre del Expedicionario / Exploradora
+            </label>
+            <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition"/>
+          </div>
+          <button type="submit" id="btn-ingresar-app" class="w-full bg-amber-600 hover:bg-amber-500 active:scale-95 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">
+            <span id="txt-btn-ingresar" data-i18n="btn_ingresar">Ingresar a la Expedición</span>
+            <span>→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Barra Superior de Navegación e Identidad (Limpia y Mobile-First) -->
+    <header
+        class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-4 sm:px-6 py-2.5 sm:py-3 flex justify-between items-center gap-3 z-30 shadow-md">
+        <!-- Bloque de Identidad en el Header -->
+        <div class="flex items-center gap-3 min-w-0">
+            <div class="relative w-11 h-11 md:w-12 md:h-12 flex-shrink-0 flex items-center justify-center">
+                <img
+                    src="assets/logo-rastro-austral.jpeg"
+                    alt="Logo Rastro Austral"
+                    class="logo-rastro-img w-full h-full object-contain filter drop-shadow-md transition-transform duration-200 hover:scale-105"
+                />
+            </div>
+            <div class="min-w-0">
+                <h1 class="text-base md:text-lg font-bold tracking-tight text-white flex items-center gap-2 leading-tight truncate">
+                    Rastro Austral
+                </h1>
+                <p class="hidden sm:block text-[10px] md:text-xs text-slate-300 font-medium truncate">
+                    <span data-i18n="subtitulo">Atlas y Diario de Exploración Territorial</span> · <span class="text-amber-500 font-semibold">VolverAlSur</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Identidad del Usuario + Controles de Sistema (Idioma, Tema) -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5 text-xs flex-shrink-0">
+            <!-- Identificador de Explorador/a -->
+            <div id="badge-explorador" class="hidden bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-full border border-amber-500/30 flex items-center gap-1.5 sm:gap-2 text-xs">
+                <svg viewBox="0 0 24 24" class="icono-bitacora text-amber-400 !mr-0" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span id="nombre-explorador-display" class="font-bold text-amber-300 max-w-[90px] sm:max-w-[140px] truncate"></span>
+                <button id="btn-editar-explorador" class="text-slate-400 hover:text-white transition ml-0.5 flex items-center justify-center" title="Editar nombre / Cambiar explorador" aria-label="Editar nombre">
+                  <svg viewBox="0 0 24 24" class="icono-bitacora !w-3.5 !h-3.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </button>
+            </div>
+
+            <!-- Conmutador de Idiomas -->
+            <div role="group" aria-label="Cambiar idioma entre español e inglés" class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-lg p-0.5 text-xs font-semibold">
+                <button id="btn-lang-es" type="button" aria-label="Cambiar idioma a español" class="px-2 sm:px-2.5 py-1 rounded-md transition bg-amber-600 text-white">ES</button>
+                <button id="btn-lang-en" type="button" aria-label="Cambiar idioma a inglés" class="px-2 sm:px-2.5 py-1 rounded-md transition text-slate-400 hover:text-white">EN</button>
+            </div>
+
+            <!-- Conmutador de Tema (Claro / Oscuro) -->
+            <button id="btn-toggle-tema" type="button"
+                class="bg-slate-800/80 hover:bg-slate-700/80 text-amber-400 px-2 sm:px-2.5 py-1.5 rounded-lg border border-slate-700/80 shadow-sm transition flex items-center justify-center text-xs"
+                title="Cambiar a Modo Claro"
+                data-i18n-title="tema_titulo"
+                aria-label="Alternar entre modo claro y modo oscuro">
+                <span id="icono-tema" class="flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="icono-bitacora"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Barra de Resiliencia Territorial Offline (PWA / LocalStorage Cache) -->
+    <div id="banner-modo-offline" role="status" aria-live="polite"
+        class="px-4 sm:px-6 py-1.5 bg-slate-900/95 border-b border-slate-800 text-xs flex flex-wrap items-center justify-between gap-2 text-slate-300 z-20">
+        <div class="flex items-center gap-2 min-w-0">
+            <span id="indicador-estado-red" class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" aria-hidden="true"></span>
+            <span id="txt-estado-red" data-i18n="estado_red_sincronizado" class="font-medium truncate">Atlas Sincronizado · Modo Offline Activo</span>
+        </div>
+        <button id="btn-guardar-offline" type="button"
+            class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-orange-400 border border-slate-700 transition-colors cursor-pointer whitespace-nowrap flex items-center gap-1.5"
+            title="Descarga local de fichas territoriales"
+            aria-label="Guardar fichas territoriales y pautas ambientales para expedición sin conexión">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            <span data-i18n="guardar_fichas_offline">Guardar Fichas para Expedición</span>
+        </button>
+    </div>
+
+    <!-- Área Central: Visor del Mapa + Panel Lateral / Bottom Sheet Mobile -->
+    <main class="layout-principal flex flex-1 min-h-0 relative overflow-hidden">
+
+        <!-- Contenedor del Mapa Cartográfico -->
+        <div id="map" role="region" aria-label="Mapa interactivo de Tierra del Fuego" class="mapa-contenedor flex-1 h-full z-10"></div>
+
+        <!-- Barra de navegación rápida por territorio sobre el mapa (Segmented Control) -->
+        <div id="selector-localidades" role="group" aria-label="Filtrar vista del mapa por localidad"
+            class="barra-localidades controles-zona segmented-control absolute top-4 left-4 sm:left-14 z-20 flex items-stretch bg-slate-900/90 backdrop-blur-md shadow-lg text-xs">
+            <button data-vista="provincia"
+                class="btn-vista active flex-shrink-0 whitespace-nowrap bg-amber-600 text-white font-semibold px-3 py-1.5 transition flex items-center">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                <span data-i18n="vista_provincia">Toda la Provincia</span>
+            </button>
+            <button data-vista="ushuaia"
+                class="btn-vista flex-shrink-0 whitespace-nowrap text-slate-300 font-medium px-3 py-1.5 transition flex items-center">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Ushuaia</span>
+            </button>
+            <button data-vista="tolhuin"
+                class="btn-vista flex-shrink-0 whitespace-nowrap text-slate-300 font-medium px-3 py-1.5 transition flex items-center">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Tolhuin</span>
+            </button>
+            <button data-vista="rio_grande"
+                class="btn-vista flex-shrink-0 whitespace-nowrap text-slate-300 font-medium px-3 py-1.5 transition flex items-center">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Río Grande</span>
+            </button>
+        </div>
+
+        <!-- Selector flotante de capa base cartográfica y Áreas Protegidas (Segmented Control) -->
+        <div id="selector-capas-base"
+            class="segmented-control absolute top-16 md:top-4 right-3 md:right-6 z-20 flex items-stretch bg-slate-900/90 backdrop-blur-md shadow-lg text-xs">
+            <button id="btn-capa-estandar"
+                class="btn-capa-base active bg-amber-600 text-white font-semibold px-3 py-1.5 transition flex items-center whitespace-nowrap">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                <span data-i18n="capa_estandar">Estándar</span>
+            </button>
+            <button id="btn-capa-relieve"
+                class="btn-capa-base text-slate-300 font-medium px-3 py-1.5 transition flex items-center whitespace-nowrap">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+                <span data-i18n="capa_relieve">Relieve</span>
+            </button>
+            <button id="btn-capa-areas-protegidas"
+                class="btn-capa-areas text-emerald-400 font-medium px-3 py-1.5 transition flex items-center whitespace-nowrap"
+                title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
+                <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="hidden sm:inline" data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
+            </button>
+        </div>
+
+        <!-- Botón flotante de geolocalización en tiempo real -->
+        <button id="btn-geolocalizacion" type="button"
+            class="absolute left-3.5 z-20 w-8 h-8 bg-slate-900/90 hover:bg-slate-800 active:scale-95 text-sky-400 hover:text-sky-300 rounded-lg border border-slate-700/80 shadow-xl flex items-center justify-center transition"
+            title="Ubicar mi posición actual"
+            data-i18n-title="geoloc_titulo"
+            aria-label="Ubicar mi posición actual en el mapa">
+            <span id="icono-geoloc" class="flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="icono-bitacora" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+            </span>
+        </button>
+
+        <!-- Panel Lateral (Desktop) / Bottom Sheet Deslizable (Mobile) -->
+        <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
+            class="bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col shadow-xl overflow-hidden">
+          
+          <!-- Tirador visual del Bottom Sheet en Mobile -->
+          <div id="bottom-sheet-drag-handle" role="button" tabindex="0" aria-label="Expandir o contraer panel" title="Tocar para desplegar u ocultar"></div>
+
+          <!-- Navegación por Pestañas del Panel (Segmented Control 3 pestañas) -->
+          <div class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 flex items-center gap-1.5 flex-shrink-0">
+            <div role="tablist" aria-label="Secciones del panel lateral" class="tabs-contenedor flex-1 p-1 bg-slate-200/80 dark:bg-slate-800 rounded-xl grid grid-cols-3 gap-1">
+              <!-- Pestaña 1: Hitos / Explorador -->
+              <button id="tab-btn-explorar" type="button" role="tab" aria-selected="true" aria-controls="vista-tab-explorar" class="tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                </svg>
+                <span data-i18n="tab_explorador" class="whitespace-nowrap truncate">Hitos</span>
+              </button>
+
+              <!-- Pestaña 2: Bitácora con Badge numérico -->
+              <button id="tab-btn-pasaporte" type="button" role="tab" aria-selected="false" aria-controls="vista-tab-pasaporte" class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <span data-i18n="tab_pasaporte" class="whitespace-nowrap truncate">Bitácora</span>
+                <span id="tab-badge-sellos" class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none">0/19</span>
+              </button>
+
+              <!-- Pestaña 3: Observatorio (Ciencia de Datos Cívica) -->
+              <button id="tab-btn-observatorio" type="button" role="tab" aria-selected="false" aria-controls="vista-tab-observatorio" class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 3v18h18"/>
+                  <path d="m19 9-5 5-4-4-3 3"/>
+                </svg>
+                <span data-i18n="tab_observatorio" class="whitespace-nowrap truncate">Observatorio</span>
+              </button>
+            </div>
+            <button id="btn-cerrar-panel-mobile" type="button" aria-label="Contraer panel en vista móvil" class="md:hidden text-slate-400 hover:text-slate-600 dark:hover:text-white p-1.5 text-sm leading-none flex-shrink-0" title="Contraer panel">✕</button>
+          </div>
+
+          <!-- VISTA 1: EXPLORADOR (Un solo panel continuo con scroll único) -->
+          <div id="vista-tab-explorar" role="tabpanel" aria-labelledby="tab-btn-explorar" class="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3 custom-scrollbar">
+
+            <!-- Encabezado de Filtros -->
+            <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100 flex-shrink-0">
+              <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+                <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+              </svg>
+              <span data-i18n="filtros_busqueda">Filtros de Búsqueda</span>
+            </div>
+
+            <!-- Buscador -->
+            <div class="relative flex-shrink-0">
+              <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa" placeholder="Buscar por nombre, localidad o toponimia..." class="w-full py-2 pl-9 pr-7 text-xs rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold" title="Limpiar búsqueda">✕</button>
+            </div>
+
+            <!-- Categorías (Fila de 4 botones) -->
+            <div class="grid grid-cols-4 gap-1.5 flex-shrink-0">
+              <button type="button" class="filtro-cat-btn btn-cat-activo py-1.5 px-2 text-xs font-semibold rounded-lg bg-orange-600 text-white flex items-center justify-center shadow-sm truncate cursor-pointer" data-cat="todas" title="Todos">
+                <span data-i18n="cat_todos" class="truncate">Todos</span>
+              </button>
+              <button type="button" class="filtro-cat-btn py-1.5 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer" data-cat="patrimonio" title="Patrimonio">
+                <span data-i18n="cat_patrimonio" class="truncate">Patrimonio</span>
+              </button>
+              <button type="button" class="filtro-cat-btn py-1.5 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer" data-cat="senderos" title="Senderos">
+                <span data-i18n="cat_senderos" class="truncate">Senderos</span>
+              </button>
+              <button type="button" class="filtro-cat-btn py-1.5 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer" data-cat="economia_creativa" title="Creativos">
+                <span data-i18n="cat_creativos" class="truncate">Creativos</span>
+              </button>
+            </div>
+
+            <!-- Bloque de Sensibilidad y Estado -->
+            <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-2 gap-3 flex-shrink-0">
+              <div>
+                <label for="filtro-fragilidad" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                  SENSIBILIDAD
+                </label>
+                <select id="filtro-fragilidad" class="w-full py-1.5 px-2 text-xs rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+                  <option value="todas">Todos</option>
+                  <option value="Baja">Baja</option>
+                  <option value="Media">Media</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Muy Alta">Muy Alta</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="filtro-estado-visita" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                  ESTADO
+                </label>
+                <select id="filtro-estado-visita" class="w-full py-1.5 px-2 text-xs rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+                  <option value="todos">Todos</option>
+                  <option value="visitados">Visitados</option>
+                  <option value="pendientes">Pendientes</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tarjeta Travesía Acumulada -->
+            <div id="metrica-distancia-ruta" class="hidden p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between flex-shrink-0">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                  </svg>
+                </div>
+                <div>
+                  <div id="lbl-recorrido-total" data-i18n="recorrido_total" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TRAVESÍA ACUMULADA</div>
+                  <div id="valor-distancia-total" class="text-sm font-extrabold text-slate-900 dark:text-slate-100 font-mono">0.0 km</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div id="lbl-tiempo-estimado" data-i18n="tiempo_estimado" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TIEMPO ESTIMADO</div>
+                <div id="valor-tiempo-estimado" class="text-sm font-extrabold text-slate-900 dark:text-slate-100 font-mono">--</div>
+              </div>
+            </div>
+
+            <!-- Contenedor de la Tarjeta de Detalle (SIN scroll propio, fluye naturalmente) -->
+            <div id="contenedor-tarjeta-detalle" class="w-full space-y-3 pb-6">
+              <!-- Área de Ficha Técnica del Hito Seleccionado -->
+              <div id="panel-detalle-hito" tabindex="-1" aria-live="polite" class="hidden">
+                <!-- Aquí se inyecta la foto grande, toponimia, historia y bitácora -->
+              </div>
+
+              <!-- Estado vacío cuando no hay hito seleccionado -->
+              <div id="panel-detalle-vacio" class="p-5 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center text-slate-400 dark:text-slate-500">
+                <div class="w-11 h-11 mb-2.5 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="icono-bitacora !w-6 !h-6 !mr-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                </div>
+                <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Explorá el mapa de Tierra del Fuego</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 max-w-[240px]">Tocá cualquier hito o sendero para ver su toponimia nativa, fragilidad y registrar tu visita.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- VISTA 2: SELLOS Y BITÁCORA (Métricas, Huella Consciente, Descarga y Pasaporte) -->
+          <div id="vista-tab-pasaporte" role="tabpanel" aria-labelledby="tab-btn-pasaporte" class="flex-1 min-h-0 flex flex-col p-4 pb-8 overflow-y-auto hidden space-y-4 custom-scrollbar">
+            <!-- Métricas de progreso y Huella Consciente unificadas (Tablero de Progreso) -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-3 text-xs">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span data-i18n="sitios_en_rastro" class="text-slate-600 dark:text-slate-300 font-medium">Sitios en mi Rastro:</span>
+                  <span class="font-bold text-slate-900 dark:text-white text-sm">
+                    <strong id="contador-visitas" class="text-amber-600 dark:text-amber-400">0</strong>
+                    <span class="text-slate-400 font-normal">/</span>
+                    <span id="contador-total" class="text-slate-500 dark:text-slate-400 font-semibold">0</span>
+                  </span>
+                </div>
+                <span id="porcentaje-progreso" class="text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-full">0%</span>
+              </div>
+              <div class="pista-progreso w-full h-1.5 rounded-full overflow-hidden">
+                <div id="barra-progreso" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-300" style="width: 0%;"></div>
+              </div>
+
+              <!-- Contenedor interactivo de Huella Consciente y Rango -->
+              <button id="btn-abrir-huella-modal" type="button" class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-slate-900/90 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl transition shadow-sm text-xs group cursor-pointer" title="Ver Huella Consciente y Rango de Guardián Austral">
+                <span class="flex items-center gap-2 min-w-0">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 22c4.418 0 8-3.582 8-8 0-4.96-6.237-11.09-7.445-12.238a.8.8 0 0 0-1.11 0C10.237 2.91 4 9.04 4 14c0 4.418 3.582 8 8 8Z"/>
+                    <path d="M12 10v8"/>
+                    <path d="M12 14l3-2"/>
+                  </svg>
+                  <span id="valor-huella" class="font-semibold text-emerald-700 dark:text-emerald-400 truncate">0 / 16 Puntos de Preservación</span>
+                </span>
+                <div id="mencion-guardian" class="hidden flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/50 text-[11px] font-bold text-emerald-300 flex-shrink-0">
+                  <!-- Escudo Vectorial de Tierra del Fuego -->
+                  <svg class="w-4 h-4 drop-shadow-sm flex-shrink-0" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="escudoMar" x1="0" y1="18" x2="32" y2="38" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0284c7"/>
+                        <stop offset="1" stop-color="#082f49"/>
+                      </linearGradient>
+                      <linearGradient id="escudoCielo" x1="0" y1="0" x2="32" y2="20" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0284c7"/>
+                        <stop offset="1" stop-color="#0f172a"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M16 1C24.5 1 31 7.5 31 16C31 27 16 37 16 37C16 37 1 27 1 16C1 7.5 7.5 1 16 1Z" fill="url(#escudoCielo)" stroke="#f59e0b" stroke-width="1.8"/>
+                    <path d="M1 21C6 19 10 24 16 22C22 20 26 24 31 22V24C28 29 20 35 16 36.5C12 35 4 29 1 24V21Z" fill="url(#escudoMar)"/>
+                    <path d="M2 24C7 22 11 26 16 24C21 22 25 26 30 24" stroke="#e0f2fe" stroke-width="0.8" fill="none"/>
+                    <path d="M16 14C11 11 6 12 3 14C8 16 13 16 16 18C19 16 24 16 29 14C26 12 21 11 16 14Z" fill="#ffffff" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));"/>
+                    <polygon points="16,13 14.8,17 17.2,17" fill="#f8fafc"/>
+                    <circle cx="16" cy="4" r="0.8" fill="#fde047"/>
+                    <circle cx="16" cy="9.5" r="0.8" fill="#fde047"/>
+                    <circle cx="13" cy="6.5" r="0.8" fill="#fde047"/>
+                    <circle cx="19.2" cy="6" r="0.8" fill="#fde047"/>
+                    <circle cx="17.2" cy="7.5" r="0.5" fill="#fde047"/>
+                  </svg>
+                  <span id="texto-mencion-guardian">Guardián Austral</span>
+                </div>
+              </button>
+
+              <!-- Botón principal CTA de descarga de bitácora -->
+              <button id="btn-exportar"
+                  class="btn-naranja-cta w-full hover:opacity-95 active:scale-[0.99] font-semibold px-3.5 py-2 rounded-xl transition shadow-sm text-xs flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span data-i18n="descargar_bitacora">Descargar Bitácora</span>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <div>
+                <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider">Pasaporte de Travesía</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Tus sellos e insignias 3D recolectadas</p>
+              </div>
+              <button id="btn-imprimir-pasaporte-side" class="px-2.5 py-1 text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition shadow-sm">
+                Ver Libreta
+              </button>
+            </div>
+
+            <!-- Rejilla 2 columnas de sellos en el sidebar -->
+            <div id="rejilla-sellos-sidebar" class="grid grid-cols-2 gap-2.5">
+              <!-- Inyección de sellos -->
+            </div>
+          </div>
+
+          <!-- VISTA 3: OBSERVATORIO DE CIENCIA DE DATOS CÍVICA -->
+          <div id="vista-tab-observatorio" role="tabpanel" aria-labelledby="tab-btn-observatorio" class="flex-1 min-h-0 flex flex-col p-4 pb-8 overflow-y-auto hidden space-y-4 custom-scrollbar">
+            <!-- Cabecera del Observatorio -->
+            <div class="tarjeta-observatorio p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/70 space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-orange-600 dark:text-amber-400" data-i18n="obs_subtitulo">Ciencia de Datos Cívica · 2015–2030</span>
+                  <h3 data-i18n="obs_titulo" class="text-sm font-bold text-slate-900 dark:text-white leading-tight mt-0.5">Observatorio Climático Austral</h3>
+                </div>
+                <button id="btn-narrar-observatorio" type="button"
+                  class="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-orange-500 text-[11px] font-semibold flex items-center gap-1.5 flex-shrink-0 transition-colors cursor-pointer"
+                  aria-label="Escuchar síntesis de los modelos predictivos del observatorio">
+                  <svg class="w-3.5 h-3.5 text-orange-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  </svg>
+                  <span data-i18n="obs_escuchar">Escuchar síntesis</span>
+                </button>
+              </div>
+              <p id="obs-fuentes-reales" data-i18n="obs_intro" class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                Proyecciones territoriales basadas en series históricas regionales y monitoreo ecosistémico (IANIGLA / CADIC-CONICET / NASA POWER).
+              </p>
+            </div>
+
+            <!-- Métrica 1: Turbales (Didáctica para todas las edades) -->
+            <div class="tarjeta-observatorio p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-base" aria-hidden="true">🧽</span>
+                    <h4 data-i18n="obs_m1_titulo" class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">Los Turbales: La gran esponja fueguina</h4>
+                  </div>
+                  <p data-i18n="obs_m1_sub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    ¿Cuántos días al año se queda sin agua el suelo?
+                  </p>
+                </div>
+                <span id="badge-turbales-pct" class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800 whitespace-nowrap">
+                  +80% días secos
+                </span>
+              </div>
+
+              <!-- Explicación simple para todas las edades -->
+              <div class="obs-caja-simple p-2.5 rounded-xl bg-amber-50/60 dark:bg-slate-800/60 text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed border border-amber-100 dark:border-slate-700">
+                <span aria-hidden="true">💡</span> <strong data-i18n="obs_en_simple">En palabras simples:</strong> <span data-i18n="obs_m1_simple">La turba es como una esponja gigante que guarda agua y atrapa carbono. Al secarse por el calor, se agrieta y deja de protegernos.</span>
+              </div>
+
+              <!-- Gráfico con altura cómoda -->
+              <div class="relative w-full h-44">
+                <canvas id="chart-turbales" aria-label="Gráfico simple de días secos al año en los turbales fueguinos de 2015 a 2030"></canvas>
+              </div>
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
+                  <span><span data-i18n="obs_m1_alerta_lbl">Nivel de alerta:</span> <strong class="text-slate-700 dark:text-slate-200" data-i18n="obs_m1_alerta_val">Moderado a Crítico</strong></span>
+                </span>
+                <button id="btn-obs-ir-turbal" type="button" class="text-orange-600 dark:text-orange-400 font-bold hover:underline whitespace-nowrap cursor-pointer" onclick="centrarEnSitio('laguna-esmeralda')" data-i18n="obs_m1_ver">
+                  Ver turbal en mapa →
+                </button>
+              </div>
+            </div>
+
+            <!-- Métrica 2: Glaciar Vinciguerra (Didáctica para todas las edades) -->
+            <div class="tarjeta-observatorio p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-base" aria-hidden="true">🧊</span>
+                    <h4 data-i18n="obs_m2_titulo" class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">Glaciar Vinciguerra: El tanque de agua natural</h4>
+                  </div>
+                  <p data-i18n="obs_m2_sub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Hielo que nos queda para beber y abastecer a la ciudad
+                  </p>
+                </div>
+                <span id="badge-glaciar-pct" class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-800 whitespace-nowrap">
+                  -16% a 2030
+                </span>
+              </div>
+
+              <!-- Explicación simple -->
+              <div class="obs-caja-simple p-2.5 rounded-xl bg-cyan-50/60 dark:bg-slate-800/60 text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed border border-cyan-100 dark:border-slate-700">
+                <span aria-hidden="true">💧</span> <strong data-i18n="obs_en_simple">En palabras simples:</strong> <span data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido 1 de cada 4 partes de su masa congelada.</span>
+              </div>
+
+              <!-- Gráfico -->
+              <div class="relative w-full h-44">
+                <canvas id="chart-glaciar" aria-label="Gráfico simple del hielo saludable restante en el Glaciar Vinciguerra de 2015 a 2030"></canvas>
+              </div>
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-cyan-500 flex-shrink-0"></span>
+                  <span><span data-i18n="obs_m2_alerta_lbl">Fuente:</span> <strong class="text-slate-700 dark:text-slate-200" data-i18n="obs_m2_alerta_val">Agua potable de Ushuaia</strong></span>
+                </span>
+                <button id="btn-obs-ir-vinciguerra" type="button" class="text-orange-600 dark:text-orange-400 font-bold hover:underline whitespace-nowrap cursor-pointer" onclick="centrarEnSitio('glaciar-vinciguerra')" data-i18n="obs_m2_ver">
+                  Ver glaciar en mapa →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pie de Página de Privacidad y Fuentes Oficiales -->
+          <footer
+              class="footer-panel-legal px-4 pt-4 pb-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-[10px] text-slate-400 text-center leading-normal flex-shrink-0">
+              <button id="btn-abrir-creditos"
+                  class="w-full text-slate-400 hover:text-amber-300 transition group cursor-pointer focus:outline-none"
+                  title="Ver fuentes oficiales, licencias y soberanía de datos">
+                  <p data-i18n="footer_privacidad" class="group-hover:text-amber-200 transition">Tus recorridos se guardan únicamente en este equipo (Ley 25.326).</p>
+                  <p class="text-slate-500 group-hover:text-amber-300/90 mt-0.5 flex items-center justify-center gap-1 transition">
+                      <span data-i18n="footer_fuentes">Fuentes: IDETDF · IGN · CADIC-CONICET</span>
+                      <svg viewBox="0 0 24 24" class="icono-bitacora !w-3.5 !h-3.5 !mr-0 text-amber-400"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  </p>
+              </button>
+          </footer>
+        </aside>
+    </main>
+
+    <!-- Modal Completo de Pasaporte de Sellos -->
+    <div id="modal-pasaporte" role="dialog" aria-modal="true" aria-labelledby="modal-pasaporte-titulo"
+        class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+        <div class="bg-slate-900 border border-amber-500/30 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <!-- Cabecera del Pasaporte -->
+            <div class="modal-header bg-slate-100 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 id="modal-pasaporte-titulo" data-i18n="modal_pasaporte_titulo" class="titulo-modal text-base font-bold text-slate-900 dark:text-white tracking-wide">Libreta y Pasaporte de Expedición</h3>
+                        <p id="modal-pasaporte-subtitulo" data-i18n="modal_pasaporte_subtitulo" class="text-xs text-amber-800 dark:text-amber-300/80 font-medium">Registro de visitas territoriales, estampillas y notas de campo</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="btn-imprimir-pasaporte" type="button"
+                        class="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 active:scale-95 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                        title="Imprimir o guardar en PDF">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="6 9 6 2 18 2 18 9"/>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                            <rect x="6" y="14" width="12" height="8"/>
+                        </svg>
+                        <span data-i18n="imprimir_pasaporte">Imprimir Pasaporte</span>
+                    </button>
+                    <button id="btn-cerrar-modal-pasaporte" type="button"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        title="Cerrar pasaporte" aria-label="Cerrar pasaporte">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cuadrícula de Estampillas -->
+            <div id="rejilla-pasaporte" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-auto p-4 overflow-y-auto max-h-[70vh]">
+                <!-- Las tarjetas se inyectan dinámicamente aquí -->
+            </div>
+
+            <!-- Pie del Modal -->
+            <div class="pie-modal bg-slate-100 dark:bg-slate-950 px-6 py-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-600 dark:text-slate-400">
+                <span data-i18n="modal_pasaporte_footer">Haz clic en un sello para ubicarlo en el mapa</span>
+                <button id="btn-cerrar-modal-pasaporte-secundario"
+                    class="px-3.5 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-slate-700 transition"
+                    data-i18n="cerrar">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Créditos Institucionales y Soberanía de Datos -->
+    <div id="modal-creditos"
+        class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+        <div class="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <!-- Cabecera del Modal -->
+            <div class="bg-slate-950/90 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-lg">
+                        🏛️
+                    </div>
+                    <div>
+                        <h3 data-i18n="modal_creditos_titulo" class="text-base font-bold text-white tracking-wide">Créditos y Soberanía de Datos</h3>
+                        <p data-i18n="modal_creditos_subtitulo" class="text-xs text-slate-400">Marco institucional, fuentes cartográficas y privacidad soberana</p>
+                    </div>
+                </div>
+                <button id="btn-cerrar-modal-creditos"
+                    class="text-slate-400 hover:text-white text-lg font-bold p-1.5 rounded-lg hover:bg-slate-800 transition"
+                    title="Cerrar créditos">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Cuerpo del Modal -->
+            <div class="p-6 space-y-4 overflow-y-auto text-xs text-slate-300 leading-relaxed">
+                <!-- Fuentes Oficiales -->
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
+                    <h4 class="font-bold text-amber-400 flex items-center gap-1.5 text-xs">
+                        <span>🗺️</span>
+                        <span data-i18n="creditos_fuentes_titulo">Fuentes Oficiales Cartográficas y Científicas</span>
+                    </h4>
+                    <p data-i18n="creditos_fuentes_desc" class="text-slate-300">
+                        Los datos geoespaciales y toponímicos provienen de la Infraestructura de Datos Espaciales de Tierra del Fuego (IDETDF), el Instituto Geográfico Nacional (IGN) y el Centro Austral de Investigaciones Científicas (CADIC-CONICET).
+                    </p>
+                </div>
+
+                <!-- Soberanía de Datos y Privacidad -->
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
+                    <h4 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+                        <span>🔒</span>
+                        <span data-i18n="creditos_privacidad_titulo">Privacidad Soberana (Ley 25.326)</span>
+                    </h4>
+                    <p data-i18n="creditos_privacidad_desc" class="text-slate-300">
+                        Esta aplicación no recopila telemetría, identificadores ni geolocalización en servidores remotos. Todas las visitas marcadas, huellas y notas de campo quedan almacenadas de manera 100% local en este navegador mediante <code class="bg-slate-800 px-1 py-0.5 rounded text-amber-300 font-mono">localStorage</code>.
+                    </p>
+                </div>
+
+                <!-- Licenciamiento -->
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
+                    <h4 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
+                        <span>📄</span>
+                        <span data-i18n="creditos_licencia_titulo">Licencias Abiertas</span>
+                    </h4>
+                    <p data-i18n="creditos_licencia_desc" class="text-slate-300">
+                        Código fuente distribuido bajo licencia permisiva <strong class="text-white">MIT</strong>. Cartografía y datos de base bajo licencias <strong class="text-white">OpenStreetMap (ODbL)</strong> y contenidos educativos <strong class="text-white">Creative Commons CC BY-SA 4.0</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pie del Modal -->
+            <div class="bg-slate-950 px-6 py-3 border-t border-slate-800 flex justify-end">
+                <button id="btn-cerrar-modal-creditos-secundario"
+                    class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-xs font-medium"
+                    data-i18n="cerrar">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Huella Consciente y Rango Guardián Austral -->
+    <div id="modal-huella" role="dialog" aria-modal="true" aria-label="Huella Consciente y Preservación"
+        class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+        <div id="modal-huella-contenido" class="p-6 bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+            <!-- Encabezado con icono SVG lineal -->
+            <div class="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22c4.418 0 8-3.582 8-8 0-4.96-6.237-11.09-7.445-12.238a.8.8 0 0 0-1.11 0C10.237 2.91 4 9.04 4 14c0 4.418 3.582 8 8 8Z"/>
+                            <path d="M12 10v8"/>
+                            <path d="M12 14l3-2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modal_huella_titulo" class="text-base font-bold text-slate-900 dark:text-white leading-tight">Huella Consciente & Preservación</h3>
+                        <p data-i18n="modal_huella_subtitulo" class="text-xs font-medium text-emerald-700 dark:text-emerald-400 mt-0.5">Compromiso ecológico y honorífico en el territorio fueguino</p>
+                    </div>
+                </div>
+                <button id="btn-cerrar-modal-huella" type="button" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer" title="Cerrar" aria-label="Cerrar">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Tarjeta de Rango Honorífico -->
+            <div class="my-5 p-4 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 flex items-start gap-3.5">
+                <div class="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <span data-i18n="rango_guardian_titulo" class="text-sm font-bold text-amber-900 dark:text-amber-200">Rango Honorífico: Guardián Austral</span>
+                        <span id="badge-rango-guardian" class="badge-status-pendiente">Pendiente</span>
+                    </div>
+                    <p id="desc-estado-guardian" class="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
+                        Registrá al menos 2 hitos de fragilidad Alta o Muy Alta en tu pasaporte para obtener el blasón de Guardián Austral.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Principios de Exploración Consciente -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60">
+                <div class="flex items-center gap-2 mb-3 text-emerald-700 dark:text-emerald-400">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                    </svg>
+                    <h4 data-i18n="principios_huella_titulo" class="text-xs font-bold uppercase tracking-wider">Principios de Exploración Consciente (No Deje Rastro)</h4>
+                </div>
+                <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <span data-i18n="principio_turbales"><strong class="text-slate-900 dark:text-slate-100">Turbales y Musgo Sphagnum:</strong> Caminá exclusivamente por pasarelas o sendas demarcadas. Los turbales retienen agua y fijan carbono vital para el planeta.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <span data-i18n="principio_arqueologia"><strong class="text-slate-900 dark:text-slate-100">Concheros y Sitios Ancestrales:</strong> No remuevas piedras ni conchas en costas de ocupación Yagán/Selk'nam; son patrimonio arqueológico no renovable.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <span data-i18n="principio_fuego"><strong class="text-slate-900 dark:text-slate-100">Fuego Cero en Zonas Agrestes:</strong> Solo en campings habilitados con agua a mano. Un foco puede destruir bosques milenarios de lenga y ñire.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <span data-i18n="principio_residuos"><strong class="text-slate-900 dark:text-slate-100">Regresá tus Residuos:</strong> Todo lo que entra a la senda vuelve contigo, incluidos restos orgánicos que tardan años en degradarse en clima subpolar.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Botón de cierre -->
+            <div class="mt-5 flex justify-end">
+                <button id="btn-entendido-huella" type="button" data-i18n="cerrar" class="px-5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/storage.js"></script>
+    <script src="./js/app.js"></script>
+
+    <!-- Registro de Service Worker PWA (Deshabilitado temporalmente durante el desarrollo) -->
+    <!--
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch((err) => {
+                    console.log('Service Worker no registrado:', err);
+                });
+            });
+        }
+    </script>
+    -->
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+{
+  "type": "FeatureCollection",
+  "name": "Areas_Naturales_Protegidas_Tierra_del_Fuego",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "anp-01",
+        "nombre": "Parque Nacional Tierra del Fuego",
+        "nombre_en": "Tierra del Fuego National Park",
+        "categoria_anp": "Parque Nacional (APN)",
+        "categoria_anp_en": "National Park (APN)",
+        "marco_legal": "Ley Nacional Nº 15.554 (1960)",
+        "superficie_ha": 68640,
+        "toponimia": "Acigami / Lapataia (Yagán)",
+        "descripcion": "El único parque nacional de Argentina que combina ambiente andino-patagónico con costa marítima en el Canal Beagle. Alberga bosques milenarios de guindo y lenga, valles glaciarios y concheros arqueológicos del pueblo Yagán.",
+        "descripcion_en": "Argentina's only national park combining Andean-Patagonian environments with sea coast on the Beagle Channel. Protects subantarctic southern beech forests, glacial valleys, and ancestral Yagan archaeological shell middens.",
+        "ecosistemas": "Bosque andino-patagónico, turbales de Sphagnum, costa marina subantártica",
+        "color": "#10b981",
+        "fragilidad": "Muy Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-68.61, -54.68],
+            [-68.42, -54.69],
+            [-68.39, -54.78],
+            [-68.45, -54.83],
+            [-68.48, -54.86],
+            [-68.58, -54.87],
+            [-68.61, -54.85],
+            [-68.61, -54.68]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "anp-02",
+        "nombre": "Reserva Provincial Corazón de la Isla",
+        "nombre_en": "Heart of the Island Provincial Reserve",
+        "categoria_anp": "Reserva Provincial de Uso Múltiple",
+        "categoria_anp_en": "Multiple-Use Provincial Reserve",
+        "marco_legal": "Ley Provincial Nº 494 (2000)",
+        "superficie_ha": 100000,
+        "toponimia": "Kami / Chepelmut (Selk'nam)",
+        "descripcion": "Extenso mosaico de lagos cordilleranos (Yehuin, Chepelmut), ríos y complejos de turbales de altura. Zona núcleo de nidificación del guanaco fueguino, zorro colorado fueguino y carpintero gigante.",
+        "descripcion_en": "Extensive mosaic of cordilleran lakes (Yehuin, Chepelmut), rivers, and high-altitude peat bog complexes. Core breeding habitat for Fuegian guanacos, red foxes, and Magellanic woodpeckers.",
+        "ecosistemas": "Lagos glaciarios, bosques de lenga y ñire, turbales de montaña",
+        "color": "#0ea5e9",
+        "fragilidad": "Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-68.35, -54.38],
+            [-67.85, -54.36],
+            [-67.75, -54.48],
+            [-67.82, -54.58],
+            [-68.10, -54.59],
+            [-68.35, -54.55],
+            [-68.35, -54.38]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "anp-03",
+        "nombre": "Reserva Provincial Laguna Negra",
+        "nombre_en": "Laguna Negra Provincial Reserve",
+        "categoria_anp": "Reserva Provincial Recreativa Natural",
+        "categoria_anp_en": "Natural Recreational Provincial Reserve",
+        "marco_legal": "Ley Provincial Nº 599 (2003)",
+        "superficie_ha": 1200,
+        "toponimia": "Tol-wen / Kami (Selk'nam)",
+        "descripcion": "Área de amortiguación ecológica que protege turbales de Sphagnum magellanicum adyacentes a la cabecera este del Lago Fagnano, con senderos interpretativos y avistaje de avifauna lacustre.",
+        "descripcion_en": "Ecological buffer protecting Sphagnum magellanicum peat bogs adjacent to the eastern shore of Lake Fagnano, featuring interpretive boardwalks and wetland bird watching.",
+        "ecosistemas": "Turbales costeros, humedales lacustres, bosque de lenga",
+        "color": "#f59e0b",
+        "fragilidad": "Muy Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-67.28, -54.50],
+            [-67.20, -54.50],
+            [-67.19, -54.53],
+            [-67.27, -54.53],
+            [-67.28, -54.50]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "anp-04",
+        "nombre": "Reserva Costa Atlántica de Tierra del Fuego",
+        "nombre_en": "Atlantic Coast Reserve of Tierra del Fuego",
+        "categoria_anp": "Sitio RAMSAR / Reserva Hemisférica de Aves Playeras",
+        "categoria_anp_en": "RAMSAR Site / Western Hemisphere Shorebird Reserve",
+        "marco_legal": "Ley Provincial Nº 415 (1998) / Convención Ramsar (1995)",
+        "superficie_ha": 28600,
+        "toponimia": "Menéndez / Río de las Chozas (Selk'nam)",
+        "descripcion": "Humedal costero intermareal de relevancia planetaria. Sitio crítico de descanso y alimentación para el 43% de la población del Playero Rojizo (Calidris canutus rufa) y decenas de aves migratorias boreales.",
+        "descripcion_en": "Coastal intertidal wetland of global significance. Critical staging and feeding habitat for 43% of the Red Knot (Calidris canutus rufa) population and dozens of boreal migratory birds.",
+        "ecosistemas": "Planicies de marea, marismas salobres, estuarios de estepa",
+        "color": "#8b5cf6",
+        "fragilidad": "Muy Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-68.25, -53.25],
+            [-68.05, -53.35],
+            [-67.55, -53.75],
+            [-66.75, -54.25],
+            [-66.85, -54.32],
+            [-67.70, -53.85],
+            [-68.30, -53.30],
+            [-68.25, -53.25]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "anp-05",
+        "nombre": "Área Natural Protegida Península Mitre",
+        "nombre_en": "Mitre Peninsula Protected Natural Area",
+        "categoria_anp": "Parque Provincial y Reserva Natural Protegida",
+        "categoria_anp_en": "Provincial Park & Protected Natural Reserve",
+        "marco_legal": "Ley Provincial Nº 1461 (2022)",
+        "superficie_ha": 300000,
+        "toponimia": "Koliun / Sloggett (Haush y Selk'nam)",
+        "descripcion": "El mayor sumidero de carbono de Argentina y uno de los más importantes de América del Sur, compuesto por inmensos turbales prístinos, colonias de lobos marinos, petreles y el pecio histórico del buque Desdémona.",
+        "descripcion_en": "Argentina's largest carbon sink and one of South America's most vital ecosystems, comprising vast pristine peat bogs, seal rookeries, petrel colonies, and the historic Desdémona shipwreck.",
+        "ecosistemas": "Turberas ombrotróficas gigantes, bosques achaparrados, litoral atlántico agreste",
+        "color": "#059669",
+        "fragilidad": "Muy Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-66.50, -54.60],
+            [-65.20, -54.70],
+            [-65.10, -54.85],
+            [-65.30, -54.95],
+            [-66.00, -55.05],
+            [-66.60, -54.80],
+            [-66.50, -54.60]
+          ]
+        ]
+      }
+    }
+  ]
+}
+

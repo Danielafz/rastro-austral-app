@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cielo-turbal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="laguna-negra" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="40%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="sphagnum" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#854d0e"/>
+      <stop offset="50%" stop-color="#713f12"/>
+      <stop offset="100%" stop-color="#3f2305"/>
+    </linearGradient>
+  </defs>
+  <!-- Cielo y reflejo en el turbal -->
+  <rect width="400" height="220" fill="url(#cielo-turbal)"/>
+  
+  <!-- Cordillera y cerros de Tolhuin -->
+  <polygon points="10,130 110,60 210,130" fill="#334155"/>
+  <polygon points="150,130 250,50 350,130" fill="#1e293b"/>
+  <polygon points="220,74 250,50 280,74" fill="#cbd5e1" opacity="0.6"/>
+
+  <!-- Espejo de agua oscura de la Laguna Negra -->
+  <ellipse cx="200" cy="140" rx="190" ry="45" fill="url(#laguna-negra)"/>
+  <ellipse cx="200" cy="140" rx="180" ry="38" stroke="#38bdf8" stroke-width="0.8" fill="none" opacity="0.25"/>
+
+  <!-- Turbales de musgo Sphagnum alrededor de la laguna -->
+  <path d="M0,150 Q100,140 200,148 T400,142 L400,220 L0,220 Z" fill="url(#sphagnum)"/>
+  <!-- Montículos de turba esponjosa -->
+  <ellipse cx="70" cy="175" rx="45" ry="16" fill="#a16207" opacity="0.7"/>
+  <ellipse cx="320" cy="170" rx="55" ry="18" fill="#a16207" opacity="0.7"/>
+  <ellipse cx="190" cy="190" rx="60" ry="18" fill="#78350f" opacity="0.8"/>
+
+  <!-- Bosque de lengas en la margen norte -->
+  <g fill="#14532d">
+    <polygon points="25,145 35,100 45,145"/>
+    <polygon points="50,142 60,95 70,142"/>
+    <polygon points="75,146 88,105 100,146"/>
+    <polygon points="295,142 308,98 320,142"/>
+    <polygon points="325,146 338,102 350,146"/>
+    <polygon points="355,143 365,95 375,143"/>
+  </g>
+
+  <!-- Pasarela elevada de madera para preservación (no pisar el turbal) -->
+  <g stroke="#d97706" stroke-width="2.5">
+    <!-- Pilotes de madera clavados -->
+    <line x1="80" y1="175" x2="80" y2="200"/>
+    <line x1="130" y1="172" x2="130" y2="198"/>
+    <line x1="180" y1="170" x2="180" y2="195"/>
+    <line x1="230" y1="168" x2="230" y2="192"/>
+    <line x1="280" y1="166" x2="280" y2="190"/>
+    
+    <!-- Tablones de la senda elevada -->
+    <path d="M50,192 Q170,175 310,178" stroke="#f59e0b" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M50,185 Q170,168 310,171" stroke="#b45309" stroke-width="2.5" fill="none"/>
+    <!-- Baranda de protección -->
+    <path d="M50,175 Q170,158 310,161" stroke="#fde68a" stroke-width="1.8" fill="none"/>
+    <line x1="80" y1="175" x2="80" y2="186" stroke="#fde68a" stroke-width="1.5"/>
+    <line x1="180" y1="167" x2="180" y2="178" stroke="#fde68a" stroke-width="1.5"/>
+    <line x1="280" y1="163" x2="280" y2="174" stroke="#fde68a" stroke-width="1.5"/>
+  </g>
+</svg>

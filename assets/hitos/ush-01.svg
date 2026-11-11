@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cielo-ush" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="mar-beagle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0369a1"/>
+      <stop offset="60%" stop-color="#075985"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <linearGradient id="cordillera" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <!-- Cielo y Sol Austral -->
+  <rect width="400" height="220" fill="url(#cielo-ush)"/>
+  <circle cx="90" cy="50" r="26" fill="#fef08a" opacity="0.6"/>
+
+  <!-- Cordillera Darwin / Montes Martínez -->
+  <polygon points="0,130 90,40 180,130" fill="url(#cordillera)"/>
+  <polygon points="65,70 90,40 115,70" fill="#ffffff" opacity="0.9"/>
+  <polygon points="120,130 220,30 320,130" fill="url(#cordillera)"/>
+  <polygon points="190,65 220,30 250,65" fill="#ffffff" opacity="0.9"/>
+  <polygon points="260,130 340,55 400,130" fill="url(#cordillera)"/>
+  <polygon points="320,75 340,55 365,75" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Aguas del Canal Beagle (Canal Onashaga) -->
+  <rect y="125" width="400" height="95" fill="url(#mar-beagle)"/>
+  <!-- Olas sutiles -->
+  <path d="M0,140 Q50,135 100,140 T200,140 T300,140 T400,140" stroke="#7dd3fc" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M20,160 Q80,155 140,160 T260,160 T380,160" stroke="#7dd3fc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M0,185 Q70,180 140,185 T280,185 T400,185" stroke="#7dd3fc" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+  <!-- Ensenada rocosa y sendero en la orilla -->
+  <path d="M0,150 Q100,155 180,175 T350,220 L0,220 Z" fill="#292524"/>
+  <path d="M0,175 Q80,180 140,200 L0,220 Z" fill="#44403c"/>
+
+  <!-- Bosque costero de lengas y guindos -->
+  <polygon points="10,165 20,115 30,165" fill="#14532d"/>
+  <polygon points="25,170 35,120 45,170" fill="#166534"/>
+  <polygon points="40,175 52,125 64,175" fill="#15803d"/>
+  <polygon points="55,180 68,135 80,180" fill="#166534"/>
+
+  <!-- Senda peatonal de trekking -->
+  <path d="M0,195 Q70,190 130,208 L110,218 Q60,200 0,205 Z" fill="#a16207" opacity="0.8"/>
+
+  <!-- Aves marinas (petreles/albatros) -->
+  <path d="M250,50 Q258,45 266,50 Q274,45 282,50" stroke="#1e293b" stroke-width="2" fill="none"/>
+  <path d="M285,65 Q291,61 297,65 Q303,61 309,65" stroke="#1e293b" stroke-width="1.8" fill="none"/>
+</svg>

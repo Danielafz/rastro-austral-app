@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "fuente_glaciar": "IANIGLA-CONICET / Inventario Nacional de Glaciares & WGMS ID 3514",
+    "fuente_clima": "NASA POWER API / Estación Meteorológica Ushuaia (-54.80, -68.30)",
+    "modelo_predictivo": "Scikit-Learn (PolynomialFeatures deg=2 + Ridge Regression regularizada)",
+    "fecha_generacion": "Noviembre 2026"
+  },
+  "labels": [
+    "2015",
+    "2018",
+    "2021",
+    "2024",
+    "2027 (Futuro)",
+    "2030 (Futuro)"
+  ],
+  "turbales": {
+    "dias_estres": [
+      5,
+      6,
+      8,
+      9,
+      8,
+      9
+    ],
+    "descripcion": "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
+    "variacion_pct": "+80%"
+  },
+  "glaciar": {
+    "masa_remanente_pct": [
+      100.0,
+      96.8,
+      93.6,
+      90.4,
+      87.2,
+      84.0
+    ],
+    "descripcion": "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
+    "variacion_pct": "-16%"
+  }
+}

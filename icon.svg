@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="36" fill="#0f172a"/>
+  <!-- Pin portador -->
+  <path d="M96 20C60.6 20 32 48.6 32 84C32 126 96 172 96 172C96 172 160 126 160 84C160 48.6 131.4 20 96 20Z" fill="#f59e0b"/>
+  <path d="M96 30C66 30 42 54 42 84C42 118 96 156 96 156C96 156 150 118 150 84C150 54 126 30 96 30Z" fill="#ffffff"/>
+  <!-- Pingüino patagónico -->
+  <path d="M96 46C80 46 68 62 68 86C68 106 80 122 96 122C112 122 124 106 124 86C124 62 112 46 96 46Z" fill="#0f172a"/>
+  <path d="M96 66C86 66 78 76 78 92C78 104 86 114 96 114C106 114 114 104 114 92C114 76 106 66 96 66Z" fill="#ffffff"/>
+  <!-- Ojos -->
+  <circle cx="88" cy="64" r="5" fill="#ffffff"/>
+  <circle cx="88" cy="64" r="2.5" fill="#000000"/>
+  <circle cx="104" cy="64" r="5" fill="#ffffff"/>
+  <circle cx="104" cy="64" r="2.5" fill="#000000"/>
+  <!-- Pico -->
+  <polygon points="96,68 90,76 102,76" fill="#f97316"/>
+  <!-- Patitas -->
+  <ellipse cx="86" cy="120" rx="7" ry="4" fill="#f97316"/>
+  <ellipse cx="106" cy="120" rx="7" ry="4" fill="#f97316"/>
+</svg>

@@ -3,6 +3,8 @@
 > **Atlas y Diario de Exploración Territorial de Tierra del Fuego, Antártida e Islas del Atlántico Sur**  
 > *Patagonia Austral · Cartografía interactiva, toponimia originaria, pasaporte pedagógico y ciencia de datos cívica.*
 
+🔗 **App en vivo (PWA):** [rastro-austral.vercel.app](https://rastro-austral.vercel.app)
+
 ---
 
 ## Hackatón Soberanía Tech 

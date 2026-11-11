@@ -5,7 +5,7 @@
 
 ---
 
-## Hackatón Soberanía Tech 
+## 🏆 Hackatón Soberanía Tech 
 **Equipo:** `#VolverAlSur`
 
 **Integrantes:**
@@ -15,83 +15,46 @@
 
 ---
 
-## 🏔️ Descripción
+## 🚨 1. Problemática
+La provincia de Tierra del Fuego enfrenta una triple amenaza sobre su soberanía y patrimonio:
+1. **Emergencia Climática:** El acelerado retroceso del Glaciar Vinciguerra y el estrés hídrico de los turbales (nuestras principales reservas de agua y sumideros de carbono) por anomalías térmicas.
+2. **Erosión Cultural:** La invisibilización de la toponimia y la historia de los pueblos originarios (Selk'nam, Yagán, Haush) en la cartografía tradicional.
+3. **Desconexión Territorial:** La falta de herramientas de exploración que funcionen *offline* en zonas de reserva sin conectividad, dificultando la educación ambiental y la trazabilidad del impacto humano.
 
-**Rastro Austral** es una aplicación web progresiva (PWA) diseñada para promover la exploración cultural, ambiental y geográfica consciente del territorio fueguino. Combina cartografía abierta, toponimia de los pueblos originarios (Selk'nam, Yagán, Haush), guías pedagógicas de conducta responsable, un pasaporte interactivo y un observatorio climático alimentado por modelos predictivos de datos reales.
+## 🎯 2. Eje Estratégico
+El proyecto se enmarca en el **Eje 04**, abordando la intersección entre **Soberanía, Identidad y Preservación**. Utilizamos la tecnología cívica para transformar datos crudos institucionales en una herramienta pedagógica que reconecta al habitante y al visitante con el valor estratégico del territorio austral.
 
----
+## 💡 3. La Solución
+**Rastro Austral** es una Aplicación Web Progresiva (PWA) de funcionamiento 100% offline (Ley 25.326) que actúa como un **Pasaporte de Expedición** interactivo. Sus pilares son:
+* **Cartografía Descolonizada:** Mapas con toponimia originaria, alertas de sensibilidad ambiental y trazado interactivo de huellas.
+* **Observatorio Climático Austral:** Un módulo de Data Science que integra un modelo predictivo entrenado con datos de la NASA e IANIGLA para proyectar el estado de los turbales y glaciares hacia 2030, traduciendo datos complejos a gráficos comprensibles para la comunidad.
+* **Economía y Patrimonio:** Visibilización de sitios de patrimonio, senderos protegidos y polos de economía creativa (Sello Identidad Fueguina).
 
-## ✨ Características Principales
+## ⚙️ 4. Tecnologías (Stack Técnico)
+El proyecto se construyó bajo principios de eficiencia, portabilidad y despliegue rápido:
+* **Frontend & Interfaz:** HTML5, CSS3, JavaScript (Vanilla), TailwindCSS (vía CDN para estilización rápida), diseño de alto contraste (WCAG AA).
+* **Cartografía & GIS:** Leaflet.js, OpenStreetMap, OpenTopoMap, y manipulación de geometrías espaciales GeoJSON.
+* **Arquitectura PWA:** Service Worker (`sw.js`) con caché estático y `manifest.json` para instalación nativa y uso sin conexión.
+* **Data Science (Machine Learning):** Script en Python (`Pandas`, `NumPy`, `Scikit-Learn`) aplicando Regresión Ridge Polinomial para ingestar datos de la API de NASA POWER y exportar predicciones al `observatorio_real.json`.
+* **Almacenamiento Local:** Web Storage API (`localStorage`) para garantizar la soberanía de datos del usuario sin telemetría externa.
 
-1. **🐧 Pantalla de Bienvenida Interactiva y Expedicionario:**
-   - Presentación inmersiva con pingüino portador de la Antorcha Fueguina (llama viva animada y giro 3D continuo al ingresar).
-   - Controles duales de accesibilidad integrados (selector de idioma ES / EN y alternador de Modo Claro / Oscuro) en la tarjeta inicial, sincronizados en tiempo real con la cabecera.
-   - Persistencia local del perfil y visualización dinámica en la cabecera con opción de edición rápida.
+## 🚀 5. Guía de Uso y Despliegue
 
-2. **🌓 Modo Claro y Modo Oscuro (Light / Dark Mode) y Calibración WCAG AA:**
-   - Conmutación fluida entre estética polar oscura y visualización diurna alpina de alto contraste mediante los botones `#btn-toggle-tema` y `#btn-tema-bienvenida`.
-   - Calibración exhaustiva de contraste (WCAG AA) para textos secundarios, formularios, divisores y sellos de expedición.
-
-3. **📍 Geolocalización en Tiempo Real:**
-   - Botón interactivo `#btn-geolocalizacion` que ubica las coordenadas actuales del usuario en el territorio fueguino con animación de radar pulsante, vuelo dinámico de cámara y popup informativo.
-
-4. **🗺️ Cartografía Abierta y Capas Base (Estándar y Relieve):**
-   - Visualización fluida con Leaflet.js sobre OpenStreetMap estándar y OpenTopoMap, conmutables al instante.
-   - Pines temáticos estilizados con silueta de pingüino patagónico y codificación por categoría (Patrimonio, Senderos, Economía Creativa).
-
-5. **📊 Observatorio Climático Austral (Data Science Cívica):**
-   - Módulo interactivo que proyecta el estrés hídrico en turbales y el retroceso de masa del Glaciar Vinciguerra hacia 2030.
-   - **Pipeline de Datos Reales:** Modelado matemático en Python (`Pandas`, `Scikit-Learn`) aplicando Regresión Ridge Polinomial sobre series históricas de NASA POWER e IANIGLA.
-   - **Diseño Pedagógico:** Gráficos adaptados para todas las edades con analogías cotidianas ("La gran esponja fueguina", "El tanque de agua natural") y medidores de alerta visuales.
-
-6. **🖼️ Galería Visual y Tarjetas Fotográficas:**
-   - Cada hito incorpora una tarjeta gráfica temática representativa de su entorno con acreditación institucional de fuentes fotográficas.
-
-7. **🥾 Mi Rastro en el Mapa (Trazado con Huellas de Expedición):**
-   - El recorrido entre los hitos visitados dibuja pisadas de zapatilla de trekking (`huella-calzado`) calculando el rumbo (*bearing*) y alternando pie izquierdo y derecho.
-
-8. **🧭 Estimador de Travesía Acumulada y Tiempo de Marcha:**
-   - Cálculo geodésico continuo (Haversine) de la distancia total acumulada entre los hitos visitados (`km`) y estimación inteligente del tiempo de expedición.
-
-9. **🌱 Medidor de Huella Consciente y Mención "Guardián Austral":**
-   - Contador en tiempo real de puntos de preservación por compromiso ambiental y cultural, con distinción honorífica animada.
-
-10. **📖 Modal Completo de Pasaporte de Expedición:**
-    - Vista ampliada tipo libreta de explorador exhibiendo todas las estampillas, sellos de estado, toponimia y las notas de campo guardadas.
-
-11. **🔍 Filtros y Navegación Territorial Avanzada:**
-    - Panel de búsqueda unificado y fijo con segmentación por categoría, progreso del explorador (Visitados / Pendientes) y fragilidad del ecosistema.
-    - Actualización y recálculo instantáneo del trazado de huellas al aplicar filtros.
-
-12. **🌐 Accesibilidad Bilingüe y Audio-guía (TTS):**
-    - Conmutador directo de idioma (ES / EN) y traducción integral de la interfaz.
-    - Integración nativa con la Web Speech API (`SpeechSynthesis`) para narración por voz sin consumo de datos.
-
-13. **📱 PWA y Funcionamiento Offline (Ley 25.326):**
-    - Manifiesto de aplicación web (`manifest.json`) y Service Worker (`sw.js`) con estrategia *Cache-First* para exploración sin conexión en rutas sin señal.
-    - Almacenamiento exclusivo y soberano en `localStorage` (cero telemetría), permitiendo exportar la bitácora en `.txt`.
-
----
-
-## 📁 Estructura del Proyecto
-
-```text
-rastro-austral/
-├── assets/                  # Recursos gráficos y multimedia
-├── css/
-│   └── styles.css           # Estilos personalizados, tipografías y sombras
-├── data/
-│   ├── hitos.json           # Dataset territorial con toponimia y bilingüismo
-│   ├── areas_protegidas...  # Geometrías GeoJSON
-│   └── observatorio_real.json # Proyecciones climáticas a 2030 generadas por el modelo
-├── js/
-│   ├── app.js               # Lógica del mapa Leaflet, gráficos y UI reactiva
-│   └── storage.js           # Gestor de persistencia local y exportación
-├── scripts/
-│   └── generar_datos_observatorio.py # Script en Python (Pandas/Sklearn) para ML y API NASA
-├── icon.svg                 # Isologotipo e icono PWA
-├── index.html               # Estructura principal accesible y responsive
-├── manifest.json            # Manifiesto PWA para instalación nativa
-└── sw.js                    # Service Worker con caché para modo Offline
+### Entorno de Desarrollo Local
+Al requerir validación de Service Workers, la app debe servirse mediante HTTP:
+```bash
+# Servidor local rápido con Python
+python -m http.server 8000
 ```
+Luego abrí [http://localhost:8000](http://localhost:8000) en tu navegador. También podés iniciarlo con `npx serve .` o la extensión **Live Server**.
 
+## 📚 6. Fuentes y Referencias
+* **IDETDF:** Infraestructura de Datos Espaciales de Tierra del Fuego.
+* **IGN:** Instituto Geográfico Nacional de la República Argentina.
+* **CADIC-CONICET:** Centro Austral de Investigaciones Científicas.
+* **IANIGLA-CONICET & WGMS:** Inventario Nacional de Glaciares (Glaciar Vinciguerra, ID 3514).
+* **NASA POWER API:** Series meteorológicas históricas de la región austral (`-54.80, -68.30`).
+* **Toponimia:** Recopilación lingüística histórica de los pueblos originarios Selk'nam, Yagán y Haush.
+
+## 📄 Licencia
+Distribuido bajo licencia MIT. Consultá el archivo [LICENSE](LICENSE) para más detalles.

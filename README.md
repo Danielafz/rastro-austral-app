@@ -5,7 +5,7 @@
 
 ---
 
-## 🏆 Hackatón Soberanía Tech 
+## Hackatón Soberanía Tech 
 **Equipo:** `#VolverAlSur`
 
 **Integrantes:**

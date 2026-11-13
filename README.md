@@ -28,17 +28,17 @@ La provincia de Tierra del Fuego enfrenta una amenaza sobre su soberanía y patr
 
 Elegimos este desafío para unir la identidad provincial, la memoria histórica y la preservación ambiental en una sola herramienta digital. Transformamos datos crudos institucionales y científicos en una interfaz visual, accesible y portátil que reconecta al habitante y al visitante con el valor estratégico del territorio austral.
 
-## 💡 3. La Solución
-**Rastro Austral** es una Aplicación Web Progresiva (PWA) de funcionamiento 100% offline (Ley 25.326) que actúa como un **Pasaporte de Expedición** interactivo. Sus pilares son:
-* **Cartografía Descolonizada:** Mapas con toponimia originaria, alertas de sensibilidad ambiental y trazado interactivo de huellas.
-* **Observatorio Climático Austral:** Un módulo de Data Science que integra un modelo predictivo entrenado con datos de la NASA e IANIGLA para proyectar el estado de los turbales y glaciares hacia 2030, democratizando la ciencia climática.
-* **Economía y Patrimonio:** Visibilización de sitios históricos, senderos y creadores locales bajo el "Sello Identidad Fueguina".
+## 💡 3. La Solución (Los 3 Pilares)
+**Rastro Austral** es una Aplicación Web Progresiva (PWA) de funcionamiento 100% offline (Ley 25.326) que actúa como un **Pasaporte de Expedición** interactivo. Se estructura en tres pilares:
+* **1. Pilar Cultural (Cartografía Descolonizada):** Mapas con toponimia originaria, trazado interactivo de huellas y visibilización de creadores locales bajo el "Sello Identidad Fueguina". El turista colecciona "sellos" offline al visitar lugares seguros.
+* **2. Pilar Científico (Monitoreo Ambiental Soberano):** Un módulo de Data Science que integra Google Earth Engine (GEE) y datos de radar Sentinel-1 para medir el estrés hídrico real de los turbales, fundamentado con datos estadísticos del IPIEC y modelos predictivos de la NASA e IANIGLA.
+* **3. Pilar de Acción (Bloqueo Turístico Digital):** Sistema de alerta temprana. Si el monitoreo satelital SAR detecta anomalías o riesgo de incendio, la PWA intercepta la navegación del usuario in situ y despliega un modal de "Zona Restringida", educándolo y desviándolo hacia rutas seguras.
 
 ## ⚙️ 4. Stack Tecnológico
 * **Frontend & Interfaz:** HTML5, CSS3, JavaScript (Vanilla), TailwindCSS (vía CDN), diseño de alto contraste (WCAG AA).
 * **Cartografía & GIS:** Leaflet.js, OpenStreetMap, OpenTopoMap, manipulación de geometrías GeoJSON.
 * **Arquitectura PWA:** Service Worker (`sw.js`) con estrategia Cache-First y `manifest.json` para instalación nativa sin consumo de datos.
-* **Data Science (Machine Learning):** Script en Python (`Pandas`, `NumPy`, `Scikit-Learn`) aplicando Regresión Ridge Polinomial para ingestar datos de la API de NASA POWER y exportar predicciones.
+* **Data Science & Teledetección:** Script en Python (`Pandas`, `Scikit-Learn`, `earthengine-api`) consumiendo imágenes de radar SAR de Copernicus/Sentinel-1 vía Google Earth Engine.
 * **Privacidad Soberana:** Almacenamiento local mediante Web Storage API (`localStorage`), sin telemetría ni servidores intermedios.
 
 ## 🚀 5. Uso y Despliegue
@@ -49,20 +49,22 @@ Al requerir validación de Service Workers, la app debe servirse mediante HTTP:
 python -m http.server 8000
 ```
 
-### Actualización del Modelo Climático
-Para regenerar las predicciones con los últimos datos satelitales:
+### Actualización de Alertas Satelitales (SAR)
+Para consultar la humedad del suelo en tiempo real y regenerar el GeoJSON de bloqueos:
 ```bash
-pip install pandas numpy scikit-learn requests
-python scripts/generar_datos_observatorio.py
+pip install pandas numpy scikit-learn requests earthengine-api
+python scripts/generar_alertas_sar.py
 ```
 
 ### Despliegue en la Nube
-Optimizado para CI/CD directo en **Vercel** o **GitHub Pages**, garantizando el entorno seguro (HTTPS) exigido para la instalación PWA.
+Optimizado para CI/CD directo en **Vercel**, garantizando el entorno seguro (HTTPS) exigido para la instalación PWA.
 
 ## 📚 6. Fuentes y Referencias Oficiales
+* **IPIEC:** Instituto Provincial de Análisis e Investigación, Estadística y Censos (Tierra del Fuego).
 * **IDETDF:** Infraestructura de Datos Espaciales de Tierra del Fuego.
+* **Google Earth Engine & ESA:** Programa Copernicus (Satélites Sentinel-1 SAR).
 * **IGN:** Instituto Geográfico Nacional de la República Argentina.
-* **CADIC-CONICET:** Centro Austral de Investigaciones Científicas (estudios de turbales y ecosistemas).
+* **CADIC-CONICET:** Centro Austral de Investigaciones Científicas.
 * **IANIGLA:** Inventario Nacional de Glaciares.
 * **NASA POWER:** Prediction Of Worldwide Energy Resources (API meteorológica).
 

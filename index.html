@@ -696,24 +696,15 @@
           </div>
         </div>
 
-        <!-- Lista Compacta de Hitos (Estilo Google Maps) -->
+        <!-- Contenedor del Hito Seleccionado en Panel Lateral -->
         <div id="contenedor-hitos-lista" class="w-full space-y-2 pb-4">
-          <!-- Tarjeta de Hito Compacta (Lista) -->
-          <div class="hito-card flex items-center p-3 mb-3 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors" data-id="ush-02">
-            <!-- Miniatura cuadrada -->
-            <img src="./assets/hitos/ush-02.svg" alt="Comunidad Pescadora Almanza" class="w-16 h-16 rounded-lg object-cover shrink-0">
-            
-            <!-- Info rápida -->
-            <div class="ml-3 flex-grow overflow-hidden">
-              <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">Comunidad Pescadora Almanza</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">Toponimia: Canal Beagle Oriental</p>
-              <div class="flex gap-1 mt-1.5">
-                <span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-[10px] px-2 py-0.5 rounded font-bold">Economía Creativa</span>
-              </div>
-            </div>
-            
-            <!-- Flecha indicadora -->
-            <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          <div class="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/40">
+            <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <p class="font-bold text-slate-700 dark:text-slate-200 text-sm" data-i18n="selecciona_punto_mapa">Selecciona un punto en el mapa</p>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500" data-i18n="toca_marcador_desc">Toca cualquier marcador para ver su ficha territorial</p>
           </div>
         </div>
       </div>
@@ -741,86 +732,46 @@
       <div id="map" role="region" aria-label="Mapa interactivo de Tierra del Fuego" class="w-full h-full"></div>
 
       <!-- CONTENEDOR GENERAL DE BARRAS SUPERIORES -->
-      <div class="absolute top-2 left-2 right-2 z-[400] flex flex-col gap-2 pointer-events-none">
+      <div class="absolute top-2 left-1 right-1 z-[400] flex flex-col gap-1.5 pointer-events-none">
 
-        <!-- BARRA 1: CIUDADES (Scrollable en móviles) -->
-        <div class="w-full overflow-x-auto hide-scrollbar pointer-events-auto">
-          <!-- w-max evita que los botones se aplasten, forzando el scroll si no entran -->
-          <div class="flex items-center w-max bg-white dark:bg-slate-900 rounded-xl shadow-md border border-slate-200 dark:border-slate-800 overflow-hidden text-sm">
-            
-            <button type="button" data-vista="provincia"
-              class="btn-vista flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-              <span data-i18n="vista_provincia">Toda la Provincia</span>
+        <!-- BARRA 1: CIUDADES -->
+        <div class="w-full pointer-events-auto">
+          <div class="flex items-center w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden text-[10px] sm:text-sm justify-between">
+            <button type="button" data-vista="provincia" class="btn-vista flex-1 flex items-center justify-center gap-1 bg-orange-500 text-white py-1.5 px-1 font-bold active cursor-pointer">
+              <span data-i18n="vista_provincia">Provincia</span>
             </button>
-            
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            
-            <button type="button" data-vista="ushuaia"
-              class="btn-vista flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+            <button type="button" data-vista="ushuaia" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
               <span>Ushuaia</span>
             </button>
-
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            
-            <button type="button" data-vista="tolhuin"
-              class="btn-vista flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+            <button type="button" data-vista="tolhuin" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
               <span>Tolhuin</span>
             </button>
-
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            
-            <button type="button" data-vista="rio_grande"
-              class="btn-vista flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors pr-4 cursor-pointer">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+            <button type="button" data-vista="rio_grande" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
               <span>Río Grande</span>
             </button>
-
           </div>
         </div>
 
-        <!-- BARRA 2: CAPAS Y ALERTAS (Scrollable en móviles) -->
-        <div class="w-full overflow-x-auto hide-scrollbar pointer-events-auto mt-1">
-          <div class="flex items-center w-max bg-white dark:bg-slate-900 rounded-xl shadow-md border border-slate-200 dark:border-slate-800 overflow-hidden text-sm">
-            
-            <!-- Capa Estándar -->
-            <button type="button" id="btn-capa-estandar"
-              class="btn-capa-base flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+        <!-- BARRA 2: CAPAS Y ALERTAS -->
+        <div class="w-full pointer-events-auto">
+          <div class="flex items-center w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden text-[10px] sm:text-sm justify-between">
+            <button type="button" id="btn-capa-estandar" class="btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer">
               <span data-i18n="capa_estandar">Estándar</span>
             </button>
-            
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            
-            <!-- Capa Relieve -->
-            <button type="button" id="btn-capa-relieve"
-              class="btn-capa-base flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
-              <svg class="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17l6-6 4 4 8-8"></path></svg>
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+            <button type="button" id="btn-capa-relieve" class="btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
               <span data-i18n="capa_relieve">Relieve</span>
             </button>
-
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            
-            <!-- Áreas Protegidas (Ahora con texto) -->
-            <button type="button" id="btn-capa-areas-protegidas"
-              class="btn-capa-areas flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-              title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
-              <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-              <span data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+            <button type="button" id="btn-capa-areas-protegidas" class="btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 dark:text-emerald-400 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer" title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
+              <span data-i18n="capa_areas_protegidas">Áreas</span>
             </button>
-
-            <div class="w-px h-5 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-
-            <!-- Alertas Ambientales (Ahora con texto y fondo rojo unificado) -->
-            <button type="button" id="btn-capa-alertas-sar"
-              class="btn-capa-alertas active flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white font-bold shrink-0 hover:bg-red-700 transition-colors cursor-pointer"
-              title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-              <span data-i18n="capa_alertas_sar">Alertas SAR</span>
+            <button type="button" id="btn-capa-alertas-sar" class="btn-capa-alertas active flex-1 flex items-center justify-center gap-1 py-1.5 px-1 bg-red-600 text-white font-bold hover:bg-red-700 cursor-pointer" title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
+              <span data-i18n="capa_alertas_sar">SAR</span>
             </button>
-
           </div>
         </div>
 

@@ -1,8 +1,4 @@
-// ==========================================
-// RASTRO AUSTRAL - SERVICE WORKER (STALE-WHILE-REVALIDATE)
-// ==========================================
-
-const CACHE_NAME = 'rastro-austral-v21'; // Incrementar este número para forzar purga de versiones anteriores
+const CACHE_NAME = 'rastro-austral-v23'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const urlsToCache = [
   './',
   './index.html',
@@ -24,16 +20,15 @@ const urlsToCache = [
   './assets/hitos/rg-02.svg'
 ];
 
-// Instalar y forzar activación inmediata
+// Instalar y tomar el control inmediatamente
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Obliga al SW a activarse sin esperar a que se cierren las pestañas
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Activar y limpiar cachés viejas
+// Limpiar cachés viejas al activarse
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -45,35 +40,30 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    }).then(() => self.clients.claim()) // Toma el control de la página inmediatamente
+    }).then(() => self.clients.claim())
   );
 });
 
-// Estrategia Stale-While-Revalidate / Network Fallback
+// ESTRATEGIA DEFINITIVA: NETWORK FIRST (Primero la red, si falla usa caché)
 self.addEventListener('fetch', event => {
-  // Solo interceptar solicitudes GET sobre protocolo HTTP/HTTPS
-  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
+  // Solo procesar solicitudes HTTP / HTTPS
+  if (!event.request.url.startsWith('http')) return;
 
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      const fetchPromise = fetch(event.request).then(networkResponse => {
-        // Actualizar la caché silenciosamente de fondo
-        if (networkResponse && networkResponse.status === 200) {
+    fetch(event.request)
+      .then(networkResponse => {
+        // Si hay internet, devolvemos la versión fresca y la guardamos en caché de fondo
+        if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseToCache);
           });
         }
         return networkResponse;
-      }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-        return cachedResponse;
-      }); // Si no hay internet, usar la caché
-
-      // Devolver primero la caché si existe, sino ir a la red
-      return cachedResponse || fetchPromise;
-    })
+      })
+      .catch(() => {
+        // Solo si NO hay internet (falla el fetch), buscamos en la caché
+        return caches.match(event.request);
+      })
   );
 });

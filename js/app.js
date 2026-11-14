@@ -731,9 +731,10 @@ function renderizarMarcadores(anunciarResultados = false) {
             className: "popup-hito"
         });
 
-        // Evento clic: centrado suave y apertura de ficha inmersiva
+        // Evento clic: centrado suave y visualización en el panel de hitos
         marcador.on("click", () => {
-            abrirDetalleHito(hito.id);
+            seleccionarHito(hito, true, true, false);
+            cambiarPestanaSidebar("explorar");
         });
 
         marcador.on("popupopen", () => {
@@ -749,8 +750,8 @@ function renderizarMarcadores(anunciarResultados = false) {
         marcadoresPorId[hito.id] = marcador;
     });
 
-    // Renderizar lista compacta estilo Google Maps en el panel inferior
-    renderizarListaHitosCompacta(hitosFiltrados);
+    // Renderizar panel de hito (muestra mensaje por defecto si no hay hito seleccionado)
+    renderizarListaHitosCompacta();
 
     if (anunciarResultados) {
         const cant = hitosFiltrados.length;
@@ -779,18 +780,12 @@ function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCo
         marcador.openPopup();
     }
 
+    // Actualizar la tarjeta del hito seleccionado en el panel
+    renderizarListaHitosCompacta();
+
     mostrarDetalleHito(hito);
     renderizarInsignias();
     renderizarSellosSidebar();
-
-    // Resaltar tarjeta seleccionada en la lista compacta
-    document.querySelectorAll(".hito-card").forEach(card => {
-        if (card.getAttribute("data-id") === hito.id) {
-            card.classList.add("border-orange-500", "ring-1", "ring-orange-500");
-        } else {
-            card.classList.remove("border-orange-500", "ring-1", "ring-orange-500");
-        }
-    });
 
     if (abrirPantallaCompleta) {
         abrirDetalleHitoCompleto(hito);
@@ -804,60 +799,69 @@ function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCo
     );
 }
 
-// Renderizar lista compacta de hitos (Estilo Google Maps)
-function renderizarListaHitosCompacta(hitos) {
+// Renderizar tarjeta del hito seleccionado o mensaje por defecto en el panel lateral
+function renderizarListaHitosCompacta() {
     const contenedor = document.getElementById("contenedor-hitos-lista");
     if (!contenedor) return;
 
-    if (!hitos || hitos.length === 0) {
+    const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
+
+    // Si por defecto no hay hito seleccionado, mostrar mensaje de invitación
+    if (!hitoSeleccionadoId) {
         contenedor.innerHTML = `
-          <div class="p-6 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs">
-            ${idiomaActual === "en" ? "No sites found with these filters." : "No se encontraron hitos con estos filtros."}
+          <div class="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/40">
+            <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <p class="font-bold text-slate-700 dark:text-slate-200 text-sm" data-i18n="selecciona_punto_mapa">${idiomaActual === "en" ? "Select a point on the map" : "Selecciona un punto en el mapa"}</p>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500" data-i18n="toca_marcador_desc">${idiomaActual === "en" ? "Tap any marker to view its details here" : "Toca cualquier marcador para ver su ficha territorial"}</p>
           </div>
         `;
         return;
     }
 
+    const data = (window.datosHitos && window.datosHitos[hitoSeleccionadoId]) || (datosHitos && datosHitos[hitoSeleccionadoId]) || (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === hitoSeleccionadoId || String(h.id) === String(hitoSeleccionadoId)) : null);
+
+    if (!data) return;
+
     const visitas = typeof obtenerVisitas === "function" ? obtenerVisitas() : [];
-    const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
+    const nombre = (idiomaActual === "en" && data.nombre_en) ? data.nombre_en : data.nombre;
+    const rubro = (idiomaActual === "en" && data.rubroCreativo_en) ? data.rubroCreativo_en : (data.rubroCreativo || (data.categoria ? data.categoria.replace('_', ' ') : ''));
+    const visitado = visitas.includes(data.id);
 
-    contenedor.innerHTML = hitos.map(hito => {
-        const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
-        const rubro = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : (hito.rubroCreativo || hito.categoria.replace('_', ' '));
-        const visitado = visitas.includes(hito.id);
-        const seleccionado = hitoSeleccionadoId === hito.id;
-
-        return `
-        <!-- Tarjeta de Hito Compacta (Lista) -->
-        <div class="hito-card flex items-center p-3 mb-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border ${seleccionado ? 'border-orange-500 ring-1 ring-orange-500' : 'border-slate-100 dark:border-slate-800'} cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors" data-id="${hito.id}">
-          <!-- Miniatura cuadrada -->
-          <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100 dark:bg-slate-800">
-          
-          <!-- Info rápida -->
-          <div class="ml-3 flex-grow overflow-hidden">
-            <div class="flex items-center gap-1.5">
-              <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">${nombre}</h3>
-              ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
-            </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${hito.toponimia}</p>
-            <div class="flex items-center gap-1.5 mt-1.5">
-              <span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
-              <span class="text-[10px] text-slate-400 dark:text-slate-500">${hito.localidad}</span>
-            </div>
+    contenedor.innerHTML = `
+      <!-- Tarjeta del Hito Seleccionado -->
+      <div class="hito-card flex items-center p-3 mb-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-orange-500 ring-1 ring-orange-500 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all" data-id="${data.id}">
+        <!-- Miniatura cuadrada -->
+        <img src="${data.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100 dark:bg-slate-800">
+        
+        <!-- Info rápida -->
+        <div class="ml-3 flex-grow overflow-hidden">
+          <div class="flex items-center gap-1.5">
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">${nombre}</h3>
+            ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
           </div>
-          
-          <!-- Flecha indicadora -->
-          <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${data.toponimia}</p>
+          <div class="flex items-center gap-1.5 mt-1.5">
+            <span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500">${data.localidad}</span>
+          </div>
         </div>
-        `;
-    }).join("");
+        
+        <!-- Flecha indicadora -->
+        <div class="shrink-0 pl-1 text-orange-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+      </div>
+    `;
 
-    contenedor.querySelectorAll(".hito-card").forEach(card => {
+    const card = contenedor.querySelector(".hito-card");
+    if (card) {
         card.addEventListener("click", () => {
-            const id = card.getAttribute("data-id");
-            abrirDetalleHito(id);
+            abrirDetalleHito(data.id);
         });
-    });
+    }
 }
 
 // Función Maestra para abrir el detalle inmersivo (Ficha Completa)
@@ -1734,22 +1738,10 @@ function configurarSelectorLocalidades() {
             }
 
             botones.forEach(b => {
-                b.classList.remove("active", "bg-orange-500", "bg-amber-600", "text-white", "font-bold");
-                b.classList.add("text-slate-700", "dark:text-slate-200", "font-semibold");
-                const svg = b.querySelector("svg");
-                if (svg) {
-                    svg.classList.remove("text-white");
-                    svg.classList.add("text-slate-400");
-                }
+                b.className = "btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
             });
 
-            btn.classList.add("active", "bg-orange-500", "text-white", "font-bold");
-            btn.classList.remove("text-slate-700", "dark:text-slate-200", "font-semibold");
-            const svgActivo = btn.querySelector("svg");
-            if (svgActivo) {
-                svgActivo.classList.remove("text-slate-400");
-                svgActivo.classList.add("text-white");
-            }
+            btn.className = "btn-vista flex-1 flex items-center justify-center gap-1 bg-orange-500 text-white py-1.5 px-1 font-bold active cursor-pointer";
         });
     });
 }
@@ -1768,8 +1760,8 @@ function configurarSelectorCapasBase() {
         capaBaseEstandar.bringToBack();
         capaBaseActiva = "estandar";
 
-        btnEstandar.className = "btn-capa-base flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer";
-        btnRelieve.className = "btn-capa-base flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
+        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
+        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
     });
 
     btnRelieve.addEventListener("click", () => {
@@ -1779,8 +1771,8 @@ function configurarSelectorCapasBase() {
         capaBaseRelieve.bringToBack();
         capaBaseActiva = "relieve";
 
-        btnRelieve.className = "btn-capa-base flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer";
-        btnEstandar.className = "btn-capa-base flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
+        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
+        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
     });
 }
 
@@ -1891,10 +1883,10 @@ async function configurarCapaAreasProtegidas() {
                 if (mapa.hasLayer(capaBaseEstandar)) capaBaseEstandar.bringToBack();
                 if (mapa.hasLayer(capaBaseRelieve)) capaBaseRelieve.bringToBack();
 
-                btn.className = "btn-capa-areas active flex items-center gap-1.5 bg-emerald-600 text-white px-3 py-2 font-bold shrink-0 transition-colors cursor-pointer";
+                btn.className = "btn-capa-areas active flex-1 flex items-center justify-center py-1.5 px-1 bg-emerald-600 text-white font-bold cursor-pointer";
             } else {
                 mapa.removeLayer(capaAreasProtegidas);
-                btn.className = "btn-capa-areas flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
+                btn.className = "btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 dark:text-emerald-400 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
             }
         });
     } catch (error) {
@@ -2032,10 +2024,10 @@ async function configurarCapaAlertasSAR() {
 
                 if (alertasSARVisibles) {
                     mapa.addLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas active flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white font-bold shrink-0 hover:bg-red-700 transition-colors cursor-pointer";
+                    btn.className = "btn-capa-alertas active flex-1 flex items-center justify-center gap-1 py-1.5 px-1 bg-red-600 text-white font-bold hover:bg-red-700 cursor-pointer";
                 } else {
                     mapa.removeLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas flex items-center gap-1.5 px-4 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
+                    btn.className = "btn-capa-alertas flex-1 flex items-center justify-center gap-1 py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
                 }
             });
         }

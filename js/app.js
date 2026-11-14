@@ -486,6 +486,23 @@ function inicializarMapa() {
 
     // Ajustar densidad y escala de huellas al cambiar el nivel de zoom
     mapa.on("zoomend", actualizarTrazadoRuta);
+
+    // Delegación de eventos para botones dentro de los Popups de Leaflet
+    mapa.on("popupopen", (e) => {
+        const popupNode = e.popup.getElement();
+        if (!popupNode) return;
+        const btn = popupNode.querySelector(".btn-ver-ficha, .btn-popup-ver-detalle");
+        if (btn) {
+            btn.onclick = (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                const id = btn.getAttribute("data-id");
+                if (id) {
+                    abrirDetalleHito(id);
+                }
+            };
+        }
+    });
 }
 
 // 2. Cargar el dataset oficial (con respaldo automático desde caché offline)
@@ -722,7 +739,7 @@ function renderizarMarcadores(anunciarResultados = false) {
               <span>${hito.localidad}</span>
               <span class="capitalize text-orange-600 font-medium">${hito.categoria.replace('_', ' ')}</span>
             </div>
-            <button type="button" class="btn-popup-ver-detalle w-full mt-1 py-1 px-1.5 text-center bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-md text-[10px] font-bold transition shadow-xs cursor-pointer" data-id="${hito.id}">
+            <button type="button" class="btn-ver-ficha btn-popup-ver-detalle w-full mt-1 py-1 px-1.5 text-center bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-md text-[10px] font-bold transition shadow-xs cursor-pointer" data-id="${hito.id}" onclick="abrirDetalleHito('${hito.id}')">
               ${idiomaActual === "en" ? "View Full Site Info" : "Ver Ficha Completa"} →
             </button>
           </div>
@@ -956,6 +973,19 @@ function cerrarDetalleHitoCompleto() {
     }
 }
 window.cerrarDetalleHitoCompleto = cerrarDetalleHitoCompleto;
+
+// Delegación global para botones "Ver Ficha Completa" en popups de Leaflet y tarjetas
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-ver-ficha, .btn-popup-ver-detalle");
+    if (btn) {
+        const id = btn.getAttribute("data-id");
+        if (id) {
+            e.preventDefault();
+            e.stopPropagation();
+            abrirDetalleHito(id);
+        }
+    }
+});
 
 // 6. Mostrar ficha de detalle e información pedagógica (con Audio-guía y Notas)
 function mostrarDetalleHito(hito) {

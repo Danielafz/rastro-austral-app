@@ -1,3 +1,23 @@
+/* Utilidad para ocultar scrollbar en carruseles móviles */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 767px) {
+  /* Darle más espacio vital al mapa en móviles */
+  #map {
+    height: 100% !important;
+  }
+  /* Bajar los controles de Leaflet para que no se pisen con los filtros */
+  .leaflet-top {
+    top: 5rem !important; 
+  }
+}
+
 /* Configuración visual del contenedor de mapa */
 .leaflet-container {
   font-family: inherit;
@@ -1539,11 +1559,12 @@ html.dark .sensibilidad-minimal {
 
   #selector-capas-base {
     position: absolute;
-    top: 52px;
-    left: 10px;
-    right: auto !important;
-    transform: none;
-    max-width: calc(100vw - 20px);
+    top: 48px;
+    left: 8px;
+    right: 8px;
+    max-width: calc(100vw - 16px);
+    display: flex;
+    flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -1557,6 +1578,8 @@ html.dark .sensibilidad-minimal {
   #selector-capas-base > button {
     padding: 0.35rem 0.6rem;
     font-size: 11px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   #panel-lateral {
@@ -1595,10 +1618,10 @@ html.dark .sensibilidad-minimal {
   #selector-localidades,
   .controles-zona {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    max-width: calc(100vw - 20px);
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    max-width: calc(100vw - 16px);
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1610,6 +1633,8 @@ html.dark .sensibilidad-minimal {
   #selector-localidades > button {
     padding: 0.35rem 0.6rem;
     font-size: 11px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   #selector-localidades::-webkit-scrollbar,

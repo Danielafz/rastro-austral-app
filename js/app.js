@@ -3310,24 +3310,31 @@ function actualizarBannerModoOffline() {
     const enLinea = navigator.onLine !== false;
     const tsOffline = typeof obtenerTimestampOffline === "function" ? obtenerTimestampOffline() : null;
 
+    const txtMobile = document.getElementById("txt-estado-red-mobile");
+
     if (!enLinea) {
         banner.classList.add("modo-sin-conexion");
-        indicador.className = "inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0";
+        indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0";
         txtEstado.innerText = t.estado_red_offline || "Sin Señal · Modo Expedición Offline Activo";
+        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline" : "Sin Señal";
     } else if (tsOffline && listaHitos.length > 0) {
         banner.classList.remove("modo-sin-conexion");
-        indicador.className = "inline-block w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0";
+        indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 shrink-0";
         txtEstado.innerText = `${t.estado_red_resguardado || "Expedición Lista Offline"} · ${listaHitos.length} ${idiomaActual === "en" ? "cards cached" : "fichas resguardadas"}`;
+        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline Ready" : "Listo Offline";
     } else {
         banner.classList.remove("modo-sin-conexion");
-        indicador.className = "inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0";
+        indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0";
         txtEstado.innerText = t.estado_red_sincronizado || "Atlas Sincronizado · Modo Offline Activo";
+        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline Mode" : "Modo Offline";
     }
 
     if (btnGuardar) {
-        const spanBtn = btnGuardar.querySelector("span");
-        if (spanBtn && !btnGuardar.dataset.recienGuardado) {
-            spanBtn.innerText = t.guardar_fichas_offline || "Guardar Fichas para Expedición";
+        const spanDesktop = document.getElementById("lbl-guardar-desktop") || btnGuardar.querySelector(".hidden.sm\\:inline");
+        const spanMobile = document.getElementById("lbl-guardar-mobile") || btnGuardar.querySelector(".inline.sm\\:hidden");
+        if (!btnGuardar.dataset.recienGuardado) {
+            if (spanDesktop) spanDesktop.innerText = t.guardar_fichas_offline || "Guardar Fichas para Expedición";
+            if (spanMobile) spanMobile.innerText = idiomaActual === "en" ? "Save" : "Guardar";
         }
     }
 }
@@ -3394,10 +3401,14 @@ function configurarModoOffline() {
             guardarObservatorioOffline(datosObservatorio);
         }
 
-        const spanBtn = btnGuardar.querySelector("span");
+        const spanDesktop = document.getElementById("lbl-guardar-desktop") || btnGuardar.querySelector(".hidden.sm\\:inline");
+        const spanMobile = document.getElementById("lbl-guardar-mobile") || btnGuardar.querySelector(".inline.sm\\:hidden");
         btnGuardar.dataset.recienGuardado = "1";
-        if (spanBtn) {
-            spanBtn.innerText = t.fichas_resguardadas || "✓ Fichas Resguardadas";
+        if (spanDesktop) {
+            spanDesktop.innerText = t.fichas_resguardadas || "✓ Fichas Resguardadas";
+        }
+        if (spanMobile) {
+            spanMobile.innerText = "✓ Guardado";
         }
         btnGuardar.classList.add("!text-emerald-400", "!border-emerald-500/50");
         actualizarBannerModoOffline();
@@ -3411,8 +3422,11 @@ function configurarModoOffline() {
         setTimeout(() => {
             delete btnGuardar.dataset.recienGuardado;
             btnGuardar.classList.remove("!text-emerald-400", "!border-emerald-500/50");
-            if (spanBtn) {
-                spanBtn.innerText = (DICCIONARIO[idiomaActual] || DICCIONARIO.es).guardar_fichas_offline || "Guardar Fichas para Expedición";
+            if (spanDesktop) {
+                spanDesktop.innerText = (DICCIONARIO[idiomaActual] || DICCIONARIO.es).guardar_fichas_offline || "Guardar Fichas para Expedición";
+            }
+            if (spanMobile) {
+                spanMobile.innerText = idiomaActual === "en" ? "Save" : "Guardar";
             }
         }, 2600);
     });

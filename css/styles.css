@@ -7,6 +7,13 @@
   scrollbar-width: none;
 }
 
+body, html, #app-container {
+  /* Usar 100dvh es vital para PWA en móviles */
+  height: 100dvh; 
+  width: 100vw;
+  overflow: hidden;
+}
+
 @media (max-width: 767px) {
   /* Darle más espacio vital al mapa en móviles */
   #map {
@@ -15,6 +22,10 @@
   /* Bajar los controles de Leaflet para que no se pisen con los filtros */
   .leaflet-top {
     top: 5rem !important; 
+  }
+  /* Darle margen inferior al mapa en móviles para que la barra no tape el logo de Leaflet */
+  .leaflet-bottom {
+    bottom: 5rem !important;
   }
 }
 
@@ -1643,13 +1654,13 @@ html.dark .sensibilidad-minimal {
   }
 
   #btn-geolocalizacion {
-    bottom: 14px;
+    bottom: 4.5rem;
     left: 10px;
     z-index: 25;
   }
 
   .leaflet-bottom.leaflet-left {
-    bottom: 14px !important;
+    bottom: 4.5rem !important;
     left: 48px !important;
   }
 

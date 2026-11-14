@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="bg-slate-950 text-slate-100 flex flex-col h-screen overflow-hidden font-sans">
+<body class="bg-slate-950 text-slate-100 flex flex-col h-screen h-[100dvh] overflow-hidden font-sans">
 
   <!-- Enlace de salto directo accesible (Skip Link) -->
   <a href="#panel-lateral"
@@ -513,11 +513,11 @@
 
   <!-- Contenedor Principal (Dashboard Layout) -->
   <div id="app-container"
-    class="flex flex-col flex-1 h-[calc(100vh-100px)] md:h-[calc(100vh-64px)] w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
+    class="flex flex-col flex-1 min-h-0 w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
 
     <!-- Barra de Navegación Inferior Fija (Hitos, Bitácora, Observatorio) -->
     <aside id="panel-lateral" tabindex="-1" aria-label="Navegación principal de la expedición"
-      class="w-full h-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-xl z-[40] flex flex-col order-2 flex-shrink-0">
+      class="w-full h-auto pb-[env(safe-area-inset-bottom,0px)] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-xl z-[40] flex flex-col order-2 flex-shrink-0">
 
       <div class="p-2 sm:py-2.5 sm:px-4 flex items-center justify-between gap-2 max-w-xl mx-auto w-full">
         <div role="tablist" aria-label="Secciones de la expedición"

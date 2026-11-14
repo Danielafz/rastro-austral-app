@@ -149,8 +149,23 @@ aside::-webkit-scrollbar-thumb {
 }
 
 /* Selector de Capas Cartográficas */
-.btn-capa-base {
+.btn-capa-base, .btn-capa-areas, .btn-capa-alertas {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Polígonos de alerta de estrés hídrico SAR */
+.poligono-alerta-critica {
+  stroke-dasharray: 8 6;
+  animation: pulso-sar-alerta 2s linear infinite;
+}
+
+@keyframes pulso-sar-alerta {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -28;
+  }
 }
 
 /* Marcador de geolocalización pulsante del explorador */
@@ -983,9 +998,10 @@ html:not(.dark) .leaflet-tooltip.tooltip-hito::before {
 html:not(.dark) #modal-pasaporte>div,
 html:not(.dark) #modal-creditos>div,
 html:not(.dark) #modal-huella>div,
+html:not(.dark) #modal-bloqueo>div,
 html:not(.dark) #pantalla-bienvenida>div {
   background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
+  border-color: #f43f5e !important;
   color: #0f172a !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
 }

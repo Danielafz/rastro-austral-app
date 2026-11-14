@@ -1,0 +1,137 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generado_por": "Rastro Austral - Módulo de Alertas SAR",
+    "fecha": "2026-11-13 21:10",
+    "mision": "Sentinel-1 Copernicus (SAR C-Band Interferometric Wide Swath)",
+    "marco_normativo": "Ley Provincial N° 1.458 de Preservación de Turberas"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "turbal_tierra_mayor",
+        "nombre": "Turbal Valle Tierra Mayor",
+        "nombre_en": "Tierra Mayor Valley Peatland",
+        "estado": "CRITICO",
+        "motivo": "Estrés hídrico detectado (Anomalía SAR -16.2 dB). Riesgo extremo de incendio y degradación de Sphagnum.",
+        "motivo_en": "Severe hydrological drought detected (SAR Anomaly -16.2 dB). Extreme wildfire risk and Sphagnum degradation.",
+        "retrodispersion_sar_db": -16.2,
+        "satelite": "Copernicus Sentinel-1 SAR C-Band",
+        "proveedor": "Google Earth Engine / ESA",
+        "actualizado": "2026-11-13 21:10"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              -54.68
+            ],
+            [
+              -67.88,
+              -54.68
+            ],
+            [
+              -67.88,
+              -54.76
+            ],
+            [
+              -68.05,
+              -54.76
+            ],
+            [
+              -68.05,
+              -54.68
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "turbal_corazon_isla",
+        "nombre": "Turbal Reserva Corazón de la Isla",
+        "nombre_en": "Corazón de la Isla Reserve Peatland",
+        "estado": "NORMAL",
+        "motivo": "Humedad del suelo en parámetros estables (Monitoreo Sentinel-1 SAR nominal).",
+        "motivo_en": "Soil moisture within stable parameters (Sentinel-1 SAR nominal monitoring).",
+        "retrodispersion_sar_db": -11.8,
+        "satelite": "Copernicus Sentinel-1 SAR C-Band",
+        "proveedor": "Google Earth Engine / ESA",
+        "actualizado": "2026-11-13 21:10"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -67.55,
+              -54.48
+            ],
+            [
+              -67.38,
+              -54.48
+            ],
+            [
+              -67.38,
+              -54.56
+            ],
+            [
+              -67.55,
+              -54.56
+            ],
+            [
+              -67.55,
+              -54.48
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "turbal_rio_pipo",
+        "nombre": "Turberas del Valle del Río Pipo",
+        "nombre_en": "Pipo River Valley Peat Bogs",
+        "estado": "NORMAL",
+        "motivo": "Humedad de turbera en rango regulado. Tránsito restringido solo a pasarelas autorizadas.",
+        "motivo_en": "Peatland moisture in stable range. Foot traffic permitted only on boardwalks.",
+        "retrodispersion_sar_db": -12.1,
+        "satelite": "Copernicus Sentinel-1 SAR C-Band",
+        "proveedor": "Google Earth Engine / ESA",
+        "actualizado": "2026-11-13 21:10"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.45,
+              -54.8
+            ],
+            [
+              -68.36,
+              -54.8
+            ],
+            [
+              -68.36,
+              -54.85
+            ],
+            [
+              -68.45,
+              -54.85
+            ],
+            [
+              -68.45,
+              -54.8
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

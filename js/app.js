@@ -86,6 +86,16 @@ const DICCIONARIO = {
         capa_estandar: "Estándar",
         capa_relieve: "Relieve",
         capa_areas_protegidas: "Áreas Protegidas",
+        capa_alertas_sar: "Alertas SAR",
+        modal_bloqueo_badge_sar: "Alerta Temprana SAR",
+        modal_bloqueo_titulo: "🚫 Zona Restringida al Acceso",
+        modal_bloqueo_subtitulo: "Tránsito pedestre suspendido por protocolo de preservación ambiental",
+        modal_bloqueo_pregunta: "¿Por qué se activa este bloqueo?",
+        modal_bloqueo_explicacion: "Los turbales son esponjas milenarias que retienen el agua de Ushuaia y capturan carbono vital. Durante períodos de sequía extrema detectados por radar satelital Sentinel-1 SAR, la pisada compacta el musgo Sphagnum destruyendo su estructura e incrementa drásticamente el riesgo de incendios subterráneos.",
+        modal_bloqueo_alternativa_lbl: "Ruta Alternativa Segura Sugerida",
+        modal_bloqueo_alternativa_desc: "Te sugerimos redirigir tu expedición hacia senderos con pasarelas habilitadas y monitoreo permanente:",
+        modal_bloqueo_btn_alternativa: "🧭 Desviarse a Sendero Seguro Habilitado",
+        modal_bloqueo_btn_entendido: "Entendido, respetar restricción",
         explorar_hitos: "Explorar Hitos",
         ver_mapa: "Ver Mapa",
         capas_oficiales: "Capas Oficiales (IDETDF / IGN)",
@@ -210,6 +220,16 @@ const DICCIONARIO = {
         capa_estandar: "Standard",
         capa_relieve: "Topographic",
         capa_areas_protegidas: "Protected Areas",
+        capa_alertas_sar: "SAR Alerts",
+        modal_bloqueo_badge_sar: "Early Warning SAR",
+        modal_bloqueo_titulo: "🚫 Restricted Access Area",
+        modal_bloqueo_subtitulo: "Pedestrian transit suspended due to environmental conservation protocol",
+        modal_bloqueo_pregunta: "Why is this restriction active?",
+        modal_bloqueo_explicacion: "Peatlands are millenary sponges that retain fresh water and sequester vital carbon. During severe drought conditions detected by Sentinel-1 SAR satellite radar, foot traffic compacts living Sphagnum moss, irreversibly damaging the bog and escalating subterranean wildfire risk.",
+        modal_bloqueo_alternativa_lbl: "Suggested Safe Alternative Route",
+        modal_bloqueo_alternativa_desc: "We recommend rerouting your expedition towards trails equipped with boardwalks and active ranger monitoring:",
+        modal_bloqueo_btn_alternativa: "🧭 Divert to Authorized Safe Trail",
+        modal_bloqueo_btn_entendido: "Understood, comply with restriction",
         explorar_hitos: "Explore Sites",
         ver_mapa: "View Map",
         capas_oficiales: "Official Layers (IDETDF / IGN)",
@@ -409,8 +429,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarModalPasaporte();
     configurarModalCreditos();
     configurarModalHuella();
+    configurarModalBloqueo();
     configurarSelectorCapasBase();
     configurarCapaAreasProtegidas();
+    configurarCapaAlertasSAR();
     configurarGeolocalizacion();
     configurarSelectorLocalidades();
     configurarPanelMobile();
@@ -762,6 +784,8 @@ function mostrarDetalleHito(hito) {
     const foneticaSignificado = fonetica
         ? (idiomaActual === "en" ? fonetica.significado_en : fonetica.significado_es)
         : "";
+    const esZonaCriticaSAR = (hito.toponimia && hito.toponimia.toLowerCase().includes("tierra mayor")) ||
+                             (hito.nombre && hito.nombre.toLowerCase().includes("esmeralda"));
 
     // Detener síntesis anterior si estaba activa
     if ('speechSynthesis' in window) {
@@ -871,6 +895,24 @@ function mostrarDetalleHito(hito) {
                 <strong class="font-semibold">${t.punto_directo}</strong> ${hito.contacto}
               </div>
             ` : ''}
+          </div>
+        ` : ''}
+
+        ${esZonaCriticaSAR ? `
+          <div class="p-3 bg-rose-500/15 border border-rose-500/40 rounded-xl space-y-1.5 text-xs">
+            <div class="flex items-center justify-between text-rose-500 font-bold">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>${idiomaActual === 'en' ? 'RESTRICTED AREA (SAR ALERT)' : 'ZONA RESTRINGIDA (ALERTA SAR)'}</span>
+              </span>
+              <span class="text-[10px] px-2 py-0.5 rounded font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">CRÍTICO</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              ${idiomaActual === 'en' ? 'Turbal Valle Tierra Mayor exhibits extreme drought under Copernicus Sentinel-1 SAR monitoring. Transit suspended.' : 'El turbal de Valle Tierra Mayor registra sequía severa según radar Copernicus Sentinel-1. Tránsito pedestre suspendido por preservación.'}
+            </p>
+            <button type="button" onclick="mostrarModalBloqueoPorNombre('Turbal Valle Tierra Mayor')" class="text-rose-400 hover:text-rose-300 font-bold underline text-[11px] cursor-pointer flex items-center gap-1">
+              <span>${idiomaActual === 'en' ? 'View Restriction Protocol & Safe Route →' : 'Ver Protocolo de Bloqueo y Desvío Seguro →'}</span>
+            </button>
           </div>
         ` : ''}
 
@@ -1641,6 +1683,148 @@ async function configurarCapaAreasProtegidas() {
         });
     } catch (error) {
         console.error("Error al cargar áreas protegidas:", error);
+    }
+}
+
+// 12.3. Capa Vectorial de Alertas SAR y Estrés Hídrico en Turbales (Pilar de Acción)
+let capaAlertasSAR = null;
+let alertasSARVisibles = true;
+let datosAlertasSAR = null;
+
+async function configurarCapaAlertasSAR() {
+    const btn = document.getElementById("btn-capa-alertas-sar");
+
+    try {
+        let geojsonData = null;
+        try {
+            const respuesta = await fetch("./data/alertas_turbales.geojson");
+            if (respuesta.ok) {
+                geojsonData = await respuesta.json();
+                datosAlertasSAR = geojsonData;
+                if (typeof guardarAlertasOffline === "function") {
+                    guardarAlertasOffline(geojsonData);
+                }
+            }
+        } catch (errRed) {
+            geojsonData = typeof obtenerAlertasOffline === "function" ? obtenerAlertasOffline() : null;
+        }
+        if (!geojsonData) {
+            geojsonData = typeof obtenerAlertasOffline === "function" ? obtenerAlertasOffline() : null;
+        }
+        if (!geojsonData) return;
+        datosAlertasSAR = geojsonData;
+
+        capaAlertasSAR = L.geoJSON(geojsonData, {
+            style: (feature) => {
+                const esCritico = feature.properties && feature.properties.estado === "CRITICO";
+                if (esCritico) {
+                    return {
+                        color: "#ef4444",
+                        weight: 3,
+                        opacity: 0.95,
+                        dashArray: "6, 6",
+                        fillColor: "#ef4444",
+                        fillOpacity: 0.35,
+                        className: "poligono-alerta-critica"
+                    };
+                }
+                return {
+                    color: "#10b981",
+                    weight: 2,
+                    opacity: 0.85,
+                    dashArray: "4, 4",
+                    fillColor: "#10b981",
+                    fillOpacity: 0.16
+                };
+            },
+            onEachFeature: (feature, layer) => {
+                const props = feature.properties || {};
+                const esCritico = props.estado === "CRITICO";
+                const nombre = (idiomaActual === "en" && props.nombre_en) ? props.nombre_en : (props.nombre || "Turbal");
+                const motivo = (idiomaActual === "en" && props.motivo_en) ? props.motivo_en : (props.motivo || "");
+
+                layer.on({
+                    mouseover: (e) => {
+                        const target = e.target;
+                        target.setStyle({
+                            weight: 4,
+                            fillOpacity: esCritico ? 0.5 : 0.3
+                        });
+                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                            target.bringToFront();
+                        }
+                    },
+                    mouseout: (e) => {
+                        capaAlertasSAR.resetStyle(e.target);
+                    },
+                    click: (e) => {
+                        L.DomEvent.stopPropagation(e);
+                        if (esCritico) {
+                            mostrarModalBloqueo(props);
+                        } else {
+                            layer.openPopup();
+                        }
+                    }
+                });
+
+                // Tooltip
+                const iconoBadge = esCritico ? "🚫" : "🌿";
+                const textoEstado = esCritico
+                    ? (idiomaActual === "en" ? "RESTRICTED ACCESS · SAR CRITICAL" : "ACCESO RESTRINGIDO · CRÍTICO SAR")
+                    : (idiomaActual === "en" ? "NORMAL MOISTURE" : "HUMEDAD ESTABLE");
+
+                layer.bindTooltip(`
+                    <div class="text-xs font-semibold flex items-center gap-1.5 ${esCritico ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-emerald-600 dark:text-emerald-400'}">
+                        <span>${iconoBadge}</span>
+                        <span>${nombre} (${textoEstado})</span>
+                    </div>
+                `, { sticky: true, className: "tooltip-hito" });
+
+                // Popup informativo
+                const popupContent = `
+                    <div class="p-3 max-w-xs space-y-2 text-xs leading-relaxed text-slate-900">
+                        <div class="flex items-center gap-1.5 border-b pb-1.5 border-slate-200">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${esCritico ? 'bg-rose-100 text-rose-700 border border-rose-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'}">
+                                ${esCritico ? '⚠️ ZONA CRÍTICA SAR' : '✓ CONDICIÓN NOMINAL'}
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-900 leading-tight">${nombre}</h4>
+                            <p class="text-slate-600 text-[11px] mt-1">${motivo}</p>
+                        </div>
+                        ${esCritico ? `
+                            <button type="button" class="mt-2 w-full py-1.5 px-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded text-[11px] shadow-sm transition" onclick="mostrarModalBloqueoPorNombre('${escape(props.nombre || nombre)}')">
+                                Ver Protocolo de Bloqueo →
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                layer.bindPopup(popupContent, { className: "popup-hito" });
+            }
+        });
+
+        // Capa activa por defecto en el mapa
+        if (alertasSARVisibles && mapa) {
+            mapa.addLayer(capaAlertasSAR);
+        }
+
+        // Toggle del botón
+        if (btn) {
+            btn.addEventListener("click", () => {
+                if (!capaAlertasSAR) return;
+                alertasSARVisibles = !alertasSARVisibles;
+
+                if (alertasSARVisibles) {
+                    mapa.addLayer(capaAlertasSAR);
+                    btn.className = "btn-capa-alertas active bg-rose-600 text-white font-semibold px-3 py-1.5 transition flex items-center gap-1.5 whitespace-nowrap";
+                } else {
+                    mapa.removeLayer(capaAlertasSAR);
+                    btn.className = "btn-capa-alertas text-rose-400 hover:bg-rose-500/20 font-medium px-3 py-1.5 transition flex items-center gap-1.5 whitespace-nowrap";
+                }
+            });
+        }
+    } catch (error) {
+        console.error("Error al cargar capa de alertas SAR:", error);
     }
 }
 
@@ -2425,6 +2609,90 @@ function configurarModalHuella() {
     });
 }
 
+// 17.3. Modal de Bloqueo Turístico Digital (Pilar de Acción)
+let alertaCriticaActual = null;
+
+function configurarModalBloqueo() {
+    const modal = document.getElementById("modal-bloqueo");
+    const btnCerrarX = document.getElementById("btn-cerrar-modal-bloqueo-x");
+    const btnCerrar = document.getElementById("btn-cerrar-modal-bloqueo");
+    const btnAlternativa = document.getElementById("btn-bloqueo-ruta-alternativa");
+
+    if (!modal) return;
+
+    const cerrar = () => modal.classList.add("hidden");
+
+    if (btnCerrarX) btnCerrarX.addEventListener("click", cerrar);
+    if (btnCerrar) btnCerrar.addEventListener("click", cerrar);
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) cerrar();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            cerrar();
+        }
+    });
+
+    if (btnAlternativa) {
+        btnAlternativa.addEventListener("click", () => {
+            cerrar();
+            desviarASenderoSeguro();
+        });
+    }
+}
+
+function mostrarModalBloqueo(props = {}) {
+    const modal = document.getElementById("modal-bloqueo");
+    if (!modal) return;
+
+    alertaCriticaActual = props;
+    const nombreEl = document.getElementById("modal-bloqueo-nombre");
+    const badgeEl = document.getElementById("modal-bloqueo-badge");
+    const motivoEl = document.getElementById("modal-bloqueo-motivo");
+
+    const nombre = (idiomaActual === "en" && props.nombre_en) ? props.nombre_en : (props.nombre || "Turbal Valle Tierra Mayor");
+    const motivo = (idiomaActual === "en" && props.motivo_en) ? props.motivo_en : (props.motivo || (idiomaActual === "en" ? "Severe hydrological drought detected (SAR Anomaly). Fire risk." : "Estrés hídrico detectado (Anomalía SAR). Riesgo de incendio."));
+
+    if (nombreEl) nombreEl.textContent = nombre;
+    if (badgeEl) {
+        badgeEl.textContent = idiomaActual === "en" ? "STATUS: CRITICAL" : "ESTADO: CRÍTICO";
+    }
+    if (motivoEl) motivoEl.textContent = motivo;
+
+    modal.classList.remove("hidden");
+
+    anunciarAccesibilidad(
+        idiomaActual === "en"
+            ? `Restricted zone alert: Access to ${nombre} is suspended due to peatland drought.`
+            : `Alerta de zona restringida: Acceso a ${nombre} suspendido por estrés hídrico de turbales.`
+    );
+}
+
+window.mostrarModalBloqueoPorNombre = function(nombreEscapado) {
+    const nombre = unescape(nombreEscapado);
+    let props = { nombre: nombre, estado: "CRITICO" };
+    if (datosAlertasSAR && Array.isArray(datosAlertasSAR.features)) {
+        const feat = datosAlertasSAR.features.find(f => f.properties && f.properties.nombre === nombre);
+        if (feat) props = feat.properties;
+    }
+    mostrarModalBloqueo(props);
+};
+
+function desviarASenderoSeguro() {
+    // Buscar hito seguro alternativo (ej: Parque Nacional Lapataia o sendero habilitado)
+    const hitoSeguro = listaHitos.find(h => h.id === "ush-01") || listaHitos.find(h => h.fragilidad === "Baja") || listaHitos[0];
+    if (hitoSeguro) {
+        seleccionarHito(hitoSeguro, true, true);
+        anunciarAccesibilidad(
+            idiomaActual === "en"
+                ? `Route diverted to safe authorized trail: ${hitoSeguro.nombre_en || hitoSeguro.nombre}`
+                : `Ruta desviada hacia sendero seguro autorizado: ${hitoSeguro.nombre}`
+        );
+    }
+}
+
 function renderizarModalPasaporte() {
     const rejilla = document.getElementById("rejilla-pasaporte");
     if (!rejilla) return;
@@ -2981,6 +3249,7 @@ function configurarModoOffline() {
         const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
         let hitosParaGuardar = listaHitos;
         let areasParaGuardar = typeof obtenerAreasOffline === "function" ? obtenerAreasOffline() : null;
+        let alertasParaGuardar = typeof obtenerAlertasOffline === "function" ? obtenerAlertasOffline() : null;
 
         try {
             if (!Array.isArray(hitosParaGuardar) || hitosParaGuardar.length === 0) {
@@ -2991,8 +3260,12 @@ function configurarModoOffline() {
                 const respAreas = await fetch("./data/areas_protegidas.geojson");
                 if (respAreas.ok) areasParaGuardar = await respAreas.json();
             }
+            if (!alertasParaGuardar) {
+                const respAlertas = await fetch("./data/alertas_turbales.geojson");
+                if (respAlertas.ok) alertasParaGuardar = await respAlertas.json();
+            }
             if ("caches" in window) {
-                const cache = await caches.open("rastro-austral-v9");
+                const cache = await caches.open("rastro-austral-v10");
                 await cache.addAll([
                     "./",
                     "./index.html",
@@ -3002,6 +3275,7 @@ function configurarModoOffline() {
                     "./data/hitos.json",
                     "./data/observatorio_real.json",
                     "./data/areas_protegidas.geojson",
+                    "./data/alertas_turbales.geojson",
                     "./assets/logo-rastro-austral.jpeg"
                 ]).catch(() => {});
             }
@@ -3010,7 +3284,7 @@ function configurarModoOffline() {
         }
 
         if (typeof guardarPaqueteOffline === "function") {
-            guardarPaqueteOffline(hitosParaGuardar, areasParaGuardar);
+            guardarPaqueteOffline(hitosParaGuardar, areasParaGuardar, alertasParaGuardar);
         }
         if (typeof guardarObservatorioOffline === "function" && datosObservatorio) {
             guardarObservatorioOffline(datosObservatorio);

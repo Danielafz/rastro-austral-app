@@ -2,7 +2,7 @@
 // RASTRO AUSTRAL - SERVICE WORKER (CACHE-FIRST)
 // ==========================================
 
-const CACHE_NAME = "rastro-austral-v9";
+const CACHE_NAME = "rastro-austral-v10";
 const RECURSOS_ESTATICOS = [
   "./",
   "./index.html",
@@ -12,6 +12,7 @@ const RECURSOS_ESTATICOS = [
   "./data/hitos.json",
   "./data/observatorio_real.json",
   "./data/areas_protegidas.geojson",
+  "./data/alertas_turbales.geojson",
   "./manifest.json",
   "./icon.svg",
   "./assets/logo-rastro-austral.jpeg",

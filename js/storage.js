@@ -9,6 +9,7 @@ const CLAVE_EXPLORADOR = "rastro_austral_explorador";
 const CLAVE_TEMA = "rastro_austral_tema";
 const CLAVE_CACHE_HITOS = "rastro_austral_cache_hitos";
 const CLAVE_CACHE_AREAS = "rastro_austral_cache_areas";
+const CLAVE_CACHE_ALERTAS = "rastro_austral_cache_alertas";
 const CLAVE_CACHE_OBSERVATORIO = "rastro_austral_cache_observatorio";
 const CLAVE_CACHE_TIMESTAMP = "rastro_austral_cache_timestamp";
 
@@ -374,13 +375,16 @@ async function exportarBitacoraPDF(todosLosHitos, idioma = "es") {
 // CACHÉ TERRITORIAL OFFLINE (EXPEDICIÓN SIN SEÑAL)
 // ==========================================
 
-function guardarPaqueteOffline(hitos, areasGeojson = null) {
+function guardarPaqueteOffline(hitos, areasGeojson = null, alertasGeojson = null) {
     try {
         if (Array.isArray(hitos) && hitos.length > 0) {
             localStorage.setItem(CLAVE_CACHE_HITOS, JSON.stringify(hitos));
         }
         if (areasGeojson) {
             localStorage.setItem(CLAVE_CACHE_AREAS, JSON.stringify(areasGeojson));
+        }
+        if (alertasGeojson) {
+            localStorage.setItem(CLAVE_CACHE_ALERTAS, JSON.stringify(alertasGeojson));
         }
         const timestamp = new Date().toISOString();
         localStorage.setItem(CLAVE_CACHE_TIMESTAMP, timestamp);
@@ -403,6 +407,25 @@ function obtenerHitosOffline() {
 function obtenerAreasOffline() {
     try {
         const raw = localStorage.getItem(CLAVE_CACHE_AREAS);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function guardarAlertasOffline(alertasGeojson) {
+    try {
+        if (alertasGeojson) {
+            localStorage.setItem(CLAVE_CACHE_ALERTAS, JSON.stringify(alertasGeojson));
+        }
+    } catch (e) {
+        console.error("Error al guardar alertas offline:", e);
+    }
+}
+
+function obtenerAlertasOffline() {
+    try {
+        const raw = localStorage.getItem(CLAVE_CACHE_ALERTAS);
         return raw ? JSON.parse(raw) : null;
     } catch (e) {
         return null;

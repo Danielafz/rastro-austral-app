@@ -505,6 +505,12 @@
                 <svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span class="hidden sm:inline" data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
             </button>
+            <button id="btn-capa-alertas-sar"
+                class="btn-capa-alertas active bg-rose-600 text-white font-semibold px-3 py-1.5 transition flex items-center gap-1.5 whitespace-nowrap"
+                title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
+                <svg viewBox="0 0 24 24" class="icono-bitacora w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span class="hidden sm:inline" data-i18n="capa_alertas_sar">Alertas SAR</span>
+            </button>
         </div>
 
         <!-- Botón flotante de geolocalización en tiempo real -->
@@ -1068,12 +1074,99 @@
         </div>
     </div>
 
+    <!-- Modal de Bloqueo Turístico Digital / Zona Restringida (Pilar de Acción) -->
+    <div id="modal-bloqueo" role="dialog" aria-modal="true" aria-labelledby="modal-bloqueo-titulo"
+        class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-5">
+        <div class="bg-slate-900 border-2 border-rose-500/80 rounded-2xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <!-- Barra superior de Alerta Crítica -->
+            <div class="bg-gradient-to-r from-rose-700 via-rose-600 to-amber-600 px-5 py-3.5 flex items-center justify-between text-white shadow-md">
+                <div class="flex items-center gap-2.5">
+                    <span class="flex h-3 w-3 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-200 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                    </span>
+                    <span class="text-xs font-black uppercase tracking-wider bg-rose-950/50 px-2 py-0.5 rounded border border-rose-300/40" data-i18n="modal_bloqueo_badge_sar">
+                        Alerta Temprana SAR
+                    </span>
+                </div>
+                <button id="btn-cerrar-modal-bloqueo-x" type="button" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-rose-800/40 transition cursor-pointer" aria-label="Cerrar modal de alerta">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Cabecera -->
+            <div class="p-5 sm:p-6 pb-2 text-center">
+                <div class="mx-auto w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 mb-3 shadow-inner">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <h3 id="modal-bloqueo-titulo" data-i18n="modal_bloqueo_titulo" class="text-lg sm:text-xl font-black text-white tracking-tight">
+                    🚫 Zona Restringida al Acceso
+                </h3>
+                <p id="modal-bloqueo-subtitulo" data-i18n="modal_bloqueo_subtitulo" class="text-xs text-rose-300 font-semibold mt-1">
+                    Tránsito pedestre suspendido por protocolo de preservación ambiental
+                </p>
+            </div>
+
+            <!-- Contenido dinámico -->
+            <div class="px-5 sm:px-6 py-3 space-y-3.5 overflow-y-auto text-xs text-slate-300">
+                <!-- Tarjeta con datos del sitio detectado -->
+                <div class="bg-slate-950/70 rounded-xl p-3.5 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span id="modal-bloqueo-nombre" class="font-bold text-sm text-slate-100">Turbal Valle Tierra Mayor</span>
+                        <span id="modal-bloqueo-badge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 uppercase">
+                            Estado: CRÍTICO
+                        </span>
+                    </div>
+                    <p id="modal-bloqueo-motivo" class="text-slate-300 text-xs leading-relaxed">
+                        Estrés hídrico detectado (Anomalía SAR). Riesgo de incendio.
+                    </p>
+                </div>
+
+                <!-- Marco Educativo / Por qué no pisar -->
+                <div class="bg-amber-950/30 border border-amber-500/30 rounded-xl p-3.5 space-y-1.5 text-amber-200">
+                    <div class="flex items-center gap-2 font-bold text-xs text-amber-300">
+                        <svg class="w-4 h-4 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span data-i18n="modal_bloqueo_pregunta">¿Por qué se activa este bloqueo?</span>
+                    </div>
+                    <p data-i18n="modal_bloqueo_explicacion" class="text-[11px] leading-relaxed text-amber-100/90">
+                        Los turbales son esponjas milenarias que retienen el agua de Ushuaia y capturan carbono vital. Durante períodos de sequía extrema detectados por radar satelital Sentinel-1 SAR, la pisada compacta el musgo Sphagnum destruyendo su estructura e incrementa drásticamente el riesgo de incendios subterráneos.
+                    </p>
+                </div>
+
+                <!-- Desvío a alternativas seguras -->
+                <div class="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center gap-2 font-bold text-xs text-emerald-300">
+                        <svg class="w-4 h-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <span data-i18n="modal_bloqueo_alternativa_lbl">Ruta Alternativa Segura Sugerida</span>
+                    </div>
+                    <p data-i18n="modal_bloqueo_alternativa_desc" class="text-[11px] text-emerald-100/80">
+                        Te sugerimos redirigir tu expedición hacia senderos con pasarelas habilitadas y monitoreo permanente:
+                    </p>
+                    <button id="btn-bloqueo-ruta-alternativa" type="button" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                        <span data-i18n="modal_bloqueo_btn_alternativa">🧭 Desviarse a Sendero Seguro Habilitado</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pie del Modal -->
+            <div class="bg-slate-950 px-5 sm:px-6 py-3.5 border-t border-slate-800 flex items-center justify-between gap-3">
+                <span class="text-[10px] text-slate-500 font-mono">IDETDF · Copernicus Sentinel-1 SAR</span>
+                <button id="btn-cerrar-modal-bloqueo" type="button" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition cursor-pointer" data-i18n="modal_bloqueo_btn_entendido">
+                    Entendido, respetar restricción
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="./js/storage.js"></script>
     <script src="./js/app.js"></script>
 
-    <!-- Registro de Service Worker PWA (Deshabilitado temporalmente durante el desarrollo) -->
-    <!--
+    <!-- Registro de Service Worker PWA -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1083,7 +1176,6 @@
             });
         }
     </script>
-    -->
 </body>
 
 </html>

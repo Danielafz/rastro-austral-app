@@ -427,7 +427,6 @@ function obtenerFoneticaHito(hito) {
 
 document.addEventListener("DOMContentLoaded", async () => {
     configurarPantallaBienvenida();
-    configurarConmutadorTema();
     inicializarMapa();
     await Promise.all([cargarDatos(), cargarDatosObservatorio()]);
     configurarFiltros();
@@ -731,16 +730,16 @@ function renderizarMarcadores(anunciarResultados = false) {
         marcador.bindPopup(`
           <div class="space-y-1 text-xs">
             ${hito.selloIdentidad ? `
-              <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300 text-[9px] font-bold">
+              <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 text-[9px] font-bold">
                 <svg class="w-2.5 h-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z"/>
                 </svg>
                 <span>${t.sello_identidad_fueguina}</span>
               </div>
             ` : ''}
-            <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-tight">${nombre}</h4>
+            <h4 class="font-bold text-xs text-slate-900 leading-tight">${nombre}</h4>
             <p class="text-[10px] text-slate-500 font-mono truncate">${t.toponimia} ${hito.toponimia}</p>
-            <div class="text-[10px] text-slate-400 pt-0.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div class="text-[10px] text-slate-400 pt-0.5 border-t border-slate-100 flex items-center justify-between">
               <span>${hito.localidad}</span>
               <span class="capitalize text-orange-600 font-medium">${hito.categoria.replace('_', ' ')}</span>
             </div>
@@ -833,13 +832,13 @@ function renderizarListaHitosCompacta() {
     // Si por defecto no hay hito seleccionado, mostrar mensaje de invitación
     if (!hitoSeleccionadoId) {
         contenedor.innerHTML = `
-          <div class="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/40">
+          <div class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
             <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
-            <p class="font-bold text-slate-700 dark:text-slate-200 text-sm" data-i18n="selecciona_punto_mapa">${idiomaActual === "en" ? "Select a point on the map" : "Selecciona un punto en el mapa"}</p>
-            <p class="text-[11px] text-slate-400 dark:text-slate-500" data-i18n="toca_marcador_desc">${idiomaActual === "en" ? "Tap any marker to view its details here" : "Toca cualquier marcador para ver su ficha territorial"}</p>
+            <p class="font-bold text-slate-700 text-sm" data-i18n="selecciona_punto_mapa">${idiomaActual === "en" ? "Select a point on the map" : "Selecciona un punto en el mapa"}</p>
+            <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">${idiomaActual === "en" ? "Tap any marker to view its details here" : "Toca cualquier marcador para ver su ficha territorial"}</p>
           </div>
         `;
         return;
@@ -856,20 +855,20 @@ function renderizarListaHitosCompacta() {
 
     contenedor.innerHTML = `
       <!-- Tarjeta del Hito Seleccionado -->
-      <div class="hito-card flex items-center p-3 mb-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-orange-500 ring-1 ring-orange-500 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all" data-id="${data.id}">
+      <div class="hito-card flex items-center p-3 mb-2 bg-white rounded-xl shadow-sm border border-orange-500 ring-1 ring-orange-500 cursor-pointer hover:bg-slate-50 transition-all" data-id="${data.id}">
         <!-- Miniatura cuadrada -->
-        <img src="${data.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100 dark:bg-slate-800">
+        <img src="${data.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100">
         
         <!-- Info rápida -->
         <div class="ml-3 flex-grow overflow-hidden">
           <div class="flex items-center gap-1.5">
-            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">${nombre}</h3>
+            <h3 class="text-sm font-bold text-slate-800 truncate">${nombre}</h3>
             ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
           </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${data.toponimia}</p>
+          <p class="text-xs text-slate-500 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${data.toponimia}</p>
           <div class="flex items-center gap-1.5 mt-1.5">
-            <span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
-            <span class="text-[10px] text-slate-400 dark:text-slate-500">${data.localidad}</span>
+            <span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
+            <span class="text-[10px] text-slate-400">${data.localidad}</span>
           </div>
         </div>
         
@@ -927,7 +926,7 @@ function abrirDetalleHito(id) {
             ? data.rubroCreativo_en
             : (data.rubroCreativo || (data.categoria ? data.categoria.replace('_', ' ') : ''));
         const etiEl = document.getElementById('detalle-etiquetas');
-        if (etiEl) etiEl.innerHTML = `<span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-xs px-2 py-0.5 rounded font-bold uppercase">${categoriaTexto}</span>`;
+        if (etiEl) etiEl.innerHTML = `<span class="bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded font-bold uppercase">${categoriaTexto}</span>`;
 
         const desEl = document.getElementById('detalle-descripcion');
         if (desEl) desEl.textContent = (idiomaActual === "en" && data.descripcion_en) ? data.descripcion_en : (data.descripcion || '');
@@ -1022,7 +1021,7 @@ function mostrarDetalleHito(hito) {
     }
 
     panel.innerHTML = `
-    <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-sm">
+    <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
       <!-- Tarjeta Fotográfica de Cabecera (respeta el border-radius superior) -->
       <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
         <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-full h-full object-cover">
@@ -1049,14 +1048,14 @@ function mostrarDetalleHito(hito) {
                 </span>
               ` : ''}
             </div>
-            <h3 class="text-base font-bold text-slate-900 dark:text-white leading-snug">${nombre}</h3>
-            <p class="text-xs text-amber-700 dark:text-amber-300/90 font-mono">${t.toponimia} ${hito.toponimia}</p>
+            <h3 class="text-base font-bold text-slate-900 leading-snug">${nombre}</h3>
+            <p class="text-xs text-amber-700 font-mono">${t.toponimia} ${hito.toponimia}</p>
           </div>
 
           <!-- Botones de acción (Narrar relato accesible y Compartir) -->
           <div class="flex items-center gap-1.5 flex-shrink-0 pt-0.5">
             <button id="btn-copiar-ficha" type="button"
-                    class="btn-accion-icono w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition shadow-sm"
+                    class="btn-accion-icono w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 hover:text-slate-900 border border-slate-200 transition shadow-sm"
                     title="${idiomaActual === 'en' ? 'Copy site summary' : 'Compartir / Copiar resumen del sitio'}"
                     aria-label="${idiomaActual === 'en' ? 'Copy site summary to clipboard' : 'Copiar resumen de este hito al portapapeles'}">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1069,9 +1068,9 @@ function mostrarDetalleHito(hito) {
         <!-- Botón accesible Text-to-Speech + Fonética Originaria -->
         <div class="flex flex-wrap items-center gap-2">
           <button id="btn-narrar-hito" type="button" aria-pressed="false"
-                  class="btn-narracion-accesible flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 text-xs font-semibold hover:bg-orange-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                  class="btn-narracion-accesible flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 text-xs font-semibold hover:bg-orange-100 transition-colors cursor-pointer"
                   aria-label="${idiomaActual === 'en' ? 'Listen to description and conservation recommendations for this site' : 'Escuchar descripción y recomendaciones de conservación de este hito'}">
-            <svg class="w-4 h-4 text-orange-600 dark:text-orange-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
@@ -1080,7 +1079,7 @@ function mostrarDetalleHito(hito) {
           </button>
           ${fonetica ? `
             <button id="btn-fonetica-hito" type="button"
-                    class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-semibold transition-colors cursor-pointer"
+                    class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 border border-amber-500/30 text-xs font-semibold transition-colors cursor-pointer"
                     aria-label="${idiomaActual === 'en' ? `Pronounce ${fonetica.lengua} term ${fonetica.termino}` : `Pronunciar término ${fonetica.lengua} ${fonetica.termino}`}">
               <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -1096,16 +1095,16 @@ function mostrarDetalleHito(hito) {
         ${fonetica ? `
           <div class="modulo-fonetica-originaria p-2.5 rounded-xl bg-amber-950/25 border border-amber-500/25 text-[11px] space-y-1">
             <div class="flex items-center justify-between gap-2">
-              <span class="font-bold text-amber-700 dark:text-amber-300">${t.fonetica_titulo} · ${fonetica.termino}</span>
-              <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-200 text-[10px] font-bold">${fonetica.lengua}</span>
+              <span class="font-bold text-amber-700">${t.fonetica_titulo} · ${fonetica.termino}</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold">${fonetica.lengua}</span>
             </div>
-            <p class="text-slate-600 dark:text-slate-300 leading-snug">
-              <span class="font-mono text-amber-700 dark:text-amber-300">${fonetica.silabas}</span> — ${foneticaSignificado}
+            <p class="text-slate-600 leading-snug">
+              <span class="font-mono text-amber-700">${fonetica.silabas}</span> — ${foneticaSignificado}
             </p>
           </div>
         ` : ''}
 
-        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-2.5">
+        <p class="text-xs text-slate-700 leading-relaxed border-t border-slate-200 pt-2.5">
           ${descripcion}
         </p>
 
@@ -1182,14 +1181,11 @@ function mostrarDetalleHito(hito) {
 
         <div class="pt-1 flex flex-col sm:flex-row gap-2">
           <button id="btn-toggle-visita" 
-                  class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 ${esVisitado
-                ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                : 'bg-amber-600 hover:bg-amber-500 active:scale-95 text-white'
-            }">
+                  class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 ${esVisitado ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-amber-600 hover:bg-amber-500 active:scale-95 text-white' }">
             <span>${esVisitado ? t.btn_quitar : t.btn_marcar}</span>
           </button>
           <button id="btn-ir-al-mapa-desde-ficha" type="button"
-                  class="py-2.5 px-4 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+                  class="py-2.5 px-4 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
             <span>🗺️</span>
             <span>${idiomaActual === 'en' ? 'Locate on Map' : 'Ver en el Mapa'}</span>
           </button>
@@ -1594,12 +1590,7 @@ function renderizarInsignias() {
         return `
       <div data-id="${hito.id}" 
            title="${nombre} (${hito.localidad}) - ${t.tocar_explorar}"
-           class="badge-stamp flex-shrink-0 flex flex-col items-center justify-between p-2 rounded-xl border transition-all cursor-pointer ${
-             seleccionado ? 'ring-2 ring-amber-400 border-amber-400 bg-amber-500/20 shadow-md scale-105' : ''
-           } ${desbloqueado
-                ? 'bg-amber-500/10 border-amber-500/40 text-amber-500 dark:text-amber-300 desbloqueado'
-                : 'bg-slate-100 dark:bg-slate-800/90 border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bloqueado'
-            }" style="min-width: 78px;">
+           class="badge-stamp flex-shrink-0 flex flex-col items-center justify-between p-2 rounded-xl border transition-all cursor-pointer ${ seleccionado ? 'ring-2 ring-amber-400 border-amber-400 bg-amber-500/20 shadow-md scale-105' : '' } ${desbloqueado ? 'bg-amber-500/10 border-amber-500/40 text-amber-500 desbloqueado' : 'bg-slate-100 border-slate-200 text-slate-400 hover:text-slate-600 bloqueado' }" style="min-width: 78px;">
         <div class="flex items-center justify-center w-7 h-7 my-0.5">${obtenerIconoSello(hito, desbloqueado)}</div>
         <span class="text-[10px] font-bold mt-1 truncate max-w-[70px] leading-tight">${hito.localidad}</span>
       </div>
@@ -1646,7 +1637,7 @@ function actualizarMetricas() {
 function configurarFiltros() {
     const botones = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
     const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm";
-    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
+    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100  text-slate-600  hover:bg-slate-200  px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
 
     botones.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1808,7 +1799,7 @@ function configurarSelectorLocalidades() {
             }
 
             botones.forEach(b => {
-                b.className = "btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
+                b.className = "btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
             });
 
             btn.className = "btn-vista flex-1 flex items-center justify-center gap-1 bg-orange-500 text-white py-1.5 px-1 font-bold active cursor-pointer";
@@ -1831,7 +1822,7 @@ function configurarSelectorCapasBase() {
         capaBaseActiva = "estandar";
 
         btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
-        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
+        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
     });
 
     btnRelieve.addEventListener("click", () => {
@@ -1842,7 +1833,7 @@ function configurarSelectorCapasBase() {
         capaBaseActiva = "relieve";
 
         btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
-        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
+        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
     });
 }
 
@@ -1956,7 +1947,7 @@ async function configurarCapaAreasProtegidas() {
                 btn.className = "btn-capa-areas active flex-1 flex items-center justify-center py-1.5 px-1 bg-emerald-600 text-white font-bold cursor-pointer";
             } else {
                 mapa.removeLayer(capaAreasProtegidas);
-                btn.className = "btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 dark:text-emerald-400 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
+                btn.className = "btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 font-semibold hover:bg-slate-50 cursor-pointer";
             }
         });
     } catch (error) {
@@ -2052,7 +2043,7 @@ async function configurarCapaAlertasSAR() {
                     : (idiomaActual === "en" ? "NORMAL MOISTURE" : "HUMEDAD ESTABLE");
 
                 layer.bindTooltip(`
-                    <div class="text-xs font-semibold flex items-center gap-1.5 ${esCritico ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-emerald-600 dark:text-emerald-400'}">
+                    <div class="text-xs font-semibold flex items-center gap-1.5 ${esCritico ? 'text-rose-600 font-bold' : 'text-emerald-600 '}">
                         <span>${iconoBadge}</span>
                         <span>${nombre} (${textoEstado})</span>
                     </div>
@@ -2097,7 +2088,7 @@ async function configurarCapaAlertasSAR() {
                     btn.className = "btn-capa-alertas active flex-1 flex items-center justify-center gap-1 py-1.5 px-1 bg-red-600 text-white font-bold hover:bg-red-700 cursor-pointer";
                 } else {
                     mapa.removeLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas flex-1 flex items-center justify-center gap-1 py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer";
+                    btn.className = "btn-capa-alertas flex-1 flex items-center justify-center gap-1 py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
                 }
             });
         }
@@ -2179,7 +2170,7 @@ function actualizarTextosUI() {
         if (clave.startsWith("principio_") && texto.includes(":")) {
             const sepIdx = texto.indexOf(":");
             const strongEl = document.createElement("strong");
-            strongEl.className = "text-slate-900 dark:text-slate-100";
+            strongEl.className = "text-slate-900";
             strongEl.textContent = texto.slice(0, sepIdx + 1);
             el.replaceChildren(strongEl, document.createTextNode(texto.slice(sepIdx + 1)));
         } else {
@@ -2239,19 +2230,12 @@ function actualizarTextosUI() {
     if (btnBienvenidaEs && btnBienvenidaEn) {
         if (idiomaActual === "es") {
             btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white";
-            btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition";
+            btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
         } else {
-            btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition";
+            btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
             btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white";
         }
     }
-
-    const btnTemaHeader = document.getElementById("btn-toggle-tema");
-    const btnTemaBienvenida = document.getElementById("btn-tema-bienvenida");
-    const esOscuro = document.documentElement.classList.contains("dark");
-    const textoTema = esOscuro ? (t.tema_modo_claro || "Cambiar a Modo Claro") : (t.tema_modo_oscuro || "Cambiar a Modo Oscuro");
-    if (btnTemaHeader) btnTemaHeader.setAttribute("title", textoTema);
-    if (btnTemaBienvenida) btnTemaBienvenida.setAttribute("title", textoTema);
 
     const btnGeoloc = document.getElementById("btn-geolocalizacion");
     if (btnGeoloc && t.geoloc_titulo) btnGeoloc.setAttribute("title", t.geoloc_titulo);
@@ -2486,7 +2470,7 @@ function cambiarPestanaSidebar(pestana) {
     const vistaDetalleFull = document.getElementById("modal-detalle-hito") || document.getElementById("vista-detalle-hito-full");
 
     const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm cursor-pointer";
-    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer";
+    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600  hover:text-slate-900  cursor-pointer";
 
     // Gestionar Overlays a Pantalla Completa
     if (pestana === "explorar") {
@@ -2545,7 +2529,7 @@ function cambiarPestanaSidebar(pestana) {
     if (badgeSellos) {
         badgeSellos.className = pestana === "pasaporte"
             ? "px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-white/20 text-white leading-none"
-            : "px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none";
+            : "px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700  leading-none";
     }
 
     if (pestana === "pasaporte") {
@@ -2861,22 +2845,17 @@ function renderizarSellosSidebar() {
 
         return `
             <div data-id="${hito.id}"
-                 class="badge-stamp p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col items-center text-center justify-between min-h-[105px] ${
-                    seleccionado ? 'ring-2 ring-amber-400 border-amber-400 bg-amber-500/20' : ''
-                 } ${desbloqueado
-                    ? 'bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/40 text-amber-600 dark:text-amber-300 desbloqueado shadow-sm'
-                    : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 hover:border-slate-300 dark:hover:border-slate-700 bloqueado'
-                 }">
+                 class="badge-stamp p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col items-center text-center justify-between min-h-[105px] ${ seleccionado ? 'ring-2 ring-amber-400 border-amber-400 bg-amber-500/20' : '' } ${desbloqueado ? 'bg-amber-500/10 border-amber-500/40 text-amber-600 desbloqueado shadow-sm' : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300 bloqueado' }">
                 <div class="w-8 h-8 flex items-center justify-center my-0.5">${obtenerIconoSello(hito, desbloqueado)}</div>
                 <div class="w-full">
                     <span class="text-[9px] font-bold uppercase tracking-wider block truncate" style="color: ${color};">
                         ${hito.localidad}
                     </span>
-                    <h5 class="text-[11px] font-bold line-clamp-2 leading-tight text-slate-800 dark:text-slate-200 mt-0.5" title="${nombre}">
+                    <h5 class="text-[11px] font-bold line-clamp-2 leading-tight text-slate-800 mt-0.5" title="${nombre}">
                         ${nombre}
                     </h5>
                 </div>
-                <span class="text-[9px] font-semibold mt-1 ${desbloqueado ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}">
+                <span class="text-[9px] font-semibold mt-1 ${desbloqueado ? 'text-emerald-600 ' : 'text-slate-400 '}">
                     ${desbloqueado ? '✓ ' + (t.estado_visitado || 'Registrado') : (t.estado_por_explorar || 'Por explorar')}
                 </span>
             </div>
@@ -3107,9 +3086,7 @@ function renderizarModalPasaporte() {
 
         return `
             <div data-id="${hito.id}"
-                 class="tarjeta-pasaporte-item tarjeta-pasaporte flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[96px] pb-3 ${
-                     visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75'
-                 } relative overflow-hidden group shadow-lg">
+                 class="tarjeta-pasaporte-item tarjeta-pasaporte flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[96px] pb-3 ${ visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75' } relative overflow-hidden group shadow-lg">
                 
                 <!-- Borde de categoría -->
                 <div class="absolute top-0 left-0 right-0 h-1" style="background-color: ${color};"></div>
@@ -3124,18 +3101,18 @@ function renderizarModalPasaporte() {
                     </div>
 
                     <div>
-                        <h4 class="text-xs font-bold leading-snug line-clamp-2 text-slate-800 dark:text-slate-100 group-hover:text-amber-500 dark:group-hover:text-amber-300 pb-1 mt-1 break-words transition-colors" title="${nombre}">
+                        <h4 class="text-xs font-bold leading-snug line-clamp-2 text-slate-800 group-hover:text-amber-500 pb-1 mt-1 break-words transition-colors" title="${nombre}">
                             ${nombre}
                         </h4>
-                        <p class="text-[11px] text-amber-500 dark:text-amber-300/80 font-mono">${t.toponimia} ${hito.toponimia}</p>
+                        <p class="text-[11px] text-amber-500 font-mono">${t.toponimia} ${hito.toponimia}</p>
                     </div>
 
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between gap-1.5 pt-1 border-t border-slate-200 dark:border-slate-800/80">
+                    <div class="text-[10px] text-slate-500 flex items-center justify-between gap-1.5 pt-1 border-t border-slate-200">
                         <span class="flex items-center gap-1.5">
                             ${obtenerIconoFragilidadHoja("w-3.5 h-3.5")}
                             <span>${t.fragilidad}</span>
                         </span>
-                        <span class="font-semibold ${fragilidad === 'Muy Alta' || fragilidad === 'Alta' || fragilidad === 'Very High' || fragilidad === 'High' ? 'text-rose-500 dark:text-rose-400' : 'text-amber-500 dark:text-amber-400'}">
+                        <span class="font-semibold ${fragilidad === 'Muy Alta' || fragilidad === 'Alta' || fragilidad === 'Very High' || fragilidad === 'High' ? 'text-rose-500 ' : 'text-amber-500 '}">
                             ${fragilidad}
                         </span>
                     </div>
@@ -3143,17 +3120,17 @@ function renderizarModalPasaporte() {
                     <!-- Estado y Nota de campo -->
                     <div class="pt-1.5 text-[11px]">
                         ${visitado ? `
-                            <span class="text-emerald-500 dark:text-emerald-400 font-bold block mb-1">${t.estado_visitado}</span>
-                            <div class="bg-slate-100 dark:bg-slate-900/90 rounded-lg p-2 border border-slate-200 dark:border-slate-800 text-[10px] text-slate-700 dark:text-slate-300 italic overflow-y-auto">
-                                ${nota ? `"${nota}"` : `<span class="text-slate-400 dark:text-slate-500 not-italic">${t.sin_notas}</span>`}
+                            <span class="text-emerald-500 font-bold block mb-1">${t.estado_visitado}</span>
+                            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-[10px] text-slate-700 italic overflow-y-auto">
+                                ${nota ? `"${nota}"` : `<span class="text-slate-400 not-italic">${t.sin_notas}</span>`}
                             </div>
                         ` : `
-                            <span class="text-slate-400 dark:text-slate-500 font-medium block">${t.estado_por_explorar}</span>
+                            <span class="text-slate-400 font-medium block">${t.estado_por_explorar}</span>
                         `}
                     </div>
                 </div>
 
-                <div class="mt-3 pt-2 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-[10px] text-amber-500 dark:text-amber-400/80 font-medium">
+                <div class="mt-3 pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] text-amber-500 font-medium">
                     <span>${visitado ? t.tocar_explorar : t.estado_por_explorar}</span>
                     <span>→</span>
                 </div>
@@ -3452,76 +3429,6 @@ function configurarPantallaBienvenida() {
                 inputNombre.setSelectionRange(len, len);
             }
         });
-    }
-}
-
-
-// Configuración y alternancia del tema claro / oscuro (Light / Dark mode)
-function configurarConmutadorTema() {
-    const btnTemaHeader = document.getElementById("btn-toggle-tema");
-    const btnTemaBienvenida = document.getElementById("btn-tema-bienvenida");
-    const iconosTema = document.querySelectorAll(".icono-tema-dinamico, #icono-tema");
-    const html = document.documentElement;
-
-    const temaGuardado = typeof obtenerTema === "function"
-        ? obtenerTema()
-        : (localStorage.getItem("rastro_austral_tema") || "dark");
-
-    function aplicarTema(tema) {
-        const esOscuro = tema === "dark";
-        const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
-        const textoTitulo = esOscuro
-            ? (t.tema_modo_claro || "Cambiar a Modo Claro")
-            : (t.tema_modo_oscuro || "Cambiar a Modo Oscuro");
-        const iconoSvg = esOscuro
-            ? `<svg viewBox="0 0 24 24" class="icono-bitacora"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
-            : `<svg viewBox="0 0 24 24" class="icono-bitacora"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-
-        if (esOscuro) {
-            html.classList.add("dark");
-        } else {
-            html.classList.remove("dark");
-        }
-
-        iconosTema.forEach(ic => {
-            ic.innerHTML = iconoSvg;
-        });
-
-        if (btnTemaHeader) {
-            btnTemaHeader.setAttribute("title", textoTitulo);
-        }
-        if (btnTemaBienvenida) {
-            btnTemaBienvenida.setAttribute("title", textoTitulo);
-        }
-    }
-
-    aplicarTema(temaGuardado);
-
-    function alternarTema() {
-        const esOscuro = html.classList.contains("dark");
-        const nuevoTema = esOscuro ? "light" : "dark";
-        aplicarTema(nuevoTema);
-        if (typeof guardarTema === "function") {
-            guardarTema(nuevoTema);
-        } else {
-            localStorage.setItem("rastro_austral_tema", nuevoTema);
-        }
-        const vistaObs = document.getElementById("vista-observatorio-full") || document.getElementById("vista-tab-observatorio");
-        if (vistaObs && !vistaObs.classList.contains("hidden") && typeof renderizarGraficosObservatorio === "function") {
-            renderizarGraficosObservatorio();
-        }
-        anunciarAccesibilidad(
-            nuevoTema === "dark"
-                ? (idiomaActual === "en" ? "Dark mode enabled." : "Modo oscuro activado.")
-                : (idiomaActual === "en" ? "Light mode enabled." : "Modo claro activado.")
-        );
-    }
-
-    if (btnTemaHeader) {
-        btnTemaHeader.addEventListener("click", alternarTema);
-    }
-    if (btnTemaBienvenida) {
-        btnTemaBienvenida.addEventListener("click", alternarTema);
     }
 }
 

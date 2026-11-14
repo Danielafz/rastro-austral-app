@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="bg-slate-950 text-slate-100 flex flex-col h-screen overflow-hidden font-sans">
+<body class="bg-slate-50 text-slate-800 flex flex-col h-screen overflow-hidden font-sans">
 
   <!-- Enlace de salto directo accesible (Skip Link) -->
   <a href="#panel-lateral"
@@ -49,9 +49,9 @@
 
   <!-- Pantalla de Bienvenida / Ingreso -->
   <div id="pantalla-bienvenida"
-    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-slate-900/75 dark:bg-slate-950/95 backdrop-blur-md transition-opacity duration-700">
+    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-slate-950/95 backdrop-blur-md transition-opacity duration-700">
     <div
-      class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-8 max-w-md w-full my-auto shadow-2xl text-center flex flex-col items-center">
+      class="relative bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-5 sm:p-8 max-w-md w-full my-auto shadow-2xl text-center flex flex-col items-center">
       <!-- Capa ambiental de nieve/escarcha austral con paralaje -->
       <div id="capa-nieve-austral" class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl z-0"
         aria-hidden="true">
@@ -67,25 +67,12 @@
       <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10">
         <!-- Conmutador de Idioma en Bienvenida -->
         <div
-          class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-300 dark:border-slate-700 text-xs shadow-sm">
+          class="flex items-center bg-slate-800 rounded-xl p-1 border border-slate-700 text-xs shadow-sm">
           <button type="button" id="btn-bienvenida-lang-es"
             class="px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white">ES</button>
           <button type="button" id="btn-bienvenida-lang-en"
-            class="px-2 py-0.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">EN</button>
+            class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">EN</button>
         </div>
-
-        <!-- Botón de Alternar Modo Claro / Oscuro en Bienvenida -->
-        <button id="btn-tema-bienvenida" type="button"
-          class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition border border-slate-300 dark:border-slate-700 text-sm shadow-sm flex items-center justify-center"
-          title="Cambiar tema" data-i18n-title="tema_titulo" aria-label="Alternar tema claro y oscuro">
-          <span class="icono-tema-dinamico flex items-center justify-center">
-            <svg viewBox="0 0 24 24" class="icono-bitacora">
-              <circle cx="12" cy="12" r="4" />
-              <path
-                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-          </span>
-        </button>
       </div>
 
       <!-- Contenedor del Pingüino Rey Fueguino con halo, burbuja de diálogo e interactividad -->
@@ -395,22 +382,22 @@
         </div>
       </div>
 
-      <h1 class="relative z-10 text-2xl font-black text-amber-500 dark:text-amber-400 tracking-tight mb-1"
+      <h1 class="relative z-10 text-2xl font-black text-amber-400 tracking-tight mb-1"
         id="bienvenida-titulo" data-i18n="bienvenida_titulo">Bienvenido a Rastro Austral</h1>
-      <p class="relative z-10 text-xs text-slate-600 dark:text-slate-400 mb-6 max-w-xs" id="bienvenida-subtitulo"
+      <p class="relative z-10 text-xs text-slate-400 mb-6 max-w-xs" id="bienvenida-subtitulo"
         data-i18n="bienvenida_subtitulo">Atlas y Diario de Exploración Territorial de Tierra del Fuego</p>
 
       <!-- Formulario de Ingreso -->
       <form id="form-bienvenida" class="relative z-10 w-full space-y-4">
         <div class="text-left">
           <label for="input-nombre-explorador"
-            class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1"
+            class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1"
             id="lbl-nombre-explorador" data-i18n="lbl_nombre_explorador">
             Nombre del Expedicionario / Exploradora
           </label>
           <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required
             autocomplete="off"
-            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
         </div>
         <button type="submit" id="btn-ingresar-app"
           class="w-full bg-amber-600 hover:bg-amber-500 active:scale-95 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">
@@ -472,28 +459,15 @@
         <button id="btn-lang-en" type="button" aria-label="Cambiar idioma a inglés"
           class="px-2 sm:px-2.5 py-1 rounded-md transition text-slate-400 hover:text-white">EN</button>
       </div>
-
-      <!-- Conmutador de Tema (Claro / Oscuro) -->
-      <button id="btn-toggle-tema" type="button"
-        class="bg-slate-800/80 hover:bg-slate-700/80 text-amber-400 px-2 sm:px-2.5 py-1.5 rounded-lg border border-slate-700/80 shadow-sm transition flex items-center justify-center text-xs"
-        title="Cambiar a Modo Claro" data-i18n-title="tema_titulo" aria-label="Alternar entre modo claro y modo oscuro">
-        <span id="icono-tema" class="flex items-center justify-center">
-          <svg viewBox="0 0 24 24" class="icono-bitacora">
-            <circle cx="12" cy="12" r="4" />
-            <path
-              d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-          </svg>
-        </span>
-      </button>
     </div>
   </header>
 
   <!-- Encabezado de Estado (Optimizado para Móviles) -->
   <div id="banner-modo-offline" role="status" aria-live="polite"
-    class="flex items-center justify-between px-2 py-2 sm:px-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs md:text-sm shadow-sm z-[20] relative flex-shrink-0">
+    class="flex items-center justify-between px-2 py-2 sm:px-4 bg-white border-b border-slate-200 text-xs md:text-sm shadow-sm z-[20] relative flex-shrink-0">
 
     <!-- Estado de Sincronización -->
-    <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium whitespace-nowrap overflow-hidden">
+    <div class="flex items-center gap-1.5 text-emerald-600 font-medium whitespace-nowrap overflow-hidden">
       <div id="indicador-estado-red" class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" aria-hidden="true"></div>
       <!-- En móviles mostramos un texto corto, en desktop el texto completo -->
       <span class="truncate">
@@ -504,7 +478,7 @@
 
     <!-- Botón de Guardar Fichas -->
     <button id="btn-guardar-offline" type="button"
-      class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/40 dark:hover:bg-orange-900/40 text-orange-700 dark:text-orange-400 font-bold rounded-lg border border-orange-200 dark:border-orange-800/60 transition-colors shrink-0 cursor-pointer text-xs"
+      class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold rounded-lg border border-orange-200 transition-colors shrink-0 cursor-pointer text-xs"
       title="Descarga local de fichas territoriales"
       aria-label="Guardar fichas territoriales y pautas ambientales para expedición sin conexión">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -519,11 +493,11 @@
 
   <!-- Contenedor Principal (Dashboard Layout) -->
   <div id="app-container"
-    class="flex flex-col md:flex-row flex-1 h-[calc(100vh-100px)] md:h-full w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
+    class="flex flex-col md:flex-row flex-1 h-[calc(100vh-100px)] md:h-full w-full overflow-hidden bg-slate-50">
 
     <!-- Panel Lateral (Filtros, Bitácora, Observatorio) -->
     <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
-      class="w-full md:w-1/3 lg:w-1/4 h-[55vh] md:h-full bg-white dark:bg-slate-900 border-t md:border-t-0 md:border-r border-slate-200 dark:border-slate-800 shadow-xl z-[40] flex flex-col order-2 md:order-1 transition-all overflow-hidden">
+      class="w-full md:w-1/3 lg:w-1/4 h-[55vh] md:h-full bg-white border-t md:border-t-0 md:border-r border-slate-200 shadow-xl z-[40] flex flex-col order-2 md:order-1 transition-all overflow-hidden">
 
       <!-- Tirador visual del Bottom Sheet en Mobile -->
       <div id="bottom-sheet-drag-handle" role="button" tabindex="0" aria-label="Expandir o contraer panel"
@@ -531,9 +505,9 @@
 
       <!-- Navegación por Pestañas del Panel (Segmented Control 3 pestañas) -->
       <div
-        class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 flex items-center gap-1.5 flex-shrink-0">
+        class="border-b border-slate-200 bg-slate-50 p-2 flex items-center gap-1.5 flex-shrink-0">
         <div role="tablist" aria-label="Secciones del panel lateral"
-          class="tabs-contenedor flex-1 p-1 bg-slate-200/80 dark:bg-slate-800 rounded-xl grid grid-cols-3 gap-1">
+          class="tabs-contenedor flex-1 p-1 bg-slate-200/80 rounded-xl grid grid-cols-3 gap-1">
           <!-- Pestaña 1: Hitos / Explorador -->
           <button id="tab-btn-explorar" type="button" role="tab" aria-selected="true"
             aria-controls="vista-tab-explorar"
@@ -549,7 +523,7 @@
           <!-- Pestaña 2: Bitácora con Badge numérico -->
           <button id="tab-btn-pasaporte" type="button" role="tab" aria-selected="false"
             aria-controls="vista-bitacora-full"
-            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer">
             <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -557,13 +531,13 @@
             </svg>
             <span data-i18n="tab_pasaporte" class="whitespace-nowrap truncate font-bold">Bitácora</span>
             <span id="tab-badge-sellos"
-              class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none">0/19</span>
+              class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 leading-none">0/19</span>
           </button>
 
           <!-- Pestaña 3: Observatorio (Ciencia de Datos Cívica) -->
           <button id="tab-btn-observatorio" type="button" role="tab" aria-selected="false"
             aria-controls="vista-observatorio-full"
-            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900 cursor-pointer">
             <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M3 3v18h18" />
@@ -573,7 +547,7 @@
           </button>
         </div>
         <button id="btn-cerrar-panel-mobile" type="button" aria-label="Contraer panel en vista móvil"
-          class="md:hidden text-slate-400 hover:text-slate-600 dark:hover:text-white p-1.5 text-sm leading-none flex-shrink-0 cursor-pointer"
+          class="md:hidden text-slate-400 hover:text-slate-600 p-1.5 text-sm leading-none flex-shrink-0 cursor-pointer"
           title="Contraer panel">✕</button>
       </div>
 
@@ -582,7 +556,7 @@
         class="flex-1 flex-grow min-h-0 overflow-y-auto px-4 py-3 space-y-3 custom-scrollbar">
 
         <!-- Encabezado de Filtros -->
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100 flex-shrink-0">
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-800 flex-shrink-0">
           <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" aria-hidden="true">
             <line x1="4" y1="21" x2="4" y2="14" />
@@ -602,36 +576,36 @@
         <div class="relative flex-shrink-0">
           <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa"
             placeholder="Buscar por nombre, localidad o toponimia..."
-            class="w-full py-2 pl-8 pr-7 text-xs rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm transition">
+            class="w-full py-2 pl-8 pr-7 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm transition">
           <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda"
-            class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold cursor-pointer"
+            class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
             title="Limpiar búsqueda">✕</button>
         </div>
 
         <!-- Subfiltros de Hitos (Compactos y deslizables) -->
-        <div class="flex flex-nowrap overflow-x-auto hide-scrollbar gap-2 mb-3 pb-1 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
+        <div class="flex flex-nowrap overflow-x-auto hide-scrollbar gap-2 mb-3 pb-1 border-b border-slate-200 flex-shrink-0">
           <button type="button"
             class="filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm"
             data-cat="todas" title="Todos">
             <span data-i18n="cat_todos">Todos</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
             data-cat="patrimonio" title="Patrimonio">
             <span data-i18n="cat_patrimonio">Patrimonio</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
             data-cat="senderos" title="Senderos">
             <span data-i18n="cat_senderos">Senderos</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
             data-cat="economia_creativa" title="Creativos">
             <span data-i18n="cat_creativos">Creativos</span>
           </button>
@@ -639,14 +613,14 @@
 
         <!-- Bloque de Sensibilidad y Estado -->
         <div
-          class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2 flex-shrink-0">
+          class="p-2 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 gap-2 flex-shrink-0">
           <div>
             <label for="filtro-fragilidad"
               class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
               SENSIBILIDAD
             </label>
             <select id="filtro-fragilidad"
-              class="w-full py-1 px-1.5 text-[11px] rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+              class="w-full py-1 px-1.5 text-[11px] rounded bg-white border border-slate-200 text-slate-700 focus:outline-none cursor-pointer">
               <option value="todas">Todos</option>
               <option value="Baja">Baja</option>
               <option value="Media">Media</option>
@@ -661,7 +635,7 @@
               ESTADO
             </label>
             <select id="filtro-estado-visita"
-              class="w-full py-1 px-1.5 text-[11px] rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+              class="w-full py-1 px-1.5 text-[11px] rounded bg-white border border-slate-200 text-slate-700 focus:outline-none cursor-pointer">
               <option value="todos">Todos</option>
               <option value="visitados">Visitados</option>
               <option value="pendientes">Pendientes</option>
@@ -671,10 +645,10 @@
 
         <!-- Tarjeta Travesía Acumulada -->
         <div id="metrica-distancia-ruta"
-          class="hidden p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+          class="hidden p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-shrink-0">
           <div class="flex items-center gap-2">
             <div
-              class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
+              class="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 aria-hidden="true">
                 <circle cx="12" cy="12" r="10" />
@@ -685,35 +659,35 @@
               <div id="lbl-recorrido-total" data-i18n="recorrido_total"
                 class="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">TRAVESÍA ACUMULADA</div>
               <div id="valor-distancia-total"
-                class="text-xs font-extrabold text-slate-900 dark:text-slate-100 font-mono leading-tight">0.0 km</div>
+                class="text-xs font-extrabold text-slate-900 font-mono leading-tight">0.0 km</div>
             </div>
           </div>
           <div class="text-right">
             <div id="lbl-tiempo-estimado" data-i18n="tiempo_estimado"
               class="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">TIEMPO ESTIMADO</div>
             <div id="valor-tiempo-estimado"
-              class="text-xs font-extrabold text-slate-900 dark:text-slate-100 font-mono leading-tight">--</div>
+              class="text-xs font-extrabold text-slate-900 font-mono leading-tight">--</div>
           </div>
         </div>
 
         <!-- Contenedor del Hito Seleccionado en Panel Lateral -->
         <div id="contenedor-hitos-lista" class="w-full space-y-2 pb-4">
-          <div class="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/40">
+          <div class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
             <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
-            <p class="font-bold text-slate-700 dark:text-slate-200 text-sm" data-i18n="selecciona_punto_mapa">Selecciona un punto en el mapa</p>
-            <p class="text-[11px] text-slate-400 dark:text-slate-500" data-i18n="toca_marcador_desc">Toca cualquier marcador para ver su ficha territorial</p>
+            <p class="font-bold text-slate-700 text-sm" data-i18n="selecciona_punto_mapa">Selecciona un punto en el mapa</p>
+            <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">Toca cualquier marcador para ver su ficha territorial</p>
           </div>
         </div>
       </div>
 
       <!-- Pie de página del Panel Lateral: Fuentes Oficiales y Licencias -->
       <div
-        class="footer-panel-legal border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-4 py-2 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
+        class="footer-panel-legal border-t border-slate-200 bg-slate-50 px-4 py-2 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
         <button id="btn-abrir-creditos" type="button"
-          class="text-left text-slate-600 dark:text-slate-400 hover:text-amber-500 text-xs transition flex items-center gap-1 font-semibold cursor-pointer"
+          class="text-left text-slate-600 hover:text-amber-500 text-xs transition flex items-center gap-1 font-semibold cursor-pointer"
           title="Fuentes oficiales, licencias y soberanía">
           <svg viewBox="0 0 24 24" class="icono-bitacora w-3.5 h-3.5 text-slate-400">
             <circle cx="12" cy="12" r="10" />
@@ -737,7 +711,7 @@
         <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Nativo) -->
         <div class="w-full pointer-events-auto relative">
           <!-- El select ocupa el 100%, es fácil de tocar y despliega el menú nativo del celular -->
-          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad" class="appearance-none w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-800 dark:text-slate-100 py-2.5 pl-3 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad" class="appearance-none w-full bg-white rounded-lg shadow-sm border border-slate-200 text-sm font-bold text-slate-800 py-2.5 pl-3 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
             <option value="todos">📍 Toda la Provincia</option>
             
             <optgroup label="Ciudades Principales">
@@ -754,23 +728,23 @@
           </select>
           
           <!-- Flecha personalizada para ocultar la fea por defecto de los navegadores -->
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 dark:text-slate-400 border-l border-slate-100 dark:border-slate-800">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 border-l border-slate-100">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
         </div>
 
         <!-- BARRA 2: CAPAS Y ALERTAS -->
         <div class="w-full pointer-events-auto">
-          <div class="flex items-center w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden text-[10px] sm:text-sm justify-between">
+          <div class="flex items-center w-full bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden text-[10px] sm:text-sm justify-between">
             <button type="button" id="btn-capa-estandar" class="btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer">
               <span data-i18n="capa_estandar">Estándar</span>
             </button>
-            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            <button type="button" id="btn-capa-relieve" class="btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+            <div class="w-px h-4 bg-slate-200 shrink-0"></div>
+            <button type="button" id="btn-capa-relieve" class="btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer">
               <span data-i18n="capa_relieve">Relieve</span>
             </button>
-            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            <button type="button" id="btn-capa-areas-protegidas" class="btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 dark:text-emerald-400 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer" title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
+            <div class="w-px h-4 bg-slate-200 shrink-0"></div>
+            <button type="button" id="btn-capa-areas-protegidas" class="btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 font-semibold hover:bg-slate-50 cursor-pointer" title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
               <span data-i18n="capa_areas_protegidas">Áreas</span>
             </button>
             <button type="button" id="btn-capa-alertas-sar" class="btn-capa-alertas active flex-1 flex items-center justify-center gap-1 py-1.5 px-1 bg-red-600 text-white font-bold hover:bg-red-700 cursor-pointer" title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
@@ -803,10 +777,10 @@
       class="bg-slate-900 border border-amber-500/30 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
       <!-- Cabecera del Pasaporte -->
       <div
-        class="modal-header bg-slate-100 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 px-4 py-3 sm:px-6 sm:py-4 flex flex-wrap items-center justify-between gap-2">
+        class="modal-header bg-slate-100 border-b border-slate-200 px-4 py-3 sm:px-6 sm:py-4 flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-3">
           <div
-            class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+            class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-600 shrink-0">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -815,10 +789,10 @@
           </div>
           <div>
             <h3 id="modal-pasaporte-titulo" data-i18n="modal_pasaporte_titulo"
-              class="titulo-modal text-base font-bold text-slate-900 dark:text-white tracking-wide">Libreta y Pasaporte
+              class="titulo-modal text-base font-bold text-slate-900 tracking-wide">Libreta y Pasaporte
               de Expedición</h3>
             <p id="modal-pasaporte-subtitulo" data-i18n="modal_pasaporte_subtitulo"
-              class="text-xs text-amber-800 dark:text-amber-300/80 font-medium">Registro de visitas territoriales,
+              class="text-xs text-amber-800 font-medium">Registro de visitas territoriales,
               estampillas y notas de campo</p>
           </div>
         </div>
@@ -835,7 +809,7 @@
             <span data-i18n="imprimir_pasaporte">Imprimir Pasaporte</span>
           </button>
           <button id="btn-cerrar-modal-pasaporte" type="button"
-            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
             title="Cerrar pasaporte" aria-label="Cerrar pasaporte">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -854,10 +828,10 @@
 
       <!-- Pie del Modal -->
       <div
-        class="pie-modal bg-slate-100 dark:bg-slate-950 px-6 py-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-600 dark:text-slate-400">
+        class="pie-modal bg-slate-100 px-6 py-3 border-t border-slate-200 flex justify-between items-center text-xs text-slate-600">
         <span data-i18n="modal_pasaporte_footer">Haz clic en un sello para ubicarlo en el mapa</span>
         <button id="btn-cerrar-modal-pasaporte-secundario"
-          class="px-3.5 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-slate-700 transition"
+          class="px-3.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg border border-slate-300 transition"
           data-i18n="cerrar">
           Cerrar
         </button>
@@ -948,12 +922,12 @@
   <div id="modal-huella" role="dialog" aria-modal="true" aria-label="Huella Consciente y Preservación"
     class="fixed inset-0 z-[700] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
     <div id="modal-huella-contenido"
-      class="p-6 bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+      class="p-6 bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 relative">
       <!-- Encabezado con icono SVG lineal -->
-      <div class="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-start justify-between pb-4 border-b border-slate-100">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+            class="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path
@@ -964,15 +938,15 @@
           </div>
           <div>
             <h3 data-i18n="modal_huella_titulo"
-              class="text-base font-bold text-slate-900 dark:text-white leading-tight">Huella Consciente & Preservación
+              class="text-base font-bold text-slate-900 leading-tight">Huella Consciente & Preservación
             </h3>
             <p data-i18n="modal_huella_subtitulo"
-              class="text-xs font-medium text-emerald-700 dark:text-emerald-400 mt-0.5">Compromiso ecológico y
+              class="text-xs font-medium text-emerald-700 mt-0.5">Compromiso ecológico y
               honorífico en el territorio fueguino</p>
           </div>
         </div>
         <button id="btn-cerrar-modal-huella" type="button"
-          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
           title="Cerrar" aria-label="Cerrar">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -984,9 +958,9 @@
 
       <!-- Tarjeta de Rango Honorífico -->
       <div
-        class="my-5 p-4 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 flex items-start gap-3.5">
+        class="my-5 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-3.5">
         <div
-          class="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0 mt-0.5">
+          class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 mt-0.5">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
@@ -995,11 +969,11 @@
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between gap-2 flex-wrap">
-            <span data-i18n="rango_guardian_titulo" class="text-sm font-bold text-amber-900 dark:text-amber-200">Rango
+            <span data-i18n="rango_guardian_titulo" class="text-sm font-bold text-amber-900">Rango
               Honorífico: Guardián Austral</span>
             <span id="badge-rango-guardian" class="badge-status-pendiente">Pendiente</span>
           </div>
-          <p id="desc-estado-guardian" class="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
+          <p id="desc-estado-guardian" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
             Registrá al menos 2 hitos de fragilidad Alta o Muy Alta en tu pasaporte para obtener el blasón de Guardián
             Austral.
           </p>
@@ -1007,8 +981,8 @@
       </div>
 
       <!-- Principios de Exploración Consciente -->
-      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60">
-        <div class="flex items-center gap-2 mb-3 text-emerald-700 dark:text-emerald-400">
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+        <div class="flex items-center gap-2 mb-3 text-emerald-700">
           <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10" />
@@ -1017,28 +991,28 @@
           <h4 data-i18n="principios_huella_titulo" class="text-xs font-bold uppercase tracking-wider">Principios de
             Exploración Consciente (No Deje Rastro)</h4>
         </div>
-        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        <ul class="space-y-2.5 text-xs text-slate-600 leading-relaxed">
           <li class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
-            <span data-i18n="principio_turbales"><strong class="text-slate-900 dark:text-slate-100">Turbales y Musgo
+            <span data-i18n="principio_turbales"><strong class="text-slate-900">Turbales y Musgo
                 Sphagnum:</strong> Caminá exclusivamente por pasarelas o sendas demarcadas. Los turbales retienen agua y
               fijan carbono vital para el planeta.</span>
           </li>
           <li class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
-            <span data-i18n="principio_arqueologia"><strong class="text-slate-900 dark:text-slate-100">Concheros y
+            <span data-i18n="principio_arqueologia"><strong class="text-slate-900">Concheros y
                 Sitios Ancestrales:</strong> No remuevas piedras ni conchas en costas de ocupación Yagán/Selk'nam; son
               patrimonio arqueológico no renovable.</span>
           </li>
           <li class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
-            <span data-i18n="principio_fuego"><strong class="text-slate-900 dark:text-slate-100">Fuego Cero en Zonas
+            <span data-i18n="principio_fuego"><strong class="text-slate-900">Fuego Cero en Zonas
                 Agrestes:</strong> Solo en campings habilitados con agua a mano. Un foco puede destruir bosques
               milenarios de lenga y ñire.</span>
           </li>
           <li class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
-            <span data-i18n="principio_residuos"><strong class="text-slate-900 dark:text-slate-100">Regresá tus
+            <span data-i18n="principio_residuos"><strong class="text-slate-900">Regresá tus
                 Residuos:</strong> Todo lo que entra a la senda vuelve contigo, incluidos restos orgánicos que tardan
               años en degradarse en clima subpolar.</span>
           </li>
@@ -1048,7 +1022,7 @@
       <!-- Botón de cierre -->
       <div class="mt-5 flex justify-end">
         <button id="btn-entendido-huella" type="button" data-i18n="cerrar"
-          class="px-5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer">
+          class="px-5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer">
           Cerrar
         </button>
       </div>
@@ -1173,16 +1147,16 @@
 
   <!-- VISTA PANTALLA COMPLETA: DETALLE DE HITO (ESTILO GOOGLE MAPS) -->
   <div id="modal-detalle-hito"
-    class="vista-detalle-hito-full fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
+    class="vista-detalle-hito-full fixed inset-0 z-[500] hidden flex-col bg-slate-50 overflow-y-auto">
     <!-- Header de la Vista -->
     <div
-      class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-3.5 flex items-center justify-between z-10">
+      class="sticky top-0 bg-white border-b border-slate-200 shadow-sm px-4 py-3.5 flex items-center justify-between z-10">
       <button type="button" id="btn-cerrar-detalle"
-        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
         <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
       </button>
-      <h2 id="detalle-hito-header-titulo" class="text-sm font-bold text-slate-700 dark:text-slate-200 truncate max-w-[220px]">
+      <h2 id="detalle-hito-header-titulo" class="text-sm font-bold text-slate-700 truncate max-w-[220px]">
         Ficha Territorial
       </h2>
     </div>
@@ -1190,15 +1164,15 @@
     <div class="p-4 pb-20 max-w-2xl mx-auto w-full space-y-4">
       <div id="panel-detalle-hito" tabindex="-1" aria-live="polite">
         <!-- Elementos de Detalle Estructurados -->
-        <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-sm">
+        <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
           <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
             <img id="detalle-imagen" src="./assets/hitos/ush-02.svg" alt="Detalle del Hito" class="w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-3">
-            <h3 id="detalle-titulo" class="text-base font-bold text-slate-900 dark:text-white leading-snug">Hito Territorial</h3>
-            <p id="detalle-subtitulo" class="text-xs text-amber-700 dark:text-amber-300/90 font-mono">Toponimia</p>
+            <h3 id="detalle-titulo" class="text-base font-bold text-slate-900 leading-snug">Hito Territorial</h3>
+            <p id="detalle-subtitulo" class="text-xs text-amber-700 font-mono">Toponimia</p>
             <div id="detalle-etiquetas" class="flex flex-wrap items-center gap-1.5"></div>
-            <p id="detalle-descripcion" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+            <p id="detalle-descripcion" class="text-xs text-slate-700 leading-relaxed"></p>
           </div>
         </div>
       </div>
@@ -1207,11 +1181,11 @@
 
   <!-- VISTA PANTALLA COMPLETA: BITÁCORA -->
   <div id="vista-bitacora-full"
-    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
+    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 overflow-y-auto">
     <!-- Header de la Vista -->
     <div
-      class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-4 flex items-center justify-between z-10">
-      <h2 class="text-xl font-black text-orange-600 dark:text-orange-500 flex items-center gap-2">
+      class="sticky top-0 bg-white border-b border-slate-200 shadow-sm px-4 py-4 flex items-center justify-between z-10">
+      <h2 class="text-xl font-black text-orange-600 flex items-center gap-2">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -1220,7 +1194,7 @@
         <span data-i18n="tab_pasaporte">Mi Bitácora</span>
       </h2>
       <button type="button" id="btn-cerrar-bitacora"
-        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <span>✕</span> <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
       </button>
     </div>
@@ -1229,20 +1203,20 @@
       <div id="vista-tab-pasaporte" class="w-full space-y-4">
         <!-- Métricas de progreso y Huella Consciente unificadas (Tablero de Progreso) -->
         <div
-          class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-3 text-xs">
+          class="p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm space-y-3 text-xs">
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span data-i18n="sitios_en_rastro" class="text-slate-600 dark:text-slate-300 font-medium">Sitios en mi
+              <span data-i18n="sitios_en_rastro" class="text-slate-600 font-medium">Sitios en mi
                 Rastro:</span>
-              <span class="font-bold text-slate-900 dark:text-white text-sm">
-                <strong id="contador-visitas" class="text-amber-600 dark:text-amber-400">0</strong>
+              <span class="font-bold text-slate-900 text-sm">
+                <strong id="contador-visitas" class="text-amber-600">0</strong>
                 <span class="text-slate-400 font-normal">/</span>
-                <span id="contador-total" class="text-slate-500 dark:text-slate-400 font-semibold">0</span>
+                <span id="contador-total" class="text-slate-500 font-semibold">0</span>
               </span>
             </div>
             <span id="porcentaje-progreso"
-              class="text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-full">0%</span>
+              class="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">0%</span>
           </div>
           <div class="pista-progreso w-full h-1.5 rounded-full overflow-hidden">
             <div id="barra-progreso"
@@ -1252,11 +1226,11 @@
 
           <!-- Contenedor interactivo de Huella Consciente y Rango -->
           <button id="btn-abrir-huella-modal" type="button"
-            class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-slate-900/90 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl transition shadow-sm text-xs group cursor-pointer"
+            class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-white border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl transition shadow-sm text-xs group cursor-pointer"
             title="Ver Huella Consciente y Rango de Guardián Austral">
             <span class="flex items-center gap-2 min-w-0">
               <svg
-                class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 group-hover:scale-110 transition-transform"
+                class="w-4 h-4 text-emerald-600 shrink-0 group-hover:scale-110 transition-transform"
                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" aria-hidden="true">
                 <path
@@ -1264,7 +1238,7 @@
                 <path d="M12 10v8" />
                 <path d="M12 14l3-2" />
               </svg>
-              <span id="valor-huella" class="font-semibold text-emerald-700 dark:text-emerald-400 truncate">0 / 16
+              <span id="valor-huella" class="font-semibold text-emerald-700 truncate">0 / 16
                 Puntos de Preservación</span>
             </span>
             <div id="mencion-guardian"
@@ -1312,14 +1286,14 @@
           </button>
         </div>
 
-        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
           <div>
-            <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider">Pasaporte de
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Pasaporte de
               Travesía</h3>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">Tus sellos e insignias 3D recolectadas</p>
+            <p class="text-[11px] text-slate-500">Tus sellos e insignias 3D recolectadas</p>
           </div>
           <button id="btn-imprimir-pasaporte-side"
-            class="btn-ver-libreta px-2.5 py-1 text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition shadow-sm cursor-pointer"
+            class="btn-ver-libreta px-2.5 py-1 text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl transition shadow-sm cursor-pointer"
             title="Ver Libreta y Pasaporte de Expedición">
             Ver Libreta
           </button>
@@ -1335,11 +1309,11 @@
 
   <!-- VISTA PANTALLA COMPLETA: OBSERVATORIO -->
   <div id="vista-observatorio-full"
-    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
+    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 overflow-y-auto">
     <!-- Header de la Vista -->
     <div
-      class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-4 flex items-center justify-between z-10">
-      <h2 class="text-xl font-black text-orange-600 dark:text-orange-500 flex items-center gap-2">
+      class="sticky top-0 bg-white border-b border-slate-200 shadow-sm px-4 py-4 flex items-center justify-between z-10">
+      <h2 class="text-xl font-black text-orange-600 flex items-center gap-2">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
@@ -1347,7 +1321,7 @@
         <span data-i18n="tab_observatorio">Observatorio Climático</span>
       </h2>
       <button type="button" id="btn-cerrar-observatorio"
-        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <span>✕</span> <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
       </button>
     </div>
@@ -1356,18 +1330,18 @@
       <div id="vista-tab-observatorio" class="w-full space-y-4">
         <!-- Cabecera del Observatorio -->
         <div
-          class="tarjeta-observatorio p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/70 space-y-2">
+          class="tarjeta-observatorio p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-orange-600 dark:text-amber-400"
+              <span class="text-[10px] font-bold uppercase tracking-wider text-orange-600"
                 data-i18n="obs_subtitulo">Ciencia de Datos Cívica · 2015–2030</span>
-              <h3 data-i18n="obs_titulo" class="text-sm font-bold text-slate-900 dark:text-white leading-tight mt-0.5">
+              <h3 data-i18n="obs_titulo" class="text-sm font-bold text-slate-900 leading-tight mt-0.5">
                 Observatorio Climático Austral</h3>
             </div>
             <button id="btn-narrar-observatorio" type="button"
-              class="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-orange-500 text-[11px] font-semibold flex items-center gap-1.5 flex-shrink-0 transition-colors cursor-pointer"
+              class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:border-orange-500 text-[11px] font-semibold flex items-center gap-1.5 flex-shrink-0 transition-colors cursor-pointer"
               aria-label="Escuchar síntesis de los modelos predictivos del observatorio">
-              <svg class="w-3.5 h-3.5 text-orange-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none"
+              <svg class="w-3.5 h-3.5 text-orange-600" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 aria-hidden="true">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -1377,7 +1351,7 @@
             </button>
           </div>
           <p id="obs-fuentes-reales" data-i18n="obs_intro"
-            class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+            class="text-[11px] text-slate-600 leading-relaxed">
             Proyecciones territoriales basadas en series históricas regionales y monitoreo ecosistémico (IANIGLA /
             CADIC-CONICET / NASA POWER).
           </p>
@@ -1385,27 +1359,27 @@
 
         <!-- Métrica 1: Turbales (Didáctica para todas las edades) -->
         <div
-          class="tarjeta-observatorio p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-start justify-between gap-2">
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-base" aria-hidden="true">🧽</span>
-                <h4 data-i18n="obs_m1_titulo" class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">
+                <h4 data-i18n="obs_m1_titulo" class="text-sm font-bold text-slate-900 leading-snug">
                   Los Turbales: La gran esponja fueguina</h4>
               </div>
-              <p data-i18n="obs_m1_sub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p data-i18n="obs_m1_sub" class="text-xs text-slate-500 mt-0.5">
                 ¿Cuántos días al año se queda sin agua el suelo?
               </p>
             </div>
             <span id="badge-turbales-pct"
-              class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800 whitespace-nowrap">
+              class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-100 text-amber-700 border border-amber-300 whitespace-nowrap">
               +80% días secos
             </span>
           </div>
 
           <!-- Explicación simple para todas las edades -->
           <div
-            class="obs-caja-simple p-2.5 rounded-xl bg-amber-50/60 dark:bg-slate-800/60 text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed border border-amber-100 dark:border-slate-700">
+            class="obs-caja-simple p-2.5 rounded-xl bg-amber-50/60 text-[11px] text-slate-700 leading-relaxed border border-amber-100">
             <span aria-hidden="true">💡</span> <strong data-i18n="obs_en_simple">En palabras simples:</strong> <span
               data-i18n="obs_m1_simple">La turba es como una esponja gigante que guarda agua y atrapa carbono. Al
               secarse por el calor, se agrieta y deja de protegernos.</span>
@@ -1418,15 +1392,15 @@
           </div>
 
           <div
-            class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-            <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+            <span class="text-slate-500 flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m1_alerta_lbl">Nivel de alerta:</span> <strong
-                  class="text-slate-700 dark:text-slate-200" data-i18n="obs_m1_alerta_val">Moderado a
+                  class="text-slate-700" data-i18n="obs_m1_alerta_val">Moderado a
                   Crítico</strong></span>
             </span>
             <button id="btn-obs-ir-turbal" type="button"
-              class="text-orange-600 dark:text-orange-400 font-bold hover:underline whitespace-nowrap cursor-pointer"
+              class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
               onclick="centrarEnSitio('laguna-esmeralda')" data-i18n="obs_m1_ver">
               Ver turbal en mapa →
             </button>
@@ -1435,27 +1409,27 @@
 
         <!-- Métrica 2: Glaciar Vinciguerra (Didáctica para todas las edades) -->
         <div
-          class="tarjeta-observatorio p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-start justify-between gap-2">
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-base" aria-hidden="true">🧊</span>
-                <h4 data-i18n="obs_m2_titulo" class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">
+                <h4 data-i18n="obs_m2_titulo" class="text-sm font-bold text-slate-900 leading-snug">
                   Glaciar Vinciguerra: El tanque de agua natural</h4>
               </div>
-              <p data-i18n="obs_m2_sub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p data-i18n="obs_m2_sub" class="text-xs text-slate-500 mt-0.5">
                 Hielo que nos queda para beber y abastecer a la ciudad
               </p>
             </div>
             <span id="badge-glaciar-pct"
-              class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-800 whitespace-nowrap">
+              class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-cyan-100 text-cyan-700 border border-cyan-300 whitespace-nowrap">
               -16% a 2030
             </span>
           </div>
 
           <!-- Explicación simple -->
           <div
-            class="obs-caja-simple p-2.5 rounded-xl bg-cyan-50/60 dark:bg-slate-800/60 text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed border border-cyan-100 dark:border-slate-700">
+            class="obs-caja-simple p-2.5 rounded-xl bg-cyan-50/60 text-[11px] text-slate-700 leading-relaxed border border-cyan-100">
             <span aria-hidden="true">💧</span> <strong data-i18n="obs_en_simple">En palabras simples:</strong> <span
               data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido 1 de
               cada 4 partes de su masa congelada.</span>
@@ -1468,15 +1442,15 @@
           </div>
 
           <div
-            class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-            <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+            <span class="text-slate-500 flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-cyan-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m2_alerta_lbl">Fuente:</span> <strong
-                  class="text-slate-700 dark:text-slate-200" data-i18n="obs_m2_alerta_val">Agua potable de
+                  class="text-slate-700" data-i18n="obs_m2_alerta_val">Agua potable de
                   Ushuaia</strong></span>
             </span>
             <button id="btn-obs-ir-vinciguerra" type="button"
-              class="text-orange-600 dark:text-orange-400 font-bold hover:underline whitespace-nowrap cursor-pointer"
+              class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
               onclick="centrarEnSitio('glaciar-vinciguerra')" data-i18n="obs_m2_ver">
               Ver glaciar en mapa →
             </button>

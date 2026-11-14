@@ -1209,12 +1209,12 @@
   </div>
 
   <!-- VISTA PANTALLA COMPLETA: DETALLE DE HITO (ESTILO GOOGLE MAPS) -->
-  <div id="vista-detalle-hito-full"
-    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
+  <div id="modal-detalle-hito"
+    class="vista-detalle-hito-full fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
     <!-- Header de la Vista -->
     <div
       class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-3.5 flex items-center justify-between z-10">
-      <button type="button"
+      <button type="button" id="btn-cerrar-detalle"
         class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
         <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
@@ -1226,7 +1226,18 @@
     <!-- Contenido Ficha Técnica Completa -->
     <div class="p-4 pb-20 max-w-2xl mx-auto w-full space-y-4">
       <div id="panel-detalle-hito" tabindex="-1" aria-live="polite">
-        <!-- Aquí se inyecta la foto grande, toponimia, historia, bitácora y audio-guía -->
+        <!-- Elementos de Detalle Estructurados -->
+        <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-sm">
+          <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
+            <img id="detalle-imagen" src="./assets/hitos/ush-02.svg" alt="Detalle del Hito" class="w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-3">
+            <h3 id="detalle-titulo" class="text-base font-bold text-slate-900 dark:text-white leading-snug">Hito Territorial</h3>
+            <p id="detalle-subtitulo" class="text-xs text-amber-700 dark:text-amber-300/90 font-mono">Toponimia</p>
+            <div id="detalle-etiquetas" class="flex flex-wrap items-center gap-1.5"></div>
+            <p id="detalle-descripcion" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1245,7 +1256,7 @@
         </svg>
         <span data-i18n="tab_pasaporte">Mi Bitácora</span>
       </h2>
-      <button type="button"
+      <button type="button" id="btn-cerrar-bitacora"
         class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <span>✕</span> <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
       </button>
@@ -1371,7 +1382,7 @@
         </svg>
         <span data-i18n="tab_observatorio">Observatorio Climático</span>
       </h2>
-      <button type="button"
+      <button type="button" id="btn-cerrar-observatorio"
         class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
         <span>✕</span> <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
       </button>

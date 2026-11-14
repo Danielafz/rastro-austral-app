@@ -9,6 +9,7 @@ let capaBaseEstandar;
 let capaBaseRelieve;
 let capaBaseActiva = "estandar";
 let listaHitos = [];
+let datosHitos = {};
 let filtroActivo = "todos";
 let filtroFragilidad = "todas";
 let filtroEstadoVisita = "todos";
@@ -507,6 +508,14 @@ async function cargarDatos() {
         }
     }
 
+    datosHitos = {};
+    listaHitos.forEach((h, idx) => {
+        datosHitos[h.id] = h;
+        datosHitos[idx + 1] = h;
+        datosHitos[String(idx + 1)] = h;
+    });
+    window.datosHitos = datosHitos;
+
     document.getElementById("contador-total").innerText = listaHitos.length;
     renderizarMarcadores();
     renderizarInsignias();
@@ -722,16 +731,16 @@ function renderizarMarcadores(anunciarResultados = false) {
             className: "popup-hito"
         });
 
-        // Evento clic: centrado suave y apertura de popup
+        // Evento clic: centrado suave y apertura de ficha inmersiva
         marcador.on("click", () => {
-            seleccionarHito(hito, true, true, false);
+            abrirDetalleHito(hito.id);
         });
 
         marcador.on("popupopen", () => {
             const btnPopup = document.querySelector(`.btn-popup-ver-detalle[data-id="${hito.id}"]`);
             if (btnPopup) {
                 btnPopup.addEventListener("click", () => {
-                    seleccionarHito(hito, true, false, true);
+                    abrirDetalleHito(hito.id);
                 });
             }
         });
@@ -846,35 +855,100 @@ function renderizarListaHitosCompacta(hitos) {
     contenedor.querySelectorAll(".hito-card").forEach(card => {
         card.addEventListener("click", () => {
             const id = card.getAttribute("data-id");
-            const hito = listaHitos.find(h => h.id === id);
-            if (hito) {
-                seleccionarHito(hito, true, true, true);
-            }
+            abrirDetalleHito(id);
         });
     });
 }
 
-function abrirDetalleHitoCompleto(hito) {
-    const vistaDetalle = document.getElementById("vista-detalle-hito-full");
-    if (!vistaDetalle) return;
-    mostrarDetalleHito(hito);
-    const headerTitulo = document.getElementById("detalle-hito-header-titulo");
-    if (headerTitulo) {
-        headerTitulo.innerText = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+// Función Maestra para abrir el detalle inmersivo (Ficha Completa)
+function abrirDetalleHito(id) {
+    // datosHitos es tu base de datos o JSON con la info de los lugares
+    const data = (window.datosHitos && window.datosHitos[id]) || datosHitos[id] || (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === id || String(h.id) === String(id)) : null);
+
+    if (data) {
+        hitoSeleccionadoId = data.id;
+
+        // Centrado suave en el mapa
+        if (mapa && data.coordenadas) {
+            mapa.flyTo(data.coordenadas, 12, {
+                animate: true,
+                duration: 1.2
+            });
+        }
+
+        const marcador = marcadoresPorId[data.id];
+        if (marcador) {
+            marcador.openPopup();
+        }
+
+        // Inyectar datos en elementos estructurados
+        const imgEl = document.getElementById('detalle-imagen');
+        if (imgEl) imgEl.src = data.imagen || './icon.svg';
+
+        const titulo = (idiomaActual === "en" && data.nombre_en) ? data.nombre_en : (data.titulo || data.nombre);
+        const titEl = document.getElementById('detalle-titulo');
+        if (titEl) titEl.textContent = titulo;
+
+        const headerTitulo = document.getElementById('detalle-hito-header-titulo');
+        if (headerTitulo) headerTitulo.textContent = titulo;
+
+        const subEl = document.getElementById('detalle-subtitulo');
+        if (subEl) subEl.textContent = data.subtitulo || ((idiomaActual === "en" ? "Toponymy: " : "Toponimia: ") + (data.toponimia || ''));
+
+        const categoriaTexto = (idiomaActual === "en" && data.rubroCreativo_en)
+            ? data.rubroCreativo_en
+            : (data.rubroCreativo || (data.categoria ? data.categoria.replace('_', ' ') : ''));
+        const etiEl = document.getElementById('detalle-etiquetas');
+        if (etiEl) etiEl.innerHTML = `<span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-xs px-2 py-0.5 rounded font-bold uppercase">${categoriaTexto}</span>`;
+
+        const desEl = document.getElementById('detalle-descripcion');
+        if (desEl) desEl.textContent = (idiomaActual === "en" && data.descripcion_en) ? data.descripcion_en : (data.descripcion || '');
+
+        // Renderizado de ficha interactiva completa (audio-guía, notas de campo, sellos)
+        mostrarDetalleHito(data);
+        renderizarInsignias();
+        renderizarSellosSidebar();
+
+        // Resaltar tarjeta seleccionada en la lista compacta
+        document.querySelectorAll(".hito-card").forEach(card => {
+            if (card.getAttribute("data-id") === String(data.id)) {
+                card.classList.add("border-orange-500", "ring-1", "ring-orange-500");
+            } else {
+                card.classList.remove("border-orange-500", "ring-1", "ring-orange-500");
+            }
+        });
+
+        // Abrir modal
+        const modal = document.getElementById('modal-detalle-hito') || document.getElementById('vista-detalle-hito-full');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.scrollTop = 0;
+        }
+
+        const nombreHito = (idiomaActual === "en" && data.nombre_en) ? data.nombre_en : data.nombre;
+        anunciarAccesibilidad(
+            idiomaActual === "en"
+                ? `Site selected: ${nombreHito}, ${data.localidad}. Toponymy: ${data.toponimia}.`
+                : `Hito seleccionado: ${nombreHito}, ${data.localidad}. Toponimia: ${data.toponimia}.`
+        );
+    } else {
+        console.warn("No se encontró información para el hito con ID:", id);
     }
-    vistaDetalle.classList.remove("hidden");
-    vistaDetalle.classList.add("flex");
-    vistaDetalle.scrollTop = 0;
 }
+window.abrirDetalleHito = abrirDetalleHito;
+window.abrirDetalleHitoCompleto = function(h) {
+    if (!h) return;
+    abrirDetalleHito(typeof h === 'object' ? h.id : h);
+};
 
 function cerrarDetalleHitoCompleto() {
-    const vistaDetalle = document.getElementById("vista-detalle-hito-full");
-    if (vistaDetalle) {
-        vistaDetalle.classList.add("hidden");
-        vistaDetalle.classList.remove("flex");
+    const modal = document.getElementById('modal-detalle-hito') || document.getElementById('vista-detalle-hito-full');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     }
 }
-window.abrirDetalleHitoCompleto = abrirDetalleHitoCompleto;
 window.cerrarDetalleHitoCompleto = cerrarDetalleHitoCompleto;
 
 // 6. Mostrar ficha de detalle e información pedagógica (con Audio-guía y Notas)
@@ -2288,6 +2362,14 @@ function configurarPestanasSidebar() {
         });
     });
 
+    // Botón específico para cerrar el modal de detalle
+    const btnCerrarDetalle = document.getElementById("btn-cerrar-detalle");
+    if (btnCerrarDetalle) {
+        btnCerrarDetalle.addEventListener("click", () => {
+            cerrarDetalleHitoCompleto();
+        });
+    }
+
     // Tecla Escape para cerrar vistas de pantalla completa
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
@@ -2317,7 +2399,7 @@ function cambiarPestanaSidebar(pestana) {
     const badgeSellos = document.getElementById("tab-badge-sellos");
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
-    const vistaDetalleFull = document.getElementById("vista-detalle-hito-full");
+    const vistaDetalleFull = document.getElementById("modal-detalle-hito") || document.getElementById("vista-detalle-hito-full");
 
     const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm cursor-pointer";
     const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer";
@@ -2394,7 +2476,7 @@ function cambiarPestanaSidebar(pestana) {
 function cerrarTodasLasVistas() {
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
-    const vistaDetalleFull = document.getElementById("vista-detalle-hito-full");
+    const vistaDetalleFull = document.getElementById("modal-detalle-hito") || document.getElementById("vista-detalle-hito-full");
 
     if (vistaBitacoraFull) {
         vistaBitacoraFull.classList.add("hidden");

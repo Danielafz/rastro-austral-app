@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="bg-slate-950 text-slate-100 flex flex-col h-screen h-[100dvh] overflow-hidden font-sans">
+<body class="bg-slate-950 text-slate-100 flex flex-col h-screen overflow-hidden font-sans">
 
   <!-- Enlace de salto directo accesible (Skip Link) -->
   <a href="#panel-lateral"
@@ -513,68 +513,225 @@
 
   <!-- Contenedor Principal (Dashboard Layout) -->
   <div id="app-container"
-    class="flex flex-col flex-1 min-h-0 w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
+    class="flex flex-col md:flex-row flex-1 h-[calc(100vh-100px)] md:h-full w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
 
-    <!-- Barra de Navegación Inferior Fija (Hitos, Bitácora, Observatorio) -->
-    <aside id="panel-lateral" tabindex="-1" aria-label="Navegación principal de la expedición"
-      class="w-full h-auto pb-[env(safe-area-inset-bottom,0px)] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-xl z-[40] flex flex-col order-2 flex-shrink-0">
+    <!-- Panel Lateral (Filtros, Bitácora, Observatorio) -->
+    <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
+      class="w-full md:w-1/3 lg:w-1/4 h-[40vh] md:h-full bg-white dark:bg-slate-900 border-t md:border-t-0 md:border-r border-slate-200 dark:border-slate-800 shadow-xl z-[40] flex flex-col order-2 md:order-1 transition-all overflow-hidden">
 
-      <div class="p-2 sm:py-2.5 sm:px-4 flex items-center justify-between gap-2 max-w-xl mx-auto w-full">
-        <div role="tablist" aria-label="Secciones de la expedición"
+      <!-- Tirador visual del Bottom Sheet en Mobile -->
+      <div id="bottom-sheet-drag-handle" role="button" tabindex="0" aria-label="Expandir o contraer panel"
+        title="Tocar para desplegar u ocultar"></div>
+
+      <!-- Navegación por Pestañas del Panel (Segmented Control 3 pestañas) -->
+      <div
+        class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 flex items-center gap-1.5 flex-shrink-0">
+        <div role="tablist" aria-label="Secciones del panel lateral"
           class="tabs-contenedor flex-1 p-1 bg-slate-200/80 dark:bg-slate-800 rounded-xl grid grid-cols-3 gap-1">
-          <!-- Botón 1: Hitos -->
-          <button id="tab-btn-explorar" type="button" role="tab" aria-selected="false" aria-controls="vista-hitos-full"
-            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white cursor-pointer">
-            <svg class="w-4 h-4 flex-shrink-0 text-orange-600 dark:text-orange-400" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <!-- Pestaña 1: Hitos / Explorador -->
+          <button id="tab-btn-explorar" type="button" role="tab" aria-selected="true"
+            aria-controls="vista-tab-explorar"
+            class="tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm cursor-pointer">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10" />
               <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
             </svg>
-            <span data-i18n="tab_explorador" class="whitespace-nowrap font-bold">Hitos</span>
+            <span data-i18n="tab_explorador" class="whitespace-nowrap truncate font-bold">Hitos</span>
           </button>
 
-          <!-- Botón 2: Bitácora -->
+          <!-- Pestaña 2: Bitácora con Badge numérico -->
           <button id="tab-btn-pasaporte" type="button" role="tab" aria-selected="false"
             aria-controls="vista-bitacora-full"
-            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white cursor-pointer">
-            <svg class="w-4 h-4 flex-shrink-0 text-amber-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
             </svg>
-            <span data-i18n="tab_pasaporte" class="whitespace-nowrap font-bold">Bitácora</span>
+            <span data-i18n="tab_pasaporte" class="whitespace-nowrap truncate font-bold">Bitácora</span>
             <span id="tab-badge-sellos"
               class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none">0/19</span>
           </button>
 
-          <!-- Botón 3: Observatorio -->
+          <!-- Pestaña 3: Observatorio (Ciencia de Datos Cívica) -->
           <button id="tab-btn-observatorio" type="button" role="tab" aria-selected="false"
             aria-controls="vista-observatorio-full"
-            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white cursor-pointer">
-            <svg class="w-4 h-4 flex-shrink-0 text-cyan-600 dark:text-cyan-400" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            class="tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M3 3v18h18" />
               <path d="m19 9-5 5-4-4-3 3" />
             </svg>
-            <span data-i18n="tab_observatorio" class="whitespace-nowrap font-bold">Observatorio</span>
+            <span data-i18n="tab_observatorio" class="whitespace-nowrap truncate font-bold">Observatorio</span>
+          </button>
+        </div>
+        <button id="btn-cerrar-panel-mobile" type="button" aria-label="Contraer panel en vista móvil"
+          class="md:hidden text-slate-400 hover:text-slate-600 dark:hover:text-white p-1.5 text-sm leading-none flex-shrink-0 cursor-pointer"
+          title="Contraer panel">✕</button>
+      </div>
+
+      <!-- VISTA 1: EXPLORADOR (Un solo panel continuo con scroll único) -->
+      <div id="vista-tab-explorar" role="tabpanel" aria-labelledby="tab-btn-explorar"
+        class="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3 custom-scrollbar">
+
+        <!-- Encabezado de Filtros -->
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100 flex-shrink-0">
+          <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" aria-hidden="true">
+            <line x1="4" y1="21" x2="4" y2="14" />
+            <line x1="4" y1="10" x2="4" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12" y2="3" />
+            <line x1="20" y1="21" x2="20" y2="16" />
+            <line x1="20" y1="12" x2="20" y2="3" />
+            <line x1="1" y1="14" x2="7" y2="14" />
+            <line x1="9" y1="8" x2="15" y2="8" />
+            <line x1="17" y1="16" x2="23" y2="16" />
+          </svg>
+          <span data-i18n="filtros_busqueda">Filtros de Búsqueda</span>
+        </div>
+
+        <!-- Buscador -->
+        <div class="relative flex-shrink-0">
+          <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa"
+            placeholder="Buscar por nombre, localidad o toponimia..."
+            class="w-full py-2 pl-8 pr-7 text-xs rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm transition">
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda"
+            class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold cursor-pointer"
+            title="Limpiar búsqueda">✕</button>
+        </div>
+
+        <!-- Categorías (Fila de 4 botones) -->
+        <div class="grid grid-cols-4 gap-1 flex-shrink-0">
+          <button type="button"
+            class="filtro-cat-btn btn-cat-activo py-1.5 px-1 text-[11px] font-semibold rounded-lg bg-orange-600 text-white flex items-center justify-center shadow-sm truncate cursor-pointer"
+            data-cat="todas" title="Todos">
+            <span data-i18n="cat_todos" class="truncate">Todos</span>
+          </button>
+          <button type="button"
+            class="filtro-cat-btn py-1.5 px-1 text-[11px] font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
+            data-cat="patrimonio" title="Patrimonio">
+            <span data-i18n="cat_patrimonio" class="truncate">Patrimonio</span>
+          </button>
+          <button type="button"
+            class="filtro-cat-btn py-1.5 px-1 text-[11px] font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
+            data-cat="senderos" title="Senderos">
+            <span data-i18n="cat_senderos" class="truncate">Senderos</span>
+          </button>
+          <button type="button"
+            class="filtro-cat-btn py-1.5 px-1 text-[11px] font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
+            data-cat="economia_creativa" title="Creativos">
+            <span data-i18n="cat_creativos" class="truncate">Creativos</span>
           </button>
         </div>
 
-        <!-- Botón Fuentes Oficiales / Créditos -->
+        <!-- Bloque de Sensibilidad y Estado -->
+        <div
+          class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2 flex-shrink-0">
+          <div>
+            <label for="filtro-fragilidad"
+              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+              SENSIBILIDAD
+            </label>
+            <select id="filtro-fragilidad"
+              class="w-full py-1 px-1.5 text-[11px] rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+              <option value="todas">Todos</option>
+              <option value="Baja">Baja</option>
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+              <option value="Muy Alta">Muy Alta</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filtro-estado-visita"
+              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+              ESTADO
+            </label>
+            <select id="filtro-estado-visita"
+              class="w-full py-1 px-1.5 text-[11px] rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+              <option value="todos">Todos</option>
+              <option value="visitados">Visitados</option>
+              <option value="pendientes">Pendientes</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tarjeta Travesía Acumulada -->
+        <div id="metrica-distancia-ruta"
+          class="hidden p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+              </svg>
+            </div>
+            <div>
+              <div id="lbl-recorrido-total" data-i18n="recorrido_total"
+                class="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">TRAVESÍA ACUMULADA</div>
+              <div id="valor-distancia-total"
+                class="text-xs font-extrabold text-slate-900 dark:text-slate-100 font-mono leading-tight">0.0 km</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div id="lbl-tiempo-estimado" data-i18n="tiempo_estimado"
+              class="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">TIEMPO ESTIMADO</div>
+            <div id="valor-tiempo-estimado"
+              class="text-xs font-extrabold text-slate-900 dark:text-slate-100 font-mono leading-tight">--</div>
+          </div>
+        </div>
+
+        <!-- Contenedor de la Tarjeta de Detalle -->
+        <div id="contenedor-tarjeta-detalle" class="w-full space-y-2 pb-4">
+          <!-- Área de Ficha Técnica del Hito Seleccionado -->
+          <div id="panel-detalle-hito" tabindex="-1" aria-live="polite" class="hidden">
+            <!-- Aquí se inyecta la foto grande, toponimia, historia y bitácora -->
+          </div>
+
+          <!-- Estado vacío cuando no hay hito seleccionado -->
+          <div id="panel-detalle-vacio"
+            class="p-4 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center text-slate-400 dark:text-slate-500">
+            <div class="w-8 h-8 mb-1.5 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="icono-bitacora !w-4 !h-4 !mr-0" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+              </svg>
+            </div>
+            <p class="text-[11px] font-semibold text-slate-700 dark:text-slate-300">Explorá el mapa de Tierra del Fuego</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 max-w-[240px]">Tocá cualquier hito o sendero
+              para ver su toponimia nativa, fragilidad y registrar tu visita.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pie de página del Panel Lateral: Fuentes Oficiales y Licencias -->
+      <div
+        class="footer-panel-legal border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-4 py-2 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
         <button id="btn-abrir-creditos" type="button"
-          class="p-2 text-slate-400 hover:text-amber-500 transition rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex-shrink-0 cursor-pointer"
+          class="text-left text-slate-600 dark:text-slate-400 hover:text-amber-500 text-xs transition flex items-center gap-1 font-semibold cursor-pointer"
           title="Fuentes oficiales, licencias y soberanía">
-          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
+          <svg viewBox="0 0 24 24" class="icono-bitacora w-3.5 h-3.5 text-slate-400">
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="16" x2="12" y2="12" />
             <line x1="12" y1="8" x2="12.01" y2="8" />
           </svg>
+          <span data-i18n="fuentes_oficiales">Fuentes Oficiales</span>
         </button>
+        <span class="text-[10px] text-slate-400 font-mono">v1.0-alpha · 2026</span>
       </div>
     </aside>
 
     <!-- Contenedor del Mapa Cartográfico (100% de la pantalla) -->
-    <main class="w-full flex-1 h-full relative order-1 z-[10]">
+    <main class="w-full md:w-2/3 lg:w-3/4 flex-grow h-full relative order-1 md:order-2 z-[10]">
       <!-- Contenedor del Mapa Cartográfico -->
       <div id="map" role="region" aria-label="Mapa interactivo de Tierra del Fuego" class="w-full h-full"></div>
 
@@ -1042,169 +1199,6 @@
           data-i18n="modal_bloqueo_btn_entendido">
           Entendido, respetar restricción
         </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA PANTALLA COMPLETA: HITOS -->
-  <div id="vista-hitos-full"
-    class="fixed inset-0 z-[500] hidden flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto">
-    <!-- Header de la Vista -->
-    <div
-      class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-4 flex items-center justify-between z-10">
-      <h2 class="text-xl font-black text-orange-600 dark:text-orange-500 flex items-center gap-2">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
-          </path>
-        </svg>
-        <span data-i18n="tab_explorador">Hitos Territoriales</span>
-      </h2>
-      <button type="button"
-        class="btn-cerrar-vista bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-1.5 rounded-full font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-sm">
-        <span>✕</span> <span data-i18n="btn_volver_mapa">Volver al Mapa</span>
-      </button>
-    </div>
-    <!-- Contenido Original de Hitos -->
-    <div class="p-4 pb-20 max-w-4xl mx-auto w-full space-y-4">
-      <div id="vista-tab-explorar" class="w-full space-y-4">
-        <!-- Encabezado de Filtros -->
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100 flex-shrink-0">
-          <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" aria-hidden="true">
-            <line x1="4" y1="21" x2="4" y2="14" />
-            <line x1="4" y1="10" x2="4" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12" y2="3" />
-            <line x1="20" y1="21" x2="20" y2="16" />
-            <line x1="20" y1="12" x2="20" y2="3" />
-            <line x1="1" y1="14" x2="7" y2="14" />
-            <line x1="9" y1="8" x2="15" y2="8" />
-            <line x1="17" y1="16" x2="23" y2="16" />
-          </svg>
-          <span data-i18n="filtros_busqueda">Filtros de Búsqueda</span>
-        </div>
-
-        <!-- Buscador -->
-        <div class="relative flex-shrink-0">
-          <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa"
-            placeholder="Buscar por nombre, localidad o toponimia..."
-            class="w-full py-2.5 pl-9 pr-7 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm">
-          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda"
-            class="hidden absolute right-2.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold"
-            title="Limpiar búsqueda">✕</button>
-        </div>
-
-        <!-- Categorías (Fila de 4 botones) -->
-        <div class="grid grid-cols-4 gap-1.5 flex-shrink-0">
-          <button type="button"
-            class="filtro-cat-btn btn-cat-activo py-2 px-2 text-xs font-semibold rounded-lg bg-orange-600 text-white flex items-center justify-center shadow-sm truncate cursor-pointer"
-            data-cat="todas" title="Todos">
-            <span data-i18n="cat_todos" class="truncate">Todos</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn py-2 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
-            data-cat="patrimonio" title="Patrimonio">
-            <span data-i18n="cat_patrimonio" class="truncate">Patrimonio</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn py-2 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
-            data-cat="senderos" title="Senderos">
-            <span data-i18n="cat_senderos" class="truncate">Senderos</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn py-2 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer"
-            data-cat="economia_creativa" title="Creativos">
-            <span data-i18n="cat_creativos" class="truncate">Creativos</span>
-          </button>
-        </div>
-
-        <!-- Bloque de Sensibilidad y Estado -->
-        <div
-          class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-2 gap-3 flex-shrink-0">
-          <div>
-            <label for="filtro-fragilidad"
-              class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              SENSIBILIDAD
-            </label>
-            <select id="filtro-fragilidad"
-              class="w-full py-1.5 px-2 text-xs rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
-              <option value="todas">Todos</option>
-              <option value="Baja">Baja</option>
-              <option value="Media">Media</option>
-              <option value="Alta">Alta</option>
-              <option value="Muy Alta">Muy Alta</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="filtro-estado-visita"
-              class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              ESTADO
-            </label>
-            <select id="filtro-estado-visita"
-              class="w-full py-1.5 px-2 text-xs rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
-              <option value="todos">Todos</option>
-              <option value="visitados">Visitados</option>
-              <option value="pendientes">Pendientes</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Tarjeta Travesía Acumulada -->
-        <div id="metrica-distancia-ruta"
-          class="hidden p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between flex-shrink-0">
-          <div class="flex items-center gap-2.5">
-            <div
-              class="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-              </svg>
-            </div>
-            <div>
-              <div id="lbl-recorrido-total" data-i18n="recorrido_total"
-                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TRAVESÍA ACUMULADA</div>
-              <div id="valor-distancia-total"
-                class="text-sm font-extrabold text-slate-900 dark:text-slate-100 font-mono">0.0 km</div>
-            </div>
-          </div>
-          <div class="text-right">
-            <div id="lbl-tiempo-estimado" data-i18n="tiempo_estimado"
-              class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TIEMPO ESTIMADO</div>
-            <div id="valor-tiempo-estimado" class="text-sm font-extrabold text-slate-900 dark:text-slate-100 font-mono">
-              --</div>
-          </div>
-        </div>
-
-        <!-- Contenedor de la Tarjeta de Detalle -->
-        <div id="contenedor-tarjeta-detalle" class="w-full space-y-3 pb-6">
-          <!-- Área de Ficha Técnica del Hito Seleccionado -->
-          <div id="panel-detalle-hito" tabindex="-1" aria-live="polite" class="hidden">
-            <!-- Aquí se inyecta la foto grande, toponimia, historia y bitácora -->
-          </div>
-
-          <!-- Estado vacío cuando no hay hito seleccionado -->
-          <div id="panel-detalle-vacio"
-            class="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center text-slate-400 dark:text-slate-500">
-            <div class="w-12 h-12 mb-3 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" class="icono-bitacora !w-6 !h-6 !mr-0" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-              </svg>
-            </div>
-            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Explorá el mapa de Tierra del Fuego</p>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 max-w-[280px]">Tocá cualquier hito o sendero
-              para ver su toponimia nativa, fragilidad y registrar tu visita.</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>

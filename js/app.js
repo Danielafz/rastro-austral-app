@@ -755,17 +755,16 @@ function seleccionarHito(hito, volar = true, abrirPopup = false) {
         marcador.openPopup();
     }
 
-    // Si había un modal de pantalla completa abierto (Bitácora u Observatorio), cerrarlo para ver el mapa
-    const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
-    const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
-    if ((vistaBitacoraFull && !vistaBitacoraFull.classList.contains("hidden")) ||
-        (vistaObservatorioFull && !vistaObservatorioFull.classList.contains("hidden"))) {
-        cerrarTodasLasVistas();
-    }
+    // Si había un modal de pantalla completa abierto (Bitácora u Observatorio), cerrarlo para ver el mapa y regresar a Hitos
+    cerrarTodasLasVistas();
 
     mostrarDetalleHito(hito);
     renderizarInsignias();
     renderizarSellosSidebar();
+
+    if (window.innerWidth < 768) {
+        abrirPanelMobile();
+    }
 
     const panelDetalle = document.getElementById("panel-detalle-hito");
     if (panelDetalle) {
@@ -2157,11 +2156,9 @@ function configurarPestanasSidebar() {
 
     if (btnExplorar) {
         btnExplorar.addEventListener("click", () => {
-            const vistaHitosFull = document.getElementById("vista-hitos-full");
-            if (vistaHitosFull && !vistaHitosFull.classList.contains("hidden")) {
-                cerrarTodasLasVistas();
-            } else {
-                cambiarPestanaSidebar("explorar");
+            cambiarPestanaSidebar("explorar");
+            if (window.innerWidth < 768) {
+                abrirPanelMobile();
             }
         });
     }
@@ -2220,39 +2217,39 @@ function cambiarPestanaSidebar(pestana) {
     const btnPasaporte = document.getElementById("tab-btn-pasaporte");
     const btnObservatorio = document.getElementById("tab-btn-observatorio");
     const badgeSellos = document.getElementById("tab-badge-sellos");
-    const vistaHitosFull = document.getElementById("vista-hitos-full");
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
 
-    const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm";
-    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white";
+    const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm cursor-pointer";
+    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer";
 
     // Gestionar Overlays a Pantalla Completa
-    if (vistaHitosFull) {
-        if (pestana === "explorar") {
-            vistaHitosFull.classList.remove("hidden");
-            vistaHitosFull.classList.add("flex");
-        } else {
-            vistaHitosFull.classList.add("hidden");
-            vistaHitosFull.classList.remove("flex");
-        }
-    }
-    if (vistaBitacoraFull) {
-        if (pestana === "pasaporte") {
-            vistaBitacoraFull.classList.remove("hidden");
-            vistaBitacoraFull.classList.add("flex");
-        } else {
+    if (pestana === "explorar") {
+        if (vistaBitacoraFull) {
             vistaBitacoraFull.classList.add("hidden");
             vistaBitacoraFull.classList.remove("flex");
         }
-    }
-    if (vistaObservatorioFull) {
-        if (pestana === "observatorio") {
-            vistaObservatorioFull.classList.remove("hidden");
-            vistaObservatorioFull.classList.add("flex");
-        } else {
+        if (vistaObservatorioFull) {
             vistaObservatorioFull.classList.add("hidden");
             vistaObservatorioFull.classList.remove("flex");
+        }
+    } else if (pestana === "pasaporte") {
+        if (vistaObservatorioFull) {
+            vistaObservatorioFull.classList.add("hidden");
+            vistaObservatorioFull.classList.remove("flex");
+        }
+        if (vistaBitacoraFull) {
+            vistaBitacoraFull.classList.remove("hidden");
+            vistaBitacoraFull.classList.add("flex");
+        }
+    } else if (pestana === "observatorio") {
+        if (vistaBitacoraFull) {
+            vistaBitacoraFull.classList.add("hidden");
+            vistaBitacoraFull.classList.remove("flex");
+        }
+        if (vistaObservatorioFull) {
+            vistaObservatorioFull.classList.remove("hidden");
+            vistaObservatorioFull.classList.add("flex");
         }
     }
 
@@ -2284,14 +2281,9 @@ function cambiarPestanaSidebar(pestana) {
 }
 
 function cerrarTodasLasVistas() {
-    const vistaHitosFull = document.getElementById("vista-hitos-full");
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
 
-    if (vistaHitosFull) {
-        vistaHitosFull.classList.add("hidden");
-        vistaHitosFull.classList.remove("flex");
-    }
     if (vistaBitacoraFull) {
         vistaBitacoraFull.classList.add("hidden");
         vistaBitacoraFull.classList.remove("flex");
@@ -2301,19 +2293,8 @@ function cerrarTodasLasVistas() {
         vistaObservatorioFull.classList.remove("flex");
     }
 
-    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white";
-    ["tab-btn-explorar", "tab-btn-pasaporte", "tab-btn-observatorio"].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-            btn.className = claseInactiva;
-            btn.setAttribute("aria-selected", "false");
-        }
-    });
-
-    const badgeSellos = document.getElementById("tab-badge-sellos");
-    if (badgeSellos) {
-        badgeSellos.className = "px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none";
-    }
+    // Regresar a la vista de Hitos en #panel-lateral
+    cambiarPestanaSidebar("explorar");
 }
 window.cerrarTodasLasVistas = cerrarTodasLasVistas;
 

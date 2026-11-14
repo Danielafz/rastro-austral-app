@@ -1432,8 +1432,8 @@ function actualizarMetricas() {
 // 9. Filtros por capas
 function configurarFiltros() {
     const botones = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
-    const claseActiva = "filtro-cat-btn btn-cat-activo py-1.5 px-2 text-xs font-semibold rounded-lg bg-orange-600 text-white flex items-center justify-center shadow-sm truncate cursor-pointer";
-    const claseInactiva = "filtro-cat-btn py-1.5 px-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors truncate cursor-pointer";
+    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm";
+    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
 
     botones.forEach(btn => {
         btn.addEventListener("click", () => {

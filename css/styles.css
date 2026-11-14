@@ -27,14 +27,24 @@ main {
   width: 100%;
 }
 
-/* El panel lateral vuelve a estar abajo en móviles con un alto fijo */
+/* El panel lateral debe ser más alto en móviles y usar Flexbox estricto */
 #panel-lateral {
-  height: 40vh; /* Ocupa el 40% inferior de la pantalla */
+  height: 55vh; /* Aumentamos de 40vh a 55vh para dar espacio a la lista */
   width: 100%;
   z-index: 40;
-  overflow-y: auto;
   background-color: white;
   border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Forzar que el área de contenido interno scrollee correctamente (Truco flexbox) */
+#panel-lateral .flex-grow,
+#panel-lateral #vista-tab-explorar {
+  flex: 1;
+  overflow-y: auto !important;
+  min-height: 0; /* Fundamental en Flexbox para que el overflow funcione */
+  padding-bottom: 3rem; /* Margen para que el último elemento de la lista no quede pegado abajo */
 }
 
 @media (min-width: 768px) {
@@ -1619,13 +1629,15 @@ html.dark .sensibilidad-minimal {
   #panel-lateral {
     position: relative;
     width: 100%;
-    height: 40vh;
+    height: 55vh;
     border-top: 1px solid #e2e8f0;
     border-left: none !important;
     border-right: none !important;
     box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.12);
     z-index: 40;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   html.dark #panel-lateral {

@@ -704,31 +704,33 @@ function renderizarMarcadores(anunciarResultados = false) {
             keyboard: true
         });
 
-        // Popup rápido de Leaflet con alto contraste y jerarquía legible
+        // Popup rápido de Leaflet de Alta Densidad (Ultra compacto)
         const rubroPopup = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : hito.rubroCreativo;
         marcador.bindPopup(`
-          <div class="p-1 space-y-1.5">
+          <div class="space-y-1 text-xs">
             ${hito.selloIdentidad ? `
-              <div class="popup-badge-sello">
-                <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300 text-[9px] font-bold">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z"/>
                 </svg>
                 <span>${t.sello_identidad_fueguina}</span>
               </div>
             ` : ''}
-            <h4 class="font-bold text-sm text-slate-900 leading-tight">${nombre}</h4>
-            <p class="popup-toponimia font-mono">${t.toponimia} ${hito.toponimia}</p>
-            ${rubroPopup ? `<p class="popup-rubro">${rubroPopup}</p>` : ''}
-            <div class="popup-subtexto pt-1 border-t border-slate-200">
-              ${hito.localidad} · <span class="capitalize">${hito.categoria.replace('_', ' ')}</span>
+            <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-tight">${nombre}</h4>
+            <p class="text-[10px] text-slate-500 font-mono truncate">${t.toponimia} ${hito.toponimia}</p>
+            <div class="text-[10px] text-slate-400 pt-0.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span>${hito.localidad}</span>
+              <span class="capitalize text-orange-600 font-medium">${hito.categoria.replace('_', ' ')}</span>
             </div>
-            <button type="button" class="btn-popup-ver-detalle w-full mt-1.5 py-1 px-2 text-center bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold transition shadow-sm cursor-pointer" data-id="${hito.id}">
+            <button type="button" class="btn-popup-ver-detalle w-full mt-1 py-1 px-1.5 text-center bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-md text-[10px] font-bold transition shadow-xs cursor-pointer" data-id="${hito.id}">
               ${idiomaActual === "en" ? "View Full Site Info" : "Ver Ficha Completa"} →
             </button>
           </div>
         `, {
-            offset: [0, -32],
-            className: "popup-hito"
+            offset: [0, -28],
+            className: "popup-hito",
+            autoPan: true,
+            autoPanPadding: [12, 65]
         });
 
         // Evento clic: centrado suave y visualización en el panel de hitos

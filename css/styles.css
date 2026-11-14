@@ -2150,3 +2150,29 @@ html:not(.dark) #vista-tab-observatorio .obs-caja-simple {
 #contenedor-tarjeta-detalle {
   padding-bottom: 1.5rem;
 }
+
+/* =========================================
+   OPTIMIZACIÓN DE POPUPS LEAFLET EN MÓVILES 
+   ========================================= */
+@media (max-width: 767px) {
+  /* Achicar el contenedor general del popup */
+  .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+    border-radius: 12px !important;
+  }
+  
+  /* Reducir los márgenes internos drásticamente */
+  .leaflet-popup-content {
+    margin: 10px !important;
+    width: 240px !important; /* Evita que el popup se estire hasta los bordes */
+    line-height: 1.2 !important;
+  }
+
+  /* Achicar el botón de cerrar la "X" */
+  .leaflet-popup-close-button {
+    top: 4px !important;
+    right: 4px !important;
+    width: 14px !important;
+    height: 14px !important;
+  }
+}

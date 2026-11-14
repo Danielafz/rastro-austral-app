@@ -1734,12 +1734,22 @@ function configurarSelectorLocalidades() {
             }
 
             botones.forEach(b => {
-                b.classList.remove("active", "bg-amber-600", "text-white", "font-semibold");
-                b.classList.add("text-slate-300", "font-medium");
+                b.classList.remove("active", "bg-orange-500", "bg-amber-600", "text-white", "font-bold");
+                b.classList.add("text-slate-700", "dark:text-slate-200", "font-semibold");
+                const svg = b.querySelector("svg");
+                if (svg) {
+                    svg.classList.remove("text-white");
+                    svg.classList.add("text-slate-400");
+                }
             });
 
-            btn.classList.add("active", "bg-amber-600", "text-white", "font-semibold");
-            btn.classList.remove("text-slate-300", "font-medium");
+            btn.classList.add("active", "bg-orange-500", "text-white", "font-bold");
+            btn.classList.remove("text-slate-700", "dark:text-slate-200", "font-semibold");
+            const svgActivo = btn.querySelector("svg");
+            if (svgActivo) {
+                svgActivo.classList.remove("text-slate-400");
+                svgActivo.classList.add("text-white");
+            }
         });
     });
 }
@@ -1758,8 +1768,8 @@ function configurarSelectorCapasBase() {
         capaBaseEstandar.bringToBack();
         capaBaseActiva = "estandar";
 
-        btnEstandar.className = "btn-capa-base active bg-amber-600 text-white font-semibold px-3 py-1.5 transition flex items-center gap-1 whitespace-nowrap";
-        btnRelieve.className = "btn-capa-base text-slate-300 font-medium px-3 py-1.5 transition flex items-center gap-1 whitespace-nowrap";
+        btnEstandar.className = "btn-capa-base flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer";
+        btnRelieve.className = "btn-capa-base flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
     });
 
     btnRelieve.addEventListener("click", () => {
@@ -1769,8 +1779,8 @@ function configurarSelectorCapasBase() {
         capaBaseRelieve.bringToBack();
         capaBaseActiva = "relieve";
 
-        btnRelieve.className = "btn-capa-base active bg-amber-600 text-white font-semibold px-3 py-1.5 transition flex items-center gap-1 whitespace-nowrap";
-        btnEstandar.className = "btn-capa-base text-slate-300 font-medium px-3 py-1.5 transition flex items-center gap-1 whitespace-nowrap";
+        btnRelieve.className = "btn-capa-base flex items-center gap-1.5 bg-orange-500 text-white px-3 py-2 font-bold shrink-0 transition-colors active cursor-pointer";
+        btnEstandar.className = "btn-capa-base flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
     });
 }
 
@@ -1881,10 +1891,10 @@ async function configurarCapaAreasProtegidas() {
                 if (mapa.hasLayer(capaBaseEstandar)) capaBaseEstandar.bringToBack();
                 if (mapa.hasLayer(capaBaseRelieve)) capaBaseRelieve.bringToBack();
 
-                btn.className = "btn-capa-areas active px-3 py-1.5 transition bg-emerald-600 text-white font-semibold flex items-center gap-1 whitespace-nowrap";
+                btn.className = "btn-capa-areas active flex items-center gap-1.5 bg-emerald-600 text-white px-3 py-2 font-bold shrink-0 transition-colors cursor-pointer";
             } else {
                 mapa.removeLayer(capaAreasProtegidas);
-                btn.className = "btn-capa-areas px-3 py-1.5 transition text-emerald-400 hover:bg-emerald-500/20 font-medium flex items-center gap-1 whitespace-nowrap";
+                btn.className = "btn-capa-areas flex items-center gap-1.5 px-3 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
             }
         });
     } catch (error) {
@@ -2022,10 +2032,10 @@ async function configurarCapaAlertasSAR() {
 
                 if (alertasSARVisibles) {
                     mapa.addLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas active bg-rose-600 text-white font-semibold px-3 py-1.5 transition flex items-center gap-1.5 whitespace-nowrap";
+                    btn.className = "btn-capa-alertas active flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white font-bold shrink-0 hover:bg-red-700 transition-colors cursor-pointer";
                 } else {
                     mapa.removeLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas text-rose-400 hover:bg-rose-500/20 font-medium px-3 py-1.5 transition flex items-center gap-1.5 whitespace-nowrap";
+                    btn.className = "btn-capa-alertas flex items-center gap-1.5 px-4 py-2 text-slate-700 dark:text-slate-200 font-semibold shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer";
                 }
             });
         }

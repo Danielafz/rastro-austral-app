@@ -713,20 +713,35 @@ function renderizarMarcadores(anunciarResultados = false) {
             <div class="popup-subtexto pt-1 border-t border-slate-200">
               ${hito.localidad} · <span class="capitalize">${hito.categoria.replace('_', ' ')}</span>
             </div>
+            <button type="button" class="btn-popup-ver-detalle w-full mt-1.5 py-1 px-2 text-center bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold transition shadow-sm cursor-pointer" data-id="${hito.id}">
+              ${idiomaActual === "en" ? "View Full Site Info" : "Ver Ficha Completa"} →
+            </button>
           </div>
         `, {
             offset: [0, -32],
             className: "popup-hito"
         });
 
-        // Evento clic: centrado suave, ficha de detalle y apertura de popup
+        // Evento clic: centrado suave y apertura de popup
         marcador.on("click", () => {
-            seleccionarHito(hito, true, true);
+            seleccionarHito(hito, true, true, false);
+        });
+
+        marcador.on("popupopen", () => {
+            const btnPopup = document.querySelector(`.btn-popup-ver-detalle[data-id="${hito.id}"]`);
+            if (btnPopup) {
+                btnPopup.addEventListener("click", () => {
+                    seleccionarHito(hito, true, false, true);
+                });
+            }
         });
 
         capaMarcadores.addLayer(marcador);
         marcadoresPorId[hito.id] = marcador;
     });
+
+    // Renderizar lista compacta estilo Google Maps en el panel inferior
+    renderizarListaHitosCompacta(hitosFiltrados);
 
     if (anunciarResultados) {
         const cant = hitosFiltrados.length;
@@ -740,7 +755,7 @@ function renderizarMarcadores(anunciarResultados = false) {
 }
 
 // 5. Seleccionar un hito, centrar el mapa suavemente y desplegar su información
-function seleccionarHito(hito, volar = true, abrirPopup = false) {
+function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCompleta = false) {
     hitoSeleccionadoId = hito.id;
 
     if (volar && mapa) {
@@ -755,20 +770,21 @@ function seleccionarHito(hito, volar = true, abrirPopup = false) {
         marcador.openPopup();
     }
 
-    // Si había un modal de pantalla completa abierto (Bitácora u Observatorio), cerrarlo para ver el mapa y regresar a Hitos
-    cerrarTodasLasVistas();
-
     mostrarDetalleHito(hito);
     renderizarInsignias();
     renderizarSellosSidebar();
 
-    if (window.innerWidth < 768) {
-        abrirPanelMobile();
-    }
+    // Resaltar tarjeta seleccionada en la lista compacta
+    document.querySelectorAll(".hito-card").forEach(card => {
+        if (card.getAttribute("data-id") === hito.id) {
+            card.classList.add("border-orange-500", "ring-1", "ring-orange-500");
+        } else {
+            card.classList.remove("border-orange-500", "ring-1", "ring-orange-500");
+        }
+    });
 
-    const panelDetalle = document.getElementById("panel-detalle-hito");
-    if (panelDetalle) {
-        panelDetalle.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (abrirPantallaCompleta) {
+        abrirDetalleHitoCompleto(hito);
     }
 
     const nombreHito = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
@@ -778,6 +794,88 @@ function seleccionarHito(hito, volar = true, abrirPopup = false) {
             : `Hito seleccionado: ${nombreHito}, ${hito.localidad}. Toponimia: ${hito.toponimia}.`
     );
 }
+
+// Renderizar lista compacta de hitos (Estilo Google Maps)
+function renderizarListaHitosCompacta(hitos) {
+    const contenedor = document.getElementById("contenedor-hitos-lista");
+    if (!contenedor) return;
+
+    if (!hitos || hitos.length === 0) {
+        contenedor.innerHTML = `
+          <div class="p-6 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-xs">
+            ${idiomaActual === "en" ? "No sites found with these filters." : "No se encontraron hitos con estos filtros."}
+          </div>
+        `;
+        return;
+    }
+
+    const visitas = typeof obtenerVisitas === "function" ? obtenerVisitas() : [];
+    const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
+
+    contenedor.innerHTML = hitos.map(hito => {
+        const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+        const rubro = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : (hito.rubroCreativo || hito.categoria.replace('_', ' '));
+        const visitado = visitas.includes(hito.id);
+        const seleccionado = hitoSeleccionadoId === hito.id;
+
+        return `
+        <!-- Tarjeta de Hito Compacta (Lista) -->
+        <div class="hito-card flex items-center p-3 mb-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border ${seleccionado ? 'border-orange-500 ring-1 ring-orange-500' : 'border-slate-100 dark:border-slate-800'} cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors" data-id="${hito.id}">
+          <!-- Miniatura cuadrada -->
+          <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100 dark:bg-slate-800">
+          
+          <!-- Info rápida -->
+          <div class="ml-3 flex-grow overflow-hidden">
+            <div class="flex items-center gap-1.5">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">${nombre}</h3>
+              ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${hito.toponimia}</p>
+            <div class="flex items-center gap-1.5 mt-1.5">
+              <span class="bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
+              <span class="text-[10px] text-slate-400 dark:text-slate-500">${hito.localidad}</span>
+            </div>
+          </div>
+          
+          <!-- Flecha indicadora -->
+          <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+        `;
+    }).join("");
+
+    contenedor.querySelectorAll(".hito-card").forEach(card => {
+        card.addEventListener("click", () => {
+            const id = card.getAttribute("data-id");
+            const hito = listaHitos.find(h => h.id === id);
+            if (hito) {
+                seleccionarHito(hito, true, true, true);
+            }
+        });
+    });
+}
+
+function abrirDetalleHitoCompleto(hito) {
+    const vistaDetalle = document.getElementById("vista-detalle-hito-full");
+    if (!vistaDetalle) return;
+    mostrarDetalleHito(hito);
+    const headerTitulo = document.getElementById("detalle-hito-header-titulo");
+    if (headerTitulo) {
+        headerTitulo.innerText = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+    }
+    vistaDetalle.classList.remove("hidden");
+    vistaDetalle.classList.add("flex");
+    vistaDetalle.scrollTop = 0;
+}
+
+function cerrarDetalleHitoCompleto() {
+    const vistaDetalle = document.getElementById("vista-detalle-hito-full");
+    if (vistaDetalle) {
+        vistaDetalle.classList.add("hidden");
+        vistaDetalle.classList.remove("flex");
+    }
+}
+window.abrirDetalleHitoCompleto = abrirDetalleHitoCompleto;
+window.cerrarDetalleHitoCompleto = cerrarDetalleHitoCompleto;
 
 // 6. Mostrar ficha de detalle e información pedagógica (con Audio-guía y Notas)
 function mostrarDetalleHito(hito) {
@@ -2219,6 +2317,7 @@ function cambiarPestanaSidebar(pestana) {
     const badgeSellos = document.getElementById("tab-badge-sellos");
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+    const vistaDetalleFull = document.getElementById("vista-detalle-hito-full");
 
     const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm cursor-pointer";
     const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer";
@@ -2233,10 +2332,18 @@ function cambiarPestanaSidebar(pestana) {
             vistaObservatorioFull.classList.add("hidden");
             vistaObservatorioFull.classList.remove("flex");
         }
+        if (vistaDetalleFull) {
+            vistaDetalleFull.classList.add("hidden");
+            vistaDetalleFull.classList.remove("flex");
+        }
     } else if (pestana === "pasaporte") {
         if (vistaObservatorioFull) {
             vistaObservatorioFull.classList.add("hidden");
             vistaObservatorioFull.classList.remove("flex");
+        }
+        if (vistaDetalleFull) {
+            vistaDetalleFull.classList.add("hidden");
+            vistaDetalleFull.classList.remove("flex");
         }
         if (vistaBitacoraFull) {
             vistaBitacoraFull.classList.remove("hidden");
@@ -2246,6 +2353,10 @@ function cambiarPestanaSidebar(pestana) {
         if (vistaBitacoraFull) {
             vistaBitacoraFull.classList.add("hidden");
             vistaBitacoraFull.classList.remove("flex");
+        }
+        if (vistaDetalleFull) {
+            vistaDetalleFull.classList.add("hidden");
+            vistaDetalleFull.classList.remove("flex");
         }
         if (vistaObservatorioFull) {
             vistaObservatorioFull.classList.remove("hidden");
@@ -2283,6 +2394,7 @@ function cambiarPestanaSidebar(pestana) {
 function cerrarTodasLasVistas() {
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+    const vistaDetalleFull = document.getElementById("vista-detalle-hito-full");
 
     if (vistaBitacoraFull) {
         vistaBitacoraFull.classList.add("hidden");
@@ -2291,6 +2403,10 @@ function cerrarTodasLasVistas() {
     if (vistaObservatorioFull) {
         vistaObservatorioFull.classList.add("hidden");
         vistaObservatorioFull.classList.remove("flex");
+    }
+    if (vistaDetalleFull) {
+        vistaDetalleFull.classList.add("hidden");
+        vistaDetalleFull.classList.remove("flex");
     }
 
     // Regresar a la vista de Hitos en #panel-lateral

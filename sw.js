@@ -2,7 +2,7 @@
 // RASTRO AUSTRAL - SERVICE WORKER (STALE-WHILE-REVALIDATE)
 // ==========================================
 
-const CACHE_NAME = 'rastro-austral-v17'; // Incrementar este número para forzar purga de versiones anteriores
+const CACHE_NAME = 'rastro-austral-v18'; // Incrementar este número para forzar purga de versiones anteriores
 const urlsToCache = [
   './',
   './index.html',

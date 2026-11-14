@@ -2230,9 +2230,9 @@ function actualizarTextosUI() {
     if (btnBienvenidaEs && btnBienvenidaEn) {
         if (idiomaActual === "es") {
             btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white";
-            btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
+            btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg text-neutral-400 hover:text-white transition";
         } else {
-            btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition";
+            btnBienvenidaEs.className = "px-2 py-0.5 rounded-lg text-neutral-400 hover:text-white transition";
             btnBienvenidaEn.className = "px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white";
         }
     }

@@ -49,9 +49,9 @@
 
   <!-- Pantalla de Bienvenida / Ingreso -->
   <div id="pantalla-bienvenida"
-    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-slate-950/95 backdrop-blur-md transition-opacity duration-700">
+    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-black backdrop-blur-md transition-opacity duration-700 text-white">
     <div
-      class="relative bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-5 sm:p-8 max-w-md w-full my-auto shadow-2xl text-center flex flex-col items-center">
+      class="relative bg-black border border-neutral-800 text-white rounded-3xl p-5 sm:p-8 max-w-md w-full my-auto shadow-2xl text-center flex flex-col items-center">
       <!-- Capa ambiental de nieve/escarcha austral con paralaje -->
       <div id="capa-nieve-austral" class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl z-0"
         aria-hidden="true">
@@ -67,11 +67,11 @@
       <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10">
         <!-- Conmutador de Idioma en Bienvenida -->
         <div
-          class="flex items-center bg-slate-800 rounded-xl p-1 border border-slate-700 text-xs shadow-sm">
+          class="flex items-center bg-neutral-900 rounded-xl p-1 border border-neutral-800 text-xs shadow-sm">
           <button type="button" id="btn-bienvenida-lang-es"
             class="px-2 py-0.5 rounded-lg font-bold transition bg-amber-600 text-white">ES</button>
           <button type="button" id="btn-bienvenida-lang-en"
-            class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white transition">EN</button>
+            class="px-2 py-0.5 rounded-lg text-neutral-400 hover:text-white transition">EN</button>
         </div>
       </div>
 
@@ -382,22 +382,22 @@
         </div>
       </div>
 
-      <h1 class="relative z-10 text-2xl font-black text-amber-400 tracking-tight mb-1"
+      <h1 class="relative z-10 text-2xl font-black text-white tracking-tight mb-1"
         id="bienvenida-titulo" data-i18n="bienvenida_titulo">Bienvenido a Rastro Austral</h1>
-      <p class="relative z-10 text-xs text-slate-400 mb-6 max-w-xs" id="bienvenida-subtitulo"
+      <p class="relative z-10 text-xs text-neutral-400 mb-6 max-w-xs" id="bienvenida-subtitulo"
         data-i18n="bienvenida_subtitulo">Atlas y Diario de Exploración Territorial de Tierra del Fuego</p>
 
       <!-- Formulario de Ingreso -->
       <form id="form-bienvenida" class="relative z-10 w-full space-y-4">
         <div class="text-left">
           <label for="input-nombre-explorador"
-            class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1"
+            class="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1"
             id="lbl-nombre-explorador" data-i18n="lbl_nombre_explorador">
             Nombre del Expedicionario / Exploradora
           </label>
           <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required
             autocomplete="off"
-            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
+            class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
         </div>
         <button type="submit" id="btn-ingresar-app"
           class="w-full bg-amber-600 hover:bg-amber-500 active:scale-95 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">

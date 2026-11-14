@@ -468,6 +468,13 @@ function inicializarMapa() {
     // Agregar capa base activa
     capaBaseEstandar.addTo(mapa);
 
+    window.addEventListener("resize", () => {
+        if (mapa) mapa.invalidateSize();
+    });
+    setTimeout(() => {
+        if (mapa) mapa.invalidateSize();
+    }, 200);
+
     // Capa de ruta ("Mi Rastro en el Mapa") compuesta exclusivamente por huellas debajo de los marcadores
     capaHuellas = L.layerGroup().addTo(mapa);
     capaMarcadores = L.layerGroup().addTo(mapa);

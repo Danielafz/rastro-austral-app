@@ -1526,15 +1526,8 @@ html.dark .sensibilidad-minimal {
   border-color: #1e293b;
 }
 
-/* COMPORTAMIENTO MOBILE FIRST (< 768px): Bottom Sheet + Mapa fluido */
+/* COMPORTAMIENTO MOBILE FIRST (< 768px): Split Dashboard (Mapa 55vh + Panel 45vh) */
 @media (max-width: 767px) {
-  .layout-principal {
-    position: relative;
-    flex: 1 1 0%;
-    min-height: 0;
-    width: 100%;
-  }
-
   #map,
   .mapa-contenedor {
     position: relative;
@@ -1546,7 +1539,7 @@ html.dark .sensibilidad-minimal {
 
   #selector-capas-base {
     position: absolute;
-    top: 56px;
+    top: 52px;
     left: 10px;
     right: auto !important;
     transform: none;
@@ -1554,7 +1547,7 @@ html.dark .sensibilidad-minimal {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    z-index: 30;
+    z-index: 25;
   }
 
   #selector-capas-base::-webkit-scrollbar {
@@ -1567,41 +1560,30 @@ html.dark .sensibilidad-minimal {
   }
 
   #panel-lateral {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 14dvh;
-    min-height: 88px;
-    border-radius: 20px 20px 0 0;
-    border-left: none !important;
     border-top: 1px solid #e2e8f0;
-    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.18);
-    z-index: 40;
-    transition: height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.12);
+    z-index: 20;
     overflow: hidden;
-    touch-action: pan-y;
   }
 
   html.dark #panel-lateral {
     background-color: #0f172a;
     border-top-color: #1e293b;
-    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.45);
-  }
-
-  #panel-lateral.expandido {
-    height: 80dvh;
-    max-height: calc(100dvh - 56px);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
   }
 
   #bottom-sheet-drag-handle {
     display: block;
-    width: 44px;
+    width: 38px;
     height: 4px;
     background: #cbd5e1;
     border-radius: 9999px;
-    margin: 8px auto 4px;
-    cursor: pointer;
+    margin: 6px auto 3px;
+    cursor: default;
     flex-shrink: 0;
   }
 
@@ -1622,7 +1604,7 @@ html.dark .sensibilidad-minimal {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    z-index: 30;
+    z-index: 25;
   }
 
   #selector-localidades > button {
@@ -1636,14 +1618,14 @@ html.dark .sensibilidad-minimal {
   }
 
   #btn-geolocalizacion {
-    bottom: calc(14dvh + 12px);
+    bottom: 14px;
     left: 10px;
-    z-index: 30;
+    z-index: 25;
   }
 
   .leaflet-bottom.leaflet-left {
-    bottom: calc(14dvh + 52px) !important;
-    left: 0 !important;
+    bottom: 14px !important;
+    left: 48px !important;
   }
 
   .footer-panel-legal {
@@ -1653,61 +1635,63 @@ html.dark .sensibilidad-minimal {
   }
 }
 
-/* COMPORTAMIENTO DESKTOP (>= 768px): Panel Lateral Derecho Fijo */
+/* COMPORTAMIENTO DESKTOP (>= 768px): Dashboard Web con Mapa Protagónico (70%) */
 @media (min-width: 768px) {
-  .layout-principal {
-    display: flex;
-    flex: 1 1 0%;
-    min-height: 0;
-  }
-
-  #map,
-  .mapa-contenedor {
-    position: relative;
-    flex: 1;
-    height: 100%;
-    z-index: 1;
-  }
-
-  #selector-capas-base {
-    position: absolute;
-    top: 16px;
-    left: auto;
-    right: calc(390px + 16px) !important;
-    z-index: 25;
-  }
-
   #panel-lateral {
     position: relative;
-    z-index: 30;
-    width: 390px;
+    z-index: 20;
     height: 100%;
     min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    border-left: none !important;
   }
 
   html.dark #panel-lateral {
-    border-left-color: #1e293b;
+    border-right-color: #1e293b;
+    border-left: none !important;
   }
 
   #bottom-sheet-drag-handle {
     display: none;
   }
 
+  #selector-capas-base {
+    position: absolute;
+    top: 16px;
+    right: 20px !important;
+    left: auto !important;
+    z-index: 25;
+  }
+
+  #selector-localidades,
+  .controles-zona {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    z-index: 25;
+  }
+
   #btn-geolocalizacion {
     bottom: 24px;
+    left: 14px;
+    z-index: 25;
+  }
+
+  .leaflet-bottom.leaflet-left {
+    bottom: 20px !important;
+    left: 54px !important;
   }
 }
 
-/* Escritorio compacto (768px–1180px): evitar choque entre zonas y selector de capas */
-@media (min-width: 768px) and (max-width: 1180px) {
+/* Pantallas medianas (768px–1080px): escalonado de selectores flotantes */
+@media (min-width: 768px) and (max-width: 1080px) {
   #selector-capas-base {
-    top: 64px;
-    left: 56px;
-    right: auto !important;
+    top: 60px;
+    right: 16px !important;
+    left: auto !important;
   }
 }
 

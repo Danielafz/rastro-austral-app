@@ -80,6 +80,8 @@ const DICCIONARIO = {
         subtitulo: "Atlas y Diario de Exploración Territorial",
         tab_explorador: "Hitos",
         tab_pasaporte: "Bitácora",
+        tab_observatorio: "Observatorio Climático",
+        btn_volver_mapa: "Volver al Mapa",
         sitios_en_rastro: "Sitios en mi Rastro:",
         descargar_bitacora: "Descargar Bitácora",
         vista_provincia: "Toda la Provincia",
@@ -214,6 +216,8 @@ const DICCIONARIO = {
         subtitulo: "Atlas & Territorial Exploration Journal",
         tab_explorador: "Sites",
         tab_pasaporte: "Logbook",
+        tab_observatorio: "Climate Observatory",
+        btn_volver_mapa: "Back to Map",
         sitios_en_rastro: "Sites in my Trail:",
         descargar_bitacora: "Download Journal",
         vista_provincia: "Whole Province",
@@ -1886,7 +1890,7 @@ function cambiarIdioma(nuevoIdioma) {
         actualizarBannerModoOffline();
     }
 
-    const vistaObservatorio = document.getElementById("vista-tab-observatorio");
+    const vistaObservatorio = document.getElementById("vista-observatorio-full") || document.getElementById("vista-tab-observatorio");
     if (vistaObservatorio && !vistaObservatorio.classList.contains("hidden") && typeof renderizarGraficosObservatorio === "function") {
         renderizarGraficosObservatorio();
     }
@@ -2136,15 +2140,33 @@ function configurarPestanasSidebar() {
     if (btnPasaporte) {
         btnPasaporte.addEventListener("click", () => {
             cambiarPestanaSidebar("pasaporte");
-            if (window.innerWidth < 768) abrirPanelMobile();
         });
     }
     if (btnObservatorio) {
         btnObservatorio.addEventListener("click", () => {
             cambiarPestanaSidebar("observatorio");
-            if (window.innerWidth < 768) abrirPanelMobile();
         });
     }
+
+    // Botones para cerrar vistas de pantalla completa
+    document.querySelectorAll(".btn-cerrar-vista").forEach(btn => {
+        btn.addEventListener("click", () => {
+            cambiarPestanaSidebar("explorar");
+        });
+    });
+
+    // Tecla Escape para cerrar vistas de pantalla completa
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
+            const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+            if ((vistaBitacoraFull && !vistaBitacoraFull.classList.contains("hidden")) ||
+                (vistaObservatorioFull && !vistaObservatorioFull.classList.contains("hidden"))) {
+                cambiarPestanaSidebar("explorar");
+            }
+        }
+    });
+
     if (btnSidePasaporte) {
         btnSidePasaporte.addEventListener("click", () => {
             const modal = document.getElementById("modal-pasaporte");
@@ -2168,13 +2190,40 @@ function cambiarPestanaSidebar(pestana) {
     const vistaExplorar = document.getElementById("vista-tab-explorar");
     const vistaPasaporte = document.getElementById("vista-tab-pasaporte");
     const vistaObservatorio = document.getElementById("vista-tab-observatorio");
+    const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
+    const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
 
     const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm";
     const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white";
 
-    if (vistaExplorar) vistaExplorar.classList.toggle("hidden", pestana !== "explorar");
-    if (vistaPasaporte) vistaPasaporte.classList.toggle("hidden", pestana !== "pasaporte");
-    if (vistaObservatorio) vistaObservatorio.classList.toggle("hidden", pestana !== "observatorio");
+    // Gestionar Overlays a Pantalla Completa
+    if (vistaBitacoraFull) {
+        if (pestana === "pasaporte") {
+            vistaBitacoraFull.classList.remove("hidden");
+            vistaBitacoraFull.classList.add("flex");
+        } else {
+            vistaBitacoraFull.classList.add("hidden");
+            vistaBitacoraFull.classList.remove("flex");
+        }
+    }
+    if (vistaObservatorioFull) {
+        if (pestana === "observatorio") {
+            vistaObservatorioFull.classList.remove("hidden");
+            vistaObservatorioFull.classList.add("flex");
+        } else {
+            vistaObservatorioFull.classList.add("hidden");
+            vistaObservatorioFull.classList.remove("flex");
+        }
+    }
+
+    // La pestaña explorador en el panel lateral siempre queda activa de fondo
+    if (vistaExplorar) {
+        vistaExplorar.classList.remove("hidden");
+    }
+
+    // Compatibilidad si aún existen elementos inline
+    if (vistaPasaporte && !vistaBitacoraFull) vistaPasaporte.classList.toggle("hidden", pestana !== "pasaporte");
+    if (vistaObservatorio && !vistaObservatorioFull) vistaObservatorio.classList.toggle("hidden", pestana !== "observatorio");
 
     const pestanas = [
         { id: "explorar", btn: btnExplorar },
@@ -2197,7 +2246,9 @@ function cambiarPestanaSidebar(pestana) {
     if (pestana === "pasaporte") {
         renderizarSellosSidebar();
     } else if (pestana === "observatorio") {
-        renderizarGraficosObservatorio();
+        requestAnimationFrame(() => {
+            renderizarGraficosObservatorio();
+        });
     }
 }
 
@@ -2222,7 +2273,7 @@ async function cargarDatosObservatorio() {
     }
 
     actualizarBadgesObservatorio();
-    const vistaObs = document.getElementById("vista-tab-observatorio");
+    const vistaObs = document.getElementById("vista-observatorio-full") || document.getElementById("vista-tab-observatorio");
     if (vistaObs && !vistaObs.classList.contains("hidden")) {
         renderizarGraficosObservatorio();
     }
@@ -3110,7 +3161,7 @@ function configurarConmutadorTema() {
         } else {
             localStorage.setItem("rastro_austral_tema", nuevoTema);
         }
-        const vistaObs = document.getElementById("vista-tab-observatorio");
+        const vistaObs = document.getElementById("vista-observatorio-full") || document.getElementById("vista-tab-observatorio");
         if (vistaObs && !vistaObs.classList.contains("hidden") && typeof renderizarGraficosObservatorio === "function") {
             renderizarGraficosObservatorio();
         }

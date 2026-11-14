@@ -755,11 +755,17 @@ function seleccionarHito(hito, volar = true, abrirPopup = false) {
         marcador.openPopup();
     }
 
-    cambiarPestanaSidebar("explorar");
+    // Si había un modal de pantalla completa abierto (Bitácora u Observatorio), cerrarlo para ver el mapa
+    const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
+    const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+    if ((vistaBitacoraFull && !vistaBitacoraFull.classList.contains("hidden")) ||
+        (vistaObservatorioFull && !vistaObservatorioFull.classList.contains("hidden"))) {
+        cerrarTodasLasVistas();
+    }
+
     mostrarDetalleHito(hito);
     renderizarInsignias();
     renderizarSellosSidebar();
-    abrirPanelMobile();
 
     const panelDetalle = document.getElementById("panel-detalle-hito");
     if (panelDetalle) {
@@ -962,18 +968,36 @@ function mostrarDetalleHito(hito) {
           </div>
         ` : ''}
 
-        <div class="pt-1">
+        <div class="pt-1 flex flex-col sm:flex-row gap-2">
           <button id="btn-toggle-visita" 
-                  class="w-full py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 ${esVisitado
+                  class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 ${esVisitado
                 ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
                 : 'bg-amber-600 hover:bg-amber-500 active:scale-95 text-white'
             }">
             <span>${esVisitado ? t.btn_quitar : t.btn_marcar}</span>
           </button>
+          <button id="btn-ir-al-mapa-desde-ficha" type="button"
+                  class="py-2.5 px-4 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+            <span>🗺️</span>
+            <span>${idiomaActual === 'en' ? 'Locate on Map' : 'Ver en el Mapa'}</span>
+          </button>
         </div>
       </div>
     </div>
   `;
+
+    // Botón para volar al hito en el mapa y cerrar overlay
+    const btnIrAlMapa = document.getElementById("btn-ir-al-mapa-desde-ficha");
+    if (btnIrAlMapa) {
+        btnIrAlMapa.addEventListener("click", () => {
+            cerrarTodasLasVistas();
+            if (mapa && hito.coordenadas) {
+                mapa.flyTo(hito.coordenadas, 12, { animate: true, duration: 1.2 });
+                const marcador = marcadoresPorId[hito.id];
+                if (marcador) marcador.openPopup();
+            }
+        });
+    }
 
     // 0. Configurar Botón Compartir / Copiar Resumen
     const btnCopiar = document.getElementById("btn-copiar-ficha");
@@ -2119,7 +2143,7 @@ function configurarFiltroFragilidad() {
     });
 }
 
-// 16.1. Navegación por Pestañas del Panel Lateral ("Hitos", "Bitácora" y "Observatorio")
+// 16.1. Navegación por Vistas de Pantalla Completa ("Hitos", "Bitácora" y "Observatorio")
 function configurarPestanasSidebar() {
     const btnExplorar = document.getElementById("tab-btn-explorar");
     const btnPasaporte = document.getElementById("tab-btn-pasaporte");
@@ -2133,37 +2157,46 @@ function configurarPestanasSidebar() {
 
     if (btnExplorar) {
         btnExplorar.addEventListener("click", () => {
-            cambiarPestanaSidebar("explorar");
-            if (window.innerWidth < 768) abrirPanelMobile();
+            const vistaHitosFull = document.getElementById("vista-hitos-full");
+            if (vistaHitosFull && !vistaHitosFull.classList.contains("hidden")) {
+                cerrarTodasLasVistas();
+            } else {
+                cambiarPestanaSidebar("explorar");
+            }
         });
     }
     if (btnPasaporte) {
         btnPasaporte.addEventListener("click", () => {
-            cambiarPestanaSidebar("pasaporte");
+            const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
+            if (vistaBitacoraFull && !vistaBitacoraFull.classList.contains("hidden")) {
+                cerrarTodasLasVistas();
+            } else {
+                cambiarPestanaSidebar("pasaporte");
+            }
         });
     }
     if (btnObservatorio) {
         btnObservatorio.addEventListener("click", () => {
-            cambiarPestanaSidebar("observatorio");
+            const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+            if (vistaObservatorioFull && !vistaObservatorioFull.classList.contains("hidden")) {
+                cerrarTodasLasVistas();
+            } else {
+                cambiarPestanaSidebar("observatorio");
+            }
         });
     }
 
-    // Botones para cerrar vistas de pantalla completa
+    // Botones para cerrar vistas de pantalla completa ("✕ Volver al Mapa")
     document.querySelectorAll(".btn-cerrar-vista").forEach(btn => {
         btn.addEventListener("click", () => {
-            cambiarPestanaSidebar("explorar");
+            cerrarTodasLasVistas();
         });
     });
 
     // Tecla Escape para cerrar vistas de pantalla completa
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-            const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
-            const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
-            if ((vistaBitacoraFull && !vistaBitacoraFull.classList.contains("hidden")) ||
-                (vistaObservatorioFull && !vistaObservatorioFull.classList.contains("hidden"))) {
-                cambiarPestanaSidebar("explorar");
-            }
+            cerrarTodasLasVistas();
         }
     });
 
@@ -2187,16 +2220,23 @@ function cambiarPestanaSidebar(pestana) {
     const btnPasaporte = document.getElementById("tab-btn-pasaporte");
     const btnObservatorio = document.getElementById("tab-btn-observatorio");
     const badgeSellos = document.getElementById("tab-badge-sellos");
-    const vistaExplorar = document.getElementById("vista-tab-explorar");
-    const vistaPasaporte = document.getElementById("vista-tab-pasaporte");
-    const vistaObservatorio = document.getElementById("vista-tab-observatorio");
+    const vistaHitosFull = document.getElementById("vista-hitos-full");
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
 
-    const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm";
-    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1 py-2 px-1.5 text-[11px] font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white";
+    const claseActiva = "tab-btn tab-sidebar-btn tab-activa flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-bold rounded-lg transition-all bg-orange-600 text-white shadow-sm";
+    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white";
 
     // Gestionar Overlays a Pantalla Completa
+    if (vistaHitosFull) {
+        if (pestana === "explorar") {
+            vistaHitosFull.classList.remove("hidden");
+            vistaHitosFull.classList.add("flex");
+        } else {
+            vistaHitosFull.classList.add("hidden");
+            vistaHitosFull.classList.remove("flex");
+        }
+    }
     if (vistaBitacoraFull) {
         if (pestana === "pasaporte") {
             vistaBitacoraFull.classList.remove("hidden");
@@ -2215,15 +2255,6 @@ function cambiarPestanaSidebar(pestana) {
             vistaObservatorioFull.classList.remove("flex");
         }
     }
-
-    // La pestaña explorador en el panel lateral siempre queda activa de fondo
-    if (vistaExplorar) {
-        vistaExplorar.classList.remove("hidden");
-    }
-
-    // Compatibilidad si aún existen elementos inline
-    if (vistaPasaporte && !vistaBitacoraFull) vistaPasaporte.classList.toggle("hidden", pestana !== "pasaporte");
-    if (vistaObservatorio && !vistaObservatorioFull) vistaObservatorio.classList.toggle("hidden", pestana !== "observatorio");
 
     const pestanas = [
         { id: "explorar", btn: btnExplorar },
@@ -2251,6 +2282,40 @@ function cambiarPestanaSidebar(pestana) {
         });
     }
 }
+
+function cerrarTodasLasVistas() {
+    const vistaHitosFull = document.getElementById("vista-hitos-full");
+    const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
+    const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
+
+    if (vistaHitosFull) {
+        vistaHitosFull.classList.add("hidden");
+        vistaHitosFull.classList.remove("flex");
+    }
+    if (vistaBitacoraFull) {
+        vistaBitacoraFull.classList.add("hidden");
+        vistaBitacoraFull.classList.remove("flex");
+    }
+    if (vistaObservatorioFull) {
+        vistaObservatorioFull.classList.add("hidden");
+        vistaObservatorioFull.classList.remove("flex");
+    }
+
+    const claseInactiva = "tab-btn tab-sidebar-btn flex items-center justify-center gap-1.5 py-2 px-2 text-xs font-semibold rounded-lg transition-all text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white";
+    ["tab-btn-explorar", "tab-btn-pasaporte", "tab-btn-observatorio"].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.className = claseInactiva;
+            btn.setAttribute("aria-selected", "false");
+        }
+    });
+
+    const badgeSellos = document.getElementById("tab-badge-sellos");
+    if (badgeSellos) {
+        badgeSellos.className = "px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 leading-none";
+    }
+}
+window.cerrarTodasLasVistas = cerrarTodasLasVistas;
 
 let chartEstresTurbales = null;
 let chartRetrocesoGlaciar = null;
@@ -2560,8 +2625,8 @@ function renderizarSellosSidebar() {
             const id = card.getAttribute("data-id");
             const hito = listaHitos.find(h => h.id === id);
             if (hito) {
+                cerrarTodasLasVistas();
                 seleccionarHito(hito, true, true);
-                cambiarPestanaSidebar("explorar");
             }
         });
     });

@@ -1660,22 +1660,24 @@ html.dark .sensibilidad-minimal {
   }
 }
 
-/* COMPORTAMIENTO DESKTOP (>= 768px): Dashboard Web con Mapa Protagónico (70%) */
+/* COMPORTAMIENTO DESKTOP (>= 768px): Barra Fija Inferior y Mapa Protagónico */
 @media (min-width: 768px) {
   #panel-lateral {
     position: relative;
     z-index: 20;
-    height: 100%;
+    height: auto;
     min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+    border-right: none !important;
     border-left: none !important;
   }
 
   html.dark #panel-lateral {
-    border-right-color: #1e293b;
+    border-top-color: #1e293b;
+    border-right: none !important;
     border-left: none !important;
   }
 

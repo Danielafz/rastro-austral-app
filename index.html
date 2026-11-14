@@ -1199,12 +1199,35 @@
     <script src="./js/storage.js"></script>
     <script src="./js/app.js"></script>
 
-    <!-- Registro de Service Worker PWA -->
+    <!-- Registro de Service Worker PWA con Auto-Actualización -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch((err) => {
+                navigator.serviceWorker.register('./sw.js').then((registration) => {
+                    // Forzar comprobación de nueva versión de SW en cada carga
+                    registration.update();
+
+                    registration.addEventListener('updatefound', () => {
+                        const nuevoWorker = registration.installing;
+                        if (nuevoWorker) {
+                            nuevoWorker.addEventListener('statechange', () => {
+                                if (nuevoWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('Nueva versión de Rastro Austral lista.');
+                                }
+                            });
+                        }
+                    });
+                }).catch((err) => {
                     console.log('Service Worker no registrado:', err);
+                });
+
+                // Recargar automáticamente cuando el nuevo Service Worker toma el control (claim)
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        window.location.reload();
+                    }
                 });
             });
         }

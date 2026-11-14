@@ -1,79 +1,79 @@
 // ==========================================
-// RASTRO AUSTRAL - SERVICE WORKER (CACHE-FIRST)
+// RASTRO AUSTRAL - SERVICE WORKER (STALE-WHILE-REVALIDATE)
 // ==========================================
 
-const CACHE_NAME = "rastro-austral-v10";
-const RECURSOS_ESTATICOS = [
-  "./",
-  "./index.html",
-  "./css/styles.css",
-  "./js/app.js",
-  "./js/storage.js",
-  "./data/hitos.json",
-  "./data/observatorio_real.json",
-  "./data/areas_protegidas.geojson",
-  "./data/alertas_turbales.geojson",
-  "./manifest.json",
-  "./icon.svg",
-  "./assets/logo-rastro-austral.jpeg",
-  "./assets/hitos/tol-01.svg",
-  "./assets/hitos/rg-01.svg",
-  "./assets/hitos/ush-01.svg",
-  "./assets/hitos/ush-02.svg",
-  "./assets/hitos/tol-02.svg",
-  "./assets/hitos/rg-02.svg"
+const CACHE_NAME = 'rastro-austral-v11'; // Incrementar este número para forzar purga de versiones anteriores
+const urlsToCache = [
+  './',
+  './index.html',
+  './css/styles.css',
+  './js/app.js',
+  './js/storage.js',
+  './data/hitos.json',
+  './data/observatorio_real.json',
+  './data/areas_protegidas.geojson',
+  './data/alertas_turbales.geojson',
+  './manifest.json',
+  './icon.svg',
+  './assets/logo-rastro-austral.jpeg',
+  './assets/hitos/tol-01.svg',
+  './assets/hitos/rg-01.svg',
+  './assets/hitos/ush-01.svg',
+  './assets/hitos/ush-02.svg',
+  './assets/hitos/tol-02.svg',
+  './assets/hitos/rg-02.svg'
 ];
 
-// Instalación: precargar recursos estáticos
-self.addEventListener("install", (evento) => {
-  evento.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(RECURSOS_ESTATICOS);
-    }).then(() => self.skipWaiting())
+// Instalar y forzar activación inmediata
+self.addEventListener('install', event => {
+  self.skipWaiting(); // Obliga al SW a activarse sin esperar a que se cierren las pestañas
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Activación: limpiar cachés obsoletos
-self.addEventListener("activate", (evento) => {
-  evento.waitUntil(
-    caches.keys().then((claves) => {
+// Activar y limpiar cachés viejas
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        claves.map((clave) => {
-          if (clave !== CACHE_NAME) {
-            return caches.delete(clave);
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Borrando caché antigua:', cacheName);
+            return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => self.clients.claim()) // Toma el control de la página inmediatamente
   );
 });
 
-// Estrategia Cache-First: responder desde caché o consultar red
-self.addEventListener("fetch", (evento) => {
-  // Solo interceptar solicitudes GET
-  if (evento.request.method !== "GET") return;
+// Estrategia Stale-While-Revalidate / Network Fallback
+self.addEventListener('fetch', event => {
+  // Solo interceptar solicitudes GET sobre protocolo HTTP/HTTPS
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
 
-  evento.respondWith(
-    caches.match(evento.request).then((respuestaCache) => {
-      if (respuestaCache) {
-        return respuestaCache;
-      }
-      return fetch(evento.request).then((respuestaRed) => {
-        // Guardar copia en caché si es recurso local válido
-        if (respuestaRed && respuestaRed.status === 200 && respuestaRed.type === "basic") {
-          const respuestaClonada = respuestaRed.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(evento.request, respuestaClonada);
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        // Actualizar la caché silenciosamente de fondo
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
           });
         }
-        return respuestaRed;
+        return networkResponse;
       }).catch(() => {
-        // Fallback básico si está sin conexión y no está en caché
-        if (evento.request.headers.get("accept")?.includes("text/html")) {
-          return caches.match("./index.html");
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
         }
-      });
+        return cachedResponse;
+      }); // Si no hay internet, usar la caché
+
+      // Devolver primero la caché si existe, sino ir a la red
+      return cachedResponse || fetchPromise;
     })
   );
 });
-

@@ -39,9 +39,14 @@ const COLORES_CATEGORIA = {
 // Vistas territoriales predefinidas
 const VISTAS_TERRITORIO = {
     provincia: { centro: [-54.35, -67.8], zoom: 8 },
+    todos: { centro: [-54.35, -67.8], zoom: 8 },
     ushuaia: { centro: [-54.8019, -68.3030], zoom: 12 },
     tolhuin: { centro: [-54.5100, -67.1950], zoom: 12 },
-    rio_grande: { centro: [-53.7877, -67.7003], zoom: 12 }
+    rio_grande: { centro: [-53.7877, -67.7003], zoom: 12 },
+    "rio-grande": { centro: [-53.7877, -67.7003], zoom: 12 },
+    almanza: { centro: [-54.8719, -67.5786], zoom: 13 },
+    "san-sebastian": { centro: [-53.2840, -68.4850], zoom: 11 },
+    esperanza: { centro: [-63.3975, -56.9972], zoom: 8 }
 };
 
 // Ícono 3D de la hoja/brote de fragilidad ambiental
@@ -1751,6 +1756,35 @@ function cerrarPanelMobile() {
 
 // 12. Selector rápido de localidades y visión provincial
 function configurarSelectorLocalidades() {
+    // Selector dropdown nativo de territorios
+    const selectorTerritorio = document.getElementById("filtro-territorio");
+    if (selectorTerritorio) {
+        selectorTerritorio.addEventListener("change", (e) => {
+            const vista = e.target.value;
+            const configVista = VISTAS_TERRITORIO[vista];
+
+            if (configVista && mapa) {
+                mapa.flyTo(configVista.centro, configVista.zoom, {
+                    animate: true,
+                    duration: 1.2
+                });
+            }
+
+            // Al seleccionar "Toda la Provincia", recalcular trazado de ruta
+            if (vista === "todos" || vista === "provincia") {
+                actualizarTrazadoRuta();
+            }
+
+            const nombreTerritorio = selectorTerritorio.options[selectorTerritorio.selectedIndex]?.text || vista;
+            anunciarAccesibilidad(
+                idiomaActual === "en"
+                    ? `Map view updated: ${nombreTerritorio}`
+                    : `Vista de mapa actualizada: ${nombreTerritorio}`
+            );
+        });
+    }
+
+    // Compatibilidad con botones de vista (si existen)
     const botones = document.querySelectorAll(".btn-vista");
     botones.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1765,8 +1799,12 @@ function configurarSelectorLocalidades() {
             }
 
             // Al seleccionar "Toda la Provincia", recalcular trazado de ruta
-            if (vista === "provincia") {
+            if (vista === "provincia" || vista === "todos") {
                 actualizarTrazadoRuta();
+            }
+
+            if (selectorTerritorio) {
+                selectorTerritorio.value = vista === "rio_grande" ? "rio-grande" : vista;
             }
 
             botones.forEach(b => {

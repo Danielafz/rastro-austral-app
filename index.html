@@ -734,24 +734,28 @@
       <!-- CONTENEDOR GENERAL DE BARRAS SUPERIORES -->
       <div class="absolute top-2 left-1 right-1 z-[400] flex flex-col gap-1.5 pointer-events-none">
 
-        <!-- BARRA 1: CIUDADES -->
-        <div class="w-full pointer-events-auto">
-          <div class="flex items-center w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden text-[10px] sm:text-sm justify-between">
-            <button type="button" data-vista="provincia" class="btn-vista flex-1 flex items-center justify-center gap-1 bg-orange-500 text-white py-1.5 px-1 font-bold active cursor-pointer">
-              <span data-i18n="vista_provincia">Provincia</span>
-            </button>
-            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            <button type="button" data-vista="ushuaia" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
-              <span>Ushuaia</span>
-            </button>
-            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            <button type="button" data-vista="tolhuin" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
-              <span>Tolhuin</span>
-            </button>
-            <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 shrink-0"></div>
-            <button type="button" data-vista="rio_grande" class="btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
-              <span>Río Grande</span>
-            </button>
+        <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Nativo) -->
+        <div class="w-full pointer-events-auto relative">
+          <!-- El select ocupa el 100%, es fácil de tocar y despliega el menú nativo del celular -->
+          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad" class="appearance-none w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-800 dark:text-slate-100 py-2.5 pl-3 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+            <option value="todos">📍 Toda la Provincia</option>
+            
+            <optgroup label="Ciudades Principales">
+              <option value="ushuaia">Ushuaia</option>
+              <option value="tolhuin">Tolhuin</option>
+              <option value="rio-grande">Río Grande</option>
+            </optgroup>
+            
+            <optgroup label="Parajes y Bases">
+              <option value="almanza">Puerto Almanza</option>
+              <option value="san-sebastian">San Sebastián</option>
+              <option value="esperanza">Base Esperanza (Antártida)</option>
+            </optgroup>
+          </select>
+          
+          <!-- Flecha personalizada para ocultar la fea por defecto de los navegadores -->
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 dark:text-slate-400 border-l border-slate-100 dark:border-slate-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
         </div>
 
@@ -1065,7 +1069,7 @@
             <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
           </span>
           <span
-            class="text-xs font-black uppercase tracking-wider bg-rose-950/50 px-2 py-0.5 rounded border border-rose-300/40"
+            class="text-xs font-black uppercase tracking-wider bg-rose-950/50 px-2 py-0.5 rounded border border-rose-300/40 text-white"
             data-i18n="modal_bloqueo_badge_sar">
             Alerta Temprana SAR
           </span>
@@ -1097,7 +1101,7 @@
           🚫 Zona Restringida al Acceso
         </h3>
         <p id="modal-bloqueo-subtitulo" data-i18n="modal_bloqueo_subtitulo"
-          class="text-xs text-rose-300 font-semibold mt-1">
+          class="text-xs text-red-600 font-semibold mt-1">
           Tránsito pedestre suspendido por protocolo de preservación ambiental
         </p>
       </div>
@@ -1119,17 +1123,17 @@
         </div>
 
         <!-- Marco Educativo / Por qué no pisar -->
-        <div class="bg-amber-950/30 border border-amber-500/30 rounded-xl p-3.5 space-y-1.5 text-amber-200">
-          <div class="flex items-center gap-2 font-bold text-xs text-amber-300">
-            <svg class="w-4 h-4 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-4">
+          <h4 class="text-orange-800 font-bold flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 shrink-0 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2">
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <span data-i18n="modal_bloqueo_pregunta">¿Por qué se activa este bloqueo?</span>
-          </div>
-          <p data-i18n="modal_bloqueo_explicacion" class="text-[11px] leading-relaxed text-amber-100/90">
+          </h4>
+          <p data-i18n="modal_bloqueo_explicacion" class="text-orange-900 text-sm leading-relaxed">
             Los turbales son esponjas milenarias que retienen el agua de Ushuaia y capturan carbono vital. Durante
             períodos de sequía extrema detectados por radar satelital Sentinel-1 SAR, la pisada compacta el musgo
             Sphagnum destruyendo su estructura e incrementa drásticamente el riesgo de incendios subterráneos.

@@ -833,9 +833,9 @@
     </main>
   </div>
 
-  <!-- Modal Completo de Pasaporte de Sellos -->
-  <div id="modal-pasaporte" role="dialog" aria-modal="true" aria-labelledby="modal-pasaporte-titulo"
-    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+  <!-- Modal Completo de Pasaporte de Sellos / Libreta -->
+  <div id="modal-pasaporte" data-modal="libreta" role="dialog" aria-modal="true" aria-labelledby="modal-pasaporte-titulo"
+    class="modal-libreta fixed inset-0 z-[700] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
     <div
       class="bg-slate-900 border border-amber-500/30 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
       <!-- Cabecera del Pasaporte -->
@@ -904,7 +904,7 @@
 
   <!-- Modal de Créditos Institucionales y Soberanía de Datos -->
   <div id="modal-creditos"
-    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+    class="fixed inset-0 z-[700] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
     <div
       class="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
       <!-- Cabecera del Modal -->
@@ -983,7 +983,7 @@
 
   <!-- Modal de Huella Consciente y Rango Guardián Austral -->
   <div id="modal-huella" role="dialog" aria-modal="true" aria-label="Huella Consciente y Preservación"
-    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+    class="fixed inset-0 z-[700] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
     <div id="modal-huella-contenido"
       class="p-6 bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-800 relative">
       <!-- Encabezado con icono SVG lineal -->
@@ -1094,7 +1094,7 @@
 
   <!-- Modal de Bloqueo Turístico Digital / Zona Restringida (Pilar de Acción) -->
   <div id="modal-bloqueo" role="dialog" aria-modal="true" aria-labelledby="modal-bloqueo-titulo"
-    class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-5">
+    class="fixed inset-0 z-[700] bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-5">
     <div
       class="bg-slate-900 border-2 border-rose-500/80 rounded-2xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative">
       <!-- Barra superior de Alerta Crítica -->
@@ -1356,7 +1356,8 @@
             <p class="text-[11px] text-slate-500 dark:text-slate-400">Tus sellos e insignias 3D recolectadas</p>
           </div>
           <button id="btn-imprimir-pasaporte-side"
-            class="px-2.5 py-1 text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition shadow-sm cursor-pointer">
+            class="btn-ver-libreta px-2.5 py-1 text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl transition shadow-sm cursor-pointer"
+            title="Ver Libreta y Pasaporte de Expedición">
             Ver Libreta
           </button>
         </div>

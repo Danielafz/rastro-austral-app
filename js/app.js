@@ -2071,7 +2071,7 @@ function cambiarIdioma(nuevoIdioma) {
     actualizarBadgeSellos();
     renderizarMarcadores();
 
-    const modal = document.getElementById("modal-pasaporte");
+    const modal = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
     if (modal && !modal.classList.contains("hidden")) {
         renderizarModalPasaporte();
     }
@@ -2373,19 +2373,31 @@ function configurarPestanasSidebar() {
     // Tecla Escape para cerrar vistas de pantalla completa
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
+            const modalPasaporte = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
+            if (modalPasaporte && !modalPasaporte.classList.contains("hidden")) {
+                modalPasaporte.classList.add("hidden");
+                modalPasaporte.classList.remove("flex");
+                return;
+            }
             cerrarTodasLasVistas();
         }
     });
 
+    const abrirLibretaModal = () => {
+        const modal = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
+        if (modal) {
+            renderizarModalPasaporte();
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+    };
+
     if (btnSidePasaporte) {
-        btnSidePasaporte.addEventListener("click", () => {
-            const modal = document.getElementById("modal-pasaporte");
-            if (modal) {
-                renderizarModalPasaporte();
-                modal.classList.remove("hidden");
-            }
-        });
+        btnSidePasaporte.addEventListener("click", abrirLibretaModal);
     }
+    document.querySelectorAll(".btn-ver-libreta").forEach(btn => {
+        btn.addEventListener("click", abrirLibretaModal);
+    });
 
     configurarObservatorio();
     actualizarBadgeSellos();
@@ -2813,10 +2825,12 @@ function renderizarSellosSidebar() {
 
 // 17. Modal Completo de Pasaporte de Sellos
 function configurarModalPasaporte() {
-    const modal = document.getElementById("modal-pasaporte");
+    const modal = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
     const btnAbrir = document.getElementById("btn-abrir-pasaporte");
     const btnAbrirDock = document.getElementById("btn-abrir-pasaporte-dock");
     const tituloSellos = document.getElementById("titulo-sellos");
+    const btnSidePasaporte = document.getElementById("btn-imprimir-pasaporte-side");
+    const btnVerLibreta = document.getElementById("btn-ver-libreta");
     const btnCerrar = document.getElementById("btn-cerrar-modal-pasaporte");
     const btnCerrarSec = document.getElementById("btn-cerrar-modal-pasaporte-secundario");
     const btnImprimir = document.getElementById("btn-imprimir-pasaporte");
@@ -2826,15 +2840,20 @@ function configurarModalPasaporte() {
     const abrir = () => {
         renderizarModalPasaporte();
         modal.classList.remove("hidden");
+        modal.classList.add("flex");
     };
 
     const cerrar = () => {
         modal.classList.add("hidden");
+        modal.classList.remove("flex");
     };
 
     if (btnAbrir) btnAbrir.addEventListener("click", abrir);
     if (btnAbrirDock) btnAbrirDock.addEventListener("click", abrir);
     if (tituloSellos) tituloSellos.addEventListener("click", abrir);
+    if (btnSidePasaporte) btnSidePasaporte.addEventListener("click", abrir);
+    if (btnVerLibreta) btnVerLibreta.addEventListener("click", abrir);
+    document.querySelectorAll(".btn-ver-libreta").forEach(btn => btn.addEventListener("click", abrir));
     if (btnCerrar) btnCerrar.addEventListener("click", cerrar);
     if (btnCerrarSec) btnCerrarSec.addEventListener("click", cerrar);
     if (btnImprimir) {
@@ -2852,6 +2871,11 @@ function configurarModalPasaporte() {
             cerrar();
         }
     });
+
+    window.abrirModalPasaporte = abrir;
+    window.abrirModalLibreta = abrir;
+    window.cerrarModalPasaporte = cerrar;
+    window.cerrarModalLibreta = cerrar;
 }
 
 // 17.1. Modal de Créditos Institucionales y Soberanía de Datos
@@ -3071,8 +3095,13 @@ function renderizarModalPasaporte() {
             const id = card.getAttribute("data-id");
             const hito = listaHitos.find(h => h.id === id);
             if (hito) {
-                document.getElementById("modal-pasaporte")?.classList.add("hidden");
-                seleccionarHito(hito, true, true);
+                const modal = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
+                if (modal) {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                }
+                cerrarTodasLasVistas();
+                abrirDetalleHito(hito.id);
             }
         });
     });

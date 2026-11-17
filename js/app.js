@@ -21,12 +21,21 @@ let idiomaActual = localStorage.getItem("rastro_austral_idioma") || "es";
 
 // Anunciador para lectores de pantalla (NVDA, TalkBack, VoiceOver) vía aria-live
 function anunciarAccesibilidad(mensaje) {
-    const anunciador = document.getElementById("anunciador-accesible");
+    const anunciador = document.getElementById("anunciador-accesibilidad") || document.getElementById("anunciador-accesible");
     if (!anunciador || !mensaje) return;
     anunciador.textContent = "";
     setTimeout(() => {
         anunciador.textContent = mensaje;
     }, 40);
+}
+
+// Feedback háptico accesible (vibración para personas sordas o con disminución auditiva en móviles)
+function vibrarDispositivo(patron = 40) {
+    if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+        try {
+            navigator.vibrate(patron);
+        } catch (e) {}
+    }
 }
 
 // Colores según la categoría oficial
@@ -1341,6 +1350,7 @@ ${descripcion}`;
     document.getElementById("btn-toggle-visita").addEventListener("click", () => {
         if ('speechSynthesis' in window) speechSynthesis.cancel();
         const ahoraVisitado = alternarVisita(hito.id);
+        vibrarDispositivo(ahoraVisitado ? [50, 40, 60] : 30);
         renderizarMarcadores();
         renderizarInsignias();
         renderizarSellosSidebar();
@@ -3048,6 +3058,7 @@ function mostrarModalBloqueo(props = {}) {
     if (motivoEl) motivoEl.textContent = motivo;
 
     modal.classList.remove("hidden");
+    vibrarDispositivo([100, 40, 100]);
 
     anunciarAccesibilidad(
         idiomaActual === "en"

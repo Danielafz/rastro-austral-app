@@ -420,6 +420,24 @@ const GUIA_FONETICA_ORIGINARIA = [
         tts: "Chi me uín",
         significado_es: "Toponimia fluvial originaria del norte estepario",
         significado_en: "Indigenous river toponymy of the northern steppe"
+    },
+    {
+        claves: ["khami", "fagnano"],
+        termino: "Khami",
+        lengua: "Selk'nam",
+        silabas: "[ka-mí]",
+        tts: "Kah mee",
+        significado_es: "Agua grande o alargada (Lago Fagnano)",
+        significado_en: "Great or elongated water (Lake Fagnano)"
+    },
+    {
+        claves: ["karukinka"],
+        termino: "Karukinka",
+        lengua: "Selk'nam",
+        silabas: "[ka-ru-kín-ka]",
+        tts: "Kah roo keen kah",
+        significado_es: "Nuestra tierra / La última tierra (Isla Grande)",
+        significado_en: "Our land / The last land (Great Island)"
     }
 ];
 

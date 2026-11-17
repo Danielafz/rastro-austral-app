@@ -1998,8 +1998,8 @@ function configurarSelectorCapasBase() {
         capaBaseEstandar.bringToBack();
         capaBaseActiva = "estandar";
 
-        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
-        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
+        btnEstandar.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";
+        btnRelieve.className = "btn-capa-base flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
     });
 
     btnRelieve.addEventListener("click", () => {
@@ -2009,8 +2009,8 @@ function configurarSelectorCapasBase() {
         capaBaseRelieve.bringToBack();
         capaBaseActiva = "relieve";
 
-        btnRelieve.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 bg-orange-500 text-white font-bold active cursor-pointer";
-        btnEstandar.className = "btn-capa-base flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
+        btnRelieve.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";
+        btnEstandar.className = "btn-capa-base flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
     });
 }
 
@@ -2121,10 +2121,10 @@ async function configurarCapaAreasProtegidas() {
                 if (mapa.hasLayer(capaBaseEstandar)) capaBaseEstandar.bringToBack();
                 if (mapa.hasLayer(capaBaseRelieve)) capaBaseRelieve.bringToBack();
 
-                btn.className = "btn-capa-areas active flex-1 flex items-center justify-center py-1.5 px-1 bg-emerald-600 text-white font-bold cursor-pointer";
+                btn.className = "btn-capa-areas active flex items-center justify-center bg-emerald-600 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
             } else {
                 mapa.removeLayer(capaAreasProtegidas);
-                btn.className = "btn-capa-areas flex-1 flex items-center justify-center py-1.5 px-1 text-emerald-700 font-semibold hover:bg-slate-50 cursor-pointer";
+                btn.className = "btn-capa-areas flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
             }
         });
     } catch (error) {
@@ -2262,10 +2262,10 @@ async function configurarCapaAlertasSAR() {
 
                 if (alertasSARVisibles) {
                     mapa.addLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas active flex-1 flex items-center justify-center gap-1 py-1.5 px-1 bg-red-600 text-white font-bold hover:bg-red-700 cursor-pointer";
+                    btn.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
                 } else {
                     mapa.removeLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas flex-1 flex items-center justify-center gap-1 py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
+                    btn.className = "btn-capa-alertas bg-white/95 backdrop-blur-md hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
                 }
             });
         }

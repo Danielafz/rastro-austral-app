@@ -1018,13 +1018,10 @@ html:not(.dark) #btn-toggle-tema {
   color: #1e293b !important;
 }
 
-html:not(.dark) .btn-capa-base {
-  color: #475569 !important;
-}
-
-html:not(.dark) .btn-capa-base.capa-activa {
-  background-color: #f59e0b !important;
-  color: #0f172a !important;
+html:not(.dark) .btn-capa-base.active,
+html:not(.dark) .btn-capa-areas.active,
+html:not(.dark) .btn-capa-alertas.active {
+  color: #ffffff !important;
 }
 
 /* Métrica de distancia en modo claro */

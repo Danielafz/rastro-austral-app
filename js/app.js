@@ -785,6 +785,9 @@ function renderizarMarcadores(anunciarResultados = false) {
     // Renderizar panel de hito (muestra mensaje por defecto si no hay hito seleccionado)
     renderizarListaHitosCompacta();
 
+    // Actualizar barra de estado y contador de filtros
+    actualizarContadorFiltros(hitosFiltrados.length, listaHitos.length);
+
     if (anunciarResultados) {
         const cant = hitosFiltrados.length;
         anunciarAccesibilidad(
@@ -794,6 +797,91 @@ function renderizarMarcadores(anunciarResultados = false) {
         );
     }
     return hitosFiltrados.length;
+}
+
+// 4.1. Actualizar contador de hitos visibles y visibilidad del botón "Limpiar filtros"
+function actualizarContadorFiltros(totalFiltrados, totalTotal) {
+    const contador = document.getElementById("contador-hitos");
+    const btnLimpiar = document.getElementById("btn-limpiar-filtros");
+    if (contador) {
+        contador.textContent = idiomaActual === "en"
+            ? `Showing ${totalFiltrados} of ${totalTotal} sites`
+            : `Mostrando ${totalFiltrados} de ${totalTotal} hitos`;
+    }
+    if (btnLimpiar) {
+        const selTerritorio = document.getElementById("filtro-territorio");
+        const hayFiltroTerritorio = Boolean(selTerritorio && selTerritorio.value !== "todos" && selTerritorio.value !== "provincia");
+        const hayFiltroBusqueda = Boolean(busquedaActiva && busquedaActiva.trim().length > 0);
+        const hayFiltroCat = filtroActivo !== "todos" && filtroActivo !== "todas";
+        const hayFiltroFrag = filtroFragilidad !== "todas" && filtroFragilidad !== "todos";
+        const hayFiltroEstado = filtroEstadoVisita !== "todos";
+
+        if (hayFiltroTerritorio || hayFiltroBusqueda || hayFiltroCat || hayFiltroFrag || hayFiltroEstado) {
+            btnLimpiar.classList.remove("hidden");
+        } else {
+            btnLimpiar.classList.add("hidden");
+        }
+    }
+}
+
+// 4.2. Restablecer todos los filtros a sus valores predeterminados y recentrar el mapa
+function limpiarTodosLosFiltros() {
+    busquedaActiva = "";
+    const inputBusqueda = document.getElementById("buscador-hitos");
+    if (inputBusqueda) inputBusqueda.value = "";
+    document.getElementById("btn-limpiar-busqueda")?.classList.add("hidden");
+
+    filtroActivo = "todos";
+    const botonesCat = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
+    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm";
+    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100  text-slate-600  hover:bg-slate-200  px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
+    botonesCat.forEach(b => {
+        const cat = b.getAttribute("data-cat");
+        if (cat === "todos" || cat === "todas") {
+            b.className = claseActiva;
+        } else {
+            b.className = claseInactiva;
+        }
+    });
+
+    filtroFragilidad = "todas";
+    const selFrag = document.getElementById("filtro-fragilidad");
+    if (selFrag) selFrag.value = "todas";
+
+    filtroEstadoVisita = "todos";
+    const selEstado = document.getElementById("filtro-estado-visita");
+    if (selEstado) {
+        if (selEstado.tagName === "SELECT") {
+            selEstado.value = "todos";
+        } else {
+            const botones = selEstado.querySelectorAll(".btn-filtro-estado");
+            botones.forEach(b => {
+                const est = b.getAttribute("data-estado");
+                if (est === "todos") {
+                    b.classList.add("active", "bg-amber-500", "text-slate-950", "font-bold", "shadow-sm");
+                    b.classList.remove("text-slate-400", "font-medium");
+                } else {
+                    b.classList.remove("active", "bg-amber-500", "text-slate-950", "font-bold", "shadow-sm");
+                    b.classList.add("text-slate-400", "font-medium");
+                }
+            });
+        }
+    }
+
+    const selTerritorio = document.getElementById("filtro-territorio");
+    if (selTerritorio) selTerritorio.value = "todos";
+
+    // Recentrar mapa en toda la provincia
+    const configVista = VISTAS_TERRITORIO["provincia"] || VISTAS_TERRITORIO["todos"];
+    if (configVista && mapa) {
+        mapa.flyTo(configVista.centro, configVista.zoom, {
+            animate: true,
+            duration: 1.2
+        });
+    }
+
+    renderizarMarcadores(true);
+    actualizarTrazadoRuta();
 }
 
 // 5. Seleccionar un hito, centrar el mapa suavemente y desplegar su información
@@ -841,13 +929,16 @@ function renderizarListaHitosCompacta() {
     // Si por defecto no hay hito seleccionado, mostrar mensaje de invitación
     if (!hitoSeleccionadoId) {
         contenedor.innerHTML = `
-          <div class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
+          <div id="hitos-empty-state" class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
             <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
             <p class="font-bold text-slate-700 text-sm" data-i18n="selecciona_punto_mapa">${idiomaActual === "en" ? "Select a point on the map" : "Selecciona un punto en el mapa"}</p>
             <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">${idiomaActual === "en" ? "Tap any marker to view its details here" : "Toca cualquier marcador para ver su ficha territorial"}</p>
+            <button id="btn-explorar-aleatorio" type="button" class="mt-4 inline-flex items-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors cursor-pointer">
+              🧭 ${idiomaActual === "en" ? "Discover a suggested landmark" : "Descubrir un hito sugerido"}
+            </button>
           </div>
         `;
         return;
@@ -1666,6 +1757,24 @@ function configurarFiltros() {
             actualizarTrazadoRuta();
         });
     });
+
+    const btnLimpiar = document.getElementById("btn-limpiar-filtros");
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener("click", limpiarTodosLosFiltros);
+    }
+
+    document.addEventListener("click", (e) => {
+        const btnExplorar = e.target.closest("#btn-explorar-aleatorio");
+        if (btnExplorar) {
+            if (!Array.isArray(listaHitos) || listaHitos.length === 0) return;
+            const indice = Math.floor(Math.random() * listaHitos.length);
+            const hito = listaHitos[indice];
+            if (hito) {
+                seleccionarHito(hito, true, true, false);
+                cambiarPestanaSidebar("explorar");
+            }
+        }
+    });
 }
 
 // 10. Lógica de búsqueda en tiempo real
@@ -1778,6 +1887,8 @@ function configurarSelectorLocalidades() {
             if (vista === "todos" || vista === "provincia") {
                 actualizarTrazadoRuta();
             }
+
+            actualizarContadorFiltros(capaMarcadores ? Object.keys(marcadoresPorId).length : listaHitos.length, listaHitos.length);
 
             const nombreTerritorio = selectorTerritorio.options[selectorTerritorio.selectedIndex]?.text || vista;
             anunciarAccesibilidad(

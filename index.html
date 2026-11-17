@@ -449,7 +449,7 @@
           <circle cx="12" cy="7" r="4" />
         </svg>
         <span id="nombre-explorador-display"
-          class="font-bold text-amber-300 max-w-[68px] sm:max-w-[140px] truncate"></span>
+          class="capitalize font-bold text-amber-300 max-w-[68px] sm:max-w-[140px] truncate"></span>
         <button id="btn-editar-explorador"
           class="text-slate-400 hover:text-white transition ml-0.5 flex items-center justify-center"
           title="Editar nombre / Cambiar explorador" aria-label="Editar nombre">
@@ -473,7 +473,7 @@
 
   <!-- Encabezado de Estado (Optimizado para Móviles) -->
   <div id="banner-modo-offline" role="status" aria-live="polite"
-    class="flex items-center justify-between px-2 py-2 sm:px-4 bg-white border-b border-slate-200 text-xs md:text-sm shadow-sm z-[20] relative flex-shrink-0">
+    class="flex items-center justify-between py-1.5 px-3 md:px-6 bg-white border-b border-slate-200 text-xs shadow-sm z-[20] relative flex-shrink-0">
 
     <!-- Estado de Sincronización -->
     <div class="flex items-center gap-1.5 text-emerald-600 font-medium whitespace-nowrap overflow-hidden">
@@ -653,6 +653,12 @@
           </div>
         </div>
 
+        <!-- Barra de Estado de Filtros y Contador -->
+        <div class="flex items-center justify-between text-xs text-slate-500 mt-2 mb-3">
+          <span id="contador-hitos" class="font-medium">Mostrando 19 de 19 hitos</span>
+          <button id="btn-limpiar-filtros" type="button" class="hidden text-orange-600 hover:text-orange-700 font-bold underline cursor-pointer">Limpiar filtros</button>
+        </div>
+
         <!-- Tarjeta Travesía Acumulada -->
         <div id="metrica-distancia-ruta"
           class="hidden p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-shrink-0">
@@ -683,7 +689,7 @@
 
         <!-- Contenedor del Hito Seleccionado en Panel Lateral -->
         <div id="contenedor-hitos-lista" class="w-full space-y-2 pb-4">
-          <div
+          <div id="hitos-empty-state"
             class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
             <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -695,6 +701,9 @@
             </p>
             <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">Toca cualquier marcador para ver su
               ficha territorial</p>
+            <button id="btn-explorar-aleatorio" type="button" class="mt-4 inline-flex items-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors cursor-pointer">
+              🧭 Descubrir un hito sugerido
+            </button>
           </div>
         </div>
       </div>

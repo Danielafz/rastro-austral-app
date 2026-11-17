@@ -591,7 +591,12 @@ async function cargarDatos() {
     });
     window.datosHitos = datosHitos;
 
-    document.getElementById("contador-total").innerText = listaHitos.length;
+    const totalHitos = (Array.isArray(listaHitos) && listaHitos.length > 0) ? listaHitos.length : 25;
+    const elContadorTotal = document.getElementById("contador-total");
+    if (elContadorTotal) elContadorTotal.innerText = totalHitos;
+    const elBitacoraTotal = document.getElementById("bitacora-total");
+    if (elBitacoraTotal) elBitacoraTotal.innerText = totalHitos;
+
     renderizarMarcadores();
     renderizarInsignias();
     actualizarMetricas();
@@ -848,10 +853,11 @@ function renderizarMarcadores(anunciarResultados = false) {
 function actualizarContadorFiltros(totalFiltrados, totalTotal) {
     const contador = document.getElementById("contador-hitos");
     const btnLimpiar = document.getElementById("btn-limpiar-filtros");
+    const totalSeguro = totalTotal || (Array.isArray(listaHitos) && listaHitos.length > 0 ? listaHitos.length : 25);
     if (contador) {
         contador.textContent = idiomaActual === "en"
-            ? `Showing ${totalFiltrados} of ${totalTotal} sites`
-            : `Mostrando ${totalFiltrados} de ${totalTotal} hitos`;
+            ? `Showing ${totalFiltrados} of ${totalSeguro} sites`
+            : `Mostrando ${totalFiltrados} de ${totalSeguro} hitos`;
     }
     if (btnLimpiar) {
         const selTerritorio = document.getElementById("filtro-territorio");
@@ -1766,14 +1772,16 @@ function configurarInsigniasInteractivas() {
 // 8. Actualizar métricas del encabezado y progreso visual
 function actualizarMetricas() {
     const visitas = obtenerVisitas();
-    const total = listaHitos.length || 1;
+    const total = (Array.isArray(listaHitos) && listaHitos.length > 0) ? listaHitos.length : 25;
     const porcentaje = Math.round((visitas.length / total) * 100);
 
     const elVisitas = document.getElementById("contador-visitas");
+    const elTotal = document.getElementById("contador-total");
     const elBarra = document.getElementById("barra-progreso");
     const elPorcentaje = document.getElementById("porcentaje-progreso");
 
     if (elVisitas) elVisitas.innerText = visitas.length;
+    if (elTotal) elTotal.innerText = total;
     if (elBarra) elBarra.style.width = `${porcentaje}%`;
     if (elPorcentaje) elPorcentaje.innerText = `${porcentaje}%`;
 
@@ -3000,9 +3008,18 @@ function configurarObservatorio() {
 
 function actualizarBadgeSellos() {
     const elBadge = document.getElementById("tab-badge-sellos");
+    const elTotal = document.getElementById("bitacora-total");
+    const elVisitas = document.getElementById("bitacora-visitas");
+    const elContadorTotal = document.getElementById("contador-total");
+    const visitas = obtenerVisitas();
+    const total = (Array.isArray(listaHitos) && listaHitos.length > 0) ? listaHitos.length : 25;
+
+    if (elTotal) elTotal.innerText = total;
+    if (elVisitas) elVisitas.innerText = visitas.length;
+    if (elContadorTotal) elContadorTotal.innerText = total;
+
     if (elBadge) {
-        const visitas = obtenerVisitas();
-        elBadge.innerText = `${visitas.length}/${listaHitos.length || 25}`;
+        elBadge.innerHTML = `<span id="bitacora-visitas">${visitas.length}</span>/<span id="bitacora-total">${total}</span>`;
     }
 }
 

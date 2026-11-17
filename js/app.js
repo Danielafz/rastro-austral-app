@@ -2172,7 +2172,7 @@ function actualizarTextosUI() {
         // Mantener estilo de marca en el título de bienvenida
         if (clave === "bienvenida_titulo") {
             const prefijo = idiomaActual === "en" ? "Welcome to " : "Bienvenido a ";
-            el.innerHTML = `${prefijo}<span class="text-orange-500">Rastro Austral</span>`;
+            el.innerHTML = `${prefijo}<span class="text-orange-500 whitespace-nowrap">Rastro Austral</span>`;
         } else if (clave.startsWith("principio_") && texto.includes(":")) {
             const sepIdx = texto.indexOf(":");
             const strongEl = document.createElement("strong");

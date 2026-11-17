@@ -59,7 +59,14 @@ python scripts/generar_alertas_sar.py
 ### Despliegue en la Nube
 Optimizado para CI/CD directo en **Vercel**, garantizando el entorno seguro (HTTPS) exigido para la instalación PWA.
 
-## 📚 6. Fuentes y Referencias Oficiales
+## Fuentes Oficiales y Bibliografía
+
+### Fuentes Territoriales, Históricas y Comunitarias Específicas
+* **[Municipio de Río Grande — Historia y Memoria Selk'nam](https://turismo.riogrande.gob.ar/historiaselknam/):** Respalda los antecedentes históricos, memoria viva del pueblo Selk'nam, el rol histórico de la Misión Salesiana (`rg-01`) y el reconocimiento del patrimonio originario en el norte de la Isla Grande (`rg-03`).
+* **[Pueblos Originarios — Cosmovisión y Toponimia Selk'nam](https://pueblosoriginarios.com/sur/patagonia/selknam/selknam.html):** Respalda la toponimia ancestral de *Karukinka*, la división territorial en *haruwen*, el significado de *Tol-wen* («en el corazón») en `tol-01`, el lago *Khami* en `tol-02` y la cosmovisión de los antepasados míticos *Howenh*.
+* **[Municipio de Tolhuin — Atención a la Comunidad](https://tolhuin.gob.ar/atencion-a-la-comunidad/):** Respalda la articulación institucional, servicios comunitarios y vinculación con las áreas de cultura y desarrollo local para los talleres y cooperativas de oficios fueguinos en Tolhuin (`tol-04`, `taller-hilado-tolhuin`).
+
+### Repositorios Científicos y Cartográficos Institucionales
 * **IPIEC:** Instituto Provincial de Análisis e Investigación, Estadística y Censos (Tierra del Fuego).
 * **IDETDF:** Infraestructura de Datos Espaciales de Tierra del Fuego.
 * **Google Earth Engine & ESA:** Programa Copernicus (Satélites Sentinel-1 SAR).

@@ -2169,10 +2169,13 @@ function actualizarTextosUI() {
         const texto = t[clave];
         if (!texto) return;
 
-        // Mantener estilo de marca en el título de bienvenida
+        // Mantener estilo de marca y jerarquía tipográfica en el título de bienvenida
         if (clave === "bienvenida_titulo") {
-            const prefijo = idiomaActual === "en" ? "Welcome to " : "Bienvenido a ";
-            el.innerHTML = `${prefijo}<span class="text-orange-500 whitespace-nowrap">Rastro Austral</span>`;
+            const prefijo = idiomaActual === "en" ? "Welcome to" : "Bienvenido a";
+            el.innerHTML = `
+              <span class="text-base sm:text-lg md:text-xl font-medium text-neutral-300 tracking-wide">${prefijo}</span>
+              <span class="text-3xl sm:text-4xl md:text-5xl font-black text-orange-500 tracking-tight mt-0.5 drop-shadow-[0_2px_12px_rgba(249,115,22,0.25)]">Rastro Austral</span>
+            `;
         } else if (clave.startsWith("principio_") && texto.includes(":")) {
             const sepIdx = texto.indexOf(":");
             const strongEl = document.createElement("strong");

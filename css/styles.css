@@ -2200,6 +2200,16 @@ html:not(.dark) #pantalla-bienvenida #bienvenida-titulo {
   color: #ffffff !important;
 }
 
+#pantalla-bienvenida h1 .text-orange-500,
+#pantalla-bienvenida #bienvenida-titulo .text-orange-500 {
+  color: #f97316 !important;
+}
+
+#pantalla-bienvenida h1 .text-neutral-300,
+#pantalla-bienvenida #bienvenida-titulo .text-neutral-300 {
+  color: #d4d4d4 !important;
+}
+
 #pantalla-bienvenida p,
 #pantalla-bienvenida #bienvenida-subtitulo,
 #pantalla-bienvenida label,

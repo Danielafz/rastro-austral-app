@@ -438,6 +438,33 @@ const GUIA_FONETICA_ORIGINARIA = [
         tts: "Kah roo keen kah",
         significado_es: "Nuestra tierra / La última tierra (Isla Grande)",
         significado_en: "Our land / The last land (Great Island)"
+    },
+    {
+        claves: ["lapataia"],
+        termino: "Lapataia",
+        lengua: "Yagán",
+        silabas: "[la-pa-tái-a]",
+        tts: "Lah pah tah ee ah",
+        significado_es: "Bahía boscosa o bahía de la madera",
+        significado_en: "Wooded bay or bay of wood"
+    },
+    {
+        claves: ["yagán", "yagan", "yámana"],
+        termino: "Yagán / Yámana",
+        lengua: "Yagán",
+        silabas: "[ya-gán]",
+        tts: "Yah gahn",
+        significado_es: "Pueblo originario canoero de los canales australes",
+        significado_en: "Indigenous canoe people of the southern channels"
+    },
+    {
+        claves: ["jeujepén", "jeujepen"],
+        termino: "Jeujepén",
+        lengua: "Selk'nam",
+        silabas: "[jeu-je-pén]",
+        tts: "Heu he pen",
+        significado_es: "Cerro sagrado y vigía del corazón de la isla",
+        significado_en: "Sacred lookout peak in the island's heartland"
     }
 ];
 
@@ -2975,7 +3002,7 @@ function actualizarBadgeSellos() {
     const elBadge = document.getElementById("tab-badge-sellos");
     if (elBadge) {
         const visitas = obtenerVisitas();
-        elBadge.innerText = `${visitas.length}/${listaHitos.length || 16}`;
+        elBadge.innerText = `${visitas.length}/${listaHitos.length || 25}`;
     }
 }
 

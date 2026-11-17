@@ -88,7 +88,7 @@
     "credito_imagen": "InFueTur / Ambiente TDF"
   },
   {
-    "id": "ush-05",
+    "id": "ush-diseno-austral",
     "nombre": "Colectivo y Talleres de Diseño Austral",
     "nombre_en": "Austral Design Collective & Studios",
     "localidad": "Ushuaia",
@@ -136,7 +136,7 @@
     "credito_imagen": "IDETDF Cartografía"
   },
   {
-    "id": "alm-01",
+    "id": "alm-centolla",
     "nombre": "Puerto Almanza y Sendero de la Centolla Austral",
     "nombre_en": "Puerto Almanza & Artisanal Fishery Hamlet",
     "localidad": "Ushuaia",
@@ -320,7 +320,7 @@
     "credito_imagen": "Sitio Ramsar Costa Atlántica"
   },
   {
-    "id": "rg-04",
+    "id": "rg-frigorifico-cap",
     "nombre": "Monumento Histórico Nacional Frigorífico CAP",
     "nombre_en": "CAP Meatpackers National Historic Site",
     "localidad": "Río Grande",
@@ -440,5 +440,141 @@
     "rubroCreativo": "Diseño & Encuadernación Autoral",
     "rubroCreativo_en": "Authorial Design & Bookbinding",
     "contacto": "Paseo de los Artesanos / Puerto Ushuaia"
+  },
+  {
+    "id": "ant-01",
+    "nombre": "Escuela Provincial N° 38 \"Presidente Raúl Ricardo Alfonsín\" y Base Esperanza",
+    "nombre_en": "Provincial School No. 38 & Esperanza Base",
+    "localidad": "Base Esperanza",
+    "categoria": "patrimonio",
+    "coordenadas": [
+      -63.3981,
+      -56.9973
+    ],
+    "toponimia": "Bahía Esperanza / Península Trinidad",
+    "descripcion": "Primer asentamiento civil permanente en la Antártida (1952), escuela más austral del mundo y emblema de soberanía científica, educativa y familiar argentina en el continente blanco.",
+    "descripcion_en": "First permanent civilian Antarctic settlement (1952), southernmost school in the world, and emblem of Argentine scientific, educational, and family sovereignty.",
+    "fragilidad": "Muy Alta",
+    "fragilidad_en": "Very High",
+    "conducta": "Seguir protocolos estrictos del Tratado Antártico: mantener distancia obligatoria de la fauna silvestre y retornar todo residuo al continente.",
+    "conducta_en": "Adhere strictly to Antarctic Treaty protocols: keep mandated distance from wildlife and pack out all waste to the continent.",
+    "fuente": "Comando Conjunto Antártico / Ministerio de Educación TDF",
+    "insignia": "sello_antartida",
+    "imagen": "./assets/hitos/ush-01.svg",
+    "credito_imagen": "Comando Conjunto Antártico / Base Esperanza"
+  },
+  {
+    "id": "alm-01",
+    "nombre": "Caleta de Pescadores Artesanales de Puerto Almanza",
+    "nombre_en": "Artisanal Fishermen's Cove of Puerto Almanza",
+    "localidad": "Puerto Almanza",
+    "categoria": "economia_creativa",
+    "coordenadas": [
+      -54.8689,
+      -67.5614
+    ],
+    "toponimia": "Canal Onashaga (Canal Beagle)",
+    "descripcion": "Polo gastronómico y productivo de pesca artesanal sustentable de centolla y mejillones sobre la costa del canal Onashaga, frente a Puerto Williams.",
+    "descripcion_en": "Gastronomic and artisanal fishing hub sustainably harvesting king crab and mussels along the Onashaga Channel coast, opposite Puerto Williams.",
+    "fragilidad": "Baja",
+    "fragilidad_en": "Low",
+    "conducta": "Consumir en caletas autorizadas que respeten las vedas reproductivas y apoyar la economía de pescadores locales.",
+    "conducta_en": "Dine at authorized coves respecting seasonal reproduction bans and support local artisanal fisher families.",
+    "fuente": "Secretaría de Pesca TDF / Asociación de Pescadores de Almanza",
+    "insignia": "sello_pesca",
+    "imagen": "./assets/hitos/ush-02.svg",
+    "credito_imagen": "Secretaría de Pesca TDF",
+    "selloIdentidad": true,
+    "rubroCreativo": "Pesca Artesanal & Gastronomía Austral",
+    "rubroCreativo_en": "Artisanal Fishing & Subantarctic Gastronomy",
+    "contacto": "Caleta de Pescadores, Puerto Almanza"
+  },
+  {
+    "id": "ss-01",
+    "nombre": "Hito I Cabo Espíritu Santo y Bahía San Sebastián",
+    "nombre_en": "Landmark I Cape Espíritu Santo & San Sebastián Bay",
+    "localidad": "San Sebastián",
+    "categoria": "patrimonio",
+    "coordenadas": [
+      -52.6589,
+      -68.6061
+    ],
+    "toponimia": "Cabo Espíritu Santo / Estepa Norte de Karukinka",
+    "descripcion": "Punto geodésico binacional donde nace el límite terrestre de la Isla Grande de Tierra del Fuego sobre la boca oriental del Estrecho de Magallanes.",
+    "descripcion_en": "Binational geodetic boundary marker where the land border of Tierra del Fuego begins upon the eastern mouth of the Strait of Magellan.",
+    "fragilidad": "Alta",
+    "fragilidad_en": "High",
+    "conducta": "Transitar únicamente por huellas señalizadas de estepa para no erosionar dunas ni alterar zonas de nidificación.",
+    "conducta_en": "Travel solely on marked steppe trails to prevent dune erosion and protect shorebird nesting zones.",
+    "fuente": "Comisión Nacional de Límites / IGN Argentina",
+    "insignia": "sello_frontera",
+    "imagen": "./assets/hitos/rg-01.svg",
+    "credito_imagen": "IGN Argentina / IDETDF"
+  },
+  {
+    "id": "ush-05",
+    "nombre": "Sendero Bahía Lapataia (Fin de la Ruta Nacional N° 3)",
+    "nombre_en": "Bahía Lapataia Trail (End of National Route 3)",
+    "localidad": "Ushuaia",
+    "categoria": "senderos",
+    "coordenadas": [
+      -54.8569,
+      -68.5594
+    ],
+    "toponimia": "Lapataia («Bahía boscosa» o «Bahía de la madera» en lengua Yagán)",
+    "descripcion": "Desembocadura del río Lapataia en el Parque Nacional Tierra del Fuego; sitio arqueológico con concheros ancestrales del pueblo Yagán y punto terminal de la Ruta Panamericana.",
+    "descripcion_en": "Outflow of the Lapataia River in Tierra del Fuego National Park; ancestral Yagán shell midden archaeological site and southern terminus of the Pan-American Highway.",
+    "fragilidad": "Muy Alta",
+    "fragilidad_en": "Very High",
+    "conducta": "Permanecer estrictamente sobre las pasarelas elevadas para resguardar los concheros arqueológicos del pueblo Yagán.",
+    "conducta_en": "Remain strictly on elevated boardwalks to protect ancestral Yagán archaeological shell middens.",
+    "fuente": "Parques Nacionales / CADIC-CONICET",
+    "insignia": "sello_lapataia",
+    "imagen": "./assets/hitos/ush-01.svg",
+    "credito_imagen": "Parques Nacionales / CADIC-CONICET"
+  },
+  {
+    "id": "tol-05",
+    "nombre": "Sendero Mirador Cerro Jeujepén",
+    "nombre_en": "Cerro Jeujepén Viewpoint Trail",
+    "localidad": "Tolhuin",
+    "categoria": "senderos",
+    "coordenadas": [
+      -54.5683,
+      -67.1917
+    ],
+    "toponimia": "Jeujepén (Cerro sagrado / Haruwen central)",
+    "descripcion": "Elevación aislada en medio de la turbera y el bosque de lenga al sur de Tolhuin que ofrece una vista panorámica de 360° sobre la cabecera del lago Khami (Fagnano).",
+    "descripcion_en": "Isolated hill amid peatlands and lenga forests south of Tolhuin offering a 360° panoramic vista over Lake Khami (Fagnano).",
+    "fragilidad": "Alta",
+    "fragilidad_en": "High",
+    "conducta": "No salirse de la senda pedregosa para evitar deslizamientos de suelo y no recolectar fósiles ni flora andina.",
+    "conducta_en": "Stay on marked rocky trails to avoid soil slippage and do not remove fossils or native flora.",
+    "fuente": "InFueTur / Municipio de Tolhuin",
+    "insignia": "sello_mirador",
+    "imagen": "./assets/hitos/tol-02.svg",
+    "credito_imagen": "InFueTur / Municipio de Tolhuin"
+  },
+  {
+    "id": "rg-04",
+    "nombre": "Acantilado Costero Cabo Domingo",
+    "nombre_en": "Cabo Domingo Coastal Cliff",
+    "localidad": "Río Grande",
+    "categoria": "patrimonio",
+    "coordenadas": [
+      -53.6889,
+      -67.8556
+    ],
+    "toponimia": "Costa Norte / Mar Argentino",
+    "descripcion": "Formación sedimentaria emblemática al norte de Río Grande, punto histórico de avistamiento costero y mirador natural de la amplitud de mareas del Atlántico Sur.",
+    "descripcion_en": "Emblematic sedimentary headland north of Río Grande, historic coastal vantage point and natural lookout over South Atlantic tidal ranges.",
+    "fragilidad": "Media",
+    "fragilidad_en": "Medium",
+    "conducta": "No aproximarse al borde del acantilado por riesgo de desmoronamiento arcilloso provocado por el viento marino.",
+    "conducta_en": "Do not approach the cliff edge due to unstable clay collapse hazards caused by oceanic winds.",
+    "fuente": "Municipio de Río Grande / IDETDF",
+    "insignia": "sello_costero_norte",
+    "imagen": "./assets/hitos/rg-01.svg",
+    "credito_imagen": "Municipio de Río Grande / IDETDF"
   }
 ]

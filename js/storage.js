@@ -31,27 +31,25 @@ function guardarTema(tema) {
     }
 }
 
+// Nombre del explorador en memoria (sin persistencia entre recargas)
+let nombreExploradorMemoria = "";
+try {
+    localStorage.removeItem(CLAVE_EXPLORADOR);
+    sessionStorage.removeItem(CLAVE_EXPLORADOR);
+} catch (e) {}
+
 // Obtener nombre del explorador/a
 function obtenerNombreExplorador() {
-    try {
-        return localStorage.getItem(CLAVE_EXPLORADOR) || "";
-    } catch (e) {
-        console.error("Error al leer nombre de explorador:", e);
-        return "";
-    }
+    return nombreExploradorMemoria;
 }
 
-// Guardar nombre del explorador/a
+// Guardar nombre del explorador/a (solo en memoria para la sesión activa)
 function guardarNombreExplorador(nombre) {
+    nombreExploradorMemoria = nombre ? nombre.trim() : "";
     try {
-        if (nombre && nombre.trim().length > 0) {
-            localStorage.setItem(CLAVE_EXPLORADOR, nombre.trim());
-        } else {
-            localStorage.removeItem(CLAVE_EXPLORADOR);
-        }
-    } catch (e) {
-        console.error("Error al guardar nombre de explorador:", e);
-    }
+        localStorage.removeItem(CLAVE_EXPLORADOR);
+        sessionStorage.removeItem(CLAVE_EXPLORADOR);
+    } catch (e) {}
 }
 
 // Obtener lista de IDs de sitios visitados

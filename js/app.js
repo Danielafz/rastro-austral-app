@@ -903,10 +903,13 @@ function abrirDetalleHito(id) {
             });
         }
 
-        const marcador = marcadoresPorId[data.id];
-        if (marcador) {
-            marcador.openPopup();
+        // Cerrar popup del mapa para que no quede flotando por detrás del modal
+        if (mapa) {
+            mapa.closePopup();
         }
+
+        // Sincronizar panel lateral/inferior para mostrar únicamente la ficha seleccionada y ocultar el estado vacío
+        renderizarListaHitosCompacta();
 
         // Inyectar datos en elementos estructurados
         const imgEl = document.getElementById('detalle-imagen');
@@ -3261,21 +3264,11 @@ function configurarPantallaBienvenida() {
 
     if (!pantalla || !form || !inputNombre) return;
 
-    // Verificar si ya existe un nombre de explorador registrado
-    const nombreGuardado = typeof obtenerNombreExplorador === "function"
-        ? obtenerNombreExplorador()
-        : (localStorage.getItem("rastro_austral_explorador") || "");
-
-    if (nombreGuardado && nombreGuardado.trim().length > 0) {
-        inputNombre.value = nombreGuardado;
-        if (nombreDisplay) nombreDisplay.innerText = nombreGuardado;
-        if (badgeExplorador) badgeExplorador.classList.remove("hidden");
-        // Ocultar pantalla de bienvenida inmediatamente si ya está registrado
-        pantalla.classList.add("hidden");
-    } else {
-        inputNombre.value = "";
-        pantalla.classList.remove("hidden");
-    }
+    // Sin persistencia entre recargas: siempre solicitar inicio de sesión en bienvenida
+    inputNombre.value = "";
+    pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
+    if (nombreDisplay) nombreDisplay.innerText = "";
+    if (badgeExplorador) badgeExplorador.classList.add("hidden");
 
     // Interactividad ocular y globito de diálogo del Pingüino Rey
     const svgPinguinoBienvenida = document.getElementById("svg-pinguino-bienvenida");
@@ -3362,8 +3355,6 @@ function configurarPantallaBienvenida() {
 
         if (typeof guardarNombreExplorador === "function") {
             guardarNombreExplorador(nombre);
-        } else {
-            localStorage.setItem("rastro_austral_explorador", nombre);
         }
 
         if (nombreDisplay) nombreDisplay.innerText = nombre;

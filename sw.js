@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v29'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v32'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const urlsToCache = [
   './',
   './index.html',
@@ -11,7 +11,7 @@ const urlsToCache = [
   './data/alertas_turbales.geojson',
   './manifest.json',
   './icon.svg',
-  './assets/logo-rastro-austral.jpeg',
+  './assets/logo-rastro-austral.png',
   './assets/hitos/tol-01.svg',
   './assets/hitos/rg-01.svg',
   './assets/hitos/ush-01.svg',

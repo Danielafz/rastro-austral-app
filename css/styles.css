@@ -1062,8 +1062,7 @@ html:not(.dark) .leaflet-tooltip.tooltip-hito::before {
 html:not(.dark) #modal-pasaporte>div,
 html:not(.dark) #modal-creditos>div,
 html:not(.dark) #modal-huella>div,
-html:not(.dark) #modal-bloqueo>div,
-html:not(.dark) #pantalla-bienvenida>div {
+html:not(.dark) #modal-bloqueo>div {
   background-color: #ffffff !important;
   border-color: #f43f5e !important;
   color: #0f172a !important;
@@ -2175,4 +2174,63 @@ html:not(.dark) #vista-tab-observatorio .obs-caja-simple {
     width: 14px !important;
     height: 14px !important;
   }
+}
+
+/* ===================================================
+   VENTANA DE BIENVENIDA (ESTRICTAMENTE NEGRA / DARK)
+   =================================================== */
+#pantalla-bienvenida,
+html:not(.dark) #pantalla-bienvenida {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+#pantalla-bienvenida > div,
+html:not(.dark) #pantalla-bienvenida > div {
+  background-color: #000000 !important;
+  border: 1px solid #262626 !important;
+  color: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85) !important;
+}
+
+#pantalla-bienvenida h1,
+#pantalla-bienvenida #bienvenida-titulo,
+html:not(.dark) #pantalla-bienvenida h1,
+html:not(.dark) #pantalla-bienvenida #bienvenida-titulo {
+  color: #ffffff !important;
+}
+
+#pantalla-bienvenida p,
+#pantalla-bienvenida #bienvenida-subtitulo,
+#pantalla-bienvenida label,
+#pantalla-bienvenida #lbl-nombre-explorador,
+html:not(.dark) #pantalla-bienvenida p,
+html:not(.dark) #pantalla-bienvenida #bienvenida-subtitulo,
+html:not(.dark) #pantalla-bienvenida label,
+html:not(.dark) #pantalla-bienvenida #lbl-nombre-explorador {
+  color: #a3a3a3 !important;
+}
+
+#pantalla-bienvenida input,
+#pantalla-bienvenida input#input-nombre-explorador,
+html:not(.dark) #pantalla-bienvenida input,
+html:not(.dark) #pantalla-bienvenida input#input-nombre-explorador {
+  background-color: #171717 !important;
+  color: #ffffff !important;
+  border-color: #262626 !important;
+}
+
+#pantalla-bienvenida input#input-nombre-explorador::placeholder,
+html:not(.dark) #pantalla-bienvenida input#input-nombre-explorador::placeholder {
+  color: #737373 !important;
+}
+
+#pantalla-bienvenida .bg-neutral-900,
+html:not(.dark) #pantalla-bienvenida .bg-neutral-900 {
+  background-color: #171717 !important;
+}
+
+#pantalla-bienvenida .border-neutral-800,
+html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
+  border-color: #262626 !important;
 }

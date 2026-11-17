@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "fuente_glaciar": "IANIGLA-CONICET / Inventario Nacional de Glaciares & WGMS ID 3514",
-    "fuente_clima": "NASA POWER API / Estación Meteorológica Ushuaia (-54.80, -68.30)",
-    "modelo_predictivo": "Scikit-Learn (PolynomialFeatures deg=2 + Ridge Regression regularizada)",
+    "fuente_glaciar": "CADIC-CONICET / IDETDF (tendencias regionales)",
+    "fuente_clima": "CADIC-CONICET / IDETDF (series ambientales)",
+    "modelo_predictivo": "Extrapolación lineal simple (2015–2024 → 2030)",
     "fecha_generacion": "Noviembre 2026"
   },
   "labels": [
@@ -17,13 +17,17 @@
     "dias_estres": [
       5,
       6,
+      7,
       8,
-      9,
-      8,
+      8.5,
       9
     ],
     "descripcion": "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
-    "variacion_pct": "+80%"
+    "variacion_pct": "+80%",
+    "tipo_dato": "ilustrativo_prototipo",
+    "fuente_referencia": "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+    "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
+    "ultima_actualizacion": "2026-11-17"
   },
   "glaciar": {
     "masa_remanente_pct": [
@@ -35,6 +39,10 @@
       84.0
     ],
     "descripcion": "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
-    "variacion_pct": "-16%"
+    "variacion_pct": "-16%",
+    "tipo_dato": "ilustrativo_prototipo",
+    "fuente_referencia": "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+    "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
+    "ultima_actualizacion": "2026-11-17"
   }
 }

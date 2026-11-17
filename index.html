@@ -1384,8 +1384,7 @@
             </button>
           </div>
           <p id="obs-fuentes-reales" data-i18n="obs_intro" class="text-[11px] text-slate-600 leading-relaxed">
-            Proyecciones territoriales basadas en series históricas regionales y monitoreo ecosistémico (IANIGLA /
-            CADIC-CONICET / NASA POWER).
+            Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal 2015–2030).
           </p>
         </div>
 
@@ -1422,19 +1421,24 @@
               aria-label="Gráfico simple de días secos al año en los turbales fueguinos de 2015 a 2030"></canvas>
           </div>
 
-          <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
             <span class="text-slate-500 flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m1_alerta_lbl">Nivel de alerta:</span> <strong class="text-slate-700"
                   data-i18n="obs_m1_alerta_val">Moderado a
                   Crítico</strong></span>
             </span>
-            <button id="btn-obs-ir-turbal" type="button"
-              class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
-              onclick="centrarEnSitio('laguna-esmeralda')" data-i18n="obs_m1_ver">
-              Ver turbal en mapa →
-            </button>
+            <div class="flex items-center gap-3">
+              <button type="button" class="btn-toggle-metodo text-xs font-semibold text-slate-500 hover:text-slate-800 underline flex items-center gap-1 cursor-pointer" data-target="caja-metodo-turbales">ℹ️ Ver fuente y método</button>
+              <button id="btn-obs-ir-turbal" type="button"
+                class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
+                onclick="centrarEnSitio('laguna-esmeralda')" data-i18n="obs_m1_ver">
+                Ver turbal en mapa →
+              </button>
+            </div>
           </div>
+          <!-- Caja desplegable de fuente y método metodológico -->
+          <div id="caja-metodo-turbales" class="caja-info-metodo mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] sm:text-xs text-slate-600 space-y-1 hidden"></div>
         </div>
 
         <!-- Métrica 2: Glaciar Vinciguerra (Didáctica para todas las edades) -->
@@ -1460,8 +1464,7 @@
           <div
             class="obs-caja-simple p-2.5 rounded-xl bg-cyan-50/60 text-[11px] text-slate-700 leading-relaxed border border-cyan-100">
             <span aria-hidden="true">💧</span> <strong data-i18n="obs_en_simple">En palabras simples:</strong> <span
-              data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido 1 de
-              cada 4 partes de su masa congelada.</span>
+              data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.</span>
           </div>
 
           <!-- Gráfico -->
@@ -1470,19 +1473,24 @@
               aria-label="Gráfico simple del hielo saludable restante en el Glaciar Vinciguerra de 2015 a 2030"></canvas>
           </div>
 
-          <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
             <span class="text-slate-500 flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-cyan-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m2_alerta_lbl">Fuente:</span> <strong class="text-slate-700"
                   data-i18n="obs_m2_alerta_val">Agua potable de
                   Ushuaia</strong></span>
             </span>
-            <button id="btn-obs-ir-vinciguerra" type="button"
-              class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
-              onclick="centrarEnSitio('glaciar-vinciguerra')" data-i18n="obs_m2_ver">
-              Ver glaciar en mapa →
-            </button>
+            <div class="flex items-center gap-3">
+              <button type="button" class="btn-toggle-metodo text-xs font-semibold text-slate-500 hover:text-slate-800 underline flex items-center gap-1 cursor-pointer" data-target="caja-metodo-glaciar">ℹ️ Ver fuente y método</button>
+              <button id="btn-obs-ir-vinciguerra" type="button"
+                class="text-orange-600 font-bold hover:underline whitespace-nowrap cursor-pointer"
+                onclick="centrarEnSitio('glaciar-vinciguerra')" data-i18n="obs_m2_ver">
+                Ver glaciar en mapa →
+              </button>
+            </div>
           </div>
+          <!-- Caja desplegable de fuente y método metodológico -->
+          <div id="caja-metodo-glaciar" class="caja-info-metodo mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] sm:text-xs text-slate-600 space-y-1 hidden"></div>
         </div>
       </div>
     </div>

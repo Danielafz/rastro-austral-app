@@ -211,7 +211,7 @@ const DICCIONARIO = {
         obs_subtitulo: "Ciencia de Datos Cívica · 2015–2030",
         obs_titulo: "Observatorio Climático Austral",
         obs_escuchar: "Escuchar síntesis",
-        obs_intro: "Proyecciones territoriales basadas en series históricas regionales y monitoreo ecosistémico (CADIC-CONICET / IDETDF).",
+        obs_intro: "Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal 2015–2030).",
         obs_en_simple: "En palabras simples:",
         obs_m1_titulo: "Los Turbales: La gran esponja fueguina",
         obs_m1_sub: "¿Cuántos días al año se queda sin agua el suelo?",
@@ -222,7 +222,7 @@ const DICCIONARIO = {
         obs_m1_ver: "Ver turbal en mapa →",
         obs_m2_titulo: "Glaciar Vinciguerra: El tanque de agua natural",
         obs_m2_sub: "Hielo que nos queda para beber y abastecer a la ciudad",
-        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido 1 de cada 4 partes de su masa congelada.",
+        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.",
         obs_m2_alerta_lbl: "Fuente:",
         obs_m2_alerta_val: "Agua potable de Ushuaia",
         obs_m2_ver: "Ver glaciar en mapa →"
@@ -347,7 +347,7 @@ const DICCIONARIO = {
         obs_subtitulo: "Civic Data Science · 2015–2030",
         obs_titulo: "Austral Climate Observatory",
         obs_escuchar: "Listen summary",
-        obs_intro: "Territorial projections built on regional climate series and ecosystem monitoring (CADIC-CONICET / IDETDF).",
+        obs_intro: "Illustrative prototype scenarios based on regional environmental trends (simple linear extrapolation 2015–2030).",
         obs_en_simple: "In simple words:",
         obs_m1_titulo: "Peatlands: Tierra del Fuego's giant sponge",
         obs_m1_sub: "How many days a year does the soil run dry?",
@@ -358,7 +358,7 @@ const DICCIONARIO = {
         obs_m1_ver: "View peatland on map →",
         obs_m2_titulo: "Vinciguerra Glacier: Natural freshwater tank",
         obs_m2_sub: "Ice left to supply clean drinking water to the city",
-        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost 1 out of every 4 parts of its frozen mass.",
+        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated volume.",
         obs_m2_alerta_lbl: "Source:",
         obs_m2_alerta_val: "Ushuaia drinking water",
         obs_m2_ver: "View glacier on map →"
@@ -2779,14 +2779,30 @@ function obtenerDatosObservatorioActivos() {
         return datosObservatorio;
     }
     return {
+        metadata: {
+            fuente_glaciar: "CADIC-CONICET / IDETDF (tendencias regionales)",
+            fuente_clima: "CADIC-CONICET / IDETDF (series ambientales)",
+            modelo_predictivo: "Extrapolación lineal simple (2015–2024 → 2030)",
+            fecha_generacion: "Noviembre 2026"
+        },
         labels: ["2015", "2018", "2021", "2024", "2027 (Futuro)", "2030 (Futuro)"],
         turbales: {
-            dias_estres: [5, 6, 8, 9, 8, 9],
-            variacion_pct: "+80%"
+            dias_estres: [5, 6, 7, 8, 8.5, 9],
+            descripcion: "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
+            variacion_pct: "+80%",
+            tipo_dato: "ilustrativo_prototipo",
+            fuente_referencia: "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+            metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
+            ultima_actualizacion: "2026-11-17"
         },
         glaciar: {
             masa_remanente_pct: [100.0, 96.8, 93.6, 90.4, 87.2, 84.0],
-            variacion_pct: "-16%"
+            descripcion: "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
+            variacion_pct: "-16%",
+            tipo_dato: "ilustrativo_prototipo",
+            fuente_referencia: "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+            metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
+            ultima_actualizacion: "2026-11-17"
         }
     };
 }
@@ -2984,8 +3000,8 @@ function configurarObservatorio() {
             const varGlaciar = dataReal.glaciar.variacion_pct;
 
             const sintesis = esIngles
-                ? `Austral Climate Observatory with real IANIGLA and NASA POWER data. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank, projected to keep ${mFin} percent of its 2015 ice mass by 2030 (${varGlaciar}).`
-                : `Observatorio Climático Austral con datos reales de IANIGLA y NASA POWER. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y conservaría el ${mFin} por ciento de su masa congelada en 2030 (${varGlaciar} respecto a 2015).`;
+                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its estimated volume, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
+                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
 
             if (!("speechSynthesis" in window)) {
                 anunciarAccesibilidad(sintesis);
@@ -3004,6 +3020,42 @@ function configurarObservatorio() {
             }
         });
     }
+
+    // Configuración de botones "Ver fuente y método"
+    document.querySelectorAll(".btn-toggle-metodo").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("data-target");
+            const caja = document.getElementById(targetId);
+            if (!caja) return;
+
+            const dataReal = obtenerDatosObservatorioActivos();
+            const esIngles = idiomaActual === "en";
+            const esTurbal = targetId.includes("turbal");
+            const info = esTurbal ? (dataReal.turbales || {}) : (dataReal.glaciar || {});
+
+            if (caja.classList.contains("hidden")) {
+                const tipoDato = info.tipo_dato || "ilustrativo_prototipo";
+                const fuente = info.fuente_referencia || "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)";
+                const metodo = info.metodo_proyeccion || "Extrapolación lineal simple (2015–2024)";
+                const fecha = info.ultima_actualizacion || "2026-11-17";
+
+                caja.innerHTML = `
+                    <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
+                        <span class="flex items-center gap-1.5">📋 <span>${esIngles ? "Methodological Metadata" : "Ficha Metodológica y Transparencia"}</span></span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">${tipoDato}</span>
+                    </div>
+                    <p class="pt-1"><strong>${esIngles ? "Source reference:" : "Fuente de referencia:"}</strong> ${fuente}</p>
+                    <p><strong>${esIngles ? "Projection method:" : "Método de proyección:"}</strong> ${metodo}</p>
+                    <p class="text-[10px] text-slate-500 pt-0.5"><strong>${esIngles ? "Last updated:" : "Última actualización:"}</strong> ${fecha}</p>
+                `;
+                caja.classList.remove("hidden");
+                btn.innerHTML = esIngles ? "✕ Hide source & method" : "✕ Ocultar fuente y método";
+            } else {
+                caja.classList.add("hidden");
+                btn.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+            }
+        });
+    });
 }
 
 function actualizarBadgeSellos() {

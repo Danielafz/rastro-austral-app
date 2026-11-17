@@ -2169,8 +2169,11 @@ function actualizarTextosUI() {
         const texto = t[clave];
         if (!texto) return;
 
-        // Mantener el título en negrita en los principios de Huella Consciente
-        if (clave.startsWith("principio_") && texto.includes(":")) {
+        // Mantener estilo de marca en el título de bienvenida
+        if (clave === "bienvenida_titulo") {
+            const prefijo = idiomaActual === "en" ? "Welcome to " : "Bienvenido a ";
+            el.innerHTML = `${prefijo}<span class="text-orange-500">Rastro Austral</span>`;
+        } else if (clave.startsWith("principio_") && texto.includes(":")) {
             const sepIdx = texto.indexOf(":");
             const strongEl = document.createElement("strong");
             strongEl.className = "text-slate-900";
@@ -3344,6 +3347,19 @@ function configurarPantallaBienvenida() {
         focoEnInputNombre = false;
         if (inputNombre.value.trim().length === 0) {
             moverPupilas(0, 0);
+        }
+    });
+
+    // Ingreso automático con tecla Enter en PC y botón Ir/Enter en teclados móviles
+    inputNombre.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            const btnIngresar = document.getElementById("btn-ingresar-app") || document.getElementById("btn-ingresar");
+            if (btnIngresar) {
+                btnIngresar.click();
+            } else if (form) {
+                form.requestSubmit();
+            }
         }
     });
 

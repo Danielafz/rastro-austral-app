@@ -52,8 +52,7 @@
     class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-black backdrop-blur-md transition-opacity duration-700 text-white"
     style="background-color: #000000 !important; color: #ffffff !important;">
     <div
-      class="relative bg-black border border-neutral-800 text-white rounded-3xl p-5 sm:p-8 max-w-md w-full my-auto shadow-2xl text-center flex flex-col items-center"
-      style="background-color: #000000 !important; color: #ffffff !important; border: 1px solid #262626 !important;">
+      class="relative w-full max-w-sm md:max-w-md p-6 md:p-8 rounded-2xl md:rounded-3xl bg-neutral-950/90 border border-orange-500/20 shadow-[0_0_50px_rgba(249,115,22,0.12)] my-auto text-center flex flex-col items-center text-white">
       <!-- Capa ambiental de nieve/escarcha austral con paralaje -->
       <div id="capa-nieve-austral" class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl z-0"
         aria-hidden="true">
@@ -80,7 +79,8 @@
       <div id="contenedor-pinguino-bienvenida"
         class="w-40 h-44 sm:w-52 sm:h-60 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
         <!-- Globito de diálogo interactivo (oculto por defecto) -->
-        <div id="burbuja-dialogo" role="status" aria-live="polite"></div>
+        <div id="burbuja-dialogo" role="status" aria-live="polite"
+          class="text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg"></div>
 
         <!-- Destello / Resplandor cálido de la antorcha al encender el mapa -->
         <div id="resplandor-antorcha-fuego"
@@ -383,8 +383,8 @@
         </div>
       </div>
 
-      <h1 class="relative z-10 text-2xl font-black text-white tracking-tight mb-1" id="bienvenida-titulo"
-        data-i18n="bienvenida_titulo">Bienvenido a Rastro Austral</h1>
+      <h1 class="relative z-10 text-2xl md:text-3xl font-black text-white tracking-tight mb-1" id="bienvenida-titulo"
+        data-i18n="bienvenida_titulo">Bienvenido a <span class="text-orange-500">Rastro Austral</span></h1>
       <p class="relative z-10 text-xs text-neutral-400 mb-6 max-w-xs" id="bienvenida-subtitulo"
         data-i18n="bienvenida_subtitulo">Atlas y Diario de Exploración Territorial de Tierra del Fuego</p>
 
@@ -397,7 +397,7 @@
             Nombre del Expedicionario / Exploradora
           </label>
           <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required
-            autocomplete="off"
+            autocomplete="off" enterkeyhint="go"
             style="background-color: #171717 !important; border: 1px solid #262626 !important; color: #ffffff !important;"
             class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
         </div>

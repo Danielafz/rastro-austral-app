@@ -3081,61 +3081,41 @@ function centrarEnSitio(clave) {
 }
 window.centrarEnSitio = centrarEnSitio;
 
-// Helper para alternar la ficha metodológica y de transparencia
-function togglePanelMetodo(btnEl) {
-    if (!btnEl) return;
-    const card = btnEl.closest(".tarjeta-observatorio") || btnEl.closest("[data-metrica]") || btnEl.parentElement?.parentElement;
-    const panel = (card && card.querySelector(".panel-metodo")) || 
-                  document.getElementById(btnEl.getAttribute("data-target")) ||
-                  btnEl.parentElement?.parentElement?.querySelector(".panel-metodo");
-    if (!panel) return;
-
-    const dataReal = (typeof obtenerDatosObservatorioActivos === "function") 
-        ? obtenerDatosObservatorioActivos() 
-        : (window.datosObservatorio || {});
-    const esTurbal = (panel.id && panel.id.includes("turbal")) || 
-                     (card && card.getAttribute("data-metrica") === "turbales") ||
-                     (btnEl.getAttribute("data-target")?.includes("turbal"));
-    const info = esTurbal ? (dataReal.turbales || {}) : (dataReal.glaciar || {});
-    const esIngles = typeof idiomaActual !== "undefined" && idiomaActual === "en";
-
-    const estabaOculto = panel.classList.contains("hidden");
-    panel.classList.toggle("hidden");
-
-    if (estabaOculto) {
-        const tipoDato = info.tipo_dato || "ilustrativo_prototipo";
-        const fuente = info.fuente_referencia || "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)";
-        const metodo = info.metodo_proyeccion || "Extrapolación lineal simple (2015–2024)";
-        const fecha = info.ultima_actualizacion || "2026-11-17";
-
-        panel.innerHTML = `
-            <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
-                <span class="flex items-center gap-1.5">📋 <span>${esIngles ? "Methodological Metadata" : "Ficha Metodológica y Transparencia"}</span></span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">${tipoDato}</span>
-            </div>
-            <p class="pt-1"><strong>${esIngles ? "Source reference:" : "Fuente de referencia:"}</strong> ${fuente}</p>
-            <p><strong>${esIngles ? "Projection method:" : "Método de proyección:"}</strong> ${metodo}</p>
-            <p class="text-[10px] text-slate-500 pt-0.5"><strong>${esIngles ? "Last updated:" : "Última actualización:"}</strong> ${fecha}</p>
-        `;
-        btnEl.textContent = esIngles ? "🔼 Hide source & method" : "🔼 Ocultar fuente y método";
-    } else {
-        btnEl.textContent = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+// Helper global para alternar la ficha metodológica y de transparencia
+window.toggleMetodoObservatorio = function(btn) {
+    let btnEl = btn;
+    if (typeof btn === "string") {
+        btnEl = document.querySelector(`.btn-toggle-metodo[data-target="${btn}"]`) || document.getElementById(btn);
     }
-}
-window.togglePanelMetodo = togglePanelMetodo;
-window.toggleMetodoObservatorio = function(targetId, btnEl) {
-    const el = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
-    togglePanelMetodo(el);
+    if (!btnEl && typeof event !== "undefined" && event && event.target) {
+        btnEl = event.target.closest(".btn-toggle-metodo") || event.target;
+    }
+    if (!btnEl) return;
+
+    const tarjeta = btnEl.closest("article, .tarjeta-observatorio, .bg-white, .rounded-2xl, .rounded-3xl") || btnEl.parentElement?.parentElement;
+    if (!tarjeta) return;
+
+    const panel = tarjeta.querySelector(".panel-metodo");
+    if (panel) {
+        const estaOculto = panel.classList.toggle("hidden");
+        const esIngles = typeof idiomaActual !== "undefined" && idiomaActual === "en";
+        if (estaOculto) {
+            btnEl.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+        } else {
+            btnEl.innerHTML = esIngles ? "🔼 Hide source & method" : "🔼 Ocultar fuente y método";
+        }
+    }
 };
+window.togglePanelMetodo = window.toggleMetodoObservatorio;
 
 // Delegación de eventos global para el Observatorio y controles territoriales
 document.addEventListener("click", (e) => {
     // 1. Delegación para botón "ℹ️ Ver fuente y método"
     const btnToggle = e.target.closest(".btn-toggle-metodo");
-    if (btnToggle) {
+    if (btnToggle && (!btnToggle.getAttribute("onclick") || !btnToggle.onclick)) {
         e.preventDefault();
         e.stopPropagation();
-        togglePanelMetodo(btnToggle);
+        window.toggleMetodoObservatorio(btnToggle);
         return;
     }
 
@@ -3195,7 +3175,7 @@ function configurarObservatorio() {
     // Configuración de botones "Ver fuente y método"
     document.querySelectorAll(".btn-toggle-metodo").forEach(btn => {
         btn.addEventListener("click", () => {
-            togglePanelMetodo(btn);
+            window.toggleMetodoObservatorio(btn);
         });
     });
 }

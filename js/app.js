@@ -3381,8 +3381,8 @@ function configurarObservatorio() {
             const varGlaciar = dataReal.glaciar.variacion_pct;
 
             const sintesis = esIngles
-                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its 2015 mass, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
-                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su masa de 2015, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
+                ? `Austral Climate Observatory. Illustrative prototype scenarios. First: Dry days in peatlands could double by 2030, going from ${dIni} days in the base series to a projected ${dFin} days per year. Second: The Vinciguerra Glacier could lose 16% of its 2015 mass by 2030, keeping approximately ${mFin} percent of its remaining mass.`
+                : `Observatorio Climático Austral. Escenarios ilustrativos de prototipo. Primero: Los días secos en turbales podrían duplicarse hacia 2030, pasando de ${dIni} días en la serie base a ${dFin} días proyectados al año. Segundo: El glaciar Vinciguerra podría perder un 16% de su masa de 2015 para el año 2030, conservando aproximadamente el ${mFin} por ciento de su masa remanente.`;
 
             if (!("speechSynthesis" in window)) {
                 anunciarAccesibilidad(sintesis);

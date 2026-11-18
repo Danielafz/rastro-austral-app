@@ -2792,19 +2792,19 @@ function obtenerDatosObservatorioActivos() {
             dias_estres: [5, 6, 7, 8, 8.5, 9],
             descripcion: "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
             variacion_pct: "+80%",
-            tipo_dato: "ilustrativo_prototipo",
+            tipo_dato: "Datos ilustrativos · prototipo",
             fuente_referencia: "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
             metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
-            ultima_actualizacion: "2026-11-17"
+            ultima_actualizacion: "17/11/2026"
         },
         glaciar: {
             masa_remanente_pct: [100.0, 96.8, 93.6, 90.4, 87.2, 84.0],
             descripcion: "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
             variacion_pct: "-16%",
-            tipo_dato: "ilustrativo_prototipo",
+            tipo_dato: "Datos ilustrativos · prototipo",
             fuente_referencia: "Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
             metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
-            ultima_actualizacion: "2026-11-17"
+            ultima_actualizacion: "17/11/2026"
         }
     };
 }
@@ -2867,11 +2867,12 @@ function renderizarGraficosObservatorio() {
                     "rgba(251, 191, 36, 0.80)",
                     "rgba(245, 158, 11, 0.85)",
                     "rgba(245, 158, 11, 0.92)",
-                    "rgba(234, 88, 12, 0.85)",
-                    "rgba(220, 38, 38, 0.88)"
+                    "rgba(234, 88, 12, 0.30)",
+                    "rgba(220, 38, 38, 0.30)"
                 ],
                 borderColor: "#d97706",
                 borderWidth: 1,
+                borderDash: [4, 4],
                 borderRadius: 6,
                 maxBarThickness: 32
             }]
@@ -2922,11 +2923,12 @@ function renderizarGraficosObservatorio() {
                     "rgba(6, 182, 212, 0.84)",
                     "rgba(14, 165, 233, 0.78)",
                     "rgba(14, 165, 233, 0.72)",
-                    "rgba(56, 189, 248, 0.65)",
-                    "rgba(56, 189, 248, 0.55)"
+                    "rgba(56, 189, 248, 0.30)",
+                    "rgba(56, 189, 248, 0.30)"
                 ],
                 borderColor: "#0284c7",
                 borderWidth: 1,
+                borderDash: [4, 4],
                 borderRadius: 6,
                 maxBarThickness: 32
             }]
@@ -2951,10 +2953,11 @@ function renderizarGraficosObservatorio() {
                 },
                 y: {
                     beginAtZero: true,
-                    max: 105,
+                    max: 100,
                     ticks: {
                         color: colorTexto,
                         font: { size: 10 },
+                        stepSize: 20,
                         callback: (v) => `${v}%`
                     },
                     grid: { color: colorGrilla }
@@ -2997,33 +3000,44 @@ function navegarATurbalObservatorio() {
         const m = window.map || window.mapa || mapa;
         if (m) {
             m.invalidateSize();
-            m.flyTo([-54.68, -67.75], 11, {
+            // Centrar exactamente en las coordenadas de Turbal Valle Tierra Mayor
+            m.flyTo([-54.72, -67.965], 12, {
                 animate: true,
                 duration: 1.2
             });
 
-            // Activar capa y alerta SAR si corresponde
+            // Activar directamente la capa y alerta SAR
             if (capaAlertasSAR) {
                 if (!m.hasLayer(capaAlertasSAR)) {
                     m.addLayer(capaAlertasSAR);
-                    alertasSARVisibles = true;
-                    const btnSAR = document.getElementById("btn-capa-alertas-sar");
-                    if (btnSAR) {
-                        btnSAR.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
-                    }
+                }
+                alertasSARVisibles = true;
+                const btnSAR = document.getElementById("btn-capa-alertas-sar");
+                if (btnSAR) {
+                    btnSAR.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
                 }
 
-                // Abrir popup de Turbal Valle Tierra Mayor
+                // Destacar polígono activo y rojo, y abrir popup/modal
                 let popupAbierto = false;
                 capaAlertasSAR.eachLayer(layer => {
                     const props = layer.feature && layer.feature.properties;
                     if (props && (props.id === "turbal_tierra_mayor" || props.nombre?.includes("Tierra Mayor"))) {
+                        if (typeof layer.setStyle === "function") {
+                            layer.setStyle({
+                                color: "#ef4444",
+                                weight: 4,
+                                opacity: 1,
+                                fillColor: "#ef4444",
+                                fillOpacity: 0.55
+                            });
+                        }
+                        if (typeof layer.bringToFront === "function") layer.bringToFront();
                         layer.openPopup();
                         popupAbierto = true;
                     }
                 });
 
-                if (!popupAbierto && typeof mostrarModalBloqueoPorNombre === "function") {
+                if (typeof mostrarModalBloqueoPorNombre === "function") {
                     mostrarModalBloqueoPorNombre("Turbal Valle Tierra Mayor");
                 }
             } else if (typeof mostrarModalBloqueoPorNombre === "function") {
@@ -3102,10 +3116,12 @@ window.toggleMetodoObservatorio = function(btn) {
     if (panel) {
         const estaOculto = panel.classList.toggle("hidden");
         const esIngles = typeof idiomaActual !== "undefined" && idiomaActual === "en";
+        const iconoInfo = `<svg class="w-3.5 h-3.5 text-slate-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+        const iconoOcultar = `<svg class="w-3.5 h-3.5 text-slate-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>`;
         if (estaOculto) {
-            btnEl.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+            btnEl.innerHTML = `${iconoInfo}<span>${esIngles ? "View source & method" : "Ver fuente y método"}</span>`;
         } else {
-            btnEl.innerHTML = esIngles ? "🔼 Hide source & method" : "🔼 Ocultar fuente y método";
+            btnEl.innerHTML = `${iconoOcultar}<span>${esIngles ? "Hide source & method" : "Ocultar fuente y método"}</span>`;
         }
     }
 };

@@ -45,7 +45,7 @@
             btnCerrar: document.getElementById("btn-cerrar-museo"),
             btnPrevSala: document.getElementById("btn-prev-sala-museo"),
             btnNextSala: document.getElementById("btn-next-sala-museo"),
-            tituloSalaNav: document.getElementById("titulo-sala-actual-museo"),
+            tituloSalaNav: document.getElementById("museo-titulo-sala-actual") || document.getElementById("titulo-sala-actual-museo"),
             barraProgreso: document.getElementById("barra-progreso-museo"),
             btnSalasDrawer: document.getElementById("btn-abrir-menu-salas"),
             drawerSalas: document.getElementById("drawer-selector-salas"),
@@ -54,14 +54,14 @@
             pasilloMuro: document.getElementById("pasillo-muro-museo"),
             contenedorObras: document.getElementById("contenedor-obras-museo"),
             pinguinoMascota: document.getElementById("pinguino-mascota-museo"),
-            joystickBase: document.getElementById("joystick-base-museo"),
-            joystickPerilla: document.getElementById("joystick-perilla-museo"),
+            joystickBase: document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo"),
+            joystickPerilla: document.getElementById("museo-joystick-knob") || document.getElementById("joystick-perilla-museo"),
             sheetDetalle: document.getElementById("sheet-detalle-obra-museo"),
             btnCerrarSheet: document.getElementById("btn-cerrar-sheet-obra"),
             btnSeguirRecorriendo: document.getElementById("btn-seguir-recorriendo-obra"),
             textoSeguirRecorriendo: document.getElementById("texto-seguir-recorriendo"),
             sheetImg: document.getElementById("sheet-obra-img"),
-            sheetTitulo: document.getElementById("sheet-obra-titulo"),
+            sheetTitulo: document.getElementById("ficha-obra-titulo") || document.getElementById("sheet-obra-titulo"),
             sheetMeta: document.getElementById("sheet-obra-meta"),
             sheetDesc: document.getElementById("sheet-obra-desc"),
             sheetCredito: document.getElementById("sheet-obra-credito"),
@@ -321,11 +321,11 @@
             });
         }
 
-        // Actualizar título en la barra superior
+        // Actualizar título en la barra superior con texto oscuro de alto contraste
         if (dom.tituloSalaNav) {
             const idioma = getIdioma();
             const prefijo = idioma === "en" ? `Room ${sala.numero} of ${salas.length}` : `Sala ${sala.numero} de ${salas.length}`;
-            dom.tituloSalaNav.innerHTML = `<span class="text-amber-400 font-bold">${prefijo}</span> · <span>${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}</span>`;
+            dom.tituloSalaNav.innerHTML = `<span class="text-amber-700 font-bold prefijo-sala" style="color: #B45309 !important;">${prefijo}</span> · <span class="text-stone-900 font-bold nombre-sala" style="color: #1C1917 !important;">${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}</span>`;
         }
 
         // Progreso general en la barra del encabezado (al inicio de la sala)
@@ -410,7 +410,10 @@
         const anio = obra.anio || "";
         const fallbackSvg = window.generarSvgFallbackObra ? window.generarSvgFallbackObra(titulo, anio) : "";
 
-        if (dom.sheetTitulo) dom.sheetTitulo.textContent = titulo;
+        if (dom.sheetTitulo) {
+            dom.sheetTitulo.textContent = titulo;
+            dom.sheetTitulo.style.setProperty("color", "#1C1917", "important");
+        }
         if (dom.sheetMeta) dom.sheetMeta.textContent = `${anio} · ${lugar}`;
         if (dom.sheetDesc) dom.sheetDesc.textContent = desc;
         if (dom.sheetCredito) dom.sheetCredito.textContent = obra.credito ? `📷 ${obra.credito}` : "";
@@ -617,6 +620,13 @@
     function setupJoystick() {
         if (!dom.joystickBase || !dom.joystickPerilla) return;
 
+        dom.joystickBase.style.touchAction = "none";
+        dom.joystickBase.style.userSelect = "none";
+        dom.joystickBase.style.webkitUserSelect = "none";
+        dom.joystickPerilla.style.touchAction = "none";
+        dom.joystickPerilla.style.userSelect = "none";
+        dom.joystickPerilla.style.webkitUserSelect = "none";
+
         function iniciarArrastre(clientX, clientY, touchId = null) {
             estadoMuseo.joystickActivo = true;
             estadoMuseo.joystickTouchId = touchId;
@@ -643,7 +653,7 @@
                 finalY = Math.sin(angulo) * radioMax;
             }
 
-            dom.joystickPerilla.style.transform = `translate(${finalX}px, ${finalY}px)`;
+            dom.joystickPerilla.style.transform = `translate3d(${finalX}px, ${finalY}px, 0)`;
 
             // Normalizar velocidad horizontal entre -1 y 1
             const factorX = Math.max(-1, Math.min(1, finalX / radioMax));
@@ -655,13 +665,14 @@
             estadoMuseo.joystickTouchId = null;
             estadoMuseo.velocidadX = 0;
             if (dom.joystickPerilla) {
-                dom.joystickPerilla.style.transform = "translate(0px, 0px)";
+                dom.joystickPerilla.style.transform = "translate3d(0px, 0px, 0)";
             }
         }
 
-        // Eventos táctiles
+        // Eventos táctiles (Touch Events)
         dom.joystickBase.addEventListener("touchstart", (e) => {
             e.preventDefault();
+            e.stopPropagation();
             const touch = e.changedTouches[0];
             iniciarArrastre(touch.clientX, touch.clientY, touch.identifier);
         }, { passive: false });
@@ -671,6 +682,8 @@
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const touch = e.changedTouches[i];
                 if (touch.identifier === estadoMuseo.joystickTouchId) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     moverPerilla(touch.clientX, touch.clientY);
                     break;
                 }
@@ -681,21 +694,63 @@
             if (!estadoMuseo.joystickActivo) return;
             for (let i = 0; i < e.changedTouches.length; i++) {
                 if (e.changedTouches[i].identifier === estadoMuseo.joystickTouchId) {
+                    e.stopPropagation();
                     soltarPerilla();
                     break;
                 }
             }
         });
 
-        window.addEventListener("touchcancel", soltarPerilla);
+        window.addEventListener("touchcancel", (e) => {
+            e.stopPropagation();
+            soltarPerilla();
+        });
+
+        // Eventos de Puntero (Pointer Events)
+        dom.joystickBase.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+                dom.joystickBase.setPointerCapture(e.pointerId);
+            } catch (_) {}
+            iniciarArrastre(e.clientX, e.clientY, e.pointerId);
+        });
+
+        window.addEventListener("pointermove", (e) => {
+            if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === e.pointerId) {
+                e.preventDefault();
+                e.stopPropagation();
+                moverPerilla(e.clientX, e.clientY);
+            }
+        });
+
+        window.addEventListener("pointerup", (e) => {
+            if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === e.pointerId) {
+                e.stopPropagation();
+                try {
+                    dom.joystickBase.releasePointerCapture(e.pointerId);
+                } catch (_) {}
+                soltarPerilla();
+            }
+        });
+
+        window.addEventListener("pointercancel", (e) => {
+            if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === e.pointerId) {
+                e.stopPropagation();
+                soltarPerilla();
+            }
+        });
 
         // Soporte mouse para arrastrar el joystick en escritorio
         dom.joystickBase.addEventListener("mousedown", (e) => {
-            iniciarArrastre(e.clientX, e.clientY);
+            e.preventDefault();
+            e.stopPropagation();
+            iniciarArrastre(e.clientX, e.clientY, null);
         });
 
         window.addEventListener("mousemove", (e) => {
             if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === null) {
+                e.preventDefault();
                 moverPerilla(e.clientX, e.clientY);
             }
         });
@@ -784,8 +839,8 @@
             let swiping = false;
 
             dom.pasilloMuro.addEventListener("touchstart", (e) => {
-                if (estadoMuseo.obraAbierta) return;
-                if (e.target.closest("#joystick-contenedor")) return;
+                if (estadoMuseo.obraAbierta || estadoMuseo.joystickActivo) return;
+                if (e.target.closest("#joystick-contenedor") || e.target.closest("#museo-joystick-base") || e.target.closest("#joystick-base-museo")) return;
                 const t = e.touches[0];
                 swipeStartX = t.clientX;
                 swipeStartY = t.clientY;
@@ -793,7 +848,7 @@
             }, { passive: true });
 
             dom.pasilloMuro.addEventListener("touchmove", (e) => {
-                if (!swiping || estadoMuseo.obraAbierta) return;
+                if (!swiping || estadoMuseo.obraAbierta || estadoMuseo.joystickActivo) return;
                 const t = e.touches[0];
                 const dx = t.clientX - swipeStartX;
                 const dy = t.clientY - swipeStartY;

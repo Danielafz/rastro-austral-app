@@ -2345,17 +2345,25 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 }
 
 /* Joystick circular táctil */
-#joystick-base-museo {
+#joystick-base-museo,
+#museo-joystick-base {
   background: radial-gradient(circle at 40% 40%, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
   border: 2px solid rgba(245, 158, 11, 0.4);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.1);
-  touch-action: none;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
 
-#joystick-perilla-museo {
+#joystick-perilla-museo,
+#museo-joystick-knob {
   background: radial-gradient(circle at 35% 35%, #F59E0B 0%, #D97706 60%, #92400E 100%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 12px rgba(245, 158, 11, 0.4);
-  touch-action: none;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
 
 /* Ficha de Obra (Bottom Sheet marfil/pergamino) */
@@ -2366,10 +2374,27 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.55);
 }
 
-/* Alto contraste para Museo y Modal de Salas contra modo claro global */
-#vista-museo-austral h2,
-#vista-museo-austral h3,
-#vista-museo-austral h4,
+/* Título de la obra dentro de la ficha pergamino: alto contraste oscuro */
+#ficha-obra-titulo,
+#sheet-obra-titulo,
+.sheet-pergamino-museo h3 {
+  color: #1C1917 !important;
+  font-weight: 700;
+}
+
+/* Título de la sala en la barra superior: texto oscuro */
+#museo-titulo-sala-actual,
+#titulo-sala-actual-museo,
+#vista-museo-austral header h2 {
+  color: #1C1917 !important;
+}
+
+#museo-titulo-sala-actual .prefijo-sala,
+#titulo-sala-actual-museo .prefijo-sala {
+  color: #B45309 !important;
+}
+
+/* Alto contraste ÚNICAMENTE dentro del modal oscuro "Salas del Museo Austral" */
 #drawer-selector-salas h2,
 #drawer-selector-salas h3,
 #drawer-selector-salas h4,

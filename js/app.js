@@ -879,8 +879,14 @@ function renderizarMarcadores(anunciarResultados = false) {
         marcadoresPorId[hito.id] = marcador;
     });
 
-    // Renderizar panel de hito (muestra mensaje por defecto si no hay hito seleccionado)
-    renderizarListaHitosCompacta();
+    // Guardar referencia a hitos filtrados para listas inteligentes
+    window.hitosFiltradosActuales = hitosFiltrados;
+
+    // Actualizar micro-interacciones de contadores dinámicos por categoría
+    actualizarContadoresCategoria();
+
+    // Renderizar panel de hito (muestra destacados/recomendados si no hay hito seleccionado)
+    renderizarListaHitosCompacta(hitosFiltrados);
 
     // Actualizar barra de estado y contador de filtros
     actualizarContadorFiltros(hitosFiltrados.length, listaHitos.length);
@@ -930,8 +936,8 @@ function limpiarTodosLosFiltros() {
 
     filtroActivo = "todos";
     const botonesCat = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
-    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm";
-    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100  text-slate-600  hover:bg-slate-200  px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
+    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm flex items-center";
+    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center";
     botonesCat.forEach(b => {
         const cat = b.getAttribute("data-cat");
         if (cat === "todos" || cat === "todas") {
@@ -944,6 +950,7 @@ function limpiarTodosLosFiltros() {
     filtroFragilidad = "todas";
     const selFrag = document.getElementById("filtro-fragilidad");
     if (selFrag) selFrag.value = "todas";
+    actualizarIndicadorFragilidad();
 
     filtroEstadoVisita = "todos";
     const selEstado = document.getElementById("filtro-estado-visita");
@@ -964,6 +971,8 @@ function limpiarTodosLosFiltros() {
             });
         }
     }
+
+    actualizarContadoresCategoria();
 
     territorioActivo = "todos";
     actualizarDropdownTerritorioUI("todos", idiomaActual === "en" ? "📍 Entire Province" : "📍 Toda la Provincia");
@@ -1021,71 +1030,261 @@ function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCo
     );
 }
 
-// Renderizar tarjeta del hito seleccionado o mensaje por defecto en el panel lateral
-function renderizarListaHitosCompacta() {
-    const contenedor = document.getElementById("contenedor-hitos-lista");
-    if (!contenedor) return;
+// Actualizar contadores dinámicos de cada categoría según el territorio y búsqueda activos
+function actualizarContadoresCategoria() {
+    if (!Array.isArray(listaHitos) || listaHitos.length === 0) return;
+    const q = (busquedaActiva || "").toLowerCase().trim();
+    const territorio = territorioActivo || "todos";
 
-    const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
+    const hitosBase = listaHitos.filter(hito => {
+        if (!coincideTerritorio(hito.localidad, territorio)) return false;
+        if (!q) return true;
+        return (
+            hito.nombre.toLowerCase().includes(q) ||
+            (hito.nombre_en && hito.nombre_en.toLowerCase().includes(q)) ||
+            hito.localidad.toLowerCase().includes(q) ||
+            hito.toponimia.toLowerCase().includes(q) ||
+            hito.categoria.toLowerCase().includes(q) ||
+            hito.categoria.replace('_', ' ').toLowerCase().includes(q) ||
+            (hito.rubroCreativo && hito.rubroCreativo.toLowerCase().includes(q)) ||
+            (hito.rubroCreativo_en && hito.rubroCreativo_en.toLowerCase().includes(q)) ||
+            (hito.contacto && hito.contacto.toLowerCase().includes(q)) ||
+            (hito.descripcion && hito.descripcion.toLowerCase().includes(q)) ||
+            (hito.descripcion_en && hito.descripcion_en.toLowerCase().includes(q))
+        );
+    });
 
-    // Si por defecto no hay hito seleccionado, mostrar mensaje de invitación
-    if (!hitoSeleccionadoId) {
-        contenedor.innerHTML = `
-          <div id="hitos-empty-state" class="p-6 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50">
-            <svg class="w-8 h-8 text-orange-400 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-            <p class="font-bold text-slate-700 text-sm" data-i18n="selecciona_punto_mapa">${idiomaActual === "en" ? "Select a point on the map" : "Selecciona un punto en el mapa"}</p>
-            <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">${idiomaActual === "en" ? "Tap any marker to view its details here" : "Toca cualquier marcador para ver su ficha territorial"}</p>
-            <button id="btn-explorar-aleatorio" type="button" class="mt-4 inline-flex items-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors cursor-pointer">
-              🧭 ${idiomaActual === "en" ? "Discover a suggested landmark" : "Descubrir un hito sugerido"}
-            </button>
-          </div>
-        `;
-        return;
+    const conteos = {
+        todas: hitosBase.length,
+        todos: hitosBase.length,
+        patrimonio: hitosBase.filter(h => h.categoria === "patrimonio").length,
+        senderos: hitosBase.filter(h => h.categoria === "senderos").length,
+        economia_creativa: hitosBase.filter(h => h.categoria === "economia_creativa").length
+    };
+
+    document.querySelectorAll(".filtro-cat-btn").forEach(btn => {
+        const cat = btn.getAttribute("data-cat");
+        const badge = btn.querySelector(".contador-cat");
+        if (badge && conteos[cat] !== undefined) {
+            badge.textContent = conteos[cat];
+            const esActivo = (filtroActivo === cat) || (cat === "todas" && (filtroActivo === "todos" || filtroActivo === "todas"));
+            if (esActivo) {
+                badge.className = "contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white font-mono";
+            } else {
+                badge.className = "contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 text-slate-700 font-mono";
+            }
+        }
+    });
+}
+
+// Sincronizar indicador de color dinámico de fragilidad
+function actualizarIndicadorFragilidad() {
+    const indicador = document.getElementById("indicador-color-fragilidad");
+    const selFrag = document.getElementById("filtro-fragilidad");
+    if (!indicador || !selFrag) return;
+
+    const val = selFrag.value;
+    const mapaColores = {
+        todas: "bg-slate-400",
+        todos: "bg-slate-400",
+        Baja: "bg-emerald-500",
+        Media: "bg-amber-500",
+        Alta: "bg-orange-500",
+        "Muy Alta": "bg-rose-500"
+    };
+    const claseColor = mapaColores[val] || "bg-slate-400";
+    indicador.className = `w-2 h-2 rounded-full ${claseColor} inline-block transition-colors`;
+}
+
+// Generar badge de sensibilidad con punto de color
+function obtenerBadgeFragilidad(fragilidad, idioma = "es") {
+    let dotColor = "bg-slate-400";
+    let bgBadge = "bg-slate-100 text-slate-700 border-slate-200/80";
+    if (fragilidad === "Baja") {
+        dotColor = "bg-emerald-500";
+        bgBadge = "bg-emerald-50 text-emerald-700 border-emerald-200/60";
+    } else if (fragilidad === "Media") {
+        dotColor = "bg-amber-500";
+        bgBadge = "bg-amber-50 text-amber-700 border-amber-200/60";
+    } else if (fragilidad === "Alta") {
+        dotColor = "bg-orange-500";
+        bgBadge = "bg-orange-50 text-orange-700 border-orange-200/60";
+    } else if (fragilidad === "Muy Alta") {
+        dotColor = "bg-rose-500";
+        bgBadge = "bg-rose-50 text-rose-700 border-rose-200/60";
     }
+    const texto = idioma === "en" ? (fragilidad === "Muy Alta" ? "Very High" : fragilidad === "Alta" ? "High" : fragilidad === "Media" ? "Medium" : "Low") : (fragilidad || "Baja");
+    return `
+      <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${bgBadge}">
+        <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
+        <span>${texto}</span>
+      </span>
+    `;
+}
 
-    const data = (window.datosHitos && window.datosHitos[hitoSeleccionadoId]) || (datosHitos && datosHitos[hitoSeleccionadoId]) || (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === hitoSeleccionadoId || String(h.id) === String(hitoSeleccionadoId)) : null);
+// Generar tarjeta HTML para el hito activo seleccionado
+function generarTarjetaHitoActivoHTML(hito, visitado) {
+    const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+    const rubro = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : (hito.rubroCreativo || (hito.categoria ? hito.categoria.replace('_', ' ') : ''));
+    const badgeFrag = obtenerBadgeFragilidad(hito.fragilidad, idiomaActual);
+    const textoVerFicha = idiomaActual === "en" ? "View card →" : "Ver ficha →";
+    const textoActivo = idiomaActual === "en" ? "Selected site" : "Hito activo";
 
-    if (!data) return;
-
-    const visitas = typeof obtenerVisitas === "function" ? obtenerVisitas() : [];
-    const nombre = (idiomaActual === "en" && data.nombre_en) ? data.nombre_en : data.nombre;
-    const rubro = (idiomaActual === "en" && data.rubroCreativo_en) ? data.rubroCreativo_en : (data.rubroCreativo || (data.categoria ? data.categoria.replace('_', ' ') : ''));
-    const visitado = visitas.includes(data.id);
-
-    contenedor.innerHTML = `
-      <!-- Tarjeta del Hito Seleccionado -->
-      <div class="hito-card flex items-center p-3 mb-2 bg-white rounded-xl shadow-sm border border-orange-500 ring-1 ring-orange-500 cursor-pointer hover:bg-slate-50 transition-all" data-id="${data.id}">
-        <!-- Miniatura cuadrada -->
-        <img src="${data.imagen || './icon.svg'}" alt="${nombre}" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-100">
-        
-        <!-- Info rápida -->
-        <div class="ml-3 flex-grow overflow-hidden">
-          <div class="flex items-center gap-1.5">
-            <h3 class="text-sm font-bold text-slate-800 truncate">${nombre}</h3>
-            ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
+    return `
+      <div class="tarjeta-hito-activa p-3 mb-2 bg-orange-50/30 rounded-2xl border border-orange-500 ring-1 ring-orange-500 shadow-sm transition-all cursor-pointer group" data-id="${hito.id}">
+        <div class="flex items-start gap-3">
+          <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-14 h-14 rounded-lg object-cover shrink-0 bg-slate-100 border border-orange-200">
+          <div class="flex-grow min-w-0">
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-[9px] font-bold uppercase tracking-wider text-orange-600 bg-orange-100/80 px-1.5 py-0.5 rounded">${textoActivo}</span>
+              ${visitado ? '<span class="text-emerald-600 text-xs font-bold flex items-center gap-0.5" title="Visitado">✓ Visitado</span>' : ''}
+            </div>
+            <h3 class="text-xs font-bold text-slate-800 truncate mt-1 group-hover:text-orange-600 transition-colors">${nombre}</h3>
+            <p class="text-[11px] text-slate-500 truncate mt-0.5">${hito.localidad} • ${rubro}</p>
+            <div class="flex items-center justify-between gap-2 mt-2">
+              ${badgeFrag}
+              <button type="button" class="btn-ver-ficha-directa text-xs font-bold text-orange-600 hover:text-orange-700 underline flex items-center gap-0.5 cursor-pointer">
+                ${textoVerFicha}
+              </button>
+            </div>
           </div>
-          <p class="text-xs text-slate-500 truncate mt-0.5">${t.toponimia || 'Toponimia:'} ${data.toponimia}</p>
-          <div class="flex items-center gap-1.5 mt-1.5">
-            <span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded font-bold capitalize">${rubro}</span>
-            <span class="text-[10px] text-slate-400">${data.localidad}</span>
-          </div>
-        </div>
-        
-        <!-- Flecha indicadora -->
-        <div class="shrink-0 pl-1 text-orange-500">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </div>
       </div>
     `;
+}
 
-    const card = contenedor.querySelector(".hito-card");
-    if (card) {
+// Generar tarjeta compacta de hito recomendado / relacionado
+function generarTarjetaHitoCompactaHTML(hito, visitado) {
+    const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+    const rubro = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : (hito.rubroCreativo || (hito.categoria ? hito.categoria.replace('_', ' ') : ''));
+    const colorBase = COLORES_CATEGORIA[hito.categoria] || "#f59e0b";
+    const colorDot = visitado ? '#10b981' : colorBase;
+
+    return `
+      <div class="tarjeta-hito-compacta flex items-center gap-2.5 p-2 bg-white hover:bg-slate-50/90 rounded-xl border border-slate-200/80 hover:border-slate-300 shadow-2xs transition-all cursor-pointer group" data-id="${hito.id}">
+        <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-100 border border-slate-100">
+        <div class="flex-grow min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${colorDot}"></span>
+            <h4 class="text-xs font-bold text-slate-800 truncate group-hover:text-orange-600 transition-colors">${nombre}</h4>
+            ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
+          </div>
+          <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mt-0.5">
+            <span class="font-medium text-slate-600">${hito.localidad}</span>
+            <span>•</span>
+            <span class="capitalize truncate">${rubro}</span>
+          </div>
+        </div>
+        <div class="text-slate-300 group-hover:text-orange-500 group-hover:translate-x-0.5 transition-all shrink-0 pr-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+      </div>
+    `;
+}
+
+// Renderizar tarjeta del hito seleccionado y lista inteligente de sitios recomendados / filtrados en el panel lateral
+function renderizarListaHitosCompacta(hitosFiltradosParam) {
+    const contenedor = document.getElementById("contenedor-hitos-lista");
+    if (!contenedor) return;
+
+    if (Array.isArray(hitosFiltradosParam)) {
+        window.hitosFiltradosActuales = hitosFiltradosParam;
+    }
+
+    const visitas = typeof obtenerVisitas === "function" ? obtenerVisitas() : [];
+    const poolHitos = (Array.isArray(window.hitosFiltradosActuales) && window.hitosFiltradosActuales.length > 0)
+        ? window.hitosFiltradosActuales
+        : (Array.isArray(listaHitos) ? listaHitos : []);
+
+    let html = "";
+
+    if (hitoSeleccionadoId) {
+        const data = (window.datosHitos && window.datosHitos[hitoSeleccionadoId]) ||
+                     (datosHitos && datosHitos[hitoSeleccionadoId]) ||
+                     (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === hitoSeleccionadoId || String(h.id) === String(hitoSeleccionadoId)) : null);
+
+        if (data) {
+            const visitado = visitas.includes(data.id);
+            html += generarTarjetaHitoActivoHTML(data, visitado);
+
+            // Obtener hasta 3 hitos relacionados (misma localidad o misma categoría, excluyendo el activo)
+            const relacionados = (Array.isArray(listaHitos) ? listaHitos : [])
+                .filter(h => (h.id !== data.id && String(h.id) !== String(data.id)))
+                .sort((a, b) => {
+                    const scoreA = (a.localidad === data.localidad ? 2 : 0) + (a.categoria === data.categoria ? 1 : 0);
+                    const scoreB = (b.localidad === data.localidad ? 2 : 0) + (b.categoria === data.categoria ? 1 : 0);
+                    return scoreB - scoreA;
+                })
+                .slice(0, 3);
+
+            if (relacionados.length > 0) {
+                const tituloRelacionados = idiomaActual === "en" ? "Other sites in this area" : "Otros sitios en esta zona";
+                html += `
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                      <span>${tituloRelacionados}</span>
+                      <span class="text-[9px] text-slate-400 font-mono">${relacionados.length}</span>
+                    </p>
+                    <div class="flex flex-col gap-1.5">
+                      ${relacionados.map(h => generarTarjetaHitoCompactaHTML(h, visitas.includes(h.id))).join("")}
+                    </div>
+                  </div>
+                `;
+            }
+        }
+    } else {
+        // Cuando no hay hito seleccionado: mostrar hasta 4 tarjetas compactas de recomendados / filtrados
+        const recomendados = poolHitos.slice(0, 4);
+        const total = poolHitos.length;
+        const tituloSugeridos = idiomaActual === "en" ? "Suggested sites to explore" : "Sugeridos para explorar";
+
+        html += `
+          <div class="mb-2">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+              <span>${tituloSugeridos}</span>
+              <span class="text-[9px] text-slate-400 font-mono">${recomendados.length} / ${total}</span>
+            </p>
+            <div class="flex flex-col gap-1.5">
+              ${recomendados.map(h => generarTarjetaHitoCompactaHTML(h, visitas.includes(h.id))).join("")}
+            </div>
+            <div class="pt-2 text-center">
+              <button id="btn-explorar-aleatorio" type="button" class="w-full inline-flex items-center justify-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2.5 rounded-xl transition-colors cursor-pointer shadow-2xs">
+                🧭 ${idiomaActual === "en" ? "Discover a suggested landmark" : "Descubrir un hito sugerido"}
+              </button>
+            </div>
+          </div>
+        `;
+    }
+
+    contenedor.innerHTML = html;
+
+    // Vincular eventos de tarjetas compactas
+    contenedor.querySelectorAll(".tarjeta-hito-compacta").forEach(card => {
         card.addEventListener("click", () => {
-            abrirDetalleHito(data.id);
+            const id = card.getAttribute("data-id");
+            const hito = Array.isArray(listaHitos) ? listaHitos.find(h => h.id === id || String(h.id) === String(id)) : null;
+            if (hito) {
+                seleccionarHito(hito, true, true, false);
+            }
         });
+    });
+
+    // Vincular eventos de tarjeta activa
+    const cardActiva = contenedor.querySelector(".tarjeta-hito-activa");
+    if (cardActiva) {
+        const idActivo = cardActiva.getAttribute("data-id");
+        cardActiva.addEventListener("click", () => {
+            abrirDetalleHito(idActivo);
+        });
+        const btnVerFicha = cardActiva.querySelector(".btn-ver-ficha-directa");
+        if (btnVerFicha) {
+            btnVerFicha.addEventListener("click", (e) => {
+                e.stopPropagation();
+                abrirDetalleHito(idActivo);
+            });
+        }
     }
 }
 
@@ -1844,8 +2043,8 @@ function actualizarMetricas() {
 // 9. Filtros por capas
 function configurarFiltros() {
     const botones = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
-    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm";
-    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100  text-slate-600  hover:bg-slate-200  px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition";
+    const claseActiva = "filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm flex items-center";
+    const claseInactiva = "filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center";
 
     botones.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1857,6 +2056,7 @@ function configurarFiltros() {
             let cat = btn.getAttribute("data-cat");
             if (cat === "todas") cat = "todos";
             filtroActivo = cat;
+            actualizarContadoresCategoria();
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
         });
@@ -2645,8 +2845,11 @@ function configurarFiltroFragilidad() {
     const select = document.getElementById("filtro-fragilidad");
     if (!select) return;
 
+    actualizarIndicadorFragilidad();
+
     select.addEventListener("change", (e) => {
         filtroFragilidad = e.target.value;
+        actualizarIndicadorFragilidad();
         renderizarMarcadores(true);
         actualizarTrazadoRuta();
     });

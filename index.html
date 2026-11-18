@@ -601,24 +601,28 @@
         <div
           class="flex flex-nowrap overflow-x-auto hide-scrollbar gap-2 mb-3 pb-1 border-b border-slate-200 flex-shrink-0">
           <button type="button"
-            class="filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm"
+            class="filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm flex items-center"
             data-cat="todas" title="Todos">
             <span data-i18n="cat_todos">Todos</span>
+            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-mono">0</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
             data-cat="patrimonio" title="Patrimonio">
             <span data-i18n="cat_patrimonio">Patrimonio</span>
+            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
             data-cat="senderos" title="Senderos">
             <span data-i18n="cat_senderos">Senderos</span>
+            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
           </button>
           <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition"
+            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
             data-cat="economia_creativa" title="Creativos">
             <span data-i18n="cat_creativos">Creativos</span>
+            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
           </button>
         </div>
 
@@ -626,17 +630,25 @@
         <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 gap-2 flex-shrink-0">
           <div>
             <label for="filtro-fragilidad"
-              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
-              SENSIBILIDAD
+              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 flex items-center gap-1">
+              <span id="indicador-color-fragilidad" class="w-2 h-2 rounded-full bg-slate-400 inline-block transition-colors"></span>
+              <span>SENSIBILIDAD</span>
             </label>
-            <select id="filtro-fragilidad"
-              class="w-full py-1 px-1.5 text-[11px] rounded bg-white border border-slate-200 text-slate-700 focus:outline-none cursor-pointer">
-              <option value="todas">Todos</option>
-              <option value="Baja">Baja</option>
-              <option value="Media">Media</option>
-              <option value="Alta">Alta</option>
-              <option value="Muy Alta">Muy Alta</option>
-            </select>
+            <div class="relative">
+              <select id="filtro-fragilidad"
+                class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
+                <option value="todas">Todos</option>
+                <option value="Baja">Baja</option>
+                <option value="Media">Media</option>
+                <option value="Alta">Alta</option>
+                <option value="Muy Alta">Muy Alta</option>
+              </select>
+              <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -644,12 +656,19 @@
               class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
               ESTADO
             </label>
-            <select id="filtro-estado-visita"
-              class="w-full py-1 px-1.5 text-[11px] rounded bg-white border border-slate-200 text-slate-700 focus:outline-none cursor-pointer">
-              <option value="todos">Todos</option>
-              <option value="visitados">Visitados</option>
-              <option value="pendientes">Pendientes</option>
-            </select>
+            <div class="relative">
+              <select id="filtro-estado-visita"
+                class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
+                <option value="todos">Todos</option>
+                <option value="visitados">Visitados</option>
+                <option value="pendientes">Pendientes</option>
+              </select>
+              <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 

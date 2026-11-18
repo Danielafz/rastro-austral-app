@@ -729,17 +729,11 @@ function renderizarMarcadores(anunciarResultados = false) {
 
     const valorTerritorio = territorioActivo || "todos";
     const q = busquedaActiva.toLowerCase().trim();
-    const esModoProvincia = (valorTerritorio === "todos" || valorTerritorio === "provincia");
-    const modoProvinciaSoloVisitados = esModoProvincia && !q && !hitoSeleccionadoId;
 
-    // Control del aviso flotante de modo provincia
+    // Mantener oculto el aviso de modo provincia ya que se muestran todos los hitos de la provincia
     const elAvisoTerritorio = document.getElementById("aviso-mapa-territorio");
     if (elAvisoTerritorio) {
-        if (modoProvinciaSoloVisitados && visitas.length === 0) {
-            elAvisoTerritorio.classList.remove("hidden");
-        } else {
-            elAvisoTerritorio.classList.add("hidden");
-        }
+        elAvisoTerritorio.classList.add("hidden");
     }
 
     // Limpiar marcadores existentes en la capa
@@ -755,10 +749,6 @@ function renderizarMarcadores(anunciarResultados = false) {
         const visitado = visitas.includes(hito.id);
         if (filtroEstadoVisita === "visitados" && !visitado) return false;
         if (filtroEstadoVisita === "pendientes" && visitado) return false;
-
-        if (modoProvinciaSoloVisitados) {
-            return visitado;
-        }
 
         if (!coincideTerritorio(hito.localidad, valorTerritorio)) {
             return false;

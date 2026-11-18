@@ -1164,7 +1164,7 @@ function generarTarjetaHitoActivoHTML(hito, visitado) {
     const textoActivo = idiomaActual === "en" ? "Selected site" : "Hito activo";
 
     return `
-      <div class="tarjeta-hito-activa p-3 mb-2 bg-orange-50/30 rounded-2xl border border-orange-500 ring-1 ring-orange-500 shadow-sm transition-all cursor-pointer group" data-id="${hito.id}">
+      <div class="tarjeta-hito-activa hito-card p-3 mb-2 bg-white/95 md:bg-orange-50/30 rounded-2xl border border-orange-500 ring-1 ring-orange-500 shadow-sm transition-all cursor-pointer group" data-id="${hito.id}">
         <div class="flex items-start gap-3">
           <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-14 h-14 rounded-lg object-cover shrink-0 bg-slate-100 border border-orange-200">
           <div class="flex-grow min-w-0">
@@ -1194,7 +1194,7 @@ function generarTarjetaHitoCompactaHTML(hito, visitado) {
     const colorDot = visitado ? '#10b981' : colorBase;
 
     return `
-      <div class="tarjeta-hito-compacta flex items-center gap-2.5 p-2 bg-white hover:bg-slate-50/90 rounded-xl border border-slate-200/80 hover:border-slate-300 shadow-2xs transition-all cursor-pointer group" data-id="${hito.id}">
+      <div class="tarjeta-hito-compacta hito-card flex items-center gap-2.5 p-2 bg-white/95 hover:bg-slate-50/90 rounded-xl border border-slate-200/80 hover:border-slate-300 shadow-2xs transition-all cursor-pointer group" data-id="${hito.id}">
         <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-100 border border-slate-100">
         <div class="flex-grow min-w-0">
           <div class="flex items-center gap-1.5">

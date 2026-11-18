@@ -607,7 +607,7 @@ const ROTULOS_SOBERANIA_Y_ORIGINARIOS = [
     {
         texto: "Karukinká",
         subtexto: "Tierra del Fuego · Selk'nam",
-        coords: [-53.95, -68.80],
+        coords: [-54.12, -67.45],
         clase: "rotulo-originario-region",
         zoomMin: 7
     },

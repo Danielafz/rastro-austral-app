@@ -2964,6 +2964,24 @@ function renderizarGraficosObservatorio() {
 
 // Helper global para centrar el mapa desde accesos directos del Observatorio
 function centrarEnSitio(clave) {
+    // 1. Cerrar inmediatamente la vista a pantalla completa del Observatorio y cualquier overlay
+    const vistaObsFull = document.getElementById("vista-observatorio-full");
+    if (vistaObsFull) {
+        vistaObsFull.classList.add("hidden");
+        vistaObsFull.classList.remove("flex");
+    }
+    if (typeof cerrarTodasLasVistas === "function") {
+        cerrarTodasLasVistas();
+    }
+    if (typeof cerrarDetalleHitoCompleto === "function") {
+        cerrarDetalleHitoCompleto();
+    }
+
+    // 2. Cambiar la pestaña lateral a "explorar" para ver el mapa y los hitos
+    if (typeof cambiarPestanaSidebar === "function") {
+        cambiarPestanaSidebar("explorar");
+    }
+
     if (!Array.isArray(listaHitos) || listaHitos.length === 0) return;
 
     const aliasMap = {
@@ -2975,17 +2993,67 @@ function centrarEnSitio(clave) {
     let hito = null;
     for (const term of terminos) {
         hito = listaHitos.find(h =>
-            h.id.toLowerCase() === term ||
+            (h.id && h.id.toLowerCase() === term) ||
             (h.nombre && h.nombre.toLowerCase().includes(term))
         );
         if (hito) break;
     }
 
     if (hito) {
-        seleccionarHito(hito, true, true);
+        seleccionarHito(hito, true, true, false);
+
+        if (mapa && hito.coordenadas) {
+            setTimeout(() => {
+                mapa.invalidateSize();
+                mapa.flyTo(hito.coordenadas, 13, {
+                    animate: true,
+                    duration: 1.0
+                });
+                const marcador = marcadoresPorId && marcadoresPorId[hito.id];
+                if (marcador) {
+                    marcador.openPopup();
+                }
+            }, 100);
+        }
     }
 }
 window.centrarEnSitio = centrarEnSitio;
+
+// Helper global para desplegar/ocultar la ficha de transparencia metodológica
+function toggleMetodoObservatorio(targetId, btnEl) {
+    const caja = document.getElementById(targetId);
+    if (!caja) return;
+
+    const dataReal = obtenerDatosObservatorioActivos();
+    const esIngles = idiomaActual === "en";
+    const esTurbal = targetId.includes("turbal");
+    const info = esTurbal ? (dataReal.turbales || {}) : (dataReal.glaciar || {});
+
+    if (caja.classList.contains("hidden")) {
+        const tipoDato = info.tipo_dato || "ilustrativo_prototipo";
+        const fuente = info.fuente_referencia || "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)";
+        const metodo = info.metodo_proyeccion || "Extrapolación lineal simple (2015–2024)";
+        const fecha = info.ultima_actualizacion || "2026-11-17";
+
+        caja.innerHTML = `
+            <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
+                <span class="flex items-center gap-1.5">📋 <span>${esIngles ? "Methodological Metadata" : "Ficha Metodológica y Transparencia"}</span></span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">${tipoDato}</span>
+            </div>
+            <p class="pt-1"><strong>${esIngles ? "Source reference:" : "Fuente de referencia:"}</strong> ${fuente}</p>
+            <p><strong>${esIngles ? "Projection method:" : "Método de proyección:"}</strong> ${metodo}</p>
+            <p class="text-[10px] text-slate-500 pt-0.5"><strong>${esIngles ? "Last updated:" : "Última actualización:"}</strong> ${fecha}</p>
+        `;
+        caja.classList.remove("hidden");
+        const btn = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
+        if (btn) btn.innerHTML = esIngles ? "✕ Hide source & method" : "✕ Ocultar fuente y método";
+    } else {
+        caja.classList.add("hidden");
+        const btn = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
+        if (btn) btn.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+    }
+}
+window.toggleMetodoObservatorio = toggleMetodoObservatorio;
 
 function configurarObservatorio() {
     const btnNarrarObs = document.getElementById("btn-narrar-observatorio");
@@ -3025,35 +3093,7 @@ function configurarObservatorio() {
     document.querySelectorAll(".btn-toggle-metodo").forEach(btn => {
         btn.addEventListener("click", () => {
             const targetId = btn.getAttribute("data-target");
-            const caja = document.getElementById(targetId);
-            if (!caja) return;
-
-            const dataReal = obtenerDatosObservatorioActivos();
-            const esIngles = idiomaActual === "en";
-            const esTurbal = targetId.includes("turbal");
-            const info = esTurbal ? (dataReal.turbales || {}) : (dataReal.glaciar || {});
-
-            if (caja.classList.contains("hidden")) {
-                const tipoDato = info.tipo_dato || "ilustrativo_prototipo";
-                const fuente = info.fuente_referencia || "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)";
-                const metodo = info.metodo_proyeccion || "Extrapolación lineal simple (2015–2024)";
-                const fecha = info.ultima_actualizacion || "2026-11-17";
-
-                caja.innerHTML = `
-                    <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
-                        <span class="flex items-center gap-1.5">📋 <span>${esIngles ? "Methodological Metadata" : "Ficha Metodológica y Transparencia"}</span></span>
-                        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">${tipoDato}</span>
-                    </div>
-                    <p class="pt-1"><strong>${esIngles ? "Source reference:" : "Fuente de referencia:"}</strong> ${fuente}</p>
-                    <p><strong>${esIngles ? "Projection method:" : "Método de proyección:"}</strong> ${metodo}</p>
-                    <p class="text-[10px] text-slate-500 pt-0.5"><strong>${esIngles ? "Last updated:" : "Última actualización:"}</strong> ${fecha}</p>
-                `;
-                caja.classList.remove("hidden");
-                btn.innerHTML = esIngles ? "✕ Hide source & method" : "✕ Ocultar fuente y método";
-            } else {
-                caja.classList.add("hidden");
-                btn.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
-            }
+            toggleMetodoObservatorio(targetId, btn);
         });
     });
 }

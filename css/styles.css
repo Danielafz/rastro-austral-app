@@ -563,6 +563,13 @@ html.dark #burbuja-dialogo::after {
 /* ============================================================
    MASCOTA PINGÜINO 3D - ANIMACIONES Y MICRO-INTERACCIONES
    ============================================================ */
+.mascara-integracion-mascota {
+  mix-blend-mode: lighten;
+  filter: brightness(0.92) contrast(1.12);
+  -webkit-mask-image: radial-gradient(ellipse 46% 48% at 50% 50%, #000 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 46% 48% at 50% 50%, #000 68%, transparent 100%);
+}
+
 .pinguino-flotante-3d {
   animation: pinguinoFlotacion3D 3.8s ease-in-out infinite;
   transform-origin: center bottom;

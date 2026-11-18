@@ -888,8 +888,26 @@ html:not(.dark) .leaflet-tooltip.tooltip-hito::before {
 
 /* Modales en modo claro */
 html:not(.dark) #modal-pasaporte>div,
-html:not(.dark) #modal-creditos>div,
-html:not(.dark) #modal-huella>div,
+html:not(.dark) #modal-huella>div {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Modal de Créditos y Soberanía con borde neutro */
+html:not(.dark) #modal-creditos>div {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark #modal-creditos>div {
+  border-color: #334155 !important;
+}
+
+/* Modal de Alerta y Bloqueo con borde de advertencia */
 html:not(.dark) #modal-bloqueo>div {
   background-color: #ffffff !important;
   border-color: #f43f5e !important;

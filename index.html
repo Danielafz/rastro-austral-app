@@ -1288,74 +1288,66 @@
   <div id="modal-creditos"
     class="fixed inset-0 z-[700] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
     <div
-      class="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
+      class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
       <!-- Cabecera del Modal -->
-      <div class="bg-slate-950/90 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+      <div class="bg-slate-100 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div
-            class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-lg">
+            class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-emerald-400 text-lg">
             🏛️
           </div>
           <div>
-            <h3 data-i18n="modal_creditos_titulo" class="text-base font-bold text-white tracking-wide">Créditos y
-              Soberanía de Datos</h3>
-            <p data-i18n="modal_creditos_subtitulo" class="text-xs text-slate-400">Marco institucional, fuentes
-              cartográficas y privacidad soberana</p>
+            <h3 data-i18n="modal_creditos_titulo" class="text-base font-bold text-slate-900 dark:text-white tracking-wide">Créditos y Soberanía de Datos</h3>
+            <p data-i18n="modal_creditos_subtitulo" class="text-xs text-slate-600 dark:text-slate-400">Marco institucional, fuentes cartográficas y privacidad soberana</p>
           </div>
         </div>
         <button id="btn-cerrar-modal-creditos"
-          class="text-slate-400 hover:text-white text-lg font-bold p-1.5 rounded-lg hover:bg-slate-800 transition"
+          class="text-slate-500 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 text-lg font-bold p-1.5 rounded-lg transition cursor-pointer"
           title="Cerrar créditos">
           ✕
         </button>
       </div>
 
       <!-- Cuerpo del Modal -->
-      <div class="p-6 space-y-4 overflow-y-auto text-xs text-slate-300 leading-relaxed">
+      <div class="p-6 space-y-4 overflow-y-auto text-xs text-slate-600 dark:text-slate-300 leading-relaxed custom-scrollbar">
         <!-- Fuentes Oficiales -->
-        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
-          <h4 class="font-bold text-amber-400 flex items-center gap-1.5 text-xs">
+        <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5 text-xs">
             <span>🗺️</span>
             <span data-i18n="creditos_fuentes_titulo">Fuentes Oficiales Cartográficas y Científicas</span>
           </h4>
-          <p data-i18n="creditos_fuentes_desc" class="text-slate-300">
-            Los datos geoespaciales y toponímicos provienen de la Infraestructura de Datos Espaciales de Tierra del
-            Fuego (IDETDF), el Instituto Geográfico Nacional (IGN) y el Centro Austral de Investigaciones Científicas
-            (CADIC-CONICET).
+          <p data-i18n="creditos_fuentes_desc" class="text-slate-600 dark:text-slate-300">
+            Cartografía oficial vial y topográfica provista por el Instituto Geográfico Nacional de la República Argentina (IGN · Argenmap) y la Infraestructura de Datos Espaciales de Tierra del Fuego (IDETDF). Datos científicos y ambientales de referencia de CADIC-CONICET, alertas de estrés hídrico en turbales basadas en radar satelital Copernicus Sentinel-1 (ESA), meteorología en tiempo real vía Open-Meteo y acervo histórico-fotográfico del Museo Austral vía Wikimedia Commons.
           </p>
         </div>
 
         <!-- Soberanía de Datos y Privacidad -->
-        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
-          <h4 class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+        <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 text-xs">
             <span>🔒</span>
             <span data-i18n="creditos_privacidad_titulo">Privacidad Soberana (Ley 25.326)</span>
           </h4>
-          <p data-i18n="creditos_privacidad_desc" class="text-slate-300">
-            Esta aplicación no recopila telemetría, identificadores ni geolocalización en servidores remotos. Todas las
-            visitas marcadas, huellas y notas de campo quedan almacenadas de manera 100% local en este navegador
-            mediante <code class="bg-slate-800 px-1 py-0.5 rounded text-amber-300 font-mono">localStorage</code>.
+          <p data-i18n="creditos_privacidad_desc" class="text-slate-600 dark:text-slate-300">
+            Esta aplicación no recopila telemetría, identificadores ni geolocalización en servidores remotos. Todas las visitas marcadas, sellos, notas de campo, caché de obras y reportes meteorológicos quedan almacenados de manera 100% local en este dispositivo mediante <code class="bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded text-amber-700 dark:text-amber-300 font-mono">localStorage</code> y Service Worker offline (Ley 25.326 de Protección de los Datos Personales).
           </p>
         </div>
 
         <!-- Licenciamiento -->
-        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5">
-          <h4 class="font-bold text-sky-400 flex items-center gap-1.5 text-xs">
+        <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-sky-600 dark:text-sky-400 flex items-center gap-1.5 text-xs">
             <span>📄</span>
             <span data-i18n="creditos_licencia_titulo">Licencias Abiertas</span>
           </h4>
-          <p data-i18n="creditos_licencia_desc" class="text-slate-300">
-            Código fuente distribuido bajo licencia permisiva <strong class="text-white">MIT</strong>. Cartografía y
-            datos de base bajo licencias <strong class="text-white">OpenStreetMap (ODbL)</strong> y contenidos
-            educativos <strong class="text-white">Creative Commons CC BY-SA 4.0</strong>.
+          <p data-i18n="creditos_licencia_desc" class="text-slate-600 dark:text-slate-300">
+            Código fuente distribuido bajo licencia permisiva <strong class="text-slate-900 dark:text-white">MIT</strong>. Cartografía oficial del Instituto Geográfico Nacional (IGN Argentina), imágenes satelitales complementarias de Esri, datos meteorológicos abiertos de Open-Meteo (CC BY 4.0) y contenidos educativos y patrimoniales bajo <strong class="text-slate-900 dark:text-white">Creative Commons CC BY-SA 4.0</strong>.
           </p>
         </div>
       </div>
 
       <!-- Pie del Modal -->
-      <div class="bg-slate-950 px-6 py-3 border-t border-slate-800 flex justify-end">
+      <div class="bg-slate-100 dark:bg-slate-950 px-6 py-3 border-t border-slate-200 dark:border-slate-800 flex justify-end">
         <button id="btn-cerrar-modal-creditos-secundario"
-          class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-xs font-medium"
+          class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-slate-700 transition text-xs font-medium cursor-pointer"
           data-i18n="cerrar">
           Cerrar
         </button>

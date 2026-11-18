@@ -441,29 +441,29 @@ const SALAS_MUSEO = [
             en: "Room 6: Falkland / Malvinas Islands"
         },
         subtitulo: {
-            es: "Historia, cartografía, Puerto Soledad y soberanía del Atlántico Sur",
-            en: "History, cartography, Puerto Soledad & South Atlantic sovereignty"
+            es: "Historia, memoria del Atlántico Sur, soberanía y geografía austral",
+            en: "History, South Atlantic memory, sovereignty & southern geography"
         },
         descripcionCorta: {
-            es: "Geografía austral, asentamientos históricos pioneros y memoria viva de nuestras islas.",
-            en: "Southern geography, early pioneer settlements, and living memory of our southern islands."
+            es: "Cartografía virreinal, Puerto Soledad, memoria permanente de Malvinas y santuario natural del archipiélago.",
+            en: "Viceroyalty cartography, Puerto Soledad, enduring Malvinas memory, and southern island sanctuary."
         },
         icono: "🌊",
         obras: [
             {
                 id: "malvinas-01",
                 titulo: {
-                    es: "Cartografía Histórica y Soberanía Austral",
-                    en: "Historical Cartography & Southern Sovereignty"
+                    es: "Comandancia Política y Militar de Malvinas",
+                    en: "Political and Military Command of Malvinas"
                 },
-                anio: "1764 - 1829",
+                anio: "1829",
                 lugar: {
-                    es: "Archipiélago de las Islas Malvinas",
-                    en: "Malvinas / Falkland Islands Archipelago"
+                    es: "Puerto Soledad, Isla Soledad",
+                    en: "Puerto Soledad, East Falkland"
                 },
                 descripcion: {
-                    es: "Las Islas Malvinas, integradas histórica, geográfica y jurídicamente a la provincia de Tierra del Fuego, Antártida e Islas del Atlántico Sur, cuentan con un extenso registro cartográfico y documental virreinal y republicano. En 1829, el gobierno de Buenos Aires creó la Comandancia Política y Militar bajo Luis Vernet.",
-                    en: "The Malvinas Islands, constitutionally part of the province of Tierra del Fuego, Antártida e Islas del Atlántico Sur, possess documented historical administration dating back to early naval charts and Luis Vernet's 1829 governorship."
+                    es: "El 10 de junio de 1829, el gobierno de Buenos Aires dictó el histórico decreto que creó la Comandancia Política y Militar de las Islas Malvinas y adyacentes al Cabo de Hornos en el mar Atlántico, designando a Luis Vernet como primer comandante. Desde Puerto Soledad se consolidó la administración civil y ganadera argentina, regulando la pesca de cetáceos y la cría de ganado criollo.",
+                    en: "On June 10, 1829, the government of Buenos Aires created the Political and Military Command of the Malvinas Islands and waters adjacent to Cape Horn, appointing Luis Vernet as its governor. From Puerto Soledad, Argentine civic, fisheries, and pastoral administration was established across the South Atlantic."
                 },
                 credito: "Mapoteca Histórica del Archivo General de la Nación (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Puerto_Soledad%2C_Malvinas%2C_1785.jpg",
@@ -475,20 +475,20 @@ const SALAS_MUSEO = [
             {
                 id: "malvinas-02",
                 titulo: {
-                    es: "Puerto Soledad y Primeros Asentamientos",
-                    en: "Puerto Soledad & Early Settlements"
+                    es: "Memoria del Conflicto del Atlántico Sur",
+                    en: "Memory of the South Atlantic Conflict"
                 },
-                anio: "1785 - 1938",
+                anio: "1982",
                 lugar: {
-                    es: "Bahía de la Anunciación, Isla Soledad",
-                    en: "Berkeley Sound, East Falkland"
+                    es: "Tierra del Fuego y Atlántico Sur",
+                    en: "Tierra del Fuego & South Atlantic"
                 },
                 descripcion: {
-                    es: "Primer asentamiento fundado en el archipiélago malvinense en 1764 por Louis Antoine de Bougainville y transferido a la corona española en 1767 bajo el nombre de Puerto Soledad. Contaba con muelle, hospital, almacenes, batería de cañones y capilla, albergando a gauchos criollos dedicados a la ganadería de ganado cimarrón.",
-                    en: "The first permanent settlement in the archipelago, founded in 1764 by Louis Antoine de Bougainville and administered as Puerto Soledad. It featured stone dwellings, a chapel, a battery, and was worked by skilled gauchos."
+                    es: "Tierra del Fuego cumplió un papel estratégico vital en el conflicto de 1982 como plataforma operativa austral, puente aeronaval y retaguardia de abastecimiento. La provincia mantiene un compromiso inquebrantable de memoria, homenaje y gratitud permanente hacia los 649 combatientes caídos y veteranos de guerra que defendieron la soberanía argentina en el archipiélago malvinense.",
+                    en: "Tierra del Fuego played a vital operational and logistical role during the 1982 South Atlantic conflict as the southern maritime and air staging territory. The province honors an enduring pledge of remembrance and gratitude to the 649 fallen heroes and veterans who defended Argentine sovereignty in the islands."
                 },
-                credito: "Grabado de la Real Expedición Malaspina (1789-1794) (Dominio Público)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Puerto_Soledad_en_1938.jpeg",
+                credito: "Mural Escultórico Héroes de Malvinas / Archivo Histórico Provincial (Dominio Público)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Mural_escult%C3%B3rico_H%C3%A9roes_de_Malvinas_II.jpg",
                 hitoRelacionado: {
                     es: "Monumento a los Héroes de Malvinas (Río Grande)",
                     en: "Malvinas Heroes Monument (Río Grande)"
@@ -497,8 +497,52 @@ const SALAS_MUSEO = [
             {
                 id: "malvinas-03",
                 titulo: {
-                    es: "Puerto Argentino y Naturaleza Austral",
-                    en: "Puerto Argentino & Southern Wildlife"
+                    es: "Plaza Islas Malvinas y Monumento a los Caídos en Ushuaia",
+                    en: "Islas Malvinas Square & Fallen Soldiers Memorial in Ushuaia"
+                },
+                anio: "1994",
+                lugar: {
+                    es: "Costanera de Ushuaia, Canal Beagle",
+                    en: "Ushuaia Waterfront, Beagle Channel"
+                },
+                descripcion: {
+                    es: "Emblemático espacio de homenaje y memoria ciudadana ubicado sobre la avenida Maipú frente al Canal Beagle. Alberga el Monumento Nacional a los Caídos en Malvinas con su silueta recortada en metal, el cenotafio que inscribe los nombres de los 649 héroes argentinos caídos en 1982 y la llama votiva eterna que arde sin extinguirse frente a las aguas australes.",
+                    en: "Iconic commemorative site facing the Beagle Channel on Ushuaia's shoreline. It holds the National Fallen Soldiers Memorial featuring a cut-out steel silhouette of the archipelago, the cenotaph engraved with the 649 names of Argentine heroes fallen in 1982, and an eternal flame burning perpetually."
+                },
+                credito: "Plaza Islas Malvinas, Ushuaia / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Plaza_Islas_Malvinas%2C_Ushuaia.jpg",
+                hitoRelacionado: {
+                    es: "Plaza Islas Malvinas (Ushuaia)",
+                    en: "Plaza Islas Malvinas (Ushuaia)"
+                }
+            },
+            {
+                id: "malvinas-04",
+                titulo: {
+                    es: "Ríos de Piedra y Geografía del Archipiélago",
+                    en: "Stone Runs & Archipelago Geography"
+                },
+                anio: "Formación Cuaternaria",
+                lugar: {
+                    es: "Isla Soledad y Gran Malvina",
+                    en: "East & West Falkland"
+                },
+                descripcion: {
+                    es: "Los 'ríos de piedra' (stone runs) constituyen una de las formaciones periglaciares más singulares del planeta, observada y descrita con fascinación por Charles Darwin en 1833 durante su viaje a bordo del HMS Beagle. Bloques colosales de cuarcita fluyen lentamente por valles glaciarios entre colinas de turba, brezo y pastizales subantárticos similares a los fueguinos.",
+                    en: "The 'stone runs' are among the most striking periglacial geological formations on Earth, described with awe by Charles Darwin in 1833 during his voyage on HMS Beagle. Massive quartzite boulders cascade through glacial valleys across moorlands and peat tussacs akin to the Fuegian steppes."
+                },
+                credito: "East Falkland Stone Run / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/East_Falkland_-_Stone_Run.jpg",
+                hitoRelacionado: {
+                    es: "Reserva Geológica y Paleontológica Austral",
+                    en: "Southern Geological & Paleontological Reserve"
+                }
+            },
+            {
+                id: "malvinas-05",
+                titulo: {
+                    es: "Puerto Argentino y Arquitectura Costera del Atlántico Sur",
+                    en: "Puerto Argentino & South Atlantic Coastal Architecture"
                 },
                 anio: "Siglo XX",
                 lugar: {
@@ -506,14 +550,36 @@ const SALAS_MUSEO = [
                     en: "Puerto Argentino / Stanley, East Falkland"
                 },
                 descripcion: {
-                    es: "Vista histórica del poblado costero con sus típicos tejados de chapa acanalada frente a las aguas gélidas del Atlántico Sur. El archipiélago comparte con Tierra del Fuego un ecosistema único de turberas, calafates y gigantescas colonias de aves marinas como albatros, cormoranes y pingüinos papúa y rey.",
-                    en: "Historic vista of the coastal harbor with colorful rooftops facing the crisp South Atlantic. The islands share with Tierra del Fuego a rich biome of peatlands, coastal tussac grass, and teeming colonies of king and gentoo penguins."
+                    es: "Vista histórica del puerto natural protegido en Bahía de la Anunciación, con sus características construcciones de chapa acanalada, tejados de colores vivos y muelles de madera diseñados para soportar los vientos oceánicos del Atlántico Sur. Su historia marítima se entrelaza con naufragios, expediciones polares y la navegación de ultramar hacia el Cabo de Hornos.",
+                    en: "Historic view of the sheltered harbor featuring pioneer corrugated iron homes, vibrant roofs, and wooden jetties built to weather relentless South Atlantic gales. Its maritime history is woven with tall ships, Antarctic expeditions, and Cape Horn trade routes."
                 },
                 credito: "Archivo Histórico Oceánico y Meteorológico / NOAA (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Port_Stanley_1961_-_NOAA_-_Corp1373.jpg",
                 hitoRelacionado: {
-                    es: "Monumento a los Héroes de Malvinas (Ushuaia)",
-                    en: "Malvinas Heroes Monument (Ushuaia)"
+                    es: "Puerto de Ushuaia y Patrimonio Marítimo",
+                    en: "Ushuaia Port & Maritime Heritage"
+                }
+            },
+            {
+                id: "malvinas-06",
+                titulo: {
+                    es: "Santuario de Aves Marinas y Pingüinos Australes",
+                    en: "Seabird Sanctuary & Southern Penguins"
+                },
+                anio: "Patrimonio Natural Vivo",
+                lugar: {
+                    es: "Punta Voluntario y Costas Australes",
+                    en: "Volunteer Point & Southern Coasts"
+                },
+                descripcion: {
+                    es: "El archipiélago malvinense alberga colonias multitudinarias de pingüinos rey (Aptenodytes patagonicus), magallánicos, papúa y de penacho amarillo, conviviendo con albatros de ceja negra y cormoranes. Este corredor biológico conecta directamente con el Banco Burdwood, la Isla de los Estados y el Canal Beagle, conformando uno de los ecosistemas marinos más ricos y protegidos del planeta.",
+                    en: "The archipelago hosts magnificent breeding colonies of king penguins, gentoo, magellanic, and rockhopper penguins, coexisting with black-browed albatrosses and cormorants. This oceanic biological corridor connects with Burdwood Bank, Isla de los Estados, and Beagle Channel into a vital marine sanctuary."
+                },
+                credito: "Colonia de Pingüinos Rey / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Falkland_Islands_Penguins_49.jpg",
+                hitoRelacionado: {
+                    es: "Pingüinera de Isla Martillo (Canal Beagle)",
+                    en: "Martillo Island Penguin Rookery (Beagle Channel)"
                 }
             }
         ]

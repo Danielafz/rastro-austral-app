@@ -109,33 +109,73 @@
         return objetoTexto[idioma] || objetoTexto.es || "";
     }
 
-    // Configuración responsiva del pasillo (móvil: 245px entre centros, escritorio: 600px)
-    function obtenerConfigPasillo() {
+    // Total dinámico de obras en todas las salas del Museo (21 obras con Sala 6 ampliada)
+    function obtenerTotalObras() {
+        const salas = window.SALAS_MUSEO || [];
+        return salas.reduce((acc, s) => acc + (s.obras ? s.obras.length : 0), 0) || 21;
+    }
+
+    // Configuración responsiva y dinámica del pasillo (calculada según la cantidad real de obras de la sala)
+    function obtenerConfigPasillo(cantidadObras = null) {
+        const salas = window.SALAS_MUSEO || [];
+        const salaActual = salas[estadoMuseo.salaIndex];
+        const nObras = (typeof cantidadObras === "number" && cantidadObras > 0)
+            ? cantidadObras
+            : (salaActual && salaActual.obras ? salaActual.obras.length : 3);
+
         const esMovil = window.innerWidth < 768;
         if (esMovil) {
+            const paso = 245;
+            const inicio = 240;
+            const posicionesX = [];
+            for (let i = 0; i < nObras; i++) {
+                posicionesX.push(inicio + i * paso);
+            }
+            const anchoPasillo = posicionesX[nObras - 1] + 310;
+            const columnasX = [80];
+            for (let i = 0; i < nObras; i++) {
+                columnasX.push(Math.round(inicio + i * paso + paso / 2));
+            }
+            columnasX.push(posicionesX[nObras - 1] + 160);
+
             return {
                 esMovil: true,
-                posicionesX: [240, 485, 730],
-                anchoPasillo: 1040,
-                columnasX: [80, 362, 607, 890]
+                posicionesX,
+                anchoPasillo,
+                columnasX
             };
         }
+
+        const paso = 600;
+        const inicio = 420;
+        const posicionesX = [];
+        for (let i = 0; i < nObras; i++) {
+            posicionesX.push(inicio + i * paso);
+        }
+        const anchoPasillo = posicionesX[nObras - 1] + 480;
+        const columnasX = [100];
+        for (let i = 0; i < nObras; i++) {
+            columnasX.push(inicio + i * paso + 300);
+        }
+        columnasX.push(posicionesX[nObras - 1] + 320);
+
         return {
             esMovil: false,
-            posicionesX: [420, 1020, 1620],
-            anchoPasillo: 2100,
-            columnasX: [100, 720, 1320, 1940]
+            posicionesX,
+            anchoPasillo,
+            columnasX
         };
     }
 
-    // Actualizar barra de progreso del recorrido global (1 a 18)
+    // Actualizar barra de progreso del recorrido global (dinámica de 1 a 21)
     function actualizarBarraProgreso(indiceGlobal = 1) {
         if (!dom.barraProgreso) return;
-        const total = 18;
+        const total = obtenerTotalObras();
         const paso = Math.max(1, Math.min(indiceGlobal, total));
         const pct = (paso / total) * 100;
         dom.barraProgreso.style.width = `${pct.toFixed(2)}%`;
         dom.barraProgreso.setAttribute("aria-valuenow", String(paso));
+        dom.barraProgreso.setAttribute("aria-valuemax", String(total));
     }
 
     // Actualizar título de la sala en la barra superior (formato responsivo 2 líneas en móvil / 1 línea en escritorio)
@@ -277,7 +317,7 @@
         if (target.salaIndex !== estadoMuseo.salaIndex) {
             cargarSala(target.salaIndex);
         }
-        const config = obtenerConfigPasillo();
+        const config = obtenerConfigPasillo(salas[target.salaIndex]?.obras?.length || 3);
         estadoMuseo.posicionX = config.posicionesX[target.obraIndex] || config.posicionesX[0];
         actualizarPosicionPinguino();
         verificarProximidadObras();
@@ -289,9 +329,11 @@
         if (!dom.vista) initDom();
         if (!dom.vista) return;
 
-        const config = obtenerConfigPasillo();
+        const salas = window.SALAS_MUSEO || [];
+        estadoMuseo.salaIndex = Math.max(0, Math.min(salaIndice, salas.length - 1));
+        const salaActual = salas[estadoMuseo.salaIndex];
+        const config = obtenerConfigPasillo(salaActual?.obras?.length || 3);
         estadoMuseo.activo = true;
-        estadoMuseo.salaIndex = Math.max(0, Math.min(salaIndice, (window.SALAS_MUSEO || []).length - 1));
         estadoMuseo.anchoPasillo = config.anchoPasillo;
         estadoMuseo.posicionX = config.posicionesX[0];
         estadoMuseo.velocidadX = 0;
@@ -354,16 +396,26 @@
         estadoMuseo.salaIndex = indice;
         const sala = salas[indice];
 
-        // Configuración espacial responsiva
-        const config = obtenerConfigPasillo();
+        // Configuración espacial responsiva según cantidad real de obras de la sala
+        const config = obtenerConfigPasillo(sala.obras ? sala.obras.length : 3);
         estadoMuseo.anchoPasillo = config.anchoPasillo;
 
         if (dom.pasilloMuro) {
             dom.pasilloMuro.style.width = `${config.anchoPasillo}px`;
-            const cols = dom.pasilloMuro.querySelectorAll(".columna-madera-museo");
+            let cols = dom.pasilloMuro.querySelectorAll(".columna-madera-museo");
+            while (cols.length < config.columnasX.length) {
+                const nuevaCol = document.createElement("div");
+                nuevaCol.className = "columna-madera-museo absolute top-0 bottom-[32%] w-12 rounded-sm pointer-events-none";
+                nuevaCol.innerHTML = `<div class="capitel-bronce h-3 w-full"></div>`;
+                dom.pasilloMuro.insertBefore(nuevaCol, dom.contenedorObras);
+                cols = dom.pasilloMuro.querySelectorAll(".columna-madera-museo");
+            }
             cols.forEach((col, i) => {
                 if (config.columnasX[i] !== undefined) {
+                    col.style.display = "";
                     col.style.left = `${config.columnasX[i]}px`;
+                } else {
+                    col.style.display = "none";
                 }
             });
         }
@@ -372,9 +424,13 @@
         actualizarTituloSala(indice);
 
         // Progreso general en la barra del encabezado (al inicio de la sala)
-        actualizarBarraProgreso(indice * 3 + 1);
+        let obrasPrevias = 0;
+        for (let i = 0; i < indice; i++) {
+            obrasPrevias += (salas[i] && salas[i].obras) ? salas[i].obras.length : 0;
+        }
+        actualizarBarraProgreso(obrasPrevias + 1);
 
-        // Posiciones espaciales de los 3 cuadros en el pasillo (px)
+        // Posiciones espaciales de los cuadros en el pasillo (px)
         const posicionesX = config.posicionesX;
 
         // Renderizar cuadros de la sala
@@ -388,6 +444,7 @@
                 cuadroEl.style.left = `${posX}px`;
                 cuadroEl.dataset.obraId = obra.id;
                 cuadroEl.dataset.posX = posX;
+                cuadroEl.dataset.obraIndex = idx;
 
                 const tituloObra = tBilingue(obra.titulo);
                 const anioObra = obra.anio || "";
@@ -498,8 +555,9 @@
             }
         }
 
-        // Calcular progreso global de la obra (1 a 18)
+        // Calcular progreso global de la obra (dinámico 1 a totalObras)
         const salas = window.SALAS_MUSEO || [];
+        const totalObras = obtenerTotalObras();
         let indiceGlobal = 1;
         let contador = 0;
         salas.forEach((s) => {
@@ -512,7 +570,7 @@
         });
 
         if (dom.indicadorContador) {
-            dom.indicadorContador.textContent = `${indiceGlobal} / 18`;
+            dom.indicadorContador.textContent = `${indiceGlobal} / ${totalObras}`;
         }
         actualizarBarraProgreso(indiceGlobal);
 
@@ -668,6 +726,13 @@
             if (distancia < radioProximidad) {
                 cuadro.classList.add("cuadro-activo-proximidad");
                 obraEnRango = cuadro.dataset.obraId;
+                const oIdx = parseInt(cuadro.dataset.obraIndex || "0", 10);
+                const salas = window.SALAS_MUSEO || [];
+                let obrasPrevias = 0;
+                for (let i = 0; i < estadoMuseo.salaIndex; i++) {
+                    obrasPrevias += (salas[i] && salas[i].obras) ? salas[i].obras.length : 0;
+                }
+                actualizarBarraProgreso(obrasPrevias + oIdx + 1);
             } else {
                 cuadro.classList.remove("cuadro-activo-proximidad");
             }

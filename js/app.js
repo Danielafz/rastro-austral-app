@@ -567,8 +567,11 @@ function inicializarMapa() {
     // Capa de marcadores directos en Leaflet (pingüinos individuales garantizados)
     capaMarcadores = L.layerGroup().addTo(mapa);
 
-    // Ajustar densidad y escala de huellas al cambiar el nivel de zoom
-    mapa.on("zoomend", actualizarTrazadoRuta);
+    // Ajustar densidad y escala de huellas y tamaño dinámico de marcadores según nivel de zoom
+    mapa.on("zoomend", () => {
+        actualizarTrazadoRuta();
+        renderizarMarcadores();
+    });
 
     // Delegación de eventos para botones dentro de los Popups de Leaflet
     mapa.on("popupopen", (e) => {
@@ -737,6 +740,8 @@ function renderizarMarcadores(anunciarResultados = false) {
 
     const valorTerritorio = territorioActivo || "todos";
     const q = busquedaActiva.toLowerCase().trim();
+    const zoomActual = mapa ? mapa.getZoom() : 8;
+    const esZoomLejano = zoomActual <= 10;
 
     // Mantener oculto el aviso de modo provincia ya que se muestran todos los hitos de la provincia
     const elAvisoTerritorio = document.getElementById("aviso-mapa-territorio");
@@ -785,24 +790,39 @@ function renderizarMarcadores(anunciarResultados = false) {
         const colorPin = visitado ? '#10b981' : colorBase;
         const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
 
+        const anchoPin = esZoomLejano ? 22 : 32;
+        const altoPin = esZoomLejano ? 28 : 40;
+        const anchorX = esZoomLejano ? 11 : 16;
+        const anchorY = esZoomLejano ? 28 : 40;
+        const anchoPinguino = esZoomLejano ? 12 : 18;
+        const altoPinguino = esZoomLejano ? 14 : 20;
+        const topPinguino = esZoomLejano ? 3.5 : 5;
+
         // Halo animado detrás del pin cuando está seleccionado
         const haloSeleccionado = seleccionado
-            ? `<div class="absolute w-8 h-8 rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
+            ? `<div class="absolute ${esZoomLejano ? 'w-5 h-5' : 'w-8 h-8'} rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
+            : "";
+
+        // Badge verde con ✓ arriba a la derecha si está visitado
+        const badgeCheck = visitado
+            ? (esZoomLejano
+                ? `<div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border border-white w-3.5 h-3.5 text-[8px] font-bold">✓</div>`
+                : `<div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border-2 border-white w-4 h-4 text-[9px] font-bold">✓</div>`)
             : "";
 
         const icono = L.divIcon({
             className: `marcador-hito cursor-pointer ${seleccionado ? 'marcador-seleccionado scale-110' : ''}`,
             html: `
-        <div class="relative flex items-center justify-center transform hover:scale-110 transition-all duration-200" style="width: 32px; height: 40px;">
+        <div class="relative flex items-center justify-center transform hover:scale-110 transition-all duration-200" style="width: ${anchoPin}px; height: ${altoPin}px;">
           ${haloSeleccionado}
           <!-- Pin del Mapa (Globo portador con fondo interior blanco) -->
-          <svg class="absolute drop-shadow-md" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="absolute drop-shadow-md" width="${anchoPin}" height="${altoPin}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 0C7.16344 0 0 7.16344 0 16C0 27.5 16 40 16 40C16 40 32 27.5 32 16C32 7.16344 24.8366 0 16 0Z" fill="${colorPin}" />
             <circle cx="16" cy="15" r="10" fill="white" />
           </svg>
           
           <!-- Silueta e Ilustración del Pingüino Austral -->
-          <svg class="absolute z-10" width="18" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="top: 5px;">
+          <svg class="absolute z-10" width="${anchoPinguino}" height="${altoPinguino}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="top: ${topPinguino}px;">
             <!-- Cuerpo y Cabeza -->
             <path d="M12 2C8 2 5 6 5 12C5 17 8 21 12 21C16 21 19 17 19 12C19 6 16 2 12 2Z" fill="#0f172a" stroke="#334155" stroke-width="0.5"/>
             <!-- Panza Blanca -->
@@ -822,12 +842,11 @@ function renderizarMarcadores(anunciarResultados = false) {
             <ellipse cx="14.5" cy="20.5" rx="1.8" ry="1" fill="#f97316"/>
           </svg>
 
-          <!-- Badge verde con ✓ arriba a la derecha si está visitado -->
-          ${visitado ? `<div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border-2 border-white w-4 h-4 text-[9px] font-bold">✓</div>` : ''}
+          ${badgeCheck}
         </div>
       `,
-            iconSize: [32, 40],
-            iconAnchor: [16, 40]
+            iconSize: [anchoPin, altoPin],
+            iconAnchor: [anchorX, anchorY]
         });
 
         const descripcionAlt = `${nombre}, ${hito.localidad}, ${visitado ? (idiomaActual === 'en' ? 'recorded' : 'registrado') : (idiomaActual === 'en' ? 'to explore' : 'por explorar')}`;
@@ -861,7 +880,7 @@ function renderizarMarcadores(anunciarResultados = false) {
             </button>
           </div>
         `, {
-            offset: [0, -28],
+            offset: [0, esZoomLejano ? -20 : -28],
             className: "popup-hito",
             autoPan: true,
             autoPanPadding: [12, 65]
@@ -2070,6 +2089,7 @@ function configurarFiltros() {
             let cat = btn.getAttribute("data-cat");
             if (cat === "todas") cat = "todos";
             filtroActivo = cat;
+            hitoSeleccionadoId = null; // Reiniciar selección para desplegar los hitos filtrados debajo de los filtros
             actualizarContadoresCategoria();
             renderizarMarcadores(true);
             actualizarTrazadoRuta();

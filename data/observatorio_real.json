@@ -26,7 +26,7 @@
     "variacion_pct": "+100%",
     "tipo_dato": "Datos ilustrativos · prototipo",
     "fuente_referencia": "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
-    "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
+    "metodo_proyeccion": "Extrapolación lineal a partir de la serie 2015–2024",
     "ultima_actualizacion": "17/11/2026"
   },
   "glaciar": {
@@ -42,7 +42,7 @@
     "variacion_pct": "-16%",
     "tipo_dato": "Datos ilustrativos · prototipo",
     "fuente_referencia": "Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
-    "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
+    "metodo_proyeccion": "Extrapolación lineal a partir de la serie 2015–2024",
     "ultima_actualizacion": "17/11/2026"
   }
 }

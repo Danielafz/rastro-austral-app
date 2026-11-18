@@ -220,9 +220,9 @@ const DICCIONARIO = {
         obs_m1_alerta_lbl: "Nivel de alerta:",
         obs_m1_alerta_val: "Moderado a Crítico",
         obs_m1_ver: "Ver turbal en mapa →",
-        obs_m2_titulo: "El glaciar podría perder un 16% de su masa histórica para 2030",
+        obs_m2_titulo: "El glaciar podría perder un 16% de su masa de 2015 para 2030",
         obs_m2_sub: "Hielo que nos queda para beber y abastecer a la ciudad",
-        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa estimada.",
+        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa de 2015.",
         obs_m2_alerta_lbl: "Contexto:",
         obs_m2_alerta_val: "Abastecimiento de agua de Ushuaia",
         obs_m2_ver: "Ver glaciar en mapa →"
@@ -356,9 +356,9 @@ const DICCIONARIO = {
         obs_m1_alerta_lbl: "Alert level:",
         obs_m1_alerta_val: "Moderate to Critical",
         obs_m1_ver: "View peatland on map →",
-        obs_m2_titulo: "The glacier could lose 16% of its historical mass by 2030",
+        obs_m2_titulo: "The glacier could lose 16% of its 2015 mass by 2030",
         obs_m2_sub: "Ice left to supply clean drinking water to the city",
-        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated mass.",
+        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its 2015 mass.",
         obs_m2_alerta_lbl: "Context:",
         obs_m2_alerta_val: "Ushuaia water supply",
         obs_m2_ver: "View glacier on map →"
@@ -2792,7 +2792,7 @@ function obtenerDatosObservatorioActivos() {
             variacion_pct: "+100%",
             tipo_dato: "Datos ilustrativos · prototipo",
             fuente_referencia: "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
-            metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
+            metodo_proyeccion: "Extrapolación lineal a partir de la serie 2015–2024",
             ultima_actualizacion: "17/11/2026"
         },
         glaciar: {
@@ -2801,7 +2801,7 @@ function obtenerDatosObservatorioActivos() {
             variacion_pct: "-16%",
             tipo_dato: "Datos ilustrativos · prototipo",
             fuente_referencia: "Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
-            metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
+            metodo_proyeccion: "Extrapolación lineal a partir de la serie 2015–2024",
             ultima_actualizacion: "17/11/2026"
         }
     };
@@ -2825,6 +2825,7 @@ function actualizarBadgesObservatorio() {
 // Generador de gráficos de línea en SVG puro (100% offline, calidad editorial)
 function crearGraficoLineasSVG(config) {
     const {
+        id = "chart",
         labels,
         data,
         yMin,
@@ -2834,21 +2835,26 @@ function crearGraficoLineasSVG(config) {
         unidadEjeY = "",
         tituloY = "",
         indiceCorteHistorico = 3, // índice 3 = año 2024
+        valoresY = null,
         esIngles = false
     } = config;
 
+    const chartId = id || "chart";
     const W = 400;
     const H = 200;
-    const padL = 56; // Desplazado ~20-30px a la derecha para no solapar etiquetas del eje Y
+    const padL = 56;
     const padR = 24;
     const padT = 32;
     const padB = 30;
     const plotW = W - padL - padR;
     const plotH = H - padT - padB;
 
+    // Offset X inicial para dar aire entre el eje Y y el primer punto (evita colisión con etiquetas del eje Y)
+    const offsetInicioX = 14;
+
     const n = labels.length;
     const puntos = data.map((val, i) => {
-        const x = padL + (i / (n - 1)) * plotW;
+        const x = padL + offsetInicioX + (i / (n - 1)) * (plotW - offsetInicioX);
         const ratio = (val - yMin) / (yMax - yMin);
         const y = padT + (1 - Math.max(0, Math.min(1, ratio))) * plotH;
         return {
@@ -2860,20 +2866,41 @@ function crearGraficoLineasSVG(config) {
         };
     });
 
-    // Líneas guía horizontales del eje Y (4 divisiones regulares)
-    const pasosY = 4;
+    // Líneas guía horizontales del eje Y
+    // Para Glaciar (yMin=80, yMax=105): forzar valores exactos 80, 85, 90, 95, 100, 105
+    // Si el valor es 105, dibujamos la línea guía pero omitimos el <text> para dejar aire visual
+    let ticksY = valoresY;
+    if (!ticksY) {
+        if (yMin === 80 && yMax === 105) {
+            ticksY = [80, 85, 90, 95, 100, 105];
+        } else {
+            const pasosY = 4;
+            ticksY = [];
+            for (let s = 0; s <= pasosY; s++) {
+                ticksY.push(yMin + (s / pasosY) * (yMax - yMin));
+            }
+        }
+    }
+
     let lineasGuiaY = "";
-    for (let s = 0; s <= pasosY; s++) {
-        const valTick = yMin + (s / pasosY) * (yMax - yMin);
-        const yTick = padT + (1 - s / pasosY) * plotH;
+    ticksY.forEach(valTick => {
+        const ratio = (valTick - yMin) / (yMax - yMin);
+        const yTick = padT + (1 - Math.max(0, Math.min(1, ratio))) * plotH;
         const textoTick = Number.isInteger(valTick)
             ? valTick.toLocaleString("es-AR")
             : valTick.toLocaleString("es-AR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        
+        // Si el valor es 105, dibujamos la línea guía pero omitimos el texto para dejar aire visual
+        const incluirTexto = valTick !== 105;
+        const textoSVG = incluirTexto
+            ? `<text x="${padL - 8}" y="${(yTick + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#4b5563" font-family="sans-serif" font-weight="500">${textoTick}${unidadEjeY}</text>`
+            : "";
+
         lineasGuiaY += `
             <line x1="${padL}" y1="${yTick.toFixed(1)}" x2="${W - padR}" y2="${yTick.toFixed(1)}" stroke="#e5e7eb" stroke-width="1" />
-            <text x="${padL - 8}" y="${(yTick + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="#4b5563" font-family="sans-serif" font-weight="500">${textoTick}${unidadEjeY}</text>
+            ${textoSVG}
         `;
-    }
+    });
 
     // Línea de corte vertical entre observado (2024) y proyección (2027)
     const x3 = puntos[indiceCorteHistorico].x;
@@ -2896,9 +2923,12 @@ function crearGraficoLineasSVG(config) {
         `;
     });
 
-    // Puntos, valores y tooltips interactivos
+    // Puntos, valores fijos y capa final de tooltips
     let elementosPuntos = "";
-    puntos.forEach((p) => {
+    let elementosTooltips = "";
+    let reglasCSSHover = "";
+
+    puntos.forEach((p, i) => {
         const valFormateado = Number.isInteger(p.val)
             ? p.val.toLocaleString("es-AR")
             : p.val.toLocaleString("es-AR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -2906,39 +2936,59 @@ function crearGraficoLineasSVG(config) {
             ? (esIngles ? "Projection · Illustrative data" : "Proyección · Dato ilustrativo")
             : (esIngles ? "Baseline · Illustrative data" : "Serie base · Dato ilustrativo");
 
-        // Coordenadas calculadas para tooltip: por encima o por debajo sin tapar el punto
+        // Tooltip posicionado restando 45px al cy (y = cy - 45) para flotar por encima y no tapar etiquetas
         const ttW = 132;
         const ttH = 34;
         let ttX = p.x - ttW / 2;
         if (ttX < 6) ttX = 6;
         if (ttX + ttW > W - 6) ttX = W - ttW - 6;
-        const ttY = p.y < 46 ? (p.y + 14) : (p.y - ttH - 10);
+        let ttY = p.y - 45;
+        if (ttY < 2) ttY = 2;
 
+        // Puntos visuales y área interactiva (compartiendo exactamente p.x y p.y con la línea principal)
         elementosPuntos += `
-            <g class="svg-punto-grupo group cursor-pointer" tabindex="0" role="button" aria-label="${p.label}: ${valFormateado}${unidad} (${tipoDato})">
-                <!-- Zona táctil amplia -->
-                <circle cx="${p.x}" cy="${p.y}" r="14" fill="transparent" />
+            <g class="punto-grupo" data-chart="${chartId}" data-idx="${i}">
                 <!-- Círculo visual principal -->
-                <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${color}" stroke="#ffffff" stroke-width="2" class="transition-transform group-hover:scale-125 duration-150" />
-                <!-- Valor numérico visible sobre el punto con coma decimal -->
-                <text x="${p.x}" y="${p.y - 8}" text-anchor="middle" font-size="9" font-weight="bold" fill="#334155" font-family="sans-serif">${valFormateado}${unidad}</text>
+                <circle id="circ-${chartId}-${i}" class="punto-visual transition-transform duration-150" cx="${p.x}" cy="${p.y}" r="4.5" fill="${color}" stroke="#ffffff" stroke-width="2" />
                 
-                <!-- Tooltip accesible nativo en SVG con posicionamiento seguro -->
-                <g class="svg-tooltip opacity-0 group-hover:opacity-100 group-focus:opacity-100 pointer-events-none transition-opacity duration-150">
-                    <rect x="${ttX.toFixed(1)}" y="${ttY.toFixed(1)}" width="${ttW}" height="${ttH}" rx="6" fill="#0f172a" fill-opacity="0.94" />
-                    <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 14).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff" font-family="sans-serif">${p.label}: ${valFormateado}${unidad}</text>
-                    <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 26).toFixed(1)}" text-anchor="middle" font-size="7.5" fill="#94a3b8" font-family="sans-serif">${tipoDato}</text>
-                </g>
+                <!-- Valor numérico visible sobre el punto (ocultado al abrir tooltip) -->
+                <text id="val-${chartId}-${i}" class="punto-valor-texto transition-opacity duration-150" x="${p.x}" y="${p.y - 8}" text-anchor="middle" font-size="9" font-weight="bold" fill="#334155" font-family="sans-serif">${valFormateado}${unidad}</text>
+                
+                <!-- Hitbox / Zona interactiva: comparte exactamente cx="${p.x}" y cy="${p.y}" calculados para el path -->
+                <circle class="punto-interactivo cursor-pointer" cx="${p.x}" cy="${p.y}" r="14" fill="transparent" tabindex="0" role="button" aria-label="${p.label}: ${valFormateado}${unidad} (${tipoDato})" data-chart="${chartId}" data-idx="${i}" onmouseenter="window.activarTooltipPunto(this)" onmouseleave="window.desactivarTooltipPunto(this)" onfocus="window.activarTooltipPunto(this)" onblur="window.desactivarTooltipPunto(this)" />
             </g>
+        `;
+
+        // Tooltip renderizado en la capa final para quedar por encima por orden natural del DOM
+        elementosTooltips += `
+            <g id="tt-${chartId}-${i}" class="svg-tooltip-item opacity-0 pointer-events-none transition-opacity duration-150" opacity="0">
+                <rect x="${ttX.toFixed(1)}" y="${ttY.toFixed(1)}" width="${ttW}" height="${ttH}" rx="6" fill="#0f172a" fill-opacity="0.95" />
+                <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 14).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff" font-family="sans-serif">${p.label}: ${valFormateado}${unidad}</text>
+                <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 26).toFixed(1)}" text-anchor="middle" font-size="7.5" fill="#94a3b8" font-family="sans-serif">${tipoDato}</text>
+            </g>
+        `;
+
+        // Reglas CSS complementarias para soporte nativo :has()
+        reglasCSSHover += `
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:hover) #tt-${chartId}-${i},
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:focus) #tt-${chartId}-${i} {
+                opacity: 1 !important;
+            }
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:hover) #val-${chartId}-${i},
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:focus) #val-${chartId}-${i} {
+                opacity: 0 !important;
+            }
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:hover) #circ-${chartId}-${i},
+            svg:has(.punto-interactivo[data-chart="${chartId}"][data-idx="${i}"]:focus) #circ-${chartId}-${i} {
+                transform: scale(1.25);
+                transform-origin: ${p.x}px ${p.y}px;
+            }
         `;
     });
 
     return `
         <svg viewBox="0 0 ${W} ${H}" class="w-full h-full overflow-visible select-none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <pattern id="diagonal-stripe" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                    <line x1="0" y1="0" x2="0" y2="8" stroke="#cbd5e1" stroke-width="1.5"/>
-                </pattern>
                 <style>
                     @media (prefers-reduced-motion: no-preference) {
                         .svg-anim-line {
@@ -2952,16 +3002,17 @@ function crearGraficoLineasSVG(config) {
                             stroke-dashoffset: 0;
                         }
                     }
-                    .svg-punto-grupo:focus {
+                    .punto-interactivo:focus {
                         outline: none;
                     }
+                    ${reglasCSSHover}
                 </style>
             </defs>
 
             <!-- Título del Eje Y -->
             <text x="${padL}" y="16" font-size="10" font-weight="bold" fill="#64748b" font-family="sans-serif">${tituloY}</text>
 
-            <!-- Líneas Guía Horizontales -->
+            <!-- Líneas Guía Horizontales del Eje Y -->
             ${lineasGuiaY}
 
             <!-- Línea Divisoria de Corte: Serie base vs Proyección -->
@@ -2975,14 +3026,71 @@ function crearGraficoLineasSVG(config) {
             <!-- Línea de Proyección (Punteada, stroke-width="2.5", opacidad reducida 0.7) -->
             <path d="${dProj}" fill="none" stroke="${color}" stroke-width="2.5" stroke-dasharray="4,4" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
 
-            <!-- Puntos, Valores y Tooltips Interactivos -->
-            ${elementosPuntos}
-
             <!-- Eje X: Años -->
             ${etiquetasX}
+
+            <!-- Puntos, Círculos Visuales y Valores Numéricos -->
+            ${elementosPuntos}
+
+            <!-- Capa de Tooltips al FINAL del documento SVG para z-index superior nativo -->
+            <g class="capa-tooltips pointer-events-none">
+                ${elementosTooltips}
+            </g>
         </svg>
     `;
 }
+
+// Handlers globales para interacción de tooltips (escritorio y móviles)
+window.activarTooltipPunto = function(el) {
+    if (!el) return;
+    const chart = el.getAttribute("data-chart");
+    const idx = el.getAttribute("data-idx");
+    if (!chart || idx === null) return;
+    if (typeof window.ocultarTodosLosTooltips === "function") {
+        window.ocultarTodosLosTooltips();
+    }
+    const tt = document.getElementById(`tt-${chart}-${idx}`);
+    const val = document.getElementById(`val-${chart}-${idx}`);
+    if (tt) {
+        tt.classList.remove("opacity-0");
+        tt.classList.add("opacity-100");
+        tt.setAttribute("opacity", "1");
+    }
+    if (val) {
+        val.classList.add("opacity-0");
+        val.setAttribute("opacity", "0");
+    }
+};
+
+window.desactivarTooltipPunto = function(el) {
+    if (!el) return;
+    const chart = el.getAttribute("data-chart");
+    const idx = el.getAttribute("data-idx");
+    if (!chart || idx === null) return;
+    const tt = document.getElementById(`tt-${chart}-${idx}`);
+    const val = document.getElementById(`val-${chart}-${idx}`);
+    if (tt) {
+        tt.classList.add("opacity-0");
+        tt.classList.remove("opacity-100");
+        tt.setAttribute("opacity", "0");
+    }
+    if (val) {
+        val.classList.remove("opacity-0");
+        val.setAttribute("opacity", "1");
+    }
+};
+
+window.ocultarTodosLosTooltips = function() {
+    document.querySelectorAll(".svg-tooltip-item").forEach(tt => {
+        tt.classList.add("opacity-0");
+        tt.classList.remove("opacity-100");
+        tt.setAttribute("opacity", "0");
+    });
+    document.querySelectorAll(".punto-valor-texto").forEach(val => {
+        val.classList.remove("opacity-0");
+        val.setAttribute("opacity", "1");
+    });
+};
 
 function renderizarGraficosObservatorio() {
     const contenedorTurbales = document.getElementById("svg-container-turbales");
@@ -3007,10 +3115,12 @@ function renderizarGraficosObservatorio() {
 
     // 1. Gráfico SVG para Turbales (Días Secos, escala Y: 0 a 12, color #d97706, sin letra "d" en eje Y)
     contenedorTurbales.innerHTML = crearGraficoLineasSVG({
+        id: "turbales",
         labels: anios,
         data: diasEstres,
         yMin: 0,
         yMax: 12,
+        valoresY: [0, 3, 6, 9, 12],
         color: "#d97706",
         unidad: "",
         unidadEjeY: "",
@@ -3019,23 +3129,25 @@ function renderizarGraficosObservatorio() {
         esIngles
     });
 
-    // Construcción de aria-label accesible completo para Glaciar
+    // Construcción de aria-label accesible completo para Glaciar (explícito: eje desde 80%)
     const partesAriaGlaciar = anios.map((a, i) => `${a}: ${masaGlaciar[i].toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`);
     const ariaGlaciar = esIngles
-        ? `Evolution of glacier remaining ice mass: ${partesAriaGlaciar.join(", ")}.`
-        : `Evolución de masa remanente del glaciar: ${partesAriaGlaciar.join(", ")}.`;
+        ? `Evolution of glacier remaining ice mass (axis from 80%): ${partesAriaGlaciar.join(", ")}.`
+        : `Evolución de masa remanente del glaciar (eje desde 80%): ${partesAriaGlaciar.join(", ")}.`;
     contenedorGlaciar.setAttribute("aria-label", ariaGlaciar);
 
     // 2. Gráfico SVG para Glaciar (Masa remanente %, escala Y: 80 a 105 para dar aire al 100%, color #0e7490)
     contenedorGlaciar.innerHTML = crearGraficoLineasSVG({
+        id: "glaciar",
         labels: anios,
         data: masaGlaciar,
         yMin: 80,
         yMax: 105,
+        valoresY: [80, 85, 90, 95, 100, 105],
         color: "#0e7490",
         unidad: "%",
         unidadEjeY: "%",
-        tituloY: esIngles ? "% Remaining ice mass" : "% Masa remanente",
+        tituloY: esIngles ? "% Remaining ice mass (axis from 80%)" : "% Masa remanente (eje desde 80%)",
         indiceCorteHistorico: 3,
         esIngles
     });
@@ -3201,10 +3313,22 @@ window.toggleMetodoObservatorio = function(btn) {
 };
 window.togglePanelMetodo = window.toggleMetodoObservatorio;
 
+// Listener global para cerrar tooltips en celulares al tocar afuera
+document.addEventListener("touchstart", (e) => {
+    if (!e.target.closest(".punto-interactivo")) {
+        if (typeof window.ocultarTodosLosTooltips === "function") {
+            window.ocultarTodosLosTooltips();
+        }
+    }
+}, { passive: true });
+
 // Delegación de eventos global para el Observatorio y controles territoriales
 document.addEventListener("click", (e) => {
-    // 0. Ocultar tooltips de gráficos SVG al tocar fuera en celulares y computadoras
-    if (!e.target.closest(".svg-punto-grupo")) {
+    // 0. Ocultar tooltips de gráficos SVG al hacer clic fuera en computadoras y celulares
+    if (!e.target.closest(".punto-interactivo")) {
+        if (typeof window.ocultarTodosLosTooltips === "function") {
+            window.ocultarTodosLosTooltips();
+        }
         if (document.activeElement && typeof document.activeElement.blur === "function") {
             document.activeElement.blur();
         }
@@ -3257,8 +3381,8 @@ function configurarObservatorio() {
             const varGlaciar = dataReal.glaciar.variacion_pct;
 
             const sintesis = esIngles
-                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its estimated mass, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
-                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su masa estimada, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
+                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its 2015 mass, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
+                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su masa de 2015, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
 
             if (!("speechSynthesis" in window)) {
                 anunciarAccesibilidad(sintesis);

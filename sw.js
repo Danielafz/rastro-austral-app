@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v102'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v103'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const FONT_OUTFIT_URL = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap';
 const urlsToCache = [
   './',
@@ -66,8 +66,8 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
-  // Imágenes del Museo Austral (Wikimedia Commons): Cache-First con guardado dinámico para 100% offline
-  if (url.hostname.includes('wikimedia.org')) {
+  // Teselas del mapa oficial (IGN Argenmap, OSM, OpenTopoMap) e imágenes de archivo (Wikimedia Commons): Cache-First con guardado dinámico para 100% offline
+  if (url.hostname.includes('ign.gob.ar') || url.hostname.includes('wikimedia.org') || url.hostname.includes('tile.openstreetmap.org') || url.hostname.includes('opentopomap.org')) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
         if (cachedResponse) {

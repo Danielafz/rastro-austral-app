@@ -104,7 +104,7 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sitios en mi Rastro:",
         descargar_bitacora: "Descargar Bitácora",
         vista_provincia: "📍 Toda la Provincia",
-        capa_estandar: "Estándar",
+        capa_estandar: "Argenmap (IGN)",
         capa_relieve: "Relieve",
         capa_areas_protegidas: "Áreas Protegidas",
         capa_alertas_sar: "Alertas SAR",
@@ -248,7 +248,7 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sites in my Trail:",
         descargar_bitacora: "Download Journal",
         vista_provincia: "📍 Entire Province",
-        capa_estandar: "Standard",
+        capa_estandar: "Argenmap (IGN)",
         capa_relieve: "Topographic",
         capa_areas_protegidas: "Protected Areas",
         capa_alertas_sar: "SAR Alerts",
@@ -535,18 +535,34 @@ function inicializarMapa() {
     window.map = mapa;
     window.mapa = mapa;
 
-    // Cartografía base estándar abierta de OpenStreetMap
-    capaBaseEstandar = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, IDETDF, IGN',
-        maxZoom: 18,
-        minZoom: 6
+    // Cartografía base oficial de la República Argentina: Argenmap (Instituto Geográfico Nacional - IGN)
+    // Presenta toponimia oficial argentina (Islas Malvinas, Puerto Argentino, Isla Soledad, Gran Malvina)
+    capaBaseEstandar = L.tileLayer(
+        "https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png",
+        {
+            tms: true,
+            maxZoom: 18,
+            minZoom: 3,
+            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">Instituto Geográfico Nacional (IGN)</a> · IDETDF'
+        }
+    );
+
+    // Respaldo resiliente: Si alguna tesela individual de IGN falla por microcorte o saturación de red, fallback a OSM
+    capaBaseEstandar.on("tileerror", function (error) {
+        if (!error || !error.tile || error.tile.dataset.fallbackApplied === "true") return;
+        error.tile.dataset.fallbackApplied = "true";
+        const coords = error.coords;
+        if (coords) {
+            const sub = ["a", "b", "c"][Math.abs(coords.x + coords.y) % 3];
+            error.tile.src = `https://${sub}.tile.openstreetmap.org/${coords.z}/${coords.x}/${coords.y}.png`;
+        }
     });
 
     // Cartografía base de relieve / topográfica de OpenTopoMap
     capaBaseRelieve = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
         attribution: 'Kartendaten: &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende, SRTM | Kartendarstellung: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)',
         maxZoom: 17,
-        minZoom: 6
+        minZoom: 3
     });
 
     // Agregar capa base activa

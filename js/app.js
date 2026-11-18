@@ -212,15 +212,15 @@ const DICCIONARIO = {
         obs_titulo: "Observatorio Climático Austral",
         obs_escuchar: "Escuchar síntesis",
         obs_intro: "Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal 2015–2030).",
-        obs_en_simple: "En palabras simples:",
-        obs_m1_titulo: "Los Turbales: La gran esponja fueguina",
+        obs_en_simple: "¿Qué significa?",
+        obs_m1_titulo: "Los días secos podrían casi duplicarse hacia 2030",
         obs_m1_sub: "¿Cuántos días al año se queda sin agua el suelo?",
-        obs_m1_badge: "+89% días secos",
+        obs_m1_badge: "+80% días secos",
         obs_m1_simple: "La turba es como una esponja gigante que guarda agua y atrapa carbono. Al secarse por el calor, se agrieta y deja de protegernos.",
         obs_m1_alerta_lbl: "Nivel de alerta:",
         obs_m1_alerta_val: "Moderado a Crítico",
         obs_m1_ver: "Ver turbal en mapa →",
-        obs_m2_titulo: "Glaciar Vinciguerra: El tanque de agua natural",
+        obs_m2_titulo: "El glaciar perderá un 16% de su masa histórica para 2030",
         obs_m2_sub: "Hielo que nos queda para beber y abastecer a la ciudad",
         obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.",
         obs_m2_alerta_lbl: "Contexto:",
@@ -348,15 +348,15 @@ const DICCIONARIO = {
         obs_titulo: "Austral Climate Observatory",
         obs_escuchar: "Listen summary",
         obs_intro: "Illustrative prototype scenarios based on regional environmental trends (simple linear extrapolation 2015–2030).",
-        obs_en_simple: "In simple words:",
-        obs_m1_titulo: "Peatlands: Tierra del Fuego's giant sponge",
+        obs_en_simple: "What does it mean?",
+        obs_m1_titulo: "Dry days could almost double by 2030",
         obs_m1_sub: "How many days a year does the soil run dry?",
-        obs_m1_badge: "+89% dry days",
+        obs_m1_badge: "+80% dry days",
         obs_m1_simple: "Peat acts like a giant sponge that stores freshwater and traps carbon. As heat dries it out, it cracks and stops protecting us.",
         obs_m1_alerta_lbl: "Alert level:",
         obs_m1_alerta_val: "Moderate to Critical",
         obs_m1_ver: "View peatland on map →",
-        obs_m2_titulo: "Vinciguerra Glacier: Natural freshwater tank",
+        obs_m2_titulo: "The glacier will lose 16% of its historical mass by 2030",
         obs_m2_sub: "Ice left to supply clean drinking water to the city",
         obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated volume.",
         obs_m2_alerta_lbl: "Context:",
@@ -2749,8 +2749,6 @@ function cerrarTodasLasVistas() {
 }
 window.cerrarTodasLasVistas = cerrarTodasLasVistas;
 
-let chartEstresTurbales = null;
-let chartRetrocesoGlaciar = null;
 let datosObservatorio = null;
 
 async function cargarDatosObservatorio() {
@@ -2824,28 +2822,168 @@ function actualizarBadgesObservatorio() {
     }
 }
 
-function renderizarGraficosObservatorio() {
-    if (typeof window.Chart !== "function") return;
+// Generador de gráficos de línea en SVG puro (100% offline, calidad editorial)
+function crearGraficoLineasSVG(config) {
+    const {
+        labels,
+        data,
+        yMin,
+        yMax,
+        color,
+        unidad = "",
+        tituloY = "",
+        indiceCorteHistorico = 3, // índice 3 = año 2024
+        esIngles = false
+    } = config;
 
-    // Registrar plugin de etiquetas sobre barras si está disponible
-    if (typeof window.ChartDataLabels !== "undefined" && typeof window.Chart?.register === "function") {
-        try {
-            window.Chart.register(window.ChartDataLabels);
-        } catch (_) {}
+    const W = 400;
+    const H = 200;
+    const padL = 36;
+    const padR = 24;
+    const padT = 32;
+    const padB = 30;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+
+    const n = labels.length;
+    const puntos = data.map((val, i) => {
+        const x = padL + (i / (n - 1)) * plotW;
+        const ratio = (val - yMin) / (yMax - yMin);
+        const y = padT + (1 - Math.max(0, Math.min(1, ratio))) * plotH;
+        return {
+            x: Number(x.toFixed(2)),
+            y: Number(y.toFixed(2)),
+            val,
+            label: labels[i],
+            isProj: i > indiceCorteHistorico
+        };
+    });
+
+    // Líneas guía horizontales del eje Y
+    const pasosY = 4;
+    let lineasGuiaY = "";
+    for (let s = 0; s <= pasosY; s++) {
+        const valTick = yMin + (s / pasosY) * (yMax - yMin);
+        const yTick = padT + (1 - s / pasosY) * plotH;
+        const textoTick = Number.isInteger(valTick) ? valTick : valTick.toFixed(1);
+        lineasGuiaY += `
+            <line x1="${padL}" y1="${yTick.toFixed(1)}" x2="${W - padR}" y2="${yTick.toFixed(1)}" stroke="#e5e7eb" stroke-width="1" />
+            <text x="${padL - 6}" y="${(yTick + 3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="#94a3b8" font-family="sans-serif">${textoTick}${unidad}</text>
+        `;
     }
 
-    const canvasTurbales = document.getElementById("chart-turbales");
-    const canvasGlaciar = document.getElementById("chart-glaciar");
-    if (!canvasTurbales || !canvasGlaciar) return;
+    // Línea de corte vertical entre observado (2024) y proyección (2027)
+    const x3 = puntos[indiceCorteHistorico].x;
+    const x4 = puntos[indiceCorteHistorico + 1].x;
+    const xMid = (x3 + x4) / 2;
 
-    const esOscuro = document.documentElement.classList.contains("dark");
-    const colorTexto = esOscuro ? "#cbd5e1" : "#334155";
-    const colorGrilla = esOscuro ? "rgba(148, 163, 184, 0.14)" : "rgba(100, 116, 139, 0.15)";
-    const esIngles = idiomaActual === "en";
+    // Trazar path histórico (puntos 0 a 3)
+    const ptsHist = puntos.slice(0, indiceCorteHistorico + 1);
+    const dHist = ptsHist.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
-    // Respeto de accesibilidad a preferencias de reducción de movimiento
-    const duracionAnimacion = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 0 : 1000;
+    // Trazar path proyección (puntos 3 a n-1 para dar continuidad)
+    const ptsProj = puntos.slice(indiceCorteHistorico);
+    const dProj = ptsProj.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
+    // Eje X: Años
+    let etiquetasX = "";
+    puntos.forEach((p) => {
+        etiquetasX += `
+            <text x="${p.x}" y="${H - 10}" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="sans-serif" font-weight="${p.isProj ? 'normal' : 'bold'}">${p.label}</text>
+        `;
+    });
+
+    // Puntos, valores y tooltips interactivos
+    let elementosPuntos = "";
+    puntos.forEach((p) => {
+        const valFormateado = Number.isInteger(p.val) ? p.val : p.val.toFixed(1);
+        const tipoDato = p.isProj ? (esIngles ? "Projected · Illustrative data" : "Proyección · Dato ilustrativo") : (esIngles ? "Historical observed" : "Observado · Dato ilustrativo");
+        
+        // Coordenadas calculadas para tooltip sin salirse del área visible
+        const ttW = 124;
+        const ttH = 34;
+        let ttX = p.x - ttW / 2;
+        if (ttX < 6) ttX = 6;
+        if (ttX + ttW > W - 6) ttX = W - ttW - 6;
+        let ttY = p.y - ttH - 10;
+        if (ttY < 4) ttY = p.y + 12;
+
+        elementosPuntos += `
+            <g class="svg-punto-grupo group cursor-pointer" tabindex="0" role="button" aria-label="${p.label}: ${valFormateado}${unidad} (${tipoDato})">
+                <!-- Zona táctil amplia -->
+                <circle cx="${p.x}" cy="${p.y}" r="14" fill="transparent" />
+                <!-- Círculo visual principal -->
+                <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${color}" stroke="#ffffff" stroke-width="2" class="transition-transform group-hover:scale-125 duration-150" />
+                <!-- Valor numérico visible sobre el punto -->
+                <text x="${p.x}" y="${p.y - 8}" text-anchor="middle" font-size="9" font-weight="bold" fill="#334155" font-family="sans-serif">${valFormateado}${unidad}</text>
+                
+                <!-- Tooltip accesible nativo en SVG -->
+                <g class="svg-tooltip opacity-0 group-hover:opacity-100 group-focus:opacity-100 pointer-events-none transition-opacity duration-150">
+                    <rect x="${ttX.toFixed(1)}" y="${ttY.toFixed(1)}" width="${ttW}" height="${ttH}" rx="6" fill="#0f172a" fill-opacity="0.94" />
+                    <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 14).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff" font-family="sans-serif">${p.label}: ${valFormateado}${unidad}</text>
+                    <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 26).toFixed(1)}" text-anchor="middle" font-size="7.5" fill="#94a3b8" font-family="sans-serif">${tipoDato}</text>
+                </g>
+            </g>
+        `;
+    });
+
+    return `
+        <svg viewBox="0 0 ${W} ${H}" class="w-full h-full overflow-visible select-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="diagonal-stripe" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="#cbd5e1" stroke-width="1.5"/>
+                </pattern>
+                <style>
+                    @media (prefers-reduced-motion: no-preference) {
+                        .svg-anim-line {
+                            stroke-dasharray: 600;
+                            stroke-dashoffset: 600;
+                            animation: animarTrazoLinea 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                        }
+                    }
+                    @keyframes animarTrazoLinea {
+                        to {
+                            stroke-dashoffset: 0;
+                        }
+                    }
+                    .svg-punto-grupo:focus {
+                        outline: none;
+                    }
+                </style>
+            </defs>
+
+            <!-- Título del Eje Y -->
+            <text x="${padL}" y="16" font-size="10" font-weight="bold" fill="#64748b" font-family="sans-serif">${tituloY}</text>
+
+            <!-- Líneas Guía Horizontales -->
+            ${lineasGuiaY}
+
+            <!-- Línea Divisoria de Corte: Observado vs Proyección -->
+            <line x1="${xMid.toFixed(1)}" y1="${padT}" x2="${xMid.toFixed(1)}" y2="${padT + plotH}" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3" />
+            <text x="${(xMid - 5).toFixed(1)}" y="${padT - 6}" text-anchor="end" font-size="8" font-weight="600" fill="#64748b" font-family="sans-serif">${esIngles ? "Observed" : "Observado"}</text>
+            <text x="${(xMid + 5).toFixed(1)}" y="${padT - 6}" text-anchor="left" font-size="8" font-weight="600" fill="#64748b" font-family="sans-serif">${esIngles ? "Projection" : "Proyección"}</text>
+
+            <!-- Línea Histórica (Continua, stroke-width="2.5") -->
+            <path d="${dHist}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="svg-anim-line" />
+
+            <!-- Línea de Proyección (Punteada, stroke-width="2.5", opacidad reducida 0.7) -->
+            <path d="${dProj}" fill="none" stroke="${color}" stroke-width="2.5" stroke-dasharray="4,4" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Puntos, Valores y Tooltips Interactivos -->
+            ${elementosPuntos}
+
+            <!-- Eje X: Años -->
+            ${etiquetasX}
+        </svg>
+    `;
+}
+
+function renderizarGraficosObservatorio() {
+    const contenedorTurbales = document.getElementById("svg-container-turbales");
+    const contenedorGlaciar = document.getElementById("svg-container-glaciar");
+    if (!contenedorTurbales || !contenedorGlaciar) return;
+
+    const esIngles = typeof idiomaActual !== "undefined" && idiomaActual === "en";
     const dataReal = obtenerDatosObservatorioActivos();
     const anios = (dataReal.labels || []).map(lbl => {
         if (!esIngles) return lbl.replace("(Futuro)", "(est.)");
@@ -2854,203 +2992,30 @@ function renderizarGraficosObservatorio() {
     const diasEstres = dataReal.turbales.dias_estres;
     const masaGlaciar = dataReal.glaciar.masa_remanente_pct;
 
-    if (chartEstresTurbales) {
-        chartEstresTurbales.destroy();
-        chartEstresTurbales = null;
-    }
-    if (chartRetrocesoGlaciar) {
-        chartRetrocesoGlaciar.destroy();
-        chartRetrocesoGlaciar = null;
-    }
-
-    // Plugin Custom de Línea Divisoria entre Datos Observados (hasta 2024) y Proyección (desde 2027)
-    const pluginLineaDivisoria = {
-        id: "lineaDivisoriaObservadoProyeccion",
-        afterDraw(chart) {
-            const { ctx, chartArea, scales } = chart;
-            if (!chartArea || !scales || !scales.x) return;
-            const x3 = scales.x.getPixelForTick(3); // 2024
-            const x4 = scales.x.getPixelForTick(4); // 2027
-            if (typeof x3 !== "number" || typeof x4 !== "number") return;
-            const xMid = (x3 + x4) / 2;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.setLineDash([4, 4]);
-            ctx.strokeStyle = esOscuro ? "rgba(148, 163, 184, 0.65)" : "rgba(100, 116, 139, 0.55)";
-            ctx.lineWidth = 1.5;
-            ctx.moveTo(xMid, chartArea.top);
-            ctx.lineTo(xMid, chartArea.bottom);
-            ctx.stroke();
-
-            // Rótulos superiores "Observado" y "Proyección"
-            ctx.setLineDash([]);
-            ctx.font = "bold 9px sans-serif";
-            ctx.fillStyle = esOscuro ? "#94a3b8" : "#475569";
-            ctx.textAlign = "right";
-            ctx.fillText(esIngles ? "Observed" : "Observado", xMid - 6, chartArea.top + 10);
-            ctx.textAlign = "left";
-            ctx.fillText(esIngles ? "Projection" : "Proyección", xMid + 6, chartArea.top + 10);
-            ctx.restore();
-        }
-    };
-
-    // Gráfico 1: Barras de días secos por año en los turbales
-    chartEstresTurbales = new window.Chart(canvasTurbales.getContext("2d"), {
-        type: "bar",
-        data: {
-            labels: anios,
-            datasets: [{
-                label: esIngles ? "Dry days per year" : "Días secos al año",
-                data: diasEstres,
-                backgroundColor: [
-                    "rgba(251, 191, 36, 0.72)",
-                    "rgba(251, 191, 36, 0.80)",
-                    "rgba(245, 158, 11, 0.85)",
-                    "rgba(245, 158, 11, 0.92)",
-                    "rgba(234, 88, 12, 0.30)",
-                    "rgba(220, 38, 38, 0.30)"
-                ],
-                borderColor: [
-                    "#d97706",
-                    "#d97706",
-                    "#d97706",
-                    "#d97706",
-                    "#ea580c",
-                    "#dc2626"
-                ],
-                borderWidth: 1.5,
-                borderDash: [4, 4],
-                borderRadius: 6,
-                maxBarThickness: 32
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: duracionAnimacion
-            },
-            layout: {
-                padding: { top: 16 }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: (ctx) => esIngles
-                            ? ` ${ctx.parsed.y} dry days without water`
-                            : ` ${ctx.parsed.y} días sin agua al año`
-                    }
-                },
-                datalabels: {
-                    display: true,
-                    anchor: "end",
-                    align: "end",
-                    offset: 2,
-                    color: colorTexto,
-                    font: { weight: "bold", size: 10 },
-                    formatter: (val) => val
-                }
-            },
-            scales: {
-                x: {
-                    ticks: { color: colorTexto, font: { size: 10, weight: "600" } },
-                    grid: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    max: 12,
-                    ticks: {
-                        color: colorTexto,
-                        font: { size: 10 },
-                        stepSize: 2,
-                        callback: (v) => esIngles ? `${v} d` : `${v} días`
-                    },
-                    grid: { color: colorGrilla }
-                }
-            }
-        },
-        plugins: [pluginLineaDivisoria]
+    // 1. Gráfico SVG para Turbales (Días Secos, escala Y: 0 a 12, color #d97706)
+    contenedorTurbales.innerHTML = crearGraficoLineasSVG({
+        labels: anios,
+        data: diasEstres,
+        yMin: 0,
+        yMax: 12,
+        color: "#d97706",
+        unidad: esIngles ? " d" : " d",
+        tituloY: esIngles ? "Dry days / year" : "Días secos / año",
+        indiceCorteHistorico: 3,
+        esIngles
     });
 
-    // Gráfico 2: Tanque de agua natural (Glaciar Vinciguerra)
-    chartRetrocesoGlaciar = new window.Chart(canvasGlaciar.getContext("2d"), {
-        type: "bar",
-        data: {
-            labels: anios,
-            datasets: [{
-                label: esIngles ? "Ice left (%)" : "Hielo que nos queda (%)",
-                data: masaGlaciar,
-                backgroundColor: [
-                    "rgba(6, 182, 212, 0.90)",
-                    "rgba(6, 182, 212, 0.84)",
-                    "rgba(14, 165, 233, 0.78)",
-                    "rgba(14, 165, 233, 0.72)",
-                    "rgba(37, 99, 235, 0.40)",
-                    "rgba(37, 99, 235, 0.40)"
-                ],
-                borderColor: [
-                    "#0284c7",
-                    "#0284c7",
-                    "#0284c7",
-                    "#0284c7",
-                    "#1d4ed8",
-                    "#1d4ed8"
-                ],
-                borderWidth: 1.5,
-                borderDash: [4, 4],
-                borderRadius: 6,
-                maxBarThickness: 32
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: duracionAnimacion
-            },
-            layout: {
-                padding: { top: 16 }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: (ctx) => esIngles
-                            ? ` ${ctx.parsed.y}% of 2015 glacier tank left`
-                            : ` Queda ${ctx.parsed.y}% del hielo de 2015`
-                    }
-                },
-                datalabels: {
-                    display: true,
-                    anchor: "end",
-                    align: "end",
-                    offset: 2,
-                    color: colorTexto,
-                    font: { weight: "bold", size: 10 },
-                    formatter: (val) => `${val}%`
-                }
-            },
-            scales: {
-                x: {
-                    ticks: { color: colorTexto, font: { size: 10, weight: "600" } },
-                    grid: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        color: colorTexto,
-                        font: { size: 10 },
-                        stepSize: 20,
-                        callback: (v) => `${v}%`
-                    },
-                    grid: { color: colorGrilla }
-                }
-            }
-        },
-        plugins: [pluginLineaDivisoria]
+    // 2. Gráfico SVG para Glaciar (Masa remanente %, escala Y: 80 a 100, color #0e7490)
+    contenedorGlaciar.innerHTML = crearGraficoLineasSVG({
+        labels: anios,
+        data: masaGlaciar,
+        yMin: 80,
+        yMax: 100,
+        color: "#0e7490",
+        unidad: "%",
+        tituloY: esIngles ? "% Remaining ice mass" : "% Masa remanente",
+        indiceCorteHistorico: 3,
+        esIngles
     });
 }
 

@@ -4370,38 +4370,21 @@ function capitalizarNombre(str) {
 
 let timerSaludoPinguino = null;
 
-// Alterna entre la pose en reposo y el saludo dinámico de la mascota
+// Impulso reactivo de saludo y avivada de antorcha de la mascota animada
 function activarSaludoPinguino(duracionMs = 1600) {
-    const imgReposo = document.getElementById("img-pinguino-reposo");
-    const imgSaludo = document.getElementById("img-pinguino-saludo");
     const contenedorPinguino = document.getElementById("svg-pinguino-bienvenida");
     const inputNombre = document.getElementById("input-nombre-explorador");
-
-    if (!imgReposo || !imgSaludo) return;
 
     if (timerSaludoPinguino) {
         clearTimeout(timerSaludoPinguino);
         timerSaludoPinguino = null;
     }
 
-    // Ocultar reposo y mostrar saludo
-    imgReposo.classList.remove("opacity-100");
-    imgReposo.classList.add("opacity-0");
-
-    imgSaludo.classList.remove("opacity-0", "pointer-events-none");
-    imgSaludo.classList.add("opacity-100");
-
     if (contenedorPinguino) {
         contenedorPinguino.classList.add("pinguino-saludando-activo", "antorcha-avivada");
     }
 
     timerSaludoPinguino = setTimeout(() => {
-        imgSaludo.classList.remove("opacity-100");
-        imgSaludo.classList.add("opacity-0", "pointer-events-none");
-
-        imgReposo.classList.remove("opacity-0");
-        imgReposo.classList.add("opacity-100");
-
         if (contenedorPinguino) {
             contenedorPinguino.classList.remove("pinguino-saludando-activo");
             const tieneTexto = inputNombre && inputNombre.value.trim().length > 0;
@@ -4537,7 +4520,12 @@ function configurarPantallaBienvenida() {
     });
 
     // Saludo al hacer clic / toque directamente sobre la mascota
-    if (svgPinguinoBienvenida) {
+    const wrapperPinguino3d = document.getElementById("wrapper-pinguino-3d");
+    if (wrapperPinguino3d) {
+        wrapperPinguino3d.addEventListener("click", () => {
+            activarSaludoPinguino(1800);
+        });
+    } else if (svgPinguinoBienvenida) {
         svgPinguinoBienvenida.addEventListener("click", () => {
             activarSaludoPinguino(1800);
         });

@@ -515,6 +515,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarConmutadorIdioma();
     configurarBotonExportar();
     configurarModoOffline();
+    inicializarEstadoLeyendaMapa();
     actualizarTextosUI();
 });
 
@@ -3416,8 +3417,20 @@ window.toggleLeyendaMapa = function() {
     const flecha = document.getElementById("icono-flecha-leyenda");
     if (!cuerpo) return;
 
-    const estaOculto = cuerpo.classList.contains("hidden");
-    if (estaOculto) {
+    cuerpo.classList.toggle("hidden");
+    const visible = !cuerpo.classList.contains("hidden");
+    if (btn) btn.setAttribute("aria-expanded", String(visible));
+    if (flecha) flecha.classList.toggle("rotate-180", visible);
+};
+
+// Inicializar estado responsivo de la leyenda del mapa
+function inicializarEstadoLeyendaMapa() {
+    const cuerpo = document.getElementById("cuerpo-leyenda-mapa");
+    const btn = document.getElementById("btn-toggle-leyenda");
+    const flecha = document.getElementById("icono-flecha-leyenda");
+    if (!cuerpo) return;
+
+    if (window.innerWidth >= 768) {
         cuerpo.classList.remove("hidden");
         if (btn) btn.setAttribute("aria-expanded", "true");
         if (flecha) flecha.classList.add("rotate-180");
@@ -3426,7 +3439,7 @@ window.toggleLeyendaMapa = function() {
         if (btn) btn.setAttribute("aria-expanded", "false");
         if (flecha) flecha.classList.remove("rotate-180");
     }
-};
+}
 
 // Listener global para cerrar tooltips en celulares al tocar afuera
 document.addEventListener("touchstart", (e) => {
@@ -3485,11 +3498,9 @@ document.addEventListener("click", (e) => {
     // 4. Delegación para botón de alternar leyenda del mapa
     const btnLeyenda = e.target.closest("#btn-toggle-leyenda");
     if (btnLeyenda) {
-        if (!btnLeyenda.getAttribute("onclick")) {
-            e.preventDefault();
-            e.stopPropagation();
-            window.toggleLeyendaMapa();
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleLeyendaMapa();
         return;
     }
 });

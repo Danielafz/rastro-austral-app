@@ -685,6 +685,10 @@ function inicializarMapa() {
         zoomControl: false
     }).setView([-54.35, -67.75], 8);
 
+    if (mapa.attributionControl) {
+        mapa.attributionControl.setPrefix(false);
+    }
+
     // Control de zoom
     L.control.zoom({ position: "bottomleft" }).addTo(mapa);
     window.map = mapa;

@@ -16,6 +16,7 @@ let filtroActivo = "todos";
 let filtroFragilidad = "todas";
 let filtroEstadoVisita = "todos";
 let busquedaActiva = "";
+let territorioActivo = "todos";
 let hitoSeleccionadoId = null;
 let marcadoresPorId = {};
 let marcadorUsuario = null;
@@ -749,8 +750,7 @@ function renderizarMarcadores(anunciarResultados = false) {
     const visitas = obtenerVisitas();
     const t = DICCIONARIO[idiomaActual];
 
-    const selTerritorio = document.getElementById("filtro-territorio");
-    const valorTerritorio = selTerritorio ? selTerritorio.value : "todos";
+    const valorTerritorio = territorioActivo || "todos";
     const q = busquedaActiva.toLowerCase().trim();
     const esModoProvincia = (valorTerritorio === "todos" || valorTerritorio === "provincia");
     const modoProvinciaSoloVisitados = esModoProvincia && !q && !hitoSeleccionadoId;
@@ -959,8 +959,7 @@ function actualizarContadorFiltros(totalFiltrados, totalTotal) {
             : `Mostrando ${totalFiltrados} de ${totalSeguro} hitos`;
     }
     if (btnLimpiar) {
-        const selTerritorio = document.getElementById("filtro-territorio");
-        const hayFiltroTerritorio = Boolean(selTerritorio && selTerritorio.value !== "todos" && selTerritorio.value !== "provincia");
+        const hayFiltroTerritorio = Boolean(territorioActivo && territorioActivo !== "todos" && territorioActivo !== "provincia");
         const hayFiltroBusqueda = Boolean(busquedaActiva && busquedaActiva.trim().length > 0);
         const hayFiltroCat = filtroActivo !== "todos" && filtroActivo !== "todas";
         const hayFiltroFrag = filtroFragilidad !== "todas" && filtroFragilidad !== "todos";
@@ -1018,8 +1017,8 @@ function limpiarTodosLosFiltros() {
         }
     }
 
-    const selTerritorio = document.getElementById("filtro-territorio");
-    if (selTerritorio) selTerritorio.value = "todos";
+    territorioActivo = "todos";
+    actualizarBotonesPildorasTerritorio();
     hitoSeleccionadoId = null;
 
     // Recentrar mapa en toda la provincia
@@ -2030,15 +2029,32 @@ function cerrarPanelMobile() {
     panel.classList.remove("expandido");
 }
 
-// 12. Selector rápido de localidades y visión provincial
-function configurarSelectorLocalidades() {
-    // Selector dropdown nativo de territorios
-    const selectorTerritorio = document.getElementById("filtro-territorio");
-    if (selectorTerritorio) {
-        selectorTerritorio.addEventListener("change", (e) => {
-            const vista = e.target.value;
-            const configVista = VISTAS_TERRITORIO[vista];
+// 12. Actualizar estilos visuales de las píldoras de territorio
+function actualizarBotonesPildorasTerritorio() {
+    const botones = document.querySelectorAll(".btn-territorio");
+    botones.forEach(btn => {
+        const t = btn.getAttribute("data-territorio");
+        const activo = (t === territorioActivo) || (t === "todos" && territorioActivo === "provincia");
+        if (activo) {
+            btn.className = "btn-territorio active bg-orange-600 text-white font-bold shadow-sm px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer";
+            btn.setAttribute("aria-pressed", "true");
+        } else {
+            btn.className = "btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer";
+            btn.setAttribute("aria-pressed", "false");
+        }
+    });
+}
 
+// 12. Selector rápido de localidades y visión provincial (Barra de Píldoras 100% táctiles)
+function configurarSelectorLocalidades() {
+    const botonesTerritorio = document.querySelectorAll(".btn-territorio");
+    botonesTerritorio.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const vista = btn.getAttribute("data-territorio") || "todos";
+            territorioActivo = vista;
+            actualizarBotonesPildorasTerritorio();
+
+            const configVista = VISTAS_TERRITORIO[vista] || VISTAS_TERRITORIO["todos"];
             if (configVista && mapa) {
                 mapa.flyTo(configVista.centro, configVista.zoom, {
                     animate: true,
@@ -2049,31 +2065,29 @@ function configurarSelectorLocalidades() {
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
 
-            const nombreTerritorio = selectorTerritorio.options[selectorTerritorio.selectedIndex]?.text || vista;
+            const nombreTerritorio = btn.textContent.trim();
             anunciarAccesibilidad(
                 idiomaActual === "en"
                     ? `Map view updated: ${nombreTerritorio}`
                     : `Vista de mapa actualizada: ${nombreTerritorio}`
             );
         });
-    }
+    });
 
-    // Compatibilidad con botones de vista (si existen)
+    // Compatibilidad adicional con botones .btn-vista (si existen)
     const botones = document.querySelectorAll(".btn-vista");
     botones.forEach(btn => {
         btn.addEventListener("click", () => {
             const vista = btn.getAttribute("data-vista");
-            const configVista = VISTAS_TERRITORIO[vista];
+            territorioActivo = vista === "rio_grande" ? "rio-grande" : (vista || "todos");
+            actualizarBotonesPildorasTerritorio();
 
+            const configVista = VISTAS_TERRITORIO[vista] || VISTAS_TERRITORIO["todos"];
             if (configVista && mapa) {
                 mapa.flyTo(configVista.centro, configVista.zoom, {
                     animate: true,
                     duration: 1.2
                 });
-            }
-
-            if (selectorTerritorio) {
-                selectorTerritorio.value = vista === "rio_grande" ? "rio-grande" : vista;
             }
 
             renderizarMarcadores(true);

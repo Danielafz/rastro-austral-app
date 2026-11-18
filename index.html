@@ -740,33 +740,44 @@
       <!-- CONTENEDOR GENERAL DE BARRAS SUPERIORES -->
       <div class="absolute top-2 left-0 right-0 px-2 sm:px-3 md:px-4 z-[800] flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-3 w-full pointer-events-none">
 
-        <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Nativo) -->
-        <div class="w-full md:w-72 lg:w-80 pointer-events-auto relative shrink-0">
-          <!-- El select ocupa el 100%, es fácil de tocar y despliega el menú nativo del celular -->
-          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad"
-            class="pointer-events-auto relative z-10 appearance-none w-full bg-white/95 backdrop-blur-md rounded-xl shadow-md border border-slate-200/80 text-xs sm:text-sm font-bold text-slate-800 py-2.5 pl-3.5 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer transition-all">
-            <option value="todos">📍 Toda la Provincia</option>
-
-            <optgroup label="Ciudades Principales">
-              <option value="ushuaia">Ushuaia</option>
-              <option value="tolhuin">Tolhuin</option>
-              <option value="rio-grande">Río Grande</option>
-            </optgroup>
-
-            <optgroup label="Parajes y Bases">
-              <option value="almanza">Puerto Almanza</option>
-              <option value="san-sebastian">San Sebastián</option>
-              <option value="esperanza">Base Esperanza (Antártida)</option>
-            </optgroup>
-          </select>
-
-          <!-- Flecha personalizada para ocultar la por defecto de los navegadores -->
-          <div
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 border-l border-slate-200/60">
-            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </div>
+        <!-- BARRA 1: PÍLDORAS DE CIUDADES Y TERRITORIO -->
+        <div id="contenedor-pildoras-territorio" role="toolbar" aria-label="Seleccionar ciudad o territorio"
+          class="flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-md border border-slate-200/80 pointer-events-auto relative z-[900]">
+          <button type="button" data-territorio="todos"
+            class="btn-territorio active bg-orange-600 text-white font-bold shadow-sm px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="true">
+            <span data-i18n="vista_provincia">📍 Toda la Provincia</span>
+          </button>
+          <button type="button" data-territorio="ushuaia"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            Ushuaia
+          </button>
+          <button type="button" data-territorio="tolhuin"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            Tolhuin
+          </button>
+          <button type="button" data-territorio="rio-grande"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            Río Grande
+          </button>
+          <button type="button" data-territorio="almanza"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            Puerto Almanza
+          </button>
+          <button type="button" data-territorio="san-sebastian"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            San Sebastián
+          </button>
+          <button type="button" data-territorio="esperanza"
+            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            aria-pressed="false">
+            Base Esperanza
+          </button>
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->

@@ -2290,3 +2290,12 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   width: 34px !important;
   height: 34px !important;
 }
+
+/* Ocultar barra de scroll en contenedores horizontales scrolleables manteniendo el desplazamiento táctil */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}

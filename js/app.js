@@ -3092,7 +3092,10 @@ window.toggleMetodoObservatorio = function(btn) {
     }
     if (!btnEl) return;
 
-    const tarjeta = btnEl.closest("article, .tarjeta-observatorio, .bg-white, .rounded-2xl, .rounded-3xl") || btnEl.parentElement?.parentElement;
+    // Buscar tarjeta contenedora (evitar que coincida con el contenedor del pie si tiene .bg-white)
+    const tarjeta = btnEl.closest("[data-metrica], .tarjeta-observatorio") 
+        || btnEl.closest("#vista-tab-observatorio > div")
+        || btnEl.closest("article");
     if (!tarjeta) return;
 
     const panel = tarjeta.querySelector(".panel-metodo");
@@ -3110,30 +3113,36 @@ window.togglePanelMetodo = window.toggleMetodoObservatorio;
 
 // Delegación de eventos global para el Observatorio y controles territoriales
 document.addEventListener("click", (e) => {
-    // 1. Delegación para botón "ℹ️ Ver fuente y método"
+    // 1. Delegación para botón "ℹ️ Ver fuente y método" (solo si no tiene onclick propio)
     const btnToggle = e.target.closest(".btn-toggle-metodo");
-    if (btnToggle && (!btnToggle.getAttribute("onclick") || !btnToggle.onclick)) {
-        e.preventDefault();
-        e.stopPropagation();
-        window.toggleMetodoObservatorio(btnToggle);
+    if (btnToggle) {
+        if (!btnToggle.getAttribute("onclick")) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.toggleMetodoObservatorio(btnToggle);
+        }
         return;
     }
 
-    // 2. Delegación para botón "Ver turbal en mapa →"
+    // 2. Delegación para botón "Ver turbal en mapa →" (solo si no tiene onclick propio)
     const btnTurbal = e.target.closest("#btn-obs-ir-turbal, .btn-ir-turbal");
     if (btnTurbal) {
-        e.preventDefault();
-        e.stopPropagation();
-        navegarATurbalObservatorio();
+        if (!btnTurbal.getAttribute("onclick")) {
+            e.preventDefault();
+            e.stopPropagation();
+            navegarATurbalObservatorio();
+        }
         return;
     }
 
-    // 3. Delegación para botón "Ver glaciar en mapa →"
+    // 3. Delegación para botón "Ver glaciar en mapa →" (solo si no tiene onclick propio)
     const btnGlaciar = e.target.closest("#btn-obs-ir-vinciguerra, .btn-ir-glaciar");
     if (btnGlaciar) {
-        e.preventDefault();
-        e.stopPropagation();
-        navegarAGlaciarObservatorio();
+        if (!btnGlaciar.getAttribute("onclick")) {
+            e.preventDefault();
+            e.stopPropagation();
+            navegarAGlaciarObservatorio();
+        }
         return;
     }
 });
@@ -3172,12 +3181,7 @@ function configurarObservatorio() {
         });
     }
 
-    // Configuración de botones "Ver fuente y método"
-    document.querySelectorAll(".btn-toggle-metodo").forEach(btn => {
-        btn.addEventListener("click", () => {
-            window.toggleMetodoObservatorio(btn);
-        });
-    });
+    // Los botones "Ver fuente y método" ya tienen onclick="window.toggleMetodoObservatorio(this)" y delegación global.
 }
 
 function actualizarBadgeSellos() {

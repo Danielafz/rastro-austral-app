@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="bg-slate-50 text-slate-800 flex flex-col h-screen overflow-hidden font-sans">
+<body class="bg-slate-50 text-slate-800 flex flex-col h-[100dvh] overflow-hidden font-sans">
 
   <!-- Enlace de salto directo accesible (Skip Link) -->
   <a href="#panel-lateral"
@@ -46,7 +46,7 @@
 
   <!-- Pantalla de Bienvenida / Ingreso -->
   <div id="pantalla-bienvenida"
-    class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-black backdrop-blur-md transition-opacity duration-700 text-white"
+    class="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-y-auto p-3 sm:p-6 bg-black backdrop-blur-md transition-opacity duration-700 text-white"
     style="background-color: #000000 !important; color: #ffffff !important;">
     <div
       class="relative w-full max-w-sm md:max-w-md p-6 md:p-8 rounded-2xl md:rounded-3xl bg-neutral-950/90 border border-orange-500/20 shadow-[0_0_50px_rgba(249,115,22,0.12)] my-auto text-center flex flex-col items-center text-white">
@@ -504,7 +504,7 @@
 
   <!-- Contenedor Principal (Dashboard Layout) -->
   <div id="app-container"
-    class="flex flex-col md:flex-row flex-1 h-[calc(100dvh-146px)] md:h-full w-full overflow-hidden bg-slate-50 relative">
+    class="flex flex-col md:flex-row flex-1 min-h-0 w-full overflow-hidden bg-slate-50 pb-[60px] md:pb-0 relative">
 
     <!-- Panel Lateral (Filtros, Bitácora, Observatorio) -->
     <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
@@ -759,7 +759,7 @@
     </aside>
 
     <!-- Contenedor del Mapa Cartográfico (100% de la pantalla) -->
-    <main class="w-full md:w-2/3 lg:w-3/4 flex-1 h-[calc(100dvh-146px)] md:h-full relative order-1 md:order-2 z-[10]">
+    <main class="w-full md:w-2/3 lg:w-3/4 flex-1 h-full relative order-1 md:order-2 z-[10]">
       <!-- Contenedor del Mapa Cartográfico -->
       <div id="map" role="region" aria-label="Mapa interactivo de Tierra del Fuego" class="w-full h-full"></div>
 

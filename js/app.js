@@ -2210,6 +2210,7 @@ function cerrarPanelMobile() {
     panel.classList.remove("translate-y-0");
     actualizarEstadoMobileNav("mapa");
     if (mapa) {
+        mapa.invalidateSize();
         setTimeout(() => mapa.invalidateSize(), 300);
     }
 }
@@ -2259,6 +2260,7 @@ function configurarMobileBottomNav() {
             }
             actualizarEstadoMobileNav("mapa");
             if (mapa) {
+                mapa.invalidateSize();
                 setTimeout(() => mapa.invalidateSize(), 150);
             }
         });

@@ -27,13 +27,9 @@ main {
   width: 100%;
 }
 
-/* El panel lateral debe ser más alto en móviles y usar Flexbox estricto */
+/* El panel lateral usa Flexbox estricto */
 #panel-lateral {
-  height: 55vh; /* Aumentamos de 40vh a 55vh para dar espacio a la lista */
-  width: 100%;
-  z-index: 40;
   background-color: white;
-  border-top: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
 }
@@ -1622,19 +1618,7 @@ html.dark .sensibilidad-minimal {
     white-space: nowrap;
   }
 
-  #panel-lateral {
-    position: relative;
-    width: 100%;
-    height: 55vh;
-    border-top: 1px solid #e2e8f0;
-    border-left: none !important;
-    border-right: none !important;
-    box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.12);
-    z-index: 40;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+
 
   html.dark #panel-lateral {
     background-color: #0f172a;

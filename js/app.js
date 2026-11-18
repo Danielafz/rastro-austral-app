@@ -2212,8 +2212,8 @@ function cerrarPanelMobile() {
     actualizarEstadoMobileNav("mapa");
     if (mapa) {
         mapa.invalidateSize();
+        setTimeout(() => mapa.invalidateSize(), 150);
     }
-    setTimeout(() => mapa && mapa.invalidateSize(), 250);
 }
 
 function actualizarEstadoMobileNav(activa) {

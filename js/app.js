@@ -213,16 +213,16 @@ const DICCIONARIO = {
         obs_escuchar: "Escuchar síntesis",
         obs_intro: "Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal 2015–2030).",
         obs_en_simple: "¿Qué significa?",
-        obs_m1_titulo: "Los días secos podrían casi duplicarse hacia 2030",
+        obs_m1_titulo: "Los días secos podrían duplicarse hacia 2030",
         obs_m1_sub: "¿Cuántos días al año se queda sin agua el suelo?",
-        obs_m1_badge: "+80% días secos",
+        obs_m1_badge: "+100% días secos",
         obs_m1_simple: "La turba es como una esponja gigante que guarda agua y atrapa carbono. Al secarse por el calor, se agrieta y deja de protegernos.",
         obs_m1_alerta_lbl: "Nivel de alerta:",
         obs_m1_alerta_val: "Moderado a Crítico",
         obs_m1_ver: "Ver turbal en mapa →",
-        obs_m2_titulo: "El glaciar perderá un 16% de su masa histórica para 2030",
+        obs_m2_titulo: "El glaciar podría perder un 16% de su masa histórica para 2030",
         obs_m2_sub: "Hielo que nos queda para beber y abastecer a la ciudad",
-        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.",
+        obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa estimada.",
         obs_m2_alerta_lbl: "Contexto:",
         obs_m2_alerta_val: "Abastecimiento de agua de Ushuaia",
         obs_m2_ver: "Ver glaciar en mapa →"
@@ -349,16 +349,16 @@ const DICCIONARIO = {
         obs_escuchar: "Listen summary",
         obs_intro: "Illustrative prototype scenarios based on regional environmental trends (simple linear extrapolation 2015–2030).",
         obs_en_simple: "What does it mean?",
-        obs_m1_titulo: "Dry days could almost double by 2030",
+        obs_m1_titulo: "Dry days could double by 2030",
         obs_m1_sub: "How many days a year does the soil run dry?",
-        obs_m1_badge: "+80% dry days",
+        obs_m1_badge: "+100% dry days",
         obs_m1_simple: "Peat acts like a giant sponge that stores freshwater and traps carbon. As heat dries it out, it cracks and stops protecting us.",
         obs_m1_alerta_lbl: "Alert level:",
         obs_m1_alerta_val: "Moderate to Critical",
         obs_m1_ver: "View peatland on map →",
-        obs_m2_titulo: "The glacier will lose 16% of its historical mass by 2030",
+        obs_m2_titulo: "The glacier could lose 16% of its historical mass by 2030",
         obs_m2_sub: "Ice left to supply clean drinking water to the city",
-        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated volume.",
+        obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated mass.",
         obs_m2_alerta_lbl: "Context:",
         obs_m2_alerta_val: "Ushuaia water supply",
         obs_m2_ver: "View glacier on map →"
@@ -2787,9 +2787,9 @@ function obtenerDatosObservatorioActivos() {
         },
         labels: ["2015", "2018", "2021", "2024", "2027 (Futuro)", "2030 (Futuro)"],
         turbales: {
-            dias_estres: [5, 6, 7, 8, 8.5, 9],
+            dias_estres: [5, 6, 7, 8, 9, 10],
             descripcion: "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
-            variacion_pct: "+80%",
+            variacion_pct: "+100%",
             tipo_dato: "Datos ilustrativos · prototipo",
             fuente_referencia: "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
             metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
@@ -2831,6 +2831,7 @@ function crearGraficoLineasSVG(config) {
         yMax,
         color,
         unidad = "",
+        unidadEjeY = "",
         tituloY = "",
         indiceCorteHistorico = 3, // índice 3 = año 2024
         esIngles = false
@@ -2838,7 +2839,7 @@ function crearGraficoLineasSVG(config) {
 
     const W = 400;
     const H = 200;
-    const padL = 36;
+    const padL = 56; // Desplazado ~20-30px a la derecha para no solapar etiquetas del eje Y
     const padR = 24;
     const padT = 32;
     const padB = 30;
@@ -2859,16 +2860,18 @@ function crearGraficoLineasSVG(config) {
         };
     });
 
-    // Líneas guía horizontales del eje Y
+    // Líneas guía horizontales del eje Y (4 divisiones regulares)
     const pasosY = 4;
     let lineasGuiaY = "";
     for (let s = 0; s <= pasosY; s++) {
         const valTick = yMin + (s / pasosY) * (yMax - yMin);
         const yTick = padT + (1 - s / pasosY) * plotH;
-        const textoTick = Number.isInteger(valTick) ? valTick : valTick.toFixed(1);
+        const textoTick = Number.isInteger(valTick)
+            ? valTick.toLocaleString("es-AR")
+            : valTick.toLocaleString("es-AR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
         lineasGuiaY += `
             <line x1="${padL}" y1="${yTick.toFixed(1)}" x2="${W - padR}" y2="${yTick.toFixed(1)}" stroke="#e5e7eb" stroke-width="1" />
-            <text x="${padL - 6}" y="${(yTick + 3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="#94a3b8" font-family="sans-serif">${textoTick}${unidad}</text>
+            <text x="${padL - 8}" y="${(yTick + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="#4b5563" font-family="sans-serif" font-weight="500">${textoTick}${unidadEjeY}</text>
         `;
     }
 
@@ -2889,24 +2892,27 @@ function crearGraficoLineasSVG(config) {
     let etiquetasX = "";
     puntos.forEach((p) => {
         etiquetasX += `
-            <text x="${p.x}" y="${H - 10}" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="sans-serif" font-weight="${p.isProj ? 'normal' : 'bold'}">${p.label}</text>
+            <text x="${p.x}" y="${H - 10}" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif" font-weight="${p.isProj ? 'normal' : 'bold'}">${p.label}</text>
         `;
     });
 
     // Puntos, valores y tooltips interactivos
     let elementosPuntos = "";
     puntos.forEach((p) => {
-        const valFormateado = Number.isInteger(p.val) ? p.val : p.val.toFixed(1);
-        const tipoDato = p.isProj ? (esIngles ? "Projected · Illustrative data" : "Proyección · Dato ilustrativo") : (esIngles ? "Historical observed" : "Observado · Dato ilustrativo");
-        
-        // Coordenadas calculadas para tooltip sin salirse del área visible
-        const ttW = 124;
+        const valFormateado = Number.isInteger(p.val)
+            ? p.val.toLocaleString("es-AR")
+            : p.val.toLocaleString("es-AR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        const tipoDato = p.isProj
+            ? (esIngles ? "Projection · Illustrative data" : "Proyección · Dato ilustrativo")
+            : (esIngles ? "Baseline · Illustrative data" : "Serie base · Dato ilustrativo");
+
+        // Coordenadas calculadas para tooltip: por encima o por debajo sin tapar el punto
+        const ttW = 132;
         const ttH = 34;
         let ttX = p.x - ttW / 2;
         if (ttX < 6) ttX = 6;
         if (ttX + ttW > W - 6) ttX = W - ttW - 6;
-        let ttY = p.y - ttH - 10;
-        if (ttY < 4) ttY = p.y + 12;
+        const ttY = p.y < 46 ? (p.y + 14) : (p.y - ttH - 10);
 
         elementosPuntos += `
             <g class="svg-punto-grupo group cursor-pointer" tabindex="0" role="button" aria-label="${p.label}: ${valFormateado}${unidad} (${tipoDato})">
@@ -2914,10 +2920,10 @@ function crearGraficoLineasSVG(config) {
                 <circle cx="${p.x}" cy="${p.y}" r="14" fill="transparent" />
                 <!-- Círculo visual principal -->
                 <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${color}" stroke="#ffffff" stroke-width="2" class="transition-transform group-hover:scale-125 duration-150" />
-                <!-- Valor numérico visible sobre el punto -->
+                <!-- Valor numérico visible sobre el punto con coma decimal -->
                 <text x="${p.x}" y="${p.y - 8}" text-anchor="middle" font-size="9" font-weight="bold" fill="#334155" font-family="sans-serif">${valFormateado}${unidad}</text>
                 
-                <!-- Tooltip accesible nativo en SVG -->
+                <!-- Tooltip accesible nativo en SVG con posicionamiento seguro -->
                 <g class="svg-tooltip opacity-0 group-hover:opacity-100 group-focus:opacity-100 pointer-events-none transition-opacity duration-150">
                     <rect x="${ttX.toFixed(1)}" y="${ttY.toFixed(1)}" width="${ttW}" height="${ttH}" rx="6" fill="#0f172a" fill-opacity="0.94" />
                     <text x="${(ttX + ttW / 2).toFixed(1)}" y="${(ttY + 14).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff" font-family="sans-serif">${p.label}: ${valFormateado}${unidad}</text>
@@ -2958,10 +2964,10 @@ function crearGraficoLineasSVG(config) {
             <!-- Líneas Guía Horizontales -->
             ${lineasGuiaY}
 
-            <!-- Línea Divisoria de Corte: Observado vs Proyección -->
+            <!-- Línea Divisoria de Corte: Serie base vs Proyección -->
             <line x1="${xMid.toFixed(1)}" y1="${padT}" x2="${xMid.toFixed(1)}" y2="${padT + plotH}" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3" />
-            <text x="${(xMid - 5).toFixed(1)}" y="${padT - 6}" text-anchor="end" font-size="8" font-weight="600" fill="#64748b" font-family="sans-serif">${esIngles ? "Observed" : "Observado"}</text>
-            <text x="${(xMid + 5).toFixed(1)}" y="${padT - 6}" text-anchor="left" font-size="8" font-weight="600" fill="#64748b" font-family="sans-serif">${esIngles ? "Projection" : "Proyección"}</text>
+            <text x="${(xMid - 6).toFixed(1)}" y="${padT - 6}" text-anchor="end" font-size="8" font-weight="bold" fill="#64748b" font-family="sans-serif">${esIngles ? "Baseline" : "Serie base"}</text>
+            <text x="${(xMid + 6).toFixed(1)}" y="${padT - 6}" text-anchor="left" font-size="8" font-weight="bold" fill="#64748b" font-family="sans-serif">${esIngles ? "Projection" : "Proyección"}</text>
 
             <!-- Línea Histórica (Continua, stroke-width="2.5") -->
             <path d="${dHist}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="svg-anim-line" />
@@ -2992,27 +2998,43 @@ function renderizarGraficosObservatorio() {
     const diasEstres = dataReal.turbales.dias_estres;
     const masaGlaciar = dataReal.glaciar.masa_remanente_pct;
 
-    // 1. Gráfico SVG para Turbales (Días Secos, escala Y: 0 a 12, color #d97706)
+    // Construcción de aria-label accesible completo para Turbales
+    const partesAriaTurbales = anios.map((a, i) => `${a}: ${diasEstres[i].toLocaleString("es-AR")}`);
+    const ariaTurbales = esIngles
+        ? `Evolution of annual dry days: ${partesAriaTurbales.join(", ")}.`
+        : `Evolución de días secos anuales: ${partesAriaTurbales.join(", ")}.`;
+    contenedorTurbales.setAttribute("aria-label", ariaTurbales);
+
+    // 1. Gráfico SVG para Turbales (Días Secos, escala Y: 0 a 12, color #d97706, sin letra "d" en eje Y)
     contenedorTurbales.innerHTML = crearGraficoLineasSVG({
         labels: anios,
         data: diasEstres,
         yMin: 0,
         yMax: 12,
         color: "#d97706",
-        unidad: esIngles ? " d" : " d",
+        unidad: "",
+        unidadEjeY: "",
         tituloY: esIngles ? "Dry days / year" : "Días secos / año",
         indiceCorteHistorico: 3,
         esIngles
     });
 
-    // 2. Gráfico SVG para Glaciar (Masa remanente %, escala Y: 80 a 100, color #0e7490)
+    // Construcción de aria-label accesible completo para Glaciar
+    const partesAriaGlaciar = anios.map((a, i) => `${a}: ${masaGlaciar[i].toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`);
+    const ariaGlaciar = esIngles
+        ? `Evolution of glacier remaining ice mass: ${partesAriaGlaciar.join(", ")}.`
+        : `Evolución de masa remanente del glaciar: ${partesAriaGlaciar.join(", ")}.`;
+    contenedorGlaciar.setAttribute("aria-label", ariaGlaciar);
+
+    // 2. Gráfico SVG para Glaciar (Masa remanente %, escala Y: 80 a 105 para dar aire al 100%, color #0e7490)
     contenedorGlaciar.innerHTML = crearGraficoLineasSVG({
         labels: anios,
         data: masaGlaciar,
         yMin: 80,
-        yMax: 100,
+        yMax: 105,
         color: "#0e7490",
         unidad: "%",
+        unidadEjeY: "%",
         tituloY: esIngles ? "% Remaining ice mass" : "% Masa remanente",
         indiceCorteHistorico: 3,
         esIngles
@@ -3181,6 +3203,13 @@ window.togglePanelMetodo = window.toggleMetodoObservatorio;
 
 // Delegación de eventos global para el Observatorio y controles territoriales
 document.addEventListener("click", (e) => {
+    // 0. Ocultar tooltips de gráficos SVG al tocar fuera en celulares y computadoras
+    if (!e.target.closest(".svg-punto-grupo")) {
+        if (document.activeElement && typeof document.activeElement.blur === "function") {
+            document.activeElement.blur();
+        }
+    }
+
     // 1. Delegación para botón "ℹ️ Ver fuente y método" (solo si no tiene onclick propio)
     const btnToggle = e.target.closest(".btn-toggle-metodo");
     if (btnToggle) {
@@ -3228,8 +3257,8 @@ function configurarObservatorio() {
             const varGlaciar = dataReal.glaciar.variacion_pct;
 
             const sintesis = esIngles
-                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its estimated volume, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
-                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
+                ? `Austral Climate Observatory. First: Peatlands are Tierra del Fuego's giant sponge. Dry days rose from ${dIni} in 2015 to ${dFin} days per year projected by 2030 (${dataReal.turbales.variacion_pct}). Second: Vinciguerra Glacier is Ushuaia's natural freshwater tank; by 2030 it will have lost approximately 1 out of every 6 parts of its estimated mass, keeping ${mFin} percent of its 2015 ice mass (${varGlaciar}).`
+                : `Observatorio Climático Austral. Primero: Los turbales son la gran esponja fueguina; los días secos pasan de ${dIni} en 2015 a ${dFin} por año proyectados hacia 2030 (${dataReal.turbales.variacion_pct}). Segundo: El Glaciar Vinciguerra es el tanque de agua natural de Ushuaia y para el año 2030 habrá perdido aproximadamente 1 de cada 6 partes de su masa estimada, conservando el ${mFin} por ciento de su masa respecto a 2015 (${varGlaciar}).`;
 
             if (!("speechSynthesis" in window)) {
                 anunciarAccesibilidad(sintesis);

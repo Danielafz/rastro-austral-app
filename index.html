@@ -1392,18 +1392,17 @@
               <div class="flex items-center gap-2">
                 <svg class="w-5 h-5 text-amber-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                  <path d="M4 21h16"></path>
                 </svg>
                 <h4 data-i18n="obs_m1_titulo" class="text-sm md:text-base font-bold text-slate-900 leading-snug">
-                  Los días secos podrían casi duplicarse hacia 2030</h4>
+                  Los días secos podrían duplicarse hacia 2030</h4>
               </div>
               <p data-i18n="obs_m1_sub" class="text-xs md:text-sm text-slate-600 mt-0.5">
                 ¿Cuántos días al año se queda sin agua el suelo?
               </p>
               <!-- Dato Principal en Grande -->
               <div class="text-3xl font-black text-amber-700 my-2 flex items-baseline gap-2">
-                <span>5</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span> <span>9</span> <span class="text-sm font-bold text-slate-700">días secos</span>
-                <span id="badge-turbales-pct" class="sr-only">+80% días secos</span>
+                <span>5</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span> <span>10</span> <span class="text-sm font-bold text-slate-700">días secos</span>
+                <span id="badge-turbales-pct" class="sr-only">+100% días secos</span>
               </div>
             </div>
           </div>
@@ -1417,9 +1416,9 @@
           </div>
 
           <!-- Contenedor del Gráfico SVG Custom -->
-          <div id="svg-container-turbales" class="w-full h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución de días secos."></div>
+          <div id="svg-container-turbales" class="w-full max-w-[700px] mx-auto h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución de días secos."></div>
           <!-- Leyenda Unificada -->
-          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-slate-800 block"></span> Serie histórica</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-slate-500 block"></span> Proyección</span></div>
+          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#d97706] block"></span> Serie base</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-[#d97706] block"></span> Proyección</span></div>
 
           <!-- Tabla accesible para lectores de pantalla -->
           <table class="sr-only">
@@ -1432,8 +1431,8 @@
               <tr><td>2018</td><td>6</td><td>Observado</td></tr>
               <tr><td>2021</td><td>7</td><td>Observado</td></tr>
               <tr><td>2024</td><td>8</td><td>Observado</td></tr>
-              <tr><td>2027 (est.)</td><td>8.5</td><td>Proyección estimada</td></tr>
-              <tr><td>2030 (est.)</td><td>9</td><td>Proyección estimada</td></tr>
+              <tr><td>2027 (est.)</td><td>9</td><td>Proyección estimada</td></tr>
+              <tr><td>2030 (est.)</td><td>10</td><td>Proyección estimada</td></tr>
             </tbody>
           </table>
 
@@ -1482,7 +1481,7 @@
                   <path d="M4.14 15.08 8 13l4 3 4.5-2.5"></path>
                 </svg>
                 <h4 data-i18n="obs_m2_titulo" class="text-sm md:text-base font-bold text-slate-900 leading-snug">
-                  El glaciar perderá un 16% de su masa histórica para 2030</h4>
+                  El glaciar podría perder un 16% de su masa histórica para 2030 <span class="text-[9px] text-slate-400 font-normal ml-2">(Eje desde 80%)</span></h4>
               </div>
               <p data-i18n="obs_m2_sub" class="text-xs md:text-sm text-slate-600 mt-0.5">
                 Hielo que nos queda para beber y abastecer a la ciudad
@@ -1499,13 +1498,13 @@
           <div
             class="obs-caja-simple p-3 rounded-xl bg-cyan-50 text-cyan-950 text-xs md:text-sm leading-relaxed border border-cyan-200">
             <strong class="text-slate-800">¿Qué significa?</strong> <span
-              data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.</span>
+              data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa estimada.</span>
           </div>
 
           <!-- Contenedor del Gráfico SVG Custom -->
-          <div id="svg-container-glaciar" class="w-full h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución del porcentaje de masa remanente del glaciar."></div>
+          <div id="svg-container-glaciar" class="w-full max-w-[700px] mx-auto h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución del porcentaje de masa remanente del glaciar."></div>
           <!-- Leyenda Unificada -->
-          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-slate-800 block"></span> Serie histórica</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-slate-500 block"></span> Proyección</span></div>
+          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#0e7490] block"></span> Serie base</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-[#0e7490] block"></span> Proyección</span></div>
 
           <!-- Tabla accesible para lectores de pantalla -->
           <table class="sr-only">

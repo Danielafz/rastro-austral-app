@@ -19,11 +19,11 @@
       6,
       7,
       8,
-      8.5,
-      9
+      9,
+      10
     ],
     "descripcion": "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
-    "variacion_pct": "+80%",
+    "variacion_pct": "+100%",
     "tipo_dato": "Datos ilustrativos · prototipo",
     "fuente_referencia": "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
     "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",

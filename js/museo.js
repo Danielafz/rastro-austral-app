@@ -17,8 +17,8 @@
     const estadoMuseo = {
         activo: false,
         salaIndex: 0,
-        posicionX: 240,       // Posición horizontal del pingüino dentro del pasillo (px)
-        anchoPasillo: 1680,   // Ancho virtual del pasillo de la sala (px)
+        posicionX: 420,       // Posición horizontal del pingüino (inicia frente a la primera obra)
+        anchoPasillo: 2100,   // Ancho virtual del pasillo con separación amplia entre cuadros (px)
         velocidadX: 0,        // Input de movimiento (-1 a 1)
         mirandoDerecha: true,
         caminando: false,
@@ -90,7 +90,7 @@
 
         estadoMuseo.activo = true;
         estadoMuseo.salaIndex = Math.max(0, Math.min(salaIndice, (window.SALAS_MUSEO || []).length - 1));
-        estadoMuseo.posicionX = 220;
+        estadoMuseo.posicionX = 420;
         estadoMuseo.velocidadX = 0;
         estadoMuseo.mirandoDerecha = true;
         estadoMuseo.caminando = false;
@@ -153,15 +153,15 @@
             dom.tituloSalaNav.innerHTML = `<span class="text-amber-400 font-bold">${prefijo}</span> · <span>${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}</span>`;
         }
 
-        // Posiciones espaciales de los 3 cuadros en el pasillo (px)
-        const posicionesX = [420, 860, 1300];
+        // Posiciones espaciales amplias de los 3 cuadros en el pasillo (px) con columnas intercaladas
+        const posicionesX = [420, 1020, 1620];
 
         // Renderizar cuadros de la sala
         if (dom.contenedorObras) {
             dom.contenedorObras.innerHTML = "";
 
             sala.obras.forEach((obra, idx) => {
-                const posX = posicionesX[idx] || (380 + idx * 440);
+                const posX = posicionesX[idx] || (420 + idx * 600);
                 const cuadroEl = document.createElement("div");
                 cuadroEl.className = "cuadro-obra-museo absolute select-none cursor-pointer flex flex-col items-center";
                 cuadroEl.style.left = `${posX}px`;
@@ -199,7 +199,7 @@
 
                         <!-- Plaqueta de bronce con título y año -->
                         <div class="plaqueta-bronce-cuadro mt-1.5 px-2 py-0.5 rounded text-center">
-                            <p class="font-serif font-bold text-[11px] leading-tight text-amber-950 truncate max-w-[190px] sm:max-w-[220px]">${tituloObra}</p>
+                            <p class="font-serif font-bold text-[11px] leading-tight text-amber-950 truncate max-w-[190px] sm:max-w-[240px]">${tituloObra}</p>
                             <p class="text-[9px] text-amber-900 font-mono tracking-wider">${anioObra}</p>
                         </div>
                     </div>
@@ -214,9 +214,10 @@
             });
         }
 
-        // Posicionar el pingüino en una ubicación inicial cómoda
-        estadoMuseo.posicionX = 220;
+        // Posicionar el pingüino parado justo frente a la primera obra y centrar cámara
+        estadoMuseo.posicionX = posicionesX[0];
         actualizarPosicionPinguino();
+        verificarProximidadObras();
     }
 
     // Abrir ficha de obra (Bottom Sheet estilo pergamino)
@@ -284,19 +285,19 @@
             btnSala.type = "button";
             btnSala.className = `w-full text-left p-3.5 rounded-xl border flex items-start gap-3 transition cursor-pointer ${
                 esActiva 
-                    ? "bg-amber-950/70 border-amber-500/60 shadow-lg ring-1 ring-amber-500/30" 
-                    : "bg-stone-900/60 border-stone-800 hover:bg-stone-800/80 hover:border-amber-600/40"
+                    ? "bg-amber-950/80 border-amber-400 shadow-xl ring-1 ring-amber-400/40" 
+                    : "bg-stone-900/90 border-stone-800 hover:bg-stone-800 hover:border-amber-500/50"
             }`;
 
             btnSala.innerHTML = `
-                <div class="text-2xl shrink-0 p-2 rounded-lg bg-stone-950 border border-stone-800">${sala.icono || "🏛️"}</div>
+                <div class="text-2xl shrink-0 p-2 rounded-lg bg-stone-950 border border-stone-700/80 text-amber-300">${sala.icono || "🏛️"}</div>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center justify-between gap-2">
-                        <h4 class="font-bold text-sm text-amber-200 truncate">${tBilingue(sala.titulo)}</h4>
-                        ${esActiva ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950">${getIdioma() === "en" ? "Current" : "En curso"}</span>` : ""}
+                        <h4 class="font-bold text-sm sm:text-base text-white tracking-wide truncate">${tBilingue(sala.titulo)}</h4>
+                        ${esActiva ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase tracking-wider">${getIdioma() === "en" ? "Current" : "En curso"}</span>` : ""}
                     </div>
-                    <p class="text-xs text-amber-400/80 mt-0.5">${tBilingue(sala.subtitulo)}</p>
-                    <p class="text-[11px] text-stone-400 mt-1 line-clamp-2 leading-relaxed">${tBilingue(sala.descripcionCorta)}</p>
+                    <p class="text-xs text-amber-100 font-semibold mt-0.5 leading-snug">${tBilingue(sala.subtitulo)}</p>
+                    <p class="text-[11px] text-stone-300 mt-1 line-clamp-2 leading-relaxed">${tBilingue(sala.descripcionCorta)}</p>
                 </div>
             `;
 

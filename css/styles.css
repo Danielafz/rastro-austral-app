@@ -2219,16 +2219,57 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   }
 }
 
-/* Marco de cuadro de lenga y bronce patagónico */
+/* Contenedor posicionado del cuadro */
+.cuadro-obra-museo {
+  position: absolute;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Marco de cuadro de lenga y bronce patagónico con dimensiones fijas equilibradas */
 .marco-cuadro-patagonico {
+  width: 230px;
+  height: 175px;
   background: linear-gradient(135deg, #5A351C 0%, #8A532C 40%, #3B200F 100%);
   border: 3px solid #D4AF37;
   outline: 2px solid #281408;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 18px rgba(212, 175, 55, 0.15);
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .marco-cuadro-patagonico {
+    width: 300px;
+    height: 220px;
+  }
+}
+
+.lienzo-cuadro-interior {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #1C1917;
+  border: 1px solid rgba(120, 53, 15, 0.4);
+}
+
+.foto-obra-lienzo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .plaqueta-bronce-cuadro {
+  flex-shrink: 0;
   background: linear-gradient(180deg, #F3E5AB 0%, #D4AF37 40%, #AA8222 100%);
   border: 1px solid #735314;
   box-shadow: 0 2px 4px rgba(0,0,0,0.4);
@@ -2246,7 +2287,7 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 }
 
 .cuadro-activo-proximidad .marco-cuadro-patagonico {
-  transform: translateY(-8px) scale(1.03);
+  transform: translateY(-6px) scale(1.02);
   border-color: #FCD34D !important;
   box-shadow: 0 22px 45px rgba(0, 0, 0, 0.85), 0 0 28px rgba(251, 191, 36, 0.55) !important;
 }

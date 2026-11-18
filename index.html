@@ -780,18 +780,18 @@
       </div>
 
       <!-- Pasillo Muro Desplazable con Cuadros y Columnas -->
-      <div id="pasillo-muro-museo" class="absolute inset-0 w-[1680px] will-change-transform transition-transform duration-75 ease-out">
+      <div id="pasillo-muro-museo" class="absolute inset-0 w-[2100px] will-change-transform transition-transform duration-75 ease-out">
         <!-- Columnas Clásicas de Madera tallada entre cuadros -->
-        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[120px] w-12 rounded-sm pointer-events-none">
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[100px] w-12 rounded-sm pointer-events-none">
           <div class="capitel-bronce h-3 w-full"></div>
         </div>
-        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[640px] w-12 rounded-sm pointer-events-none">
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[720px] w-12 rounded-sm pointer-events-none">
           <div class="capitel-bronce h-3 w-full"></div>
         </div>
-        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1080px] w-12 rounded-sm pointer-events-none">
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1320px] w-12 rounded-sm pointer-events-none">
           <div class="capitel-bronce h-3 w-full"></div>
         </div>
-        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1520px] w-12 rounded-sm pointer-events-none">
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1940px] w-12 rounded-sm pointer-events-none">
           <div class="capitel-bronce h-3 w-full"></div>
         </div>
 
@@ -801,7 +801,7 @@
         </div>
 
         <!-- Contenedor dinámico de Cuadros Históricos -->
-        <div id="contenedor-obras-museo" class="absolute top-[14%] bottom-[32%] left-0 right-0"></div>
+        <div id="contenedor-obras-museo" class="absolute top-[12%] bottom-[32%] left-0 right-0"></div>
 
         <!-- Suelo de Parquet de Lenga Patagónica -->
         <div class="suelo-parquet-museo absolute bottom-0 left-0 right-0 h-[32%] pointer-events-none"></div>
@@ -847,10 +847,11 @@
               <circle cx="80" cy="128" r="10" fill="#0284C7"/>
               <polygon points="80,118 83,126 91,128 83,130 80,138 77,130 69,128 77,126" fill="#F8FAFC"/>
 
-              <!-- Cabeza (nuca / espaldas) -->
+              <!-- Cabeza (nuca / espaldas con copete y sombreado azul marino) -->
+              <path d="M 76 34 C 77 24, 83 24, 84 34 C 88 28, 92 31, 89 38 C 84 37, 76 37, 71 38 C 68 31, 72 28, 76 34 Z" fill="#0F172A"/>
               <ellipse cx="80" cy="62" rx="28" ry="30" fill="url(#degrade-cuerpo-pinguino-espalda)"/>
-              <!-- Plumas doradas características en la nuca del pingüino rey -->
-              <path d="M 64 56 C 68 45, 92 45, 96 56 C 92 68, 68 68, 64 56 Z" fill="#F59E0B" opacity="0.75"/>
+              <ellipse cx="80" cy="58" rx="20" ry="18" fill="#1E293B" opacity="0.85"/>
+              <path d="M 72 44 C 76 40, 84 40, 88 44 C 85 49, 75 49, 72 44 Z" fill="#334155" opacity="0.6"/>
 
               <!-- Bufanda roja y amarilla cruzada en el cuello -->
               <path d="M 54 84 C 62 80, 98 80, 106 84 C 108 92, 104 96, 80 96 C 56 96, 52 92, 54 84 Z" fill="url(#degrade-bufanda)"/>
@@ -863,39 +864,43 @@
       </div>
 
       <!-- Controles Superpuestos Flotantes: Joystick + Botón Salas + Pista de Navegación -->
-      <div class="absolute inset-x-0 bottom-3 px-4 flex items-end justify-between pointer-events-none z-30">
-        <!-- Joystick circular táctil (84x84px) -->
-        <div id="joystick-base-museo" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing select-none shadow-2xl">
-          <div id="joystick-perilla-museo" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75"></div>
-          <span class="absolute -bottom-5 text-[9px] font-bold text-amber-300 tracking-wider uppercase">Caminar</span>
+      <div class="absolute inset-0 pointer-events-none z-30">
+        <!-- Joystick circular táctil (84x84px) con margen inferior holgado para leer CAMINAR -->
+        <div id="joystick-contenedor" class="absolute bottom-6 left-5 md:bottom-7 md:left-7 flex flex-col items-center pointer-events-auto">
+          <div id="joystick-base-museo" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing select-none shadow-2xl">
+            <div id="joystick-perilla-museo" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75"></div>
+          </div>
+          <span class="mt-1 text-[10px] font-bold text-amber-300 tracking-wider uppercase select-none drop-shadow-md">Caminar</span>
         </div>
 
         <!-- Indicador de controles en escritorio -->
-        <div class="hidden md:flex items-center gap-2 bg-stone-950/80 border border-stone-800 px-3 py-1.5 rounded-full text-xs text-stone-300 pointer-events-none shadow-md backdrop-blur">
+        <div class="hidden md:flex absolute bottom-7 left-1/2 -translate-x-1/2 items-center gap-2 bg-stone-950/85 border border-stone-800/80 px-4 py-2 rounded-full text-xs text-stone-200 pointer-events-none shadow-xl backdrop-blur-md">
           <span>⌨️ Usá las flechas <strong class="text-amber-400">←</strong> / <strong class="text-amber-400">→</strong> o la rueda del mouse para caminar</span>
         </div>
 
         <!-- Botón Píldora "Salas" para desplegar menú rápido -->
-        <button type="button" id="btn-abrir-menu-salas"
-          class="pointer-events-auto flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-full border border-amber-300 shadow-xl transition active:scale-95 cursor-pointer text-xs sm:text-sm">
-          <span>🏛️</span>
-          <span>Salas</span>
-          <span class="bg-amber-900/30 text-slate-950 px-1.5 py-0.2 rounded-full text-[10px]">6</span>
-        </button>
+        <div class="absolute bottom-6 right-5 md:bottom-7 md:right-7 pointer-events-auto">
+          <button type="button" id="btn-abrir-menu-salas"
+            class="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-full border border-amber-300 shadow-xl transition active:scale-95 cursor-pointer text-xs sm:text-sm">
+            <span>🏛️</span>
+            <span>Salas</span>
+            <span class="bg-amber-900/30 text-slate-950 px-1.5 py-0.2 rounded-full text-[10px]">6</span>
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Modal / Drawer Selector Rápido de las 6 Salas -->
-    <div id="drawer-selector-salas" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
-      <div class="bg-stone-950 border border-amber-600/40 rounded-2xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
-        <div class="p-4 border-b border-stone-800 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">🏛️</span>
-            <h3 class="font-bold text-amber-200 text-sm sm:text-base font-marca-austral">Salas del Museo Austral</h3>
+    <div id="drawer-selector-salas" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-5">
+      <div class="bg-stone-950 border border-amber-500/50 rounded-2xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="p-4 border-b border-stone-800 flex items-center justify-between bg-stone-900/90">
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">🏛️</span>
+            <h3 class="font-bold text-white text-base sm:text-lg font-marca-austral tracking-wide">Salas del Museo Austral</h3>
           </div>
-          <button type="button" id="btn-cerrar-drawer-salas" class="w-8 h-8 rounded-full bg-stone-900 text-stone-400 hover:text-white flex items-center justify-center text-sm transition cursor-pointer">✕</button>
+          <button type="button" id="btn-cerrar-drawer-salas" class="w-8 h-8 rounded-full bg-stone-800 text-stone-200 hover:text-white hover:bg-stone-700 flex items-center justify-center text-sm font-bold transition cursor-pointer">✕</button>
         </div>
-        <div id="lista-salas-selector" class="p-3 sm:p-4 space-y-2 overflow-y-auto flex-1"></div>
+        <div id="lista-salas-selector" class="p-3 sm:p-4 space-y-2.5 overflow-y-auto flex-1 bg-stone-950"></div>
       </div>
     </div>
 

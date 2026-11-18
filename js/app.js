@@ -106,8 +106,8 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sitios en mi Rastro:",
         descargar_bitacora: "Descargar Bitácora",
         vista_provincia: "📍 Toda la Provincia",
-        capa_estandar: "Estándar",
-        capa_relieve: "Relieve",
+        capa_estandar: "Argenmap (IGN)",
+        capa_relieve: "Relieve (IGN)",
         capa_areas_protegidas: "Áreas Protegidas",
         capa_alertas_sar: "Alertas SAR",
         modal_bloqueo_badge_sar: "Alerta Temprana SAR",
@@ -250,8 +250,8 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sites in my Trail:",
         descargar_bitacora: "Download Journal",
         vista_provincia: "📍 Entire Province",
-        capa_estandar: "Standard",
-        capa_relieve: "Topographic",
+        capa_estandar: "Argenmap (IGN)",
+        capa_relieve: "Topographic (IGN)",
         capa_areas_protegidas: "Protected Areas",
         capa_alertas_sar: "SAR Alerts",
         modal_bloqueo_badge_sar: "Early Warning SAR",
@@ -679,26 +679,44 @@ function inicializarMapa() {
     window.map = mapa;
     window.mapa = mapa;
 
-    // Cartografía base CartoDB Voyager sin etiquetas (relieve suave, lagos turquesa, rutas claras, sin toponimia foránea)
+    // Cartografía base oficial de la República Argentina: Argenmap Vial y Urbano (IGN)
+    // Cobertura completa con toponimia argentina oficial en Tierra del Fuego e Islas Malvinas
     capaBaseEstandar = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+        "https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png",
         {
-            subdomains: "abcd",
-            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">IGN Argentina</a> · IDETDF · <a href="https://carto.com/" target="_blank" rel="noopener">CartoDB</a>',
-            maxZoom: 19,
-            minZoom: 3
+            tms: true,
+            maxZoom: 18,
+            minZoom: 3,
+            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">Instituto Geográfico Nacional (IGN)</a> · IDETDF'
         }
     );
 
-    // Cartografía base de relieve físico puro sin textos foráneos (Esri World Physical Map)
+    // Cartografía base oficial topográfica / relieve de la República Argentina: Argenmap Topográfico (IGN)
+    // Curvas de nivel, relieve montañoso andino y cuerpos lacustres oficiales IGN
     capaBaseRelieve = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+        "https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/mapabase_topo@EPSG%3A3857@png/{z}/{x}/{-y}.png",
         {
-            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">IGN Argentina</a> · Esri · USGS',
-            maxZoom: 16,
-            minZoom: 3
+            tms: true,
+            maxZoom: 18,
+            minZoom: 3,
+            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">Instituto Geográfico Nacional (IGN)</a> · IDETDF'
         }
     );
+
+    // Respaldo resiliente ante microcortes o caídas de red para ambas capas IGN
+    const aplicarFallbackResilienteIGN = (capa) => {
+        capa.on("tileerror", function (error) {
+            if (!error || !error.tile || error.tile.dataset.fallbackApplied === "true") return;
+            error.tile.dataset.fallbackApplied = "true";
+            const coords = error.coords;
+            if (coords) {
+                const sub = ["a", "b", "c"][Math.abs(coords.x + coords.y) % 3];
+                error.tile.src = `https://${sub}.tile.openstreetmap.org/${coords.z}/${coords.x}/${coords.y}.png`;
+            }
+        });
+    };
+    aplicarFallbackResilienteIGN(capaBaseEstandar);
+    aplicarFallbackResilienteIGN(capaBaseRelieve);
 
     // Agregar capa base activa
     capaBaseEstandar.addTo(mapa);

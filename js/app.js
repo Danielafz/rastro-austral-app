@@ -1078,13 +1078,10 @@ function renderizarMarcadores(anunciarResultados = false) {
             autoPanPadding: [12, 65]
         });
 
-        // Evento clic: centrado suave y visualización en el panel de hitos
+        // Evento clic: centrado suave y apertura del popup compacto (sin abrir el cajón inferior en móvil)
         marcador.on("click", () => {
             seleccionarHito(hito, true, true, false);
             cambiarPestanaSidebar("explorar");
-            if (window.innerWidth < 768) {
-                abrirPanelMobile();
-            }
         });
 
         marcador.on("popupopen", () => {
@@ -1234,10 +1231,6 @@ function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCo
 
     // Actualizar la tarjeta del hito seleccionado en el panel
     renderizarListaHitosCompacta();
-
-    if (window.innerWidth < 768) {
-        abrirPanelMobile();
-    }
 
     mostrarDetalleHito(hito);
     renderizarInsignias();
@@ -1515,6 +1508,9 @@ function renderizarListaHitosCompacta(hitosFiltradosParam) {
 
 // Función Maestra para abrir el detalle inmersivo (Ficha Completa)
 function abrirDetalleHito(id) {
+    if (window.innerWidth < 768 && typeof cerrarPanelMobile === "function") {
+        cerrarPanelMobile();
+    }
     // datosHitos es tu base de datos o JSON con la info de los lugares
     const data = (window.datosHitos && window.datosHitos[id]) || datosHitos[id] || (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === id || String(h.id) === String(id)) : null);
 

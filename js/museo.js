@@ -62,6 +62,7 @@
             contenedorObras: document.getElementById("contenedor-obras-museo"),
             pinguinoMascota: document.getElementById("pinguino-mascota-museo"),
             pinguinoSprite: document.getElementById("pinguino-sprite-animado"),
+            joystickContenedor: document.getElementById("joystick-contenedor"),
             joystickBase: document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo"),
             joystickPerilla: document.getElementById("museo-joystick-knob") || document.getElementById("joystick-perilla-museo"),
             lblJoystick: document.getElementById("lbl-joystick-museo"),
@@ -203,7 +204,7 @@
             dom.salaNombre.textContent = nombreLimpio;
         }
         if (dom.tituloSalaNav && !dom.salaContador) {
-            dom.tituloSalaNav.innerHTML = `<span class="text-amber-700 font-bold prefijo-sala" style="color: #B45309 !important;">${prefijo}</span> · <span class="text-stone-900 font-bold nombre-sala" style="color: #1C1917 !important;">${nombreLimpio}</span>`;
+            dom.tituloSalaNav.innerHTML = `<span class="text-amber-400 font-bold prefijo-sala" style="color: #F59E0B !important;">${prefijo}</span> · <span class="text-amber-50 font-bold nombre-sala" style="color: #FAF6EE !important;">${nombreLimpio}</span>`;
         }
     }
 
@@ -362,7 +363,10 @@
         cargarSala(estadoMuseo.salaIndex);
 
         // Iniciar loop de animación y físicas
-        cancelAnimationFrame(estadoMuseo.animFrameId);
+        if (estadoMuseo.animFrameId) {
+            cancelAnimationFrame(estadoMuseo.animFrameId);
+            estadoMuseo.animFrameId = null;
+        }
         bucleAnimacion();
 
         // Notificar en consola
@@ -373,7 +377,10 @@
     function cerrarMuseoAustral() {
         if (!dom.vista) return;
         estadoMuseo.activo = false;
-        cancelAnimationFrame(estadoMuseo.animFrameId);
+        if (estadoMuseo.animFrameId) {
+            cancelAnimationFrame(estadoMuseo.animFrameId);
+            estadoMuseo.animFrameId = null;
+        }
 
         detenerAudioguia();
         cerrarSheetObra();
@@ -724,7 +731,10 @@
 
     // Bucle de físicas y animación (60 FPS)
     function bucleAnimacion() {
-        if (!estadoMuseo.activo) return;
+        if (!estadoMuseo.activo) {
+            estadoMuseo.animFrameId = null;
+            return;
+        }
 
         // Calcular velocidad final: suma del joystick táctil y de las teclas presionadas
         let vx = estadoMuseo.velocidadX;
@@ -815,8 +825,11 @@
         estadoMuseo.obraProxima = obraEnRango;
     }
 
-    // Manejo de controles táctiles: Joystick circular blindado con Pointer Events y Pointer Capture
+    // Manejo de controles táctiles: Joystick circular blindado (Soporte Dual: Pointer Events + Touch Events)
     function inicializarJoystickMuseo() {
+        if (!dom.joystickContenedor) {
+            dom.joystickContenedor = document.getElementById("joystick-contenedor");
+        }
         if (!dom.joystickBase) {
             dom.joystickBase = document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo");
         }
@@ -829,10 +842,17 @@
         if (dom.joystickBase.dataset.inicializado === "true") return;
         dom.joystickBase.dataset.inicializado = "true";
 
-        dom.joystickBase.style.touchAction = "none";
-        dom.joystickBase.style.userSelect = "none";
-        dom.joystickBase.style.webkitUserSelect = "none";
-        dom.joystickBase.style.pointerEvents = "auto";
+        const elementosObjetivo = [dom.joystickBase];
+        if (dom.joystickContenedor && dom.joystickContenedor !== dom.joystickBase) {
+            elementosObjetivo.push(dom.joystickContenedor);
+        }
+
+        elementosObjetivo.forEach(el => {
+            el.style.touchAction = "none";
+            el.style.userSelect = "none";
+            el.style.webkitUserSelect = "none";
+            el.style.pointerEvents = "auto";
+        });
 
         dom.joystickPerilla.style.touchAction = "none";
         dom.joystickPerilla.style.userSelect = "none";
@@ -841,17 +861,32 @@
 
         const maxRadio = 28;
         let activePointerId = null;
+        let activeTouchId = null;
         let centroX = 0;
+
+        function actualizarCentro() {
+            const rect = dom.joystickBase.getBoundingClientRect();
+            centroX = rect.left + rect.width / 2;
+        }
 
         function mover(clientX) {
             let dx = clientX - centroX;
             dx = Math.max(-maxRadio, Math.min(dx, maxRadio));
-            dom.joystickPerilla.style.transform = `translate3d(${dx}px, 0px, 0)`;
+            if (dom.joystickPerilla) {
+                dom.joystickPerilla.style.transform = `translate3d(${dx}px, 0px, 0)`;
+            }
             estadoMuseo.velocidadX = dx / maxRadio;
+
+            // Garantizar estado activo y que el bucle de animación corra inmediatamente
+            estadoMuseo.activo = true;
+            if (!estadoMuseo.animFrameId) {
+                estadoMuseo.animFrameId = requestAnimationFrame(bucleAnimacion);
+            }
         }
 
         function soltar() {
             activePointerId = null;
+            activeTouchId = null;
             estadoMuseo.joystickActivo = false;
             estadoMuseo.velocidadX = 0;
             if (dom.joystickPerilla) {
@@ -859,56 +894,103 @@
             }
         }
 
-        // Pointer Events (Touch, Mouse, Pen) con Pointer Capture
-        dom.joystickBase.addEventListener("pointerdown", (e) => {
+        // --- 1) SOPORTE POINTER EVENTS (con Pointer Capture) ---
+        function onPointerDown(e) {
             e.preventDefault();
             e.stopPropagation();
             activePointerId = e.pointerId;
             try {
-                dom.joystickBase.setPointerCapture(e.pointerId);
+                if (e.target && e.target.setPointerCapture) {
+                    e.target.setPointerCapture(e.pointerId);
+                } else if (dom.joystickBase.setPointerCapture) {
+                    dom.joystickBase.setPointerCapture(e.pointerId);
+                }
             } catch (_) {}
             estadoMuseo.joystickActivo = true;
-            const rect = dom.joystickBase.getBoundingClientRect();
-            centroX = rect.left + rect.width / 2;
+            actualizarCentro();
             mover(e.clientX);
-        });
+        }
 
-        dom.joystickBase.addEventListener("pointermove", (e) => {
-            if (!estadoMuseo.joystickActivo || e.pointerId !== activePointerId) return;
+        function onPointerMove(e) {
+            if (!estadoMuseo.joystickActivo || (activePointerId !== null && e.pointerId !== activePointerId)) return;
             e.preventDefault();
             e.stopPropagation();
             mover(e.clientX);
-        });
+        }
 
-        dom.joystickBase.addEventListener("pointerup", (e) => {
-            if (e.pointerId !== activePointerId) return;
+        function onPointerUp(e) {
+            if (activePointerId !== null && e.pointerId !== activePointerId) return;
             e.stopPropagation();
             try {
-                dom.joystickBase.releasePointerCapture(e.pointerId);
+                if (e.target && e.target.releasePointerCapture) {
+                    e.target.releasePointerCapture(e.pointerId);
+                } else if (dom.joystickBase.releasePointerCapture) {
+                    dom.joystickBase.releasePointerCapture(e.pointerId);
+                }
             } catch (_) {}
             soltar();
+        }
+
+        elementosObjetivo.forEach(el => {
+            el.addEventListener("pointerdown", onPointerDown);
+            el.addEventListener("pointermove", onPointerMove);
+            el.addEventListener("pointerup", onPointerUp);
+            el.addEventListener("pointercancel", onPointerUp);
         });
 
-        dom.joystickBase.addEventListener("pointercancel", (e) => {
-            if (e.pointerId !== activePointerId) return;
+        // Resguardo en window para Pointer Events
+        window.addEventListener("pointermove", onPointerMove);
+        window.addEventListener("pointerup", onPointerUp);
+        window.addEventListener("pointercancel", onPointerUp);
+
+        // --- 2) SOPORTE DUAL TOUCH EVENTS NATIVOS ({ passive: false }) ---
+        function onTouchStart(e) {
+            if (e.cancelable) e.preventDefault();
             e.stopPropagation();
-            try {
-                dom.joystickBase.releasePointerCapture(e.pointerId);
-            } catch (_) {}
-            soltar();
+            const touch = e.changedTouches[0];
+            if (!touch) return;
+            activeTouchId = touch.identifier;
+            estadoMuseo.joystickActivo = true;
+            actualizarCentro();
+            mover(touch.clientX);
+        }
+
+        function onTouchMove(e) {
+            if (!estadoMuseo.joystickActivo) return;
+            for (let i = 0; i < e.touches.length; i++) {
+                const t = e.touches[i];
+                if (activeTouchId === null || t.identifier === activeTouchId) {
+                    if (e.cancelable) e.preventDefault();
+                    e.stopPropagation();
+                    mover(t.clientX);
+                    break;
+                }
+            }
+        }
+
+        function onTouchEnd(e) {
+            if (!estadoMuseo.joystickActivo) return;
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (activeTouchId === null || t.identifier === activeTouchId) {
+                    e.stopPropagation();
+                    soltar();
+                    break;
+                }
+            }
+        }
+
+        elementosObjetivo.forEach(el => {
+            el.addEventListener("touchstart", onTouchStart, { passive: false });
+            el.addEventListener("touchmove", onTouchMove, { passive: false });
+            el.addEventListener("touchend", onTouchEnd, { passive: false });
+            el.addEventListener("touchcancel", onTouchEnd, { passive: false });
         });
 
-        // Eventos de resguardo en window
-        window.addEventListener("pointerup", (e) => {
-            if (estadoMuseo.joystickActivo && e.pointerId === activePointerId) {
-                soltar();
-            }
-        });
-        window.addEventListener("pointercancel", (e) => {
-            if (estadoMuseo.joystickActivo && e.pointerId === activePointerId) {
-                soltar();
-            }
-        });
+        // Resguardo global en window para Touch Events cuando el dedo sale del radio
+        window.addEventListener("touchmove", onTouchMove, { passive: false });
+        window.addEventListener("touchend", onTouchEnd, { passive: false });
+        window.addEventListener("touchcancel", onTouchEnd, { passive: false });
     }
 
     // Configuración de teclado y rueda de ratón para escritorio
@@ -1062,7 +1144,8 @@
             let swiping = false;
 
             dom.pasilloMuro.addEventListener("touchstart", (e) => {
-                if (estadoMuseo.obraAbierta || estadoMuseo.joystickActivo) return;
+                if (estadoMuseo.joystickActivo || (e.target && e.target.closest("#joystick-contenedor"))) return;
+                if (estadoMuseo.obraAbierta) return;
                 const t = e.touches[0];
                 if (!t) return;
                 // Exclusión de la zona inferior izquierda reservada para el joystick
@@ -1074,7 +1157,8 @@
             }, { passive: true });
 
             dom.pasilloMuro.addEventListener("touchmove", (e) => {
-                if (!swiping || estadoMuseo.obraAbierta || estadoMuseo.joystickActivo) return;
+                if (estadoMuseo.joystickActivo || (e.target && e.target.closest("#joystick-contenedor"))) return;
+                if (!swiping || estadoMuseo.obraAbierta) return;
                 const t = e.touches[0];
                 const dx = t.clientX - swipeStartX;
                 const dy = t.clientY - swipeStartY;
@@ -1095,7 +1179,8 @@
                 }
             }, { passive: true });
 
-            dom.pasilloMuro.addEventListener("touchend", () => {
+            dom.pasilloMuro.addEventListener("touchend", (e) => {
+                if (estadoMuseo.joystickActivo || (e.target && e.target.closest("#joystick-contenedor"))) return;
                 swiping = false;
             }, { passive: true });
         }

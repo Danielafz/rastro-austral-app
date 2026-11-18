@@ -2543,19 +2543,21 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   font-weight: 700;
 }
 
-/* Título de la sala en la barra superior: texto oscuro */
-#museo-titulo-sala-actual,
-#titulo-sala-actual-museo,
-#museo-header-titulo-wrapper,
+/* Título de la sala en la barra superior: texto claro sobre fondo oscuro */
 #museo-sala-nombre,
 #vista-museo-austral header h2 {
-  color: #1C1917 !important;
+  color: #FAF6EE !important;
+}
+
+#museo-titulo-sala-actual .nombre-sala,
+#titulo-sala-actual-museo .nombre-sala {
+  color: #FAF6EE !important;
 }
 
 #museo-titulo-sala-actual .prefijo-sala,
 #titulo-sala-actual-museo .prefijo-sala,
 #museo-sala-contador {
-  color: #B45309 !important;
+  color: #F59E0B !important;
 }
 
 /* Alto contraste ÚNICAMENTE dentro del modal oscuro "Salas del Museo Austral" */

@@ -63,7 +63,7 @@ const SALAS_MUSEO = [
                     en: "Both terrestrial hunters and seafaring nomads kept perpetual fires burning day and night for warmth, cooking, and smoke signals. Canoeists even carried embers aboard over a clay and wet sand hearth."
                 },
                 credito: "Grabado náutico de expediciones australes (Dominio Público)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/64/Strait_of_Magellan_%2847089965292%29.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Patagonians_and_Fuegians_-_Magellan_Strait.jpg",
                 hitoRelacionado: {
                     es: "Cabo San Pablo y Costa Atlántica",
                     en: "Cape San Pablo & Atlantic Coast"
@@ -85,7 +85,7 @@ const SALAS_MUSEO = [
                     en: "Throughout the 16th and 17th centuries, cartographers envisioned Tierra del Fuego as the northern fringe of a boundless polar landmass until navigators proved it an archipelago bounded by Cape Horn."
                 },
                 credito: "Abraham Ortelius / Mapoteca Histórica (Dominio Público)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c8/HMS_Beagle_in_Straits_of_Magellan.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/5/59/Maris_Pacifici_%28Ortelius%2C_1589%29.jpg",
                 hitoRelacionado: {
                     es: "Paso Garibaldi y Cordillera Fueguina",
                     en: "Garibaldi Pass & Fuegian Mountain Range"
@@ -296,7 +296,7 @@ const SALAS_MUSEO = [
                     en: "In 1886, Romanian-Argentine engineer Julio Popper led mining expeditions extracting gold dust from shoreline sands. He established camps, minted territorial gold coins, and printed local postage stamps."
                 },
                 credito: "Fototeca del Museo del Fin del Mundo / Colección Popper (Dominio Público)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Juli0_Popper.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Julio_Popper.jpg",
                 hitoRelacionado: {
                     es: "Bahía San Sebastián y El Páramo",
                     en: "San Sebastián Bay & El Páramo"
@@ -639,7 +639,7 @@ const SALAS_MUSEO = [
                     en: "Giant kelp (Macrocystis pyrifera) groves form towering underwater forests up to 30 meters high in the frigid waters of Beagle Channel. They buffer ocean swell, capture substantial carbon, and serve as nursery habitat for king crabs, sea urchins, and subantarctic fish."
                 },
                 credito: "Bosque de Macrocystis pyrifera en Canal Beagle / Wikimedia Commons (CC BY-SA)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Macrocystis_pyrifera_Canal_Beagle.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/5/58/Macrocystis_pyrifera_kelp_forest.jpg",
                 hitoRelacionado: {
                     es: "Faro Les Éclaireurs y Canal Beagle",
                     en: "Les Éclaireurs Lighthouse & Beagle Channel"
@@ -680,7 +680,7 @@ const SALAS_MUSEO = [
                     en: "Martillo Island in the Beagle Channel is the only accessible breeding colony in Argentine territory where Magellanic (Spheniscus magellanicus) and Gentoo (Pygoscelis papua) penguins nest alongside occasional king and rockhopper penguins."
                 },
                 credito: "Pingüino Rey en Isla Martillo / Wikimedia Commons (CC BY-SA)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Ping%C3%BCino_rey_en_Isla_Martillo.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/b/be/Aptenodytes_patagonicus_-Falkland_Islands-8.jpg",
                 hitoRelacionado: {
                     es: "Isla Martillo - Pingüinera",
                     en: "Martillo Island - Penguin Rookery"
@@ -765,7 +765,7 @@ const SALAS_MUSEO = [
                     en: "Sphagnum magellanicum peat bogs span over 2,700 km² across Tierra del Fuego, comprising 95% of Argentina's peatlands. They function as massive natural sponges regulating freshwater and storing exceptional amounts of terrestrial carbon."
                 },
                 credito: "Turbal en Valle de Andorra, Ushuaia / Wikimedia Commons (CC BY-SA)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Turbal_in_Valle_de_Andorra.jpg",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Sphagnum_bog_Tierra_del_Fuego.jpg",
                 hitoRelacionado: {
                     es: "Sitio Ramsar Glaciar Vinciguerra y Turbales de Andorra",
                     en: "Vinciguerra Glacier & Andorra Peatlands Ramsar Site"

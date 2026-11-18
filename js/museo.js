@@ -110,10 +110,10 @@
         return objetoTexto[idioma] || objetoTexto.es || "";
     }
 
-    // Total dinámico de obras en todas las salas del Museo (21 obras con Sala 6 ampliada)
+    // Total dinámico de obras en todas las salas del Museo (29 obras en las 9 salas)
     function obtenerTotalObras() {
         const salas = window.SALAS_MUSEO || [];
-        return salas.reduce((acc, s) => acc + (s.obras ? s.obras.length : 0), 0) || 21;
+        return salas.reduce((acc, s) => acc + (s.obras ? s.obras.length : 0), 0) || 29;
     }
 
     // Configuración responsiva y dinámica del pasillo (calculada según la cantidad real de obras de la sala)

@@ -637,7 +637,7 @@
 
         <!-- Grupo de Capas + Botón SAR independiente -->
         <div class="flex items-center gap-2 flex-1 pointer-events-auto overflow-x-auto no-scrollbar">
-          <!-- Cápsula de Capas (Estándar, Relieve, Áreas Protegidas) -->
+          <!-- Cápsula de Capas (Estándar IGN, Relieve IGN, Satelital, Áreas Protegidas) -->
           <div
             class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0">
             <button type="button" id="btn-capa-estandar"
@@ -649,6 +649,11 @@
               class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
               title="Cartografía topográfica oficial con curvas de nivel y relieve (IGN Argentina)">
               <span data-i18n="capa_relieve">Relieve (IGN)</span>
+            </button>
+            <button type="button" id="btn-capa-satelital"
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
+              title="Fotografía satelital y aérea de alta resolución (Esri World Imagery)">
+              <span data-i18n="capa_satelital">Satelital</span>
             </button>
             <button type="button" id="btn-capa-areas-protegidas"
               class="btn-capa-areas shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"

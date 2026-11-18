@@ -7,6 +7,7 @@ let capaMarcadores;
 let capaHuellas;
 let capaBaseEstandar;
 let capaBaseRelieve;
+let capaBaseSatelital;
 let capaToponimiaYSoberania;
 let capaBaseActiva = "estandar";
 let listaHitos = [];
@@ -108,6 +109,7 @@ const DICCIONARIO = {
         vista_provincia: "📍 Toda la Provincia",
         capa_estandar: "Argenmap (IGN)",
         capa_relieve: "Relieve (IGN)",
+        capa_satelital: "Satelital",
         capa_areas_protegidas: "Áreas Protegidas",
         capa_alertas_sar: "Alertas SAR",
         modal_bloqueo_badge_sar: "Alerta Temprana SAR",
@@ -252,6 +254,7 @@ const DICCIONARIO = {
         vista_provincia: "📍 Entire Province",
         capa_estandar: "Argenmap (IGN)",
         capa_relieve: "Topographic (IGN)",
+        capa_satelital: "Satellite",
         capa_areas_protegidas: "Protected Areas",
         capa_alertas_sar: "SAR Alerts",
         modal_bloqueo_badge_sar: "Early Warning SAR",
@@ -700,6 +703,17 @@ function inicializarMapa() {
             maxZoom: 18,
             minZoom: 3,
             attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">Instituto Geográfico Nacional (IGN)</a> · IDETDF'
+        }
+    );
+
+    // 3. Cartografía base Satelital (Fotografía Aérea de Alta Resolución de Esri World Imagery)
+    // Vista satelital libre sin etiquetas extranjeras, compatible con los rótulos soberanos argentinos y toponimia originaria
+    capaBaseSatelital = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+            maxZoom: 18,
+            minZoom: 3,
+            attribution: '&copy; Esri Satelital · IGN Argentina · IDETDF'
         }
     );
 
@@ -2676,40 +2690,57 @@ function configurarSelectorLocalidades() {
     });
 }
 
-// 12.1. Selector de Capas Base Cartográficas (Estándar / Relieve)
+// 12.1. Selector de Capas Base Cartográficas (Argenmap IGN / Relieve IGN / Satelital)
 function configurarSelectorCapasBase() {
     const btnEstandar = document.getElementById("btn-capa-estandar");
     const btnRelieve = document.getElementById("btn-capa-relieve");
+    const btnSatelital = document.getElementById("btn-capa-satelital");
 
     if (!btnEstandar || !btnRelieve) return;
 
-    btnEstandar.addEventListener("click", () => {
-        if (capaBaseActiva === "estandar") return;
-        if (mapa.hasLayer(capaBaseRelieve)) mapa.removeLayer(capaBaseRelieve);
-        if (!mapa.hasLayer(capaBaseEstandar)) mapa.addLayer(capaBaseEstandar);
-        capaBaseEstandar.bringToBack();
+    const actualizarClasesBotonesBase = (activa) => {
+        const claseActivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer active";
+        const claseInactivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer";
+
+        if (btnEstandar) btnEstandar.className = activa === "estandar" ? claseActivo : claseInactivo;
+        if (btnRelieve) btnRelieve.className = activa === "relieve" ? claseActivo : claseInactivo;
+        if (btnSatelital) btnSatelital.className = activa === "satelital" ? claseActivo : claseInactivo;
+    };
+
+    const cambiarCapaBase = (tipo) => {
+        if (capaBaseActiva === tipo) return;
+
+        // Remover las capas base que no correspondan
+        if (tipo !== "estandar" && mapa.hasLayer(capaBaseEstandar)) mapa.removeLayer(capaBaseEstandar);
+        if (tipo !== "relieve" && mapa.hasLayer(capaBaseRelieve)) mapa.removeLayer(capaBaseRelieve);
+        if (tipo !== "satelital" && capaBaseSatelital && mapa.hasLayer(capaBaseSatelital)) mapa.removeLayer(capaBaseSatelital);
+
+        // Activar la seleccionada
+        if (tipo === "estandar") {
+            if (!mapa.hasLayer(capaBaseEstandar)) mapa.addLayer(capaBaseEstandar);
+            capaBaseEstandar.bringToBack();
+        } else if (tipo === "relieve") {
+            if (!mapa.hasLayer(capaBaseRelieve)) mapa.addLayer(capaBaseRelieve);
+            capaBaseRelieve.bringToBack();
+        } else if (tipo === "satelital") {
+            if (capaBaseSatelital && !mapa.hasLayer(capaBaseSatelital)) mapa.addLayer(capaBaseSatelital);
+            if (capaBaseSatelital) capaBaseSatelital.bringToBack();
+        }
+
+        // Mantener rótulos soberanos y toponimia originaria siempre al frente
         if (capaToponimiaYSoberania && typeof capaToponimiaYSoberania.bringToFront === "function") {
             capaToponimiaYSoberania.bringToFront();
         }
-        capaBaseActiva = "estandar";
 
-        btnEstandar.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";
-        btnRelieve.className = "btn-capa-base flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
-    });
+        capaBaseActiva = tipo;
+        actualizarClasesBotonesBase(tipo);
+    };
 
-    btnRelieve.addEventListener("click", () => {
-        if (capaBaseActiva === "relieve") return;
-        if (mapa.hasLayer(capaBaseEstandar)) mapa.removeLayer(capaBaseEstandar);
-        if (!mapa.hasLayer(capaBaseRelieve)) mapa.addLayer(capaBaseRelieve);
-        capaBaseRelieve.bringToBack();
-        if (capaToponimiaYSoberania && typeof capaToponimiaYSoberania.bringToFront === "function") {
-            capaToponimiaYSoberania.bringToFront();
-        }
-        capaBaseActiva = "relieve";
-
-        btnRelieve.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";
-        btnEstandar.className = "btn-capa-base flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
-    });
+    btnEstandar.addEventListener("click", () => cambiarCapaBase("estandar"));
+    btnRelieve.addEventListener("click", () => cambiarCapaBase("relieve"));
+    if (btnSatelital) {
+        btnSatelital.addEventListener("click", () => cambiarCapaBase("satelital"));
+    }
 }
 
 // 12.2. Capa Vectorial de Áreas Naturales Protegidas (GeoJSON)
@@ -2818,6 +2849,7 @@ async function configurarCapaAreasProtegidas() {
                 capaAreasProtegidas.bringToBack();
                 if (mapa.hasLayer(capaBaseEstandar)) capaBaseEstandar.bringToBack();
                 if (mapa.hasLayer(capaBaseRelieve)) capaBaseRelieve.bringToBack();
+                if (capaBaseSatelital && mapa.hasLayer(capaBaseSatelital)) capaBaseSatelital.bringToBack();
 
                 btn.className = "btn-capa-areas active flex items-center justify-center bg-emerald-600 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
             } else {

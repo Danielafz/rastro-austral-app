@@ -731,15 +731,15 @@
     <!-- Barra Superior del Museo -->
     <header class="relative z-40 bg-stone-950/90 border-b border-amber-600/30 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 shadow-lg backdrop-blur-md flex-shrink-0">
       <!-- Botón Volver al Mapa + Navegación entre salas -->
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <button type="button" id="btn-cerrar-museo"
-          class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-700 hover:bg-amber-600 hover:text-slate-950 hover:border-amber-400 text-xs font-bold transition cursor-pointer"
+          class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-700 hover:bg-amber-600 hover:text-slate-950 hover:border-amber-400 text-xs font-bold transition cursor-pointer shrink-0"
           title="Cerrar museo y volver al mapa" aria-label="Cerrar museo">
           <span>✕</span>
           <span id="txt-volver-mapa-museo" class="hidden sm:inline" data-i18n="btn_volver_mapa">Volver al Mapa</span>
         </button>
 
-        <div class="flex items-center bg-stone-900/90 rounded-xl p-0.5 border border-stone-800">
+        <div class="hidden md:flex items-center bg-stone-900/90 rounded-xl p-0.5 border border-stone-800">
           <button type="button" id="btn-prev-sala-museo" class="p-1 sm:p-1.5 rounded-lg text-amber-300 hover:bg-stone-800 transition cursor-pointer" title="Sala anterior" aria-label="Sala anterior">
             ◀
           </button>
@@ -749,15 +749,15 @@
         </div>
       </div>
 
-      <!-- Título de la Sala en el centro -->
-      <div class="min-w-0 text-center flex-1 px-1">
-        <h2 id="museo-titulo-sala-actual" class="text-xs sm:text-sm md:text-base font-bold text-stone-900 truncate font-marca-austral">
-          <span class="text-amber-700 font-bold prefijo-sala">Sala 1 de 6</span> · <span class="text-stone-900 font-bold nombre-sala">Origen del Nombre e Historia</span>
-        </h2>
+      <!-- Título de la Sala en el centro (responsivo 2 líneas en móvil, 1 línea en escritorio) -->
+      <div id="museo-header-titulo-wrapper" class="flex flex-col md:flex-row items-center justify-center text-center px-1.5 min-w-0 flex-1 md:gap-1.5 font-marca-austral">
+        <span id="museo-sala-contador" class="text-[10px] md:text-sm font-bold uppercase tracking-wider text-amber-700 leading-none whitespace-nowrap">Sala 1 de 6</span>
+        <span class="hidden md:inline text-amber-700/60 font-bold" aria-hidden="true">·</span>
+        <h2 id="museo-sala-nombre" class="text-xs md:text-sm font-bold text-stone-900 leading-tight line-clamp-2 md:line-clamp-none md:truncate">Origen del Nombre e Historia</h2>
       </div>
 
       <!-- Selector de Idioma sincronizado -->
-      <div class="flex items-center gap-1 bg-stone-900/90 border border-stone-800 rounded-xl p-1 text-xs relative z-50 pointer-events-auto">
+      <div class="flex items-center gap-1 bg-stone-900/90 border border-stone-800 rounded-xl p-1 text-xs relative z-50 pointer-events-auto shrink-0">
         <button type="button" id="btn-museo-idioma-es" class="px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-stone-950 transition cursor-pointer pointer-events-auto relative z-50 text-xs shadow-sm" aria-label="Cambiar idioma a Español">ES</button>
         <button type="button" id="btn-museo-idioma-en" class="px-2.5 py-1 rounded-lg text-stone-300 hover:text-white transition cursor-pointer pointer-events-auto relative z-50 text-xs" aria-label="Switch language to English">EN</button>
       </div>

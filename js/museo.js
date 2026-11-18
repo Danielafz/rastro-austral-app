@@ -46,6 +46,9 @@
             txtVolverMapa: document.getElementById("txt-volver-mapa-museo"),
             btnPrevSala: document.getElementById("btn-prev-sala-museo"),
             btnNextSala: document.getElementById("btn-next-sala-museo"),
+            headerTituloWrapper: document.getElementById("museo-header-titulo-wrapper"),
+            salaContador: document.getElementById("museo-sala-contador"),
+            salaNombre: document.getElementById("museo-sala-nombre"),
             tituloSalaNav: document.getElementById("museo-titulo-sala-actual") || document.getElementById("titulo-sala-actual-museo"),
             barraProgreso: document.getElementById("barra-progreso-museo"),
             btnSalasDrawer: document.getElementById("btn-abrir-menu-salas"),
@@ -133,6 +136,34 @@
         const pct = (paso / total) * 100;
         dom.barraProgreso.style.width = `${pct.toFixed(2)}%`;
         dom.barraProgreso.setAttribute("aria-valuenow", String(paso));
+    }
+
+    // Actualizar título de la sala en la barra superior (formato responsivo 2 líneas en móvil / 1 línea en escritorio)
+    function actualizarTituloSala(indiceSala) {
+        if (!dom.salaContador || !dom.salaNombre) {
+            dom.headerTituloWrapper = document.getElementById("museo-header-titulo-wrapper");
+            dom.salaContador = document.getElementById("museo-sala-contador");
+            dom.salaNombre = document.getElementById("museo-sala-nombre");
+            dom.tituloSalaNav = document.getElementById("museo-titulo-sala-actual") || document.getElementById("titulo-sala-actual-museo");
+        }
+        const salas = window.SALAS_MUSEO || [];
+        const idx = (typeof indiceSala === "number") ? indiceSala : estadoMuseo.salaIndex;
+        const sala = salas[idx];
+        if (!sala) return;
+
+        const idioma = getIdioma();
+        const prefijo = idioma === "en" ? `Room ${sala.numero} of ${salas.length}` : `Sala ${sala.numero} de ${salas.length}`;
+        const nombreLimpio = tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "");
+
+        if (dom.salaContador) {
+            dom.salaContador.textContent = prefijo;
+        }
+        if (dom.salaNombre) {
+            dom.salaNombre.textContent = nombreLimpio;
+        }
+        if (dom.tituloSalaNav && !dom.salaContador) {
+            dom.tituloSalaNav.innerHTML = `<span class="text-amber-700 font-bold prefijo-sala" style="color: #B45309 !important;">${prefijo}</span> · <span class="text-stone-900 font-bold nombre-sala" style="color: #1C1917 !important;">${nombreLimpio}</span>`;
+        }
     }
 
     // Estado y lógica de la Audioguía con Web Speech API offline
@@ -337,12 +368,8 @@
             });
         }
 
-        // Actualizar título en la barra superior con texto oscuro de alto contraste
-        if (dom.tituloSalaNav) {
-            const idioma = getIdioma();
-            const prefijo = idioma === "en" ? `Room ${sala.numero} of ${salas.length}` : `Sala ${sala.numero} de ${salas.length}`;
-            dom.tituloSalaNav.innerHTML = `<span class="text-amber-700 font-bold prefijo-sala" style="color: #B45309 !important;">${prefijo}</span> · <span class="text-stone-900 font-bold nombre-sala" style="color: #1C1917 !important;">${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}</span>`;
-        }
+        // Actualizar título en la barra superior con texto oscuro de alto contraste (separado en contador y nombre)
+        actualizarTituloSala(indice);
 
         // Progreso general en la barra del encabezado (al inicio de la sala)
         actualizarBarraProgreso(indice * 3 + 1);
@@ -860,6 +887,9 @@
 
         // Audioguía botón
         actualizarBotonAudioguia();
+
+        // Título de la sala en la barra superior (bilingüe y responsivo)
+        actualizarTituloSala(estadoMuseo.salaIndex);
     }
 
     // Cambiar idioma del Museo y propagar a toda la aplicación
@@ -1070,5 +1100,6 @@
     window.cerrarMuseoAustral = cerrarMuseoAustral;
     window.actualizarBotonesIdiomaMuseo = actualizarBotonesIdiomaMuseo;
     window.inicializarJoystickMuseo = inicializarJoystickMuseo;
+    window.actualizarTituloSala = actualizarTituloSala;
 
 })();

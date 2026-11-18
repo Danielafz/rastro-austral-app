@@ -2540,12 +2540,15 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 /* Título de la sala en la barra superior: texto oscuro */
 #museo-titulo-sala-actual,
 #titulo-sala-actual-museo,
+#museo-header-titulo-wrapper,
+#museo-sala-nombre,
 #vista-museo-austral header h2 {
   color: #1C1917 !important;
 }
 
 #museo-titulo-sala-actual .prefijo-sala,
-#titulo-sala-actual-museo .prefijo-sala {
+#titulo-sala-actual-museo .prefijo-sala,
+#museo-sala-contador {
   color: #B45309 !important;
 }
 

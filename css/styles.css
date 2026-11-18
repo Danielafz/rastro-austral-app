@@ -1685,17 +1685,6 @@ html.dark .sensibilidad-minimal {
     display: none;
   }
 
-  #btn-geolocalizacion {
-    bottom: 12px;
-    left: 10px;
-    z-index: 25;
-  }
-
-  .leaflet-bottom.leaflet-left {
-    bottom: 8px !important;
-    left: 48px !important;
-  }
-
   .footer-panel-legal {
     margin-top: 0.25rem;
     padding-top: 0.5rem;
@@ -1744,17 +1733,6 @@ html.dark .sensibilidad-minimal {
     top: 16px;
     left: 20px;
     z-index: 25;
-  }
-
-  #btn-geolocalizacion {
-    bottom: 24px;
-    left: 14px;
-    z-index: 25;
-  }
-
-  .leaflet-bottom.leaflet-left {
-    bottom: 20px !important;
-    left: 54px !important;
   }
 }
 
@@ -2305,6 +2283,10 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 }
 
 #btn-geolocalizacion {
-  bottom: 104px;
-  left: 12px;
+  position: absolute !important;
+  bottom: 104px !important;
+  left: 12px !important;
+  z-index: 400 !important;
+  width: 34px !important;
+  height: 34px !important;
 }

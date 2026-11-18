@@ -4,6 +4,8 @@
 
 let mapa;
 let capaMarcadores;
+let capaMarcadoresCluster;
+let capaMarcadoresPlana;
 let capaHuellas;
 let capaBaseEstandar;
 let capaBaseRelieve;
@@ -230,7 +232,8 @@ const DICCIONARIO = {
         leyenda_patrimonio: "Patrimonio",
         leyenda_senderos: "Senderos",
         leyenda_creativos: "Creativos",
-        leyenda_visitado: "Visitado en bitácora"
+        leyenda_visitado: "Visitado en bitácora",
+        aviso_modo_provincia: "🧭 Elegí una ciudad arriba para descubrir sus pingüinos, o marcá lugares visitados para verlos aquí"
     },
     en: {
         subtitulo: "Atlas & Territorial Exploration Journal",
@@ -371,7 +374,8 @@ const DICCIONARIO = {
         leyenda_patrimonio: "Heritage",
         leyenda_senderos: "Trails",
         leyenda_creativos: "Creative",
-        leyenda_visitado: "Visited in logbook"
+        leyenda_visitado: "Visited in logbook",
+        aviso_modo_provincia: "🧭 Choose a city above to discover its penguins, or mark visited places to see them here"
     }
 };
 
@@ -553,9 +557,12 @@ function inicializarMapa() {
     // Capa de ruta ("Mi Rastro en el Mapa") compuesta exclusivamente por huellas debajo de los marcadores
     capaHuellas = L.layerGroup().addTo(mapa);
 
+    // Capa de marcadores plana (para modo Toda la Provincia sin clusters)
+    capaMarcadoresPlana = L.layerGroup();
+
     // Agrupamiento inteligente de marcadores con Leaflet.markercluster y fallback a L.layerGroup
     if (typeof L.markerClusterGroup === "function") {
-        capaMarcadores = L.markerClusterGroup({
+        capaMarcadoresCluster = L.markerClusterGroup({
             maxClusterRadius: 42,
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
@@ -568,10 +575,11 @@ function inicializarMapa() {
                     iconAnchor: [16, 16]
                 });
             }
-        }).addTo(mapa);
+        });
     } else {
-        capaMarcadores = L.layerGroup().addTo(mapa);
+        capaMarcadoresCluster = L.layerGroup();
     }
+    capaMarcadores = capaMarcadoresCluster.addTo(mapa);
 
     // Ajustar densidad y escala de huellas al cambiar el nivel de zoom
     mapa.on("zoomend", actualizarTrazadoRuta);
@@ -722,14 +730,64 @@ function actualizarTrazadoRuta() {
   }
 }
 
+// Función auxiliar para contrastar la localidad de un hito con el selector de territorio
+function coincideTerritorio(hitoLocalidad, valorTerritorio) {
+    if (!valorTerritorio || valorTerritorio === "todos" || valorTerritorio === "provincia") return true;
+    const loc = (hitoLocalidad || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (valorTerritorio === "ushuaia") return loc.includes("ushuaia");
+    if (valorTerritorio === "tolhuin") return loc.includes("tolhuin");
+    if (valorTerritorio === "rio-grande" || valorTerritorio === "rio_grande") return loc.includes("rio grande");
+    if (valorTerritorio === "almanza") return loc.includes("almanza");
+    if (valorTerritorio === "san-sebastian") return loc.includes("sebastian");
+    if (valorTerritorio === "esperanza") return loc.includes("esperanza");
+    return true;
+}
+
 // 4. Dibujar marcadores dinámicos según visitas, filtros y búsqueda activa
 function renderizarMarcadores(anunciarResultados = false) {
-    capaMarcadores.clearLayers();
     marcadoresPorId = {};
     const visitas = obtenerVisitas();
     const t = DICCIONARIO[idiomaActual];
 
+    const selTerritorio = document.getElementById("filtro-territorio");
+    const valorTerritorio = selTerritorio ? selTerritorio.value : "todos";
     const q = busquedaActiva.toLowerCase().trim();
+    const esModoProvincia = (valorTerritorio === "todos" || valorTerritorio === "provincia");
+    const modoProvinciaSoloVisitados = esModoProvincia && !q && !hitoSeleccionadoId;
+
+    // Control del aviso flotante de modo provincia
+    const elAvisoTerritorio = document.getElementById("aviso-mapa-territorio");
+    if (elAvisoTerritorio) {
+        if (modoProvinciaSoloVisitados && visitas.length === 0) {
+            elAvisoTerritorio.classList.remove("hidden");
+        } else {
+            elAvisoTerritorio.classList.add("hidden");
+        }
+    }
+
+    // Alternar capa según corresponda: Plana (sin cluster en modo provincia solo visitados) vs Cluster (con agrupación)
+    if (modoProvinciaSoloVisitados) {
+        if (capaMarcadoresCluster && mapa && mapa.hasLayer(capaMarcadoresCluster)) {
+            mapa.removeLayer(capaMarcadoresCluster);
+        }
+        if (capaMarcadoresPlana && mapa && !mapa.hasLayer(capaMarcadoresPlana)) {
+            mapa.addLayer(capaMarcadoresPlana);
+        }
+        capaMarcadores = capaMarcadoresPlana;
+    } else {
+        if (capaMarcadoresPlana && mapa && mapa.hasLayer(capaMarcadoresPlana)) {
+            mapa.removeLayer(capaMarcadoresPlana);
+        }
+        if (capaMarcadoresCluster && mapa && !mapa.hasLayer(capaMarcadoresCluster)) {
+            mapa.addLayer(capaMarcadoresCluster);
+        }
+        capaMarcadores = capaMarcadoresCluster;
+    }
+
+    if (capaMarcadoresCluster) capaMarcadoresCluster.clearLayers();
+    if (capaMarcadoresPlana) capaMarcadoresPlana.clearLayers();
+    if (capaMarcadores) capaMarcadores.clearLayers();
+
     const hitosFiltrados = listaHitos.filter(hito => {
         const cumpleCategoria = filtroActivo === "todos" || hito.categoria === filtroActivo;
         if (!cumpleCategoria) return false;
@@ -740,6 +798,14 @@ function renderizarMarcadores(anunciarResultados = false) {
         const visitado = visitas.includes(hito.id);
         if (filtroEstadoVisita === "visitados" && !visitado) return false;
         if (filtroEstadoVisita === "pendientes" && visitado) return false;
+
+        if (modoProvinciaSoloVisitados) {
+            return visitado;
+        }
+
+        if (!coincideTerritorio(hito.localidad, valorTerritorio)) {
+            return false;
+        }
 
         if (!q) return true;
         return (
@@ -764,19 +830,6 @@ function renderizarMarcadores(anunciarResultados = false) {
         const colorPin = visitado ? '#10b981' : colorBase;
         const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
 
-        // Ícono vectorial minimalista según categoría (14x14px, stroke="currentColor" stroke-width="2.5")
-        let iconoCategoriaSVG = "";
-        if (hito.categoria === "senderos") {
-            // Cumbre doble / montañas
-            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`;
-        } else if (hito.categoria === "economia_creativa") {
-            // Estrella
-            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"></path></svg>`;
-        } else {
-            // Patrimonio (por defecto): Monumento / Columna
-            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="20" y2="21"></line><line x1="6" y1="4" x2="18" y2="4"></line><line x1="8" y1="4" x2="8" y2="21"></line><line x1="16" y1="4" x2="16" y2="21"></line><polygon points="12 2 4 4 20 4 12 2"></polygon></svg>`;
-        }
-
         // Halo animado detrás del pin cuando está seleccionado
         const haloSeleccionado = seleccionado
             ? `<div class="absolute w-8 h-8 rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
@@ -787,13 +840,34 @@ function renderizarMarcadores(anunciarResultados = false) {
             html: `
         <div class="relative flex items-center justify-center transform hover:scale-110 transition-all duration-200" style="width: 32px; height: 40px;">
           ${haloSeleccionado}
+          <!-- Pin del Mapa (Globo portador con fondo interior blanco) -->
           <svg class="absolute drop-shadow-md" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 0C7.16344 0 0 7.16344 0 16C0 27.5 16 40 16 40C16 40 32 27.5 32 16C32 7.16344 24.8366 0 16 0Z" fill="${colorPin}" />
             <circle cx="16" cy="15" r="10" fill="white" />
           </svg>
-          <div class="absolute z-10 flex items-center justify-center" style="top: 7px; color: ${colorPin};">
-            ${iconoCategoriaSVG}
-          </div>
+          
+          <!-- Silueta e Ilustración del Pingüino Austral -->
+          <svg class="absolute z-10" width="18" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="top: 5px;">
+            <!-- Cuerpo y Cabeza -->
+            <path d="M12 2C8 2 5 6 5 12C5 17 8 21 12 21C16 21 19 17 19 12C19 6 16 2 12 2Z" fill="#0f172a" stroke="#334155" stroke-width="0.5"/>
+            <!-- Panza Blanca -->
+            <path d="M12 7C9.5 7 7.5 9.5 7.5 13.5C7.5 16.5 9.5 19 12 19C14.5 19 16.5 16.5 16.5 13.5C16.5 9.5 14.5 7 12 7Z" fill="#ffffff"/>
+            <!-- Ojos -->
+            <circle cx="10" cy="6.5" r="1.5" fill="#ffffff"/>
+            <circle cx="10" cy="6.5" r="0.75" fill="#000000"/>
+            <circle cx="14" cy="6.5" r="1.5" fill="#ffffff"/>
+            <circle cx="14" cy="6.5" r="0.75" fill="#000000"/>
+            <!-- Pico -->
+            <polygon points="12,7.5 10.5,9.5 13.5,9.5" fill="#f97316"/>
+            <!-- Alitas laterales -->
+            <path d="M4.5 10C4 11.5 4 14.5 5 16C5.5 15 5.5 11.5 5 10" fill="#0f172a"/>
+            <path d="M19.5 10C20 11.5 20 14.5 19 16C18.5 15 18.5 11.5 19 10" fill="#0f172a" stroke="#334155" stroke-width="0.4"/>
+            <!-- Patitas -->
+            <ellipse cx="9.5" cy="20.5" rx="1.8" ry="1" fill="#f97316"/>
+            <ellipse cx="14.5" cy="20.5" rx="1.8" ry="1" fill="#f97316"/>
+          </svg>
+
+          <!-- Badge verde con ✓ arriba a la derecha si está visitado -->
           ${visitado ? `<div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border-2 border-white w-4 h-4 text-[9px] font-bold">✓</div>` : ''}
         </div>
       `,
@@ -946,6 +1020,7 @@ function limpiarTodosLosFiltros() {
 
     const selTerritorio = document.getElementById("filtro-territorio");
     if (selTerritorio) selTerritorio.value = "todos";
+    hitoSeleccionadoId = null;
 
     // Recentrar mapa en toda la provincia
     const configVista = VISTAS_TERRITORIO["provincia"] || VISTAS_TERRITORIO["todos"];
@@ -963,6 +1038,11 @@ function limpiarTodosLosFiltros() {
 // 5. Seleccionar un hito, centrar el mapa suavemente y desplegar su información
 function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCompleta = false) {
     hitoSeleccionadoId = hito.id;
+
+    // Si el marcador no está renderizado (por ej. modo provincia solo visitados y el hito no estaba visitado), actualizar marcadores
+    if (!marcadoresPorId || !marcadoresPorId[hito.id]) {
+        renderizarMarcadores();
+    }
 
     const marcador = marcadoresPorId && marcadoresPorId[hito.id];
     if (marcador && capaMarcadores && typeof capaMarcadores.zoomToShowLayer === "function") {
@@ -1966,12 +2046,8 @@ function configurarSelectorLocalidades() {
                 });
             }
 
-            // Al seleccionar "Toda la Provincia", recalcular trazado de ruta
-            if (vista === "todos" || vista === "provincia") {
-                actualizarTrazadoRuta();
-            }
-
-            actualizarContadorFiltros(capaMarcadores ? Object.keys(marcadoresPorId).length : listaHitos.length, listaHitos.length);
+            renderizarMarcadores(true);
+            actualizarTrazadoRuta();
 
             const nombreTerritorio = selectorTerritorio.options[selectorTerritorio.selectedIndex]?.text || vista;
             anunciarAccesibilidad(
@@ -1996,14 +2072,12 @@ function configurarSelectorLocalidades() {
                 });
             }
 
-            // Al seleccionar "Toda la Provincia", recalcular trazado de ruta
-            if (vista === "provincia" || vista === "todos") {
-                actualizarTrazadoRuta();
-            }
-
             if (selectorTerritorio) {
                 selectorTerritorio.value = vista === "rio_grande" ? "rio-grande" : vista;
             }
+
+            renderizarMarcadores(true);
+            actualizarTrazadoRuta();
 
             botones.forEach(b => {
                 b.className = "btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";

@@ -81,7 +81,8 @@
         class="w-40 h-44 sm:w-52 sm:h-60 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
         <!-- Globito de diálogo interactivo (oculto por defecto) -->
         <div id="burbuja-dialogo" role="status" aria-live="polite"
-          class="text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg"></div>
+          class="text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg">
+        </div>
 
         <!-- Destello / Resplandor cálido de la antorcha al encender el mapa -->
         <div id="resplandor-antorcha-fuego"
@@ -389,7 +390,8 @@
         <span class="text-base sm:text-lg md:text-xl font-medium text-neutral-300 tracking-wide">
           Bienvenido a
         </span>
-        <span class="text-3xl sm:text-4xl md:text-5xl font-black text-orange-500 tracking-tight mt-0.5 drop-shadow-[0_2px_12px_rgba(249,115,22,0.25)]">
+        <span
+          class="text-3xl sm:text-4xl md:text-5xl font-black text-orange-500 tracking-tight mt-0.5 drop-shadow-[0_2px_12px_rgba(249,115,22,0.25)]">
           Rastro Austral
         </span>
       </h1>
@@ -404,8 +406,8 @@
             id="lbl-nombre-explorador" data-i18n="lbl_nombre_explorador">
             Nombre del Expedicionario / Exploradora
           </label>
-          <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required
-            autofocus autocomplete="off" enterkeyhint="go"
+          <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required autofocus
+            autocomplete="off" enterkeyhint="go"
             style="background-color: #171717 !important; border: 1px solid #262626 !important; color: #ffffff !important;"
             class="relative z-30 pointer-events-auto w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
         </div>
@@ -542,7 +544,8 @@
             </svg>
             <span data-i18n="tab_pasaporte" class="whitespace-nowrap truncate font-bold">Bitácora</span>
             <span id="tab-badge-sellos"
-              class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 leading-none"><span id="bitacora-visitas">0</span>/<span id="bitacora-total">25</span></span>
+              class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500/20 text-amber-700 leading-none"><span
+                id="bitacora-visitas">0</span>/<span id="bitacora-total">25</span></span>
           </button>
 
           <!-- Pestaña 3: Observatorio (Ciencia de Datos Cívica) -->
@@ -657,7 +660,9 @@
         <!-- Barra de Estado de Filtros y Contador -->
         <div class="flex items-center justify-between text-xs text-slate-500 mt-2 mb-3">
           <span id="contador-hitos" class="font-medium">Mostrando 25 de 25 hitos</span>
-          <button id="btn-limpiar-filtros" type="button" class="hidden text-orange-600 hover:text-orange-700 font-bold underline cursor-pointer">Limpiar filtros</button>
+          <button id="btn-limpiar-filtros" type="button"
+            class="hidden text-orange-600 hover:text-orange-700 font-bold underline cursor-pointer">Limpiar
+            filtros</button>
         </div>
 
         <!-- Tarjeta Travesía Acumulada -->
@@ -702,7 +707,8 @@
             </p>
             <p class="text-[11px] text-slate-400" data-i18n="toca_marcador_desc">Toca cualquier marcador para ver su
               ficha territorial</p>
-            <button id="btn-explorar-aleatorio" type="button" class="mt-4 inline-flex items-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors cursor-pointer">
+            <button id="btn-explorar-aleatorio" type="button"
+              class="mt-4 inline-flex items-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors cursor-pointer">
               🧭 Descubrir un hito sugerido
             </button>
           </div>
@@ -766,7 +772,8 @@
         <!-- Grupo de Capas + Botón SAR independiente -->
         <div class="flex items-center gap-2 flex-1 pointer-events-auto">
           <!-- Cápsula de Capas (Estándar, Relieve, Áreas Protegidas) -->
-          <div class="flex-1 grid grid-cols-3 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200/80">
+          <div
+            class="flex-1 grid grid-cols-3 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200/80">
             <button type="button" id="btn-capa-estandar"
               class="btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active">
               <span data-i18n="capa_estandar" class="truncate">Estándar</span>
@@ -807,7 +814,8 @@
       </button>
 
       <!-- Leyenda Cartográfica Responsiva (Colapsable en móvil, anclada en bottom-3 right-2.5) -->
-      <div id="contenedor-leyenda-mapa" class="absolute bottom-3 right-2.5 md:bottom-6 md:right-3 z-[400] flex flex-col items-end pointer-events-auto">
+      <div id="contenedor-leyenda-mapa"
+        class="absolute bottom-3 right-2.5 md:bottom-6 md:right-3 z-[400] flex flex-col items-end pointer-events-auto">
         <!-- Botón Píldora de Cabecera -->
         <button id="btn-toggle-leyenda" type="button"
           class="min-h-[34px] px-3 py-1.5 bg-white/95 hover:bg-slate-50 text-slate-800 rounded-xl border border-slate-200 shadow-md flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer select-none"
@@ -819,7 +827,10 @@
             <polyline points="2 12 12 17 22 12"></polyline>
           </svg>
           <span data-i18n="lbl_leyenda">Leyenda</span>
-          <svg id="icono-flecha-leyenda" class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 transform md:rotate-180 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg id="icono-flecha-leyenda"
+            class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 transform md:rotate-180 shrink-0"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
             <polyline points="18 15 12 9 6 15"></polyline>
           </svg>
         </button>
@@ -844,6 +855,12 @@
             <span data-i18n="leyenda_visitado" class="font-medium text-emerald-700">Visitado en bitácora</span>
           </div>
         </div>
+      </div>
+
+      <!-- Banner flotante de aviso para modo "Toda la Provincia" sin visitas -->
+      <div id="aviso-mapa-territorio"
+        class="hidden absolute bottom-5 left-1/2 transform -translate-x-1/2 z-[400] bg-white/95 backdrop-blur border border-slate-200 px-4 py-2 rounded-full shadow-md text-xs font-medium text-slate-700 pointer-events-none text-center max-w-[90%] sm:max-w-md transition-all duration-300">
+        <span data-i18n="aviso_modo_provincia">🧭 Elegí una ciudad arriba para descubrir sus pingüinos, o marcá lugares visitados para verlos aquí</span>
       </div>
     </main>
   </div>
@@ -1408,7 +1425,8 @@
         <div class="tarjeta-observatorio p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="whitespace-nowrap text-[9px] sm:text-[10px] tracking-normal sm:tracking-wider font-bold uppercase text-orange-600"
+              <span
+                class="whitespace-nowrap text-[9px] sm:text-[10px] tracking-normal sm:tracking-wider font-bold uppercase text-orange-600"
                 data-i18n="obs_subtitulo">Ciencia de Datos Cívica · 2015–2030</span>
               <h3 data-i18n="obs_titulo" class="text-sm font-bold text-slate-900 leading-tight mt-0.5">
                 Observatorio Climático Austral</h3>
@@ -1424,17 +1442,21 @@
               <span data-i18n="obs_escuchar">Escuchar síntesis</span>
             </button>
           </div>
-          <p id="obs-fuentes-reales" data-i18n="obs_intro" class="text-xs sm:text-sm md:text-sm lg:text-base text-slate-600 leading-relaxed">
-            Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal 2015–2030).
+          <p id="obs-fuentes-reales" data-i18n="obs_intro"
+            class="text-xs sm:text-sm md:text-sm lg:text-base text-slate-600 leading-relaxed">
+            Escenarios ilustrativos de prototipo basados en tendencias ambientales regionales (extrapolación lineal
+            2015–2030).
           </p>
         </div>
 
         <!-- Métrica 1: Turbales (Didáctica para todas las edades) -->
-        <div class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3" data-metrica="turbales">
+        <div class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3"
+          data-metrica="turbales">
           <div class="flex items-start justify-between gap-2">
             <div>
               <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-amber-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="w-5 h-5 text-amber-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
                 </svg>
                 <h4 data-i18n="obs_m1_titulo" class="text-sm md:text-base font-bold text-slate-900 leading-snug">
@@ -1445,7 +1467,8 @@
               </p>
               <!-- Dato Principal en Grande -->
               <div class="text-3xl font-black text-amber-700 my-2 flex items-baseline gap-2">
-                <span>5</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span> <span>10</span> <span class="text-sm font-bold text-slate-700">días secos</span>
+                <span>5</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span>
+                <span>10</span> <span class="text-sm font-bold text-slate-700">días secos</span>
                 <span id="badge-turbales-pct" class="sr-only">+100% días secos</span>
               </div>
             </div>
@@ -1454,34 +1477,68 @@
           <!-- Explicación simple para todas las edades -->
           <div
             class="obs-caja-simple p-3 rounded-xl bg-amber-50 text-amber-950 text-xs md:text-sm leading-relaxed border border-amber-200">
-            <strong class="text-slate-800">¿Qué significa?</strong> <span
-              data-i18n="obs_m1_simple">La turba es como una esponja gigante que guarda agua y atrapa carbono. Al
+            <strong class="text-slate-800">¿Qué significa?</strong> <span data-i18n="obs_m1_simple">La turba es como una
+              esponja gigante que guarda agua y atrapa carbono. Al
               secarse por el calor, se agrieta y deja de protegernos.</span>
           </div>
 
           <!-- Contenedor del Gráfico SVG Custom -->
-          <div id="svg-container-turbales" class="max-w-[700px] w-full mx-auto h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución de días secos."></div>
+          <div id="svg-container-turbales"
+            class="max-w-[700px] w-full mx-auto h-56 relative font-mono text-xs tabular-nums" role="img"
+            aria-label="Gráfico de línea mostrando la evolución de días secos."></div>
           <!-- Leyenda Unificada -->
-          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#d97706] block"></span> Serie base</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-[#d97706] block"></span> Proyección</span></div>
+          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span
+              class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#d97706] block"></span> Serie
+              base</span><span class="flex items-center gap-1.5"><span
+                class="w-3 h-0.5 border-t-2 border-dashed border-[#d97706] block"></span> Proyección</span></div>
 
           <!-- Tabla accesible para lectores de pantalla -->
           <table class="sr-only">
             <caption>Proyección de días secos anuales en los turbales fueguinos (2015–2030)</caption>
             <thead>
-              <tr><th scope="col">Año</th><th scope="col">Días secos al año</th><th scope="col">Estado</th></tr>
+              <tr>
+                <th scope="col">Año</th>
+                <th scope="col">Días secos al año</th>
+                <th scope="col">Estado</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>2015</td><td>5</td><td>Observado</td></tr>
-              <tr><td>2018</td><td>6</td><td>Observado</td></tr>
-              <tr><td>2021</td><td>7</td><td>Observado</td></tr>
-              <tr><td>2024</td><td>8</td><td>Observado</td></tr>
-              <tr><td>2027 (est.)</td><td>9</td><td>Proyección estimada</td></tr>
-              <tr><td>2030 (est.)</td><td>10</td><td>Proyección estimada</td></tr>
+              <tr>
+                <td>2015</td>
+                <td>5</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2018</td>
+                <td>6</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2021</td>
+                <td>7</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2024</td>
+                <td>8</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2027 (est.)</td>
+                <td>9</td>
+                <td>Proyección estimada</td>
+              </tr>
+              <tr>
+                <td>2030 (est.)</td>
+                <td>10</td>
+                <td>Proyección estimada</td>
+              </tr>
             </tbody>
           </table>
 
           <!-- Pie de tarjeta protegido de superposiciones -->
-          <div class="relative z-[50] w-full flex flex-wrap items-center justify-between gap-4 pt-3 mt-2 border-t border-slate-100 text-xs sm:text-sm bg-white pointer-events-auto">
+          <div
+            class="relative z-[50] w-full flex flex-wrap items-center justify-between gap-4 pt-3 mt-2 border-t border-slate-100 text-xs sm:text-sm bg-white pointer-events-auto">
             <span class="text-slate-700 font-medium flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m1_alerta_lbl">Nivel de alerta:</span> <strong class="text-slate-900 font-bold"
@@ -1489,50 +1546,67 @@
                   Crítico</strong></span>
             </span>
             <div class="flex items-center gap-4">
-              <button type="button" class="btn-toggle-metodo min-h-[44px] py-2.5 px-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-950 underline flex items-center gap-1.5 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 select-none" onclick="window.toggleMetodoObservatorio(this)">
-                <svg class="w-3.5 h-3.5 text-slate-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <button type="button"
+                class="btn-toggle-metodo min-h-[44px] py-2.5 px-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-950 underline flex items-center gap-1.5 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 select-none"
+                onclick="window.toggleMetodoObservatorio(this)">
+                <svg class="w-3.5 h-3.5 text-slate-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
                 <span>Ver fuente y método</span>
               </button>
               <button id="btn-obs-ir-turbal" type="button"
                 class="btn-ir-turbal min-h-[44px] py-2.5 px-3 text-xs sm:text-sm text-orange-700 font-bold hover:underline whitespace-nowrap cursor-pointer rounded-lg hover:bg-orange-50 transition-colors"
-                onclick="window.navegarATurbalObservatorio()"
-                data-i18n="obs_m1_ver">
+                onclick="window.navegarATurbalObservatorio()" data-i18n="obs_m1_ver">
                 Ver turbal en mapa →
               </button>
             </div>
           </div>
           <!-- Panel de Fuente y Método Metodológico -->
-          <div id="caja-metodo-turbales" class="panel-metodo hidden mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+          <div id="caja-metodo-turbales"
+            class="panel-metodo hidden mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
             <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
               <span class="flex items-center gap-1.5">📋 <span>Ficha Metodológica y Transparencia</span></span>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Datos ilustrativos · prototipo</span>
+              <span
+                class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Datos
+                ilustrativos · prototipo</span>
             </div>
-            <p class="pt-1"><strong>Fuente de referencia:</strong> Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.</p>
+            <p class="pt-1"><strong>Fuente de referencia:</strong> Contexto regional: CADIC-CONICET e IDETDF. Los
+              valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.
+            </p>
             <p><strong>Método de proyección:</strong> Extrapolación lineal a partir de la serie 2015–2024</p>
             <p><strong>Métrica:</strong> Días secos al año.</p>
-            <p class="mt-1"><strong>¿Qué es Moderado a Crítico?:</strong> Transición de un déficit hídrico estacional a un riesgo permanente de degradación del musgo Sphagnum y vulnerabilidad a incendios.</p>
+            <p class="mt-1"><strong>¿Qué es Moderado a Crítico?:</strong> Transición de un déficit hídrico estacional a
+              un riesgo permanente de degradación del musgo Sphagnum y vulnerabilidad a incendios.</p>
             <p class="text-[10px] text-slate-500 pt-0.5"><strong>Última actualización:</strong> 17/11/2026</p>
           </div>
         </div>
 
         <!-- Métrica 2: Glaciar Vinciguerra (Didáctica para todas las edades) -->
-        <div class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3" data-metrica="glaciar">
+        <div class="tarjeta-observatorio p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3"
+          data-metrica="glaciar">
           <div class="flex items-start justify-between gap-2">
             <div>
               <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-cyan-700 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="w-5 h-5 text-cyan-700 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
                   <path d="M4.14 15.08 8 13l4 3 4.5-2.5"></path>
                 </svg>
                 <h4 data-i18n="obs_m2_titulo" class="text-sm md:text-base font-bold text-slate-900 leading-snug">
-                  El glaciar podría perder un 16% de su masa de 2015 para 2030 <span class="text-[9px] text-slate-400 font-normal ml-2">(eje desde 80%)</span></h4>
+                  El glaciar podría perder un 16% de su masa de 2015 para 2030 <span
+                    class="text-[9px] text-slate-400 font-normal ml-2">(eje desde 80%)</span></h4>
               </div>
               <p data-i18n="obs_m2_sub" class="text-xs md:text-sm text-slate-600 mt-0.5">
-                Hielo que nos queda para beber y abastecer a la ciudad <span class="text-[10px] text-slate-400 font-normal block sm:inline sm:ml-1">(eje desde 80%)</span>
+                Hielo que nos queda para beber y abastecer a la ciudad <span
+                  class="text-[10px] text-slate-400 font-normal block sm:inline sm:ml-1">(eje desde 80%)</span>
               </p>
               <!-- Dato Principal en Grande -->
               <div class="text-3xl font-black text-cyan-800 my-2 flex items-baseline gap-2">
-                <span>100%</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span> <span>84%</span> <span class="text-sm font-bold text-slate-700">masa remanente</span>
+                <span>100%</span> <span class="text-slate-400 font-normal text-xl" aria-hidden="true">→</span>
+                <span>84%</span> <span class="text-sm font-bold text-slate-700">masa remanente</span>
                 <span id="badge-glaciar-pct" class="sr-only">-16% a 2030</span>
               </div>
             </div>
@@ -1541,58 +1615,105 @@
           <!-- Explicación simple -->
           <div
             class="obs-caja-simple p-3 rounded-xl bg-cyan-50 text-cyan-950 text-xs md:text-sm leading-relaxed border border-cyan-200">
-            <strong class="text-slate-800">¿Qué significa?</strong> <span
-              data-i18n="obs_m2_simple">Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa de 2015.</span>
+            <strong class="text-slate-800">¿Qué significa?</strong> <span data-i18n="obs_m2_simple">Por el aumento de
+              temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa de
+              2015.</span>
           </div>
 
           <!-- Contenedor del Gráfico SVG Custom -->
-          <div id="svg-container-glaciar" class="max-w-[700px] w-full mx-auto h-56 relative font-mono text-xs tabular-nums" role="img" aria-label="Gráfico de línea mostrando la evolución del porcentaje de masa remanente del glaciar (eje desde 80%)."></div>
+          <div id="svg-container-glaciar"
+            class="max-w-[700px] w-full mx-auto h-56 relative font-mono text-xs tabular-nums" role="img"
+            aria-label="Gráfico de línea mostrando la evolución del porcentaje de masa remanente del glaciar (eje desde 80%).">
+          </div>
           <!-- Leyenda Unificada -->
-          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#0e7490] block"></span> Serie base</span><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 border-t-2 border-dashed border-[#0e7490] block"></span> Proyección</span></div>
+          <div class="flex items-center gap-4 text-[10px] text-slate-500 mt-2 justify-center"><span
+              class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#0e7490] block"></span> Serie
+              base</span><span class="flex items-center gap-1.5"><span
+                class="w-3 h-0.5 border-t-2 border-dashed border-[#0e7490] block"></span> Proyección</span></div>
 
           <!-- Tabla accesible para lectores de pantalla -->
           <table class="sr-only">
             <caption>Evolución de la masa remanente del Glaciar Vinciguerra (2015–2030) (eje desde 80%)</caption>
             <thead>
-              <tr><th scope="col">Año</th><th scope="col">% Masa remanente</th><th scope="col">Estado</th></tr>
+              <tr>
+                <th scope="col">Año</th>
+                <th scope="col">% Masa remanente</th>
+                <th scope="col">Estado</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>2015</td><td>100%</td><td>Observado</td></tr>
-              <tr><td>2018</td><td>96.8%</td><td>Observado</td></tr>
-              <tr><td>2021</td><td>93.6%</td><td>Observado</td></tr>
-              <tr><td>2024</td><td>90.4%</td><td>Observado</td></tr>
-              <tr><td>2027 (est.)</td><td>87.2%</td><td>Proyección estimada</td></tr>
-              <tr><td>2030 (est.)</td><td>84.0%</td><td>Proyección estimada</td></tr>
+              <tr>
+                <td>2015</td>
+                <td>100%</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2018</td>
+                <td>96.8%</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2021</td>
+                <td>93.6%</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2024</td>
+                <td>90.4%</td>
+                <td>Observado</td>
+              </tr>
+              <tr>
+                <td>2027 (est.)</td>
+                <td>87.2%</td>
+                <td>Proyección estimada</td>
+              </tr>
+              <tr>
+                <td>2030 (est.)</td>
+                <td>84.0%</td>
+                <td>Proyección estimada</td>
+              </tr>
             </tbody>
           </table>
 
           <!-- Pie de tarjeta protegido de superposiciones -->
-          <div class="relative z-[50] w-full flex flex-wrap items-center justify-between gap-4 pt-3 mt-2 border-t border-slate-100 text-xs sm:text-sm bg-white pointer-events-auto">
+          <div
+            class="relative z-[50] w-full flex flex-wrap items-center justify-between gap-4 pt-3 mt-2 border-t border-slate-100 text-xs sm:text-sm bg-white pointer-events-auto">
             <span class="text-slate-700 font-medium flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
               <span><span data-i18n="obs_m2_alerta_lbl">Contexto:</span> <strong class="text-slate-900 font-bold"
                   data-i18n="obs_m2_alerta_val">Abastecimiento de agua de Ushuaia</strong></span>
             </span>
             <div class="flex items-center gap-4">
-              <button type="button" class="btn-toggle-metodo min-h-[44px] py-2.5 px-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-950 underline flex items-center gap-1.5 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 select-none" onclick="window.toggleMetodoObservatorio(this)">
-                <svg class="w-3.5 h-3.5 text-slate-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <button type="button"
+                class="btn-toggle-metodo min-h-[44px] py-2.5 px-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-950 underline flex items-center gap-1.5 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 select-none"
+                onclick="window.toggleMetodoObservatorio(this)">
+                <svg class="w-3.5 h-3.5 text-slate-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
                 <span>Ver fuente y método</span>
               </button>
               <button id="btn-obs-ir-vinciguerra" type="button"
                 class="btn-ir-glaciar min-h-[44px] py-2.5 px-3 text-xs sm:text-sm text-orange-700 font-bold hover:underline whitespace-nowrap cursor-pointer rounded-lg hover:bg-orange-50 transition-colors"
-                onclick="window.navegarAGlaciarObservatorio()"
-                data-i18n="obs_m2_ver">
+                onclick="window.navegarAGlaciarObservatorio()" data-i18n="obs_m2_ver">
                 Ver glaciar en mapa →
               </button>
             </div>
           </div>
           <!-- Panel de Fuente y Método Metodológico -->
-          <div id="caja-metodo-glaciar" class="panel-metodo hidden mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+          <div id="caja-metodo-glaciar"
+            class="panel-metodo hidden mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
             <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
               <span class="flex items-center gap-1.5">📋 <span>Ficha Metodológica y Transparencia</span></span>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Datos ilustrativos · prototipo</span>
+              <span
+                class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Datos
+                ilustrativos · prototipo</span>
             </div>
-            <p class="pt-1"><strong>Fuente de referencia:</strong> Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.</p>
+            <p class="pt-1"><strong>Fuente de referencia:</strong> Contexto regional: IANIGLA (Inventario Nacional de
+              Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen
+              mediciones oficiales.</p>
             <p><strong>Método de proyección:</strong> Extrapolación lineal a partir de la serie 2015–2024</p>
             <p><strong>Métrica:</strong> % de masa remanente (Año base 2015 = 100%).</p>
             <p class="text-[10px] text-slate-500 pt-0.5"><strong>Última actualización:</strong> 17/11/2026</p>

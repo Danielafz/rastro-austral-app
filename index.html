@@ -736,7 +736,7 @@
           class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-700 hover:bg-amber-600 hover:text-slate-950 hover:border-amber-400 text-xs font-bold transition cursor-pointer"
           title="Cerrar museo y volver al mapa" aria-label="Cerrar museo">
           <span>✕</span>
-          <span class="hidden sm:inline" data-i18n="btn_volver_mapa">Volver al Mapa</span>
+          <span id="txt-volver-mapa-museo" class="hidden sm:inline" data-i18n="btn_volver_mapa">Volver al Mapa</span>
         </button>
 
         <div class="flex items-center bg-stone-900/90 rounded-xl p-0.5 border border-stone-800">
@@ -757,9 +757,9 @@
       </div>
 
       <!-- Selector de Idioma sincronizado -->
-      <div class="flex items-center gap-1 bg-stone-900/90 border border-stone-800 rounded-xl p-1 text-xs">
-        <button type="button" id="btn-museo-lang-es" class="px-2 py-0.5 rounded font-bold bg-amber-600 text-white transition cursor-pointer">ES</button>
-        <button type="button" id="btn-museo-lang-en" class="px-2 py-0.5 rounded text-amber-200/60 hover:text-white transition cursor-pointer">EN</button>
+      <div class="flex items-center gap-1 bg-stone-900/90 border border-stone-800 rounded-xl p-1 text-xs relative z-50 pointer-events-auto">
+        <button type="button" id="btn-museo-idioma-es" class="px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-stone-950 transition cursor-pointer pointer-events-auto relative z-50 text-xs shadow-sm" aria-label="Cambiar idioma a Español">ES</button>
+        <button type="button" id="btn-museo-idioma-en" class="px-2.5 py-1 rounded-lg text-stone-300 hover:text-white transition cursor-pointer pointer-events-auto relative z-50 text-xs" aria-label="Switch language to English">EN</button>
       </div>
 
       <!-- Barra de Progreso del Recorrido (1/18 a 18/18) -->
@@ -875,11 +875,11 @@
           <div id="museo-joystick-base" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing select-none shadow-2xl" style="touch-action: none; user-select: none;">
             <div id="museo-joystick-knob" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75" style="touch-action: none; user-select: none;"></div>
           </div>
-          <span class="mt-1 text-[10px] font-bold text-amber-300 tracking-wider uppercase select-none drop-shadow-md">Caminar</span>
+          <span id="lbl-joystick-museo" class="mt-1 text-[10px] font-bold text-amber-300 tracking-wider uppercase select-none drop-shadow-md">CAMINAR</span>
         </div>
 
         <!-- Indicador de controles en escritorio -->
-        <div class="hidden md:flex absolute bottom-7 left-1/2 -translate-x-1/2 items-center gap-2 bg-stone-950/85 border border-stone-800/80 px-4 py-2 rounded-full text-xs text-stone-200 pointer-events-none shadow-xl backdrop-blur-md">
+        <div id="indicador-teclas-museo" class="hidden md:flex absolute bottom-7 left-1/2 -translate-x-1/2 items-center gap-2 bg-stone-950/85 border border-stone-800/80 px-4 py-2 rounded-full text-xs text-stone-200 pointer-events-none shadow-xl backdrop-blur-md">
           <span>⌨️ Usá las flechas <strong class="text-amber-400">←</strong> / <strong class="text-amber-400">→</strong> o la rueda del mouse para caminar</span>
         </div>
 
@@ -888,7 +888,7 @@
           <button type="button" id="btn-abrir-menu-salas"
             class="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-full border border-amber-300 shadow-xl transition active:scale-95 cursor-pointer text-xs sm:text-sm">
             <span>🏛️</span>
-            <span>Salas</span>
+            <span id="lbl-btn-salas-museo">Salas</span>
             <span class="bg-amber-900/30 text-slate-950 px-1.5 py-0.2 rounded-full text-[10px]">6</span>
           </button>
         </div>
@@ -914,7 +914,7 @@
       class="fixed inset-x-0 bottom-0 z-50 sheet-pergamino-museo rounded-t-3xl max-h-[84dvh] flex flex-col overflow-hidden transform translate-y-full transition-transform duration-300 ease-out pointer-events-none shadow-2xl">
       <!-- Tirador superior fijo para cerrar -->
       <div class="px-5 py-3 border-b border-amber-900/20 flex items-center justify-between shrink-0 bg-[#F9F6F0]">
-        <span class="text-[11px] font-mono uppercase tracking-widest text-amber-900 font-bold">Colección Histórica Fueguina</span>
+        <span id="lbl-coleccion-museo" class="text-[11px] font-mono uppercase tracking-widest text-amber-900 font-bold">COLECCIÓN HISTÓRICA FUEGUINA</span>
         <button type="button" id="btn-cerrar-sheet-obra" class="w-8 h-8 rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 flex items-center justify-center font-bold text-sm transition cursor-pointer" aria-label="Cerrar ficha">✕</button>
       </div>
 

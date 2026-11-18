@@ -43,12 +43,15 @@
         dom = {
             vista: document.getElementById("vista-museo-austral"),
             btnCerrar: document.getElementById("btn-cerrar-museo"),
+            txtVolverMapa: document.getElementById("txt-volver-mapa-museo"),
             btnPrevSala: document.getElementById("btn-prev-sala-museo"),
             btnNextSala: document.getElementById("btn-next-sala-museo"),
             tituloSalaNav: document.getElementById("museo-titulo-sala-actual") || document.getElementById("titulo-sala-actual-museo"),
             barraProgreso: document.getElementById("barra-progreso-museo"),
             btnSalasDrawer: document.getElementById("btn-abrir-menu-salas"),
+            lblBtnSalas: document.getElementById("lbl-btn-salas-museo"),
             drawerSalas: document.getElementById("drawer-selector-salas"),
+            tituloModalSalas: document.getElementById("titulo-modal-salas"),
             listaSalasDrawer: document.getElementById("lista-salas-selector"),
             btnCerrarDrawerSalas: document.getElementById("btn-cerrar-drawer-salas"),
             pasilloMuro: document.getElementById("pasillo-muro-museo"),
@@ -56,7 +59,10 @@
             pinguinoMascota: document.getElementById("pinguino-mascota-museo"),
             joystickBase: document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo"),
             joystickPerilla: document.getElementById("museo-joystick-knob") || document.getElementById("joystick-perilla-museo"),
+            lblJoystick: document.getElementById("lbl-joystick-museo"),
+            indicadorTeclas: document.getElementById("indicador-teclas-museo"),
             sheetDetalle: document.getElementById("sheet-detalle-obra-museo"),
+            lblColeccion: document.getElementById("lbl-coleccion-museo"),
             btnCerrarSheet: document.getElementById("btn-cerrar-sheet-obra"),
             btnSeguirRecorriendo: document.getElementById("btn-seguir-recorriendo-obra"),
             textoSeguirRecorriendo: document.getElementById("texto-seguir-recorriendo"),
@@ -74,14 +80,20 @@
             indicadorContador: document.getElementById("indicador-obra-contador"),
             textoObraAnterior: document.getElementById("texto-obra-anterior"),
             textoObraSiguiente: document.getElementById("texto-obra-siguiente"),
-            btnLangEs: document.getElementById("btn-museo-lang-es"),
-            btnLangEn: document.getElementById("btn-museo-lang-en")
+            btnLangEs: document.getElementById("btn-museo-idioma-es") || document.getElementById("btn-museo-lang-es"),
+            btnLangEn: document.getElementById("btn-museo-idioma-en") || document.getElementById("btn-museo-lang-en")
         };
     }
 
-    // Obtener idioma activo actual
+    // Obtener idioma activo actual (localStorage > window.idiomaActual > 'es')
     function getIdioma() {
-        if (typeof window.idiomaActual === "string") return window.idiomaActual;
+        try {
+            const guardado = localStorage.getItem("rastro_austral_idioma");
+            if (guardado === "es" || guardado === "en") return guardado;
+        } catch (_) {}
+        if (typeof window.idiomaActual === "string" && (window.idiomaActual === "es" || window.idiomaActual === "en")) {
+            return window.idiomaActual;
+        }
         return "es";
     }
 
@@ -433,7 +445,7 @@
                 const nombreHito = tBilingue(obra.hitoRelacionado);
                 dom.sheetHitoBadge.innerHTML = `
                     <span class="text-amber-700">📍</span>
-                    <span class="font-semibold text-amber-950">${getIdioma() === "en" ? "Related landmark:" : "Corresponde al hito:"}</span>
+                    <span class="font-semibold text-amber-950">${getIdioma() === "en" ? "Corresponds to landmark:" : "Corresponde al hito:"}</span>
                     <span class="text-amber-900 font-bold">${nombreHito}</span>
                 `;
                 dom.sheetHitoBadge.classList.remove("hidden");
@@ -464,7 +476,7 @@
         const idioma = getIdioma();
         if (dom.textoObraAnterior) dom.textoObraAnterior.textContent = idioma === "en" ? "Previous" : "Anterior";
         if (dom.textoObraSiguiente) dom.textoObraSiguiente.textContent = idioma === "en" ? "Next" : "Siguiente";
-        if (dom.textoSeguirRecorriendo) dom.textoSeguirRecorriendo.textContent = idioma === "en" ? "Continue tour" : "Seguir recorriendo";
+        if (dom.textoSeguirRecorriendo) dom.textoSeguirRecorriendo.textContent = idioma === "en" ? "Keep exploring" : "Seguir recorriendo";
         actualizarBotonAudioguia();
 
         dom.sheetDetalle.classList.remove("translate-y-full", "pointer-events-none");
@@ -488,10 +500,10 @@
         dom.listaSalasDrawer.innerHTML = "";
 
         // Asegurar contraste de título principal del modal
-        const tituloModal = document.getElementById("titulo-modal-salas");
+        const tituloModal = dom.tituloModalSalas || document.getElementById("titulo-modal-salas");
         if (tituloModal) {
             tituloModal.style.setProperty("color", "#FAF6EE", "important");
-            tituloModal.textContent = getIdioma() === "en" ? "Rooms of the Austral Museum" : "Salas del Museo Austral";
+            tituloModal.textContent = getIdioma() === "en" ? "Austral Museum Rooms" : "Salas del Museo Austral";
         }
 
         salas.forEach((sala, i) => {
@@ -512,7 +524,7 @@
                             <span class="font-mono text-xs mr-1 numero-sala-badge" style="color: #FBBF24 !important;">${getIdioma() === "en" ? "Room" : "Sala"} ${sala.numero}:</span>
                             ${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}
                         </h4>
-                        ${esActiva ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase tracking-wider">${getIdioma() === "en" ? "Current" : "En curso"}</span>` : ""}
+                        ${esActiva ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase tracking-wider">${getIdioma() === "en" ? "CURRENT" : "EN CURSO"}</span>` : ""}
                     </div>
                     <p class="text-xs font-semibold mt-0.5 leading-snug subtitulo-sala-card" style="color: #FEF3C7 !important;">${tBilingue(sala.subtitulo)}</p>
                     <p class="text-[11px] mt-1 line-clamp-2 leading-relaxed desc-sala-card" style="color: #D6D3D1 !important;">${tBilingue(sala.descripcionCorta)}</p>
@@ -806,18 +818,86 @@
         }, { passive: true });
     }
 
+    // Traducir todos los textos de la interfaz del Museo
+    function traducirInterfazMuseo() {
+        const idm = getIdioma();
+        const esEn = idm === "en";
+
+        // Botón volver al mapa
+        if (dom.txtVolverMapa) {
+            dom.txtVolverMapa.textContent = esEn ? "Back to Map" : "Volver al Mapa";
+        }
+
+        // Joystick etiqueta
+        if (dom.lblJoystick) {
+            dom.lblJoystick.textContent = esEn ? "WALK" : "CAMINAR";
+        }
+
+        // Indicador de controles de escritorio
+        if (dom.indicadorTeclas) {
+            dom.indicadorTeclas.innerHTML = esEn
+                ? "<span>⌨️ Use arrow keys <strong class='text-amber-400'>←</strong> / <strong class='text-amber-400'>→</strong> or mouse wheel to walk</span>"
+                : "<span>⌨️ Usá las flechas <strong class='text-amber-400'>←</strong> / <strong class='text-amber-400'>→</strong> o la rueda del mouse para caminar</span>";
+        }
+
+        // Botón Salas flotante
+        if (dom.lblBtnSalas) {
+            dom.lblBtnSalas.textContent = esEn ? "Rooms" : "Salas";
+        }
+
+        // Modal Salas título
+        if (dom.tituloModalSalas) {
+            dom.tituloModalSalas.textContent = esEn ? "Austral Museum Rooms" : "Salas del Museo Austral";
+        }
+
+        // Ficha de Obra: encabezado colección
+        if (dom.lblColeccion) {
+            dom.lblColeccion.textContent = esEn ? "FUEGIAN HISTORICAL COLLECTION" : "COLECCIÓN HISTÓRICA FUEGUINA";
+        }
+
+        // Ficha de Obra: botones de navegación
+        if (dom.textoObraAnterior) {
+            dom.textoObraAnterior.textContent = esEn ? "Previous" : "Anterior";
+        }
+        if (dom.textoObraSiguiente) {
+            dom.textoObraSiguiente.textContent = esEn ? "Next" : "Siguiente";
+        }
+        if (dom.textoSeguirRecorriendo) {
+            dom.textoSeguirRecorriendo.textContent = esEn ? "Keep exploring" : "Seguir recorriendo";
+        }
+
+        // Audioguía botón
+        actualizarBotonAudioguia();
+    }
+
+    // Cambiar idioma del Museo y propagar a toda la aplicación
+    function setIdiomaMuseo(nuevoIdioma) {
+        if (nuevoIdioma !== "es" && nuevoIdioma !== "en") return;
+        try {
+            localStorage.setItem("rastro_austral_idioma", nuevoIdioma);
+        } catch (_) {}
+        window.idiomaActual = nuevoIdioma;
+
+        if (typeof window.cambiarIdioma === "function") {
+            window.cambiarIdioma(nuevoIdioma);
+        }
+
+        actualizarBotonesIdiomaMuseo();
+    }
+
     // Sincronización de idiomas dentro del Museo
     function actualizarBotonesIdiomaMuseo() {
         const idm = getIdioma();
         if (dom.btnLangEs && dom.btnLangEn) {
             if (idm === "es") {
-                dom.btnLangEs.className = "px-2 py-0.5 rounded font-bold bg-amber-600 text-white transition";
-                dom.btnLangEn.className = "px-2 py-0.5 rounded text-amber-200/60 hover:text-white transition";
+                dom.btnLangEs.className = "px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-stone-950 transition cursor-pointer pointer-events-auto relative z-50 text-xs shadow-sm";
+                dom.btnLangEn.className = "px-2.5 py-1 rounded-lg text-stone-300 hover:text-white transition cursor-pointer pointer-events-auto relative z-50 text-xs";
             } else {
-                dom.btnLangEs.className = "px-2 py-0.5 rounded text-amber-200/60 hover:text-white transition";
-                dom.btnLangEn.className = "px-2 py-0.5 rounded font-bold bg-amber-600 text-white transition";
+                dom.btnLangEs.className = "px-2.5 py-1 rounded-lg text-stone-300 hover:text-white transition cursor-pointer pointer-events-auto relative z-50 text-xs";
+                dom.btnLangEn.className = "px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-stone-950 transition cursor-pointer pointer-events-auto relative z-50 text-xs shadow-sm";
             }
         }
+        traducirInterfazMuseo();
         if (estadoMuseo.activo) {
             cargarSala(estadoMuseo.salaIndex);
             if (estadoMuseo.obraAbierta) {
@@ -943,22 +1023,23 @@
             actualizarPosicionPinguino();
         });
 
-        // Conmutador de idioma en el Museo
-        if (dom.btnLangEs) {
-            dom.btnLangEs.addEventListener("click", () => {
-                if (typeof window.cambiarIdioma === "function") {
-                    window.cambiarIdioma("es");
-                }
-                actualizarBotonesIdiomaMuseo();
+        // Conmutador de idioma en el Museo (soporta ambos esquemas de IDs)
+        const btnEs = dom.btnLangEs || document.getElementById("btn-museo-idioma-es") || document.getElementById("btn-museo-lang-es");
+        const btnEn = dom.btnLangEn || document.getElementById("btn-museo-idioma-en") || document.getElementById("btn-museo-lang-en");
+
+        if (btnEs) {
+            btnEs.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIdiomaMuseo("es");
             });
         }
 
-        if (dom.btnLangEn) {
-            dom.btnLangEn.addEventListener("click", () => {
-                if (typeof window.cambiarIdioma === "function") {
-                    window.cambiarIdioma("en");
-                }
-                actualizarBotonesIdiomaMuseo();
+        if (btnEn) {
+            btnEn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIdiomaMuseo("en");
             });
         }
 

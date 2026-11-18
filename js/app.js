@@ -19,6 +19,7 @@ let hitoSeleccionadoId = null;
 let marcadoresPorId = {};
 let marcadorUsuario = null;
 let idiomaActual = localStorage.getItem("rastro_austral_idioma") || "es";
+window.idiomaActual = idiomaActual;
 
 // Anunciador para lectores de pantalla (NVDA, TalkBack, VoiceOver) vía aria-live
 function anunciarAccesibilidad(mensaje) {
@@ -2801,6 +2802,7 @@ function configurarConmutadorIdioma() {
 function cambiarIdioma(nuevoIdioma) {
     if (nuevoIdioma !== "es" && nuevoIdioma !== "en") return;
     idiomaActual = nuevoIdioma;
+    window.idiomaActual = nuevoIdioma;
     document.documentElement.lang = nuevoIdioma;
     try {
         localStorage.setItem("rastro_austral_idioma", idiomaActual);
@@ -2839,6 +2841,7 @@ function cambiarIdioma(nuevoIdioma) {
 
     anunciarAccesibilidad(nuevoIdioma === "en" ? "Language switched to English." : "Idioma cambiado a español.");
 }
+window.cambiarIdioma = cambiarIdioma;
 
 function actualizarTextosUI() {
     const t = DICCIONARIO[idiomaActual];

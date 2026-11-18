@@ -2414,3 +2414,16 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 #drawer-selector-salas .desc-sala-card {
   color: #D6D3D1 !important;
 }
+
+/* Botones de conmutación de idioma del Museo Austral */
+#btn-museo-idioma-es,
+#btn-museo-idioma-en,
+#btn-museo-lang-es,
+#btn-museo-lang-en {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 50;
+  user-select: none;
+  -webkit-user-select: none;
+}

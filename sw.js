@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v60'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v61'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const urlsToCache = [
   './',
   './index.html',
@@ -17,10 +17,7 @@ const urlsToCache = [
   './assets/hitos/ush-01.svg',
   './assets/hitos/ush-02.svg',
   './assets/hitos/tol-02.svg',
-  './assets/hitos/rg-02.svg',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js'
+  './assets/hitos/rg-02.svg'
 ];
 
 // Instalar y tomar el control inmediatamente

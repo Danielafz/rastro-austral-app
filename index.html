@@ -26,10 +26,6 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <!-- Leaflet.markercluster para agrupación dinámica y fluida de hitos -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
   <!-- Generador de PDF en el cliente -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -740,69 +736,48 @@
       <!-- CONTENEDOR GENERAL DE BARRAS SUPERIORES -->
       <div class="absolute top-2 left-0 right-0 px-2 sm:px-3 md:px-4 z-[800] flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-3 w-full pointer-events-none">
 
-        <!-- BARRA 1: PÍLDORAS DE CIUDADES Y TERRITORIO -->
-        <div id="contenedor-pildoras-territorio" role="toolbar" aria-label="Seleccionar ciudad o territorio"
-          class="flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-md border border-slate-200/80 pointer-events-auto relative z-[900]">
-          <button type="button" data-territorio="todos"
-            class="btn-territorio active bg-orange-600 text-white font-bold shadow-sm px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="true">
-            <span data-i18n="vista_provincia">📍 Toda la Provincia</span>
-          </button>
-          <button type="button" data-territorio="ushuaia"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            Ushuaia
-          </button>
-          <button type="button" data-territorio="tolhuin"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            Tolhuin
-          </button>
-          <button type="button" data-territorio="rio-grande"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            Río Grande
-          </button>
-          <button type="button" data-territorio="almanza"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            Puerto Almanza
-          </button>
-          <button type="button" data-territorio="san-sebastian"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            San Sebastián
-          </button>
-          <button type="button" data-territorio="esperanza"
-            class="btn-territorio text-slate-700 hover:bg-slate-100 font-semibold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
-            aria-pressed="false">
-            Base Esperanza
-          </button>
+        <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Limpio con Flecha SVG) -->
+        <div class="relative pointer-events-auto z-[900] shrink-0">
+          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad"
+            class="appearance-none bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-md pl-3.5 pr-9 py-2 text-xs font-bold text-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <option value="todos">📍 Toda la Provincia</option>
+            <option value="ushuaia">Ushuaia</option>
+            <option value="tolhuin">Tolhuin</option>
+            <option value="rio-grande">Río Grande</option>
+            <option value="almanza">Puerto Almanza</option>
+            <option value="san-sebastian">San Sebastián</option>
+            <option value="esperanza">Base Esperanza</option>
+          </select>
+          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 flex items-center">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->
-        <div class="flex items-center gap-2 flex-1 pointer-events-auto">
+        <div class="flex items-center gap-2 flex-1 pointer-events-auto overflow-x-auto no-scrollbar">
           <!-- Cápsula de Capas (Estándar, Relieve, Áreas Protegidas) -->
           <div
-            class="flex-1 grid grid-cols-3 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200/80">
+            class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0">
             <button type="button" id="btn-capa-estandar"
-              class="btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active">
-              <span data-i18n="capa_estandar" class="truncate">Estándar</span>
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer active">
+              <span data-i18n="capa_estandar">Estándar</span>
             </button>
             <button type="button" id="btn-capa-relieve"
-              class="btn-capa-base flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer">
-              <span data-i18n="capa_relieve" class="truncate">Relieve</span>
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer">
+              <span data-i18n="capa_relieve">Relieve</span>
             </button>
             <button type="button" id="btn-capa-areas-protegidas"
-              class="btn-capa-areas flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer"
+              class="btn-capa-areas shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
               title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
-              <span data-i18n="capa_areas_protegidas" class="truncate">Áreas</span>
+              <span data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
             </button>
           </div>
 
           <!-- Botón Alertas SAR separado -->
           <button type="button" id="btn-capa-alertas-sar"
-            class="btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer"
+            class="btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2 px-3.5 rounded-2xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer"
             title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
             <span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse"></span>
             <span data-i18n="capa_alertas_sar">Alertas SAR</span>

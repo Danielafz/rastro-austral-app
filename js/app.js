@@ -7,6 +7,7 @@ let capaMarcadores;
 let capaHuellas;
 let capaBaseEstandar;
 let capaBaseRelieve;
+let capaToponimiaYSoberania;
 let capaBaseActiva = "estandar";
 let listaHitos = [];
 let datosHitos = {};
@@ -49,14 +50,15 @@ const COLORES_CATEGORIA = {
 
 // Vistas territoriales predefinidas
 const VISTAS_TERRITORIO = {
-    provincia: { centro: [-54.35, -67.8], zoom: 8 },
-    todos: { centro: [-54.35, -67.8], zoom: 8 },
+    provincia: { centro: [-54.35, -67.75], zoom: 8 },
+    todos: { centro: [-54.35, -67.75], zoom: 8 },
     ushuaia: { centro: [-54.8019, -68.3030], zoom: 12 },
     tolhuin: { centro: [-54.5100, -67.1950], zoom: 12 },
     rio_grande: { centro: [-53.7877, -67.7003], zoom: 12 },
     "rio-grande": { centro: [-53.7877, -67.7003], zoom: 12 },
     almanza: { centro: [-54.8719, -67.5786], zoom: 13 },
     "san-sebastian": { centro: [-53.2840, -68.4850], zoom: 11 },
+    malvinas: { centro: [-51.75, -59.00], zoom: 8 },
     esperanza: { centro: [-63.3975, -56.9972], zoom: 8 }
 };
 
@@ -104,7 +106,7 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sitios en mi Rastro:",
         descargar_bitacora: "Descargar Bitácora",
         vista_provincia: "📍 Toda la Provincia",
-        capa_estandar: "Argenmap (IGN)",
+        capa_estandar: "Estándar",
         capa_relieve: "Relieve",
         capa_areas_protegidas: "Áreas Protegidas",
         capa_alertas_sar: "Alertas SAR",
@@ -248,7 +250,7 @@ const DICCIONARIO = {
         sitios_en_rastro: "Sites in my Trail:",
         descargar_bitacora: "Download Journal",
         vista_provincia: "📍 Entire Province",
-        capa_estandar: "Argenmap (IGN)",
+        capa_estandar: "Standard",
         capa_relieve: "Topographic",
         capa_areas_protegidas: "Protected Areas",
         capa_alertas_sar: "SAR Alerts",
@@ -524,49 +526,186 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarTextosUI();
 });
 
+// Rótulos cartográficos de soberanía argentina y toponimia originaria
+const ROTULOS_SOBERANIA_Y_ORIGINARIOS = [
+    // Localidades y Soberanía Argentina
+    {
+        texto: "Ushuaia",
+        subtexto: "Capital Fueguina",
+        coords: [-54.8019, -68.3030],
+        clase: "rotulo-ciudad-capital",
+        zoomMin: 7
+    },
+    {
+        texto: "Tolhuin",
+        subtexto: "Corazón de la Isla",
+        coords: [-54.5108, -67.1955],
+        clase: "rotulo-localidad",
+        zoomMin: 8
+    },
+    {
+        texto: "Río Grande",
+        subtexto: "Ciudad de la Estepa",
+        coords: [-53.7877, -67.7095],
+        clase: "rotulo-localidad",
+        zoomMin: 8
+    },
+    {
+        texto: "Puerto Almanza",
+        subtexto: "Polo Pesquero Canal Onashaga",
+        coords: [-54.8689, -67.5764],
+        clase: "rotulo-paraje",
+        zoomMin: 9
+    },
+    {
+        texto: "San Sebastián",
+        subtexto: "Bahía & Paso Fronterizo Norte",
+        coords: [-53.1636, -68.4314],
+        clase: "rotulo-paraje",
+        zoomMin: 8
+    },
+    {
+        texto: "Islas Malvinas",
+        subtexto: "República Argentina · TDF, AIAS",
+        coords: [-51.75, -59.10],
+        clase: "rotulo-territorio-soberano",
+        zoomMin: 6
+    },
+    {
+        texto: "Isla Soledad",
+        subtexto: "Islas Malvinas (Arg.)",
+        coords: [-51.80, -58.70],
+        clase: "rotulo-isla",
+        zoomMin: 7
+    },
+    {
+        texto: "Gran Malvina",
+        subtexto: "Islas Malvinas (Arg.)",
+        coords: [-51.70, -60.05],
+        clase: "rotulo-isla",
+        zoomMin: 7
+    },
+    {
+        texto: "Puerto Argentino",
+        subtexto: "Cabecera Malvinas (Arg.)",
+        coords: [-51.692, -57.858],
+        clase: "rotulo-puerto-argentino",
+        zoomMin: 8
+    },
+    {
+        texto: "Base Esperanza",
+        subtexto: "Antártida Argentina",
+        coords: [-63.3981, -56.9973],
+        clase: "rotulo-territorio-soberano",
+        zoomMin: 5
+    },
+
+    // Toponimia Ancestral Originaria (Selk'nam / Yámana)
+    {
+        texto: "Karukinká",
+        subtexto: "Tierra del Fuego · Selk'nam",
+        coords: [-53.95, -68.80],
+        clase: "rotulo-originario-region",
+        zoomMin: 7
+    },
+    {
+        texto: "Onashaga",
+        subtexto: "Canal Beagle · Yámana",
+        coords: [-54.95, -67.90],
+        clase: "rotulo-originario-canal",
+        zoomMin: 8
+    },
+    {
+        texto: "Kami",
+        subtexto: "Lago Fagnano · Selk'nam",
+        coords: [-54.55, -67.65],
+        clase: "rotulo-originario-lago",
+        zoomMin: 8
+    },
+    {
+        texto: "Oushwaia",
+        subtexto: "Bahía al Fondo · Yámana",
+        coords: [-54.825, -68.32],
+        clase: "rotulo-originario-bahia",
+        zoomMin: 11
+    },
+    {
+        texto: "Lapataia",
+        subtexto: "Bahía Boscosa · Yámana",
+        coords: [-54.86, -68.56],
+        clase: "rotulo-originario-bahia",
+        zoomMin: 11
+    }
+];
+
+function actualizarRotulosCartograficos() {
+    if (!capaToponimiaYSoberania || !mapa) return;
+    capaToponimiaYSoberania.clearLayers();
+    const currentZoom = typeof mapa.getZoom === "function" ? mapa.getZoom() : 8;
+
+    ROTULOS_SOBERANIA_Y_ORIGINARIOS.forEach(r => {
+        const minZoom = r.zoomMin !== undefined ? r.zoomMin : 7;
+        const maxZoom = r.zoomMax !== undefined ? r.zoomMax : 18;
+        if (currentZoom >= minZoom && currentZoom <= maxZoom) {
+            const html = `
+                <div class="contenedor-rotulo-mapa ${r.clase}">
+                    <span class="rotulo-nombre-principal">${r.texto}</span>
+                    ${r.subtexto ? `<span class="rotulo-subtexto">${r.subtexto}</span>` : ""}
+                </div>
+            `;
+            const icon = L.divIcon({
+                className: "marcador-rotulo-cartografico",
+                html: html,
+                iconSize: null
+            });
+            const marcador = L.marker(r.coords, {
+                icon: icon,
+                interactive: false,
+                keyboard: false
+            });
+            capaToponimiaYSoberania.addLayer(marcador);
+        }
+    });
+}
+
 // 1. Inicializar Leaflet centrado en la Isla Grande de Tierra del Fuego
 function inicializarMapa() {
     mapa = L.map("map", {
         zoomControl: false
-    }).setView([-54.35, -67.8], 8);
+    }).setView([-54.35, -67.75], 8);
 
     // Control de zoom
     L.control.zoom({ position: "bottomleft" }).addTo(mapa);
     window.map = mapa;
     window.mapa = mapa;
 
-    // Cartografía base oficial de la República Argentina: Argenmap (Instituto Geográfico Nacional - IGN)
-    // Presenta toponimia oficial argentina (Islas Malvinas, Puerto Argentino, Isla Soledad, Gran Malvina)
+    // Cartografía base CartoDB Voyager sin etiquetas (relieve suave, lagos turquesa, rutas claras, sin toponimia foránea)
     capaBaseEstandar = L.tileLayer(
-        "https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png",
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
         {
-            tms: true,
-            maxZoom: 18,
-            minZoom: 3,
-            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">Instituto Geográfico Nacional (IGN)</a> · IDETDF'
+            subdomains: "abcd",
+            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">IGN Argentina</a> · IDETDF · <a href="https://carto.com/" target="_blank" rel="noopener">CartoDB</a>',
+            maxZoom: 19,
+            minZoom: 3
         }
     );
 
-    // Respaldo resiliente: Si alguna tesela individual de IGN falla por microcorte o saturación de red, fallback a OSM
-    capaBaseEstandar.on("tileerror", function (error) {
-        if (!error || !error.tile || error.tile.dataset.fallbackApplied === "true") return;
-        error.tile.dataset.fallbackApplied = "true";
-        const coords = error.coords;
-        if (coords) {
-            const sub = ["a", "b", "c"][Math.abs(coords.x + coords.y) % 3];
-            error.tile.src = `https://${sub}.tile.openstreetmap.org/${coords.z}/${coords.x}/${coords.y}.png`;
+    // Cartografía base de relieve físico puro sin textos foráneos (Esri World Physical Map)
+    capaBaseRelieve = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution: '&copy; <a href="https://www.ign.gob.ar/" target="_blank" rel="noopener">IGN Argentina</a> · Esri · USGS',
+            maxZoom: 16,
+            minZoom: 3
         }
-    });
-
-    // Cartografía base de relieve / topográfica de OpenTopoMap
-    capaBaseRelieve = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        attribution: 'Kartendaten: &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende, SRTM | Kartendarstellung: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)',
-        maxZoom: 17,
-        minZoom: 3
-    });
+    );
 
     // Agregar capa base activa
     capaBaseEstandar.addTo(mapa);
+
+    // Capa de rótulos cartográficos de soberanía argentina y toponimia originaria
+    capaToponimiaYSoberania = L.layerGroup().addTo(mapa);
+    actualizarRotulosCartograficos();
 
     window.addEventListener("resize", () => {
         if (mapa) mapa.invalidateSize();
@@ -586,10 +725,11 @@ function inicializarMapa() {
     // Capa de marcadores directos en Leaflet (pingüinos individuales garantizados)
     capaMarcadores = L.layerGroup().addTo(mapa);
 
-    // Ajustar densidad y escala de huellas y tamaño dinámico de marcadores según nivel de zoom
+    // Ajustar densidad y escala de huellas, marcadores y rótulos cartográficos según nivel de zoom
     mapa.on("zoomend", () => {
         actualizarTrazadoRuta();
         renderizarMarcadores();
+        actualizarRotulosCartograficos();
     });
 
     // Delegación de eventos para botones dentro de los Popups de Leaflet
@@ -747,6 +887,7 @@ function coincideTerritorio(hitoLocalidad, valorTerritorio) {
     if (valorTerritorio === "rio-grande" || valorTerritorio === "rio_grande") return loc.includes("rio grande");
     if (valorTerritorio === "almanza") return loc.includes("almanza");
     if (valorTerritorio === "san-sebastian") return loc.includes("sebastian");
+    if (valorTerritorio === "malvinas") return loc.includes("malvinas");
     if (valorTerritorio === "esperanza") return loc.includes("esperanza");
     return true;
 }
@@ -2529,6 +2670,9 @@ function configurarSelectorCapasBase() {
         if (mapa.hasLayer(capaBaseRelieve)) mapa.removeLayer(capaBaseRelieve);
         if (!mapa.hasLayer(capaBaseEstandar)) mapa.addLayer(capaBaseEstandar);
         capaBaseEstandar.bringToBack();
+        if (capaToponimiaYSoberania && typeof capaToponimiaYSoberania.bringToFront === "function") {
+            capaToponimiaYSoberania.bringToFront();
+        }
         capaBaseActiva = "estandar";
 
         btnEstandar.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";
@@ -2540,6 +2684,9 @@ function configurarSelectorCapasBase() {
         if (mapa.hasLayer(capaBaseEstandar)) mapa.removeLayer(capaBaseEstandar);
         if (!mapa.hasLayer(capaBaseRelieve)) mapa.addLayer(capaBaseRelieve);
         capaBaseRelieve.bringToBack();
+        if (capaToponimiaYSoberania && typeof capaToponimiaYSoberania.bringToFront === "function") {
+            capaToponimiaYSoberania.bringToFront();
+        }
         capaBaseActiva = "relieve";
 
         btnRelieve.className = "btn-capa-base flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer active";

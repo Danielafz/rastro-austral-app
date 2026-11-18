@@ -42,6 +42,11 @@
             lon: -68.4314,
             nombre: { es: "San Sebastián", en: "San Sebastián" }
         },
+        "malvinas": {
+            lat: -51.692,
+            lon: -57.858,
+            nombre: { es: "Islas Malvinas (Puerto Argentino)", en: "Malvinas Islands (Puerto Argentino)" }
+        },
         "esperanza": {
             lat: -63.3981,
             lon: -56.9973,

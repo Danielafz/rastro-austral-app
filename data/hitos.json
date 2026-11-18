@@ -576,5 +576,27 @@
     "insignia": "sello_costero_norte",
     "imagen": "./assets/hitos/rg-01.svg",
     "credito_imagen": "Municipio de Río Grande / IDETDF"
+  },
+  {
+    "id": "mal-01",
+    "nombre": "Cementerio Militar Argentino de Darwin",
+    "nombre_en": "Argentine Military Cemetery of Darwin",
+    "localidad": "Islas Malvinas",
+    "categoria": "patrimonio",
+    "coordenadas": [
+      -51.7968,
+      -58.9442
+    ],
+    "toponimia": "Isla Soledad · Islas Malvinas (República Argentina)",
+    "descripcion": "Monumento y camposanto sagrado de descanso de los combatientes argentinos caídos en 1982 en defensa de la soberanía del archipiélago malvinense.",
+    "descripcion_en": "Sacred memorial and resting grounds of the Argentine fallen soldiers in the 1982 conflict defending the sovereignty of the Malvinas archipelago.",
+    "fragilidad": "Muy Alta",
+    "fragilidad_en": "Very High",
+    "conducta": "Mantener máximo respeto y silencio en el camposanto y preservar la integridad del cenotafio nacional.",
+    "conducta_en": "Observe utmost respect and silence at the sacred memorial grounds.",
+    "fuente": "Comisión de Familiares de Caídos / IGN",
+    "insignia": "sello_soberania_malvinas",
+    "imagen": "./assets/hitos/ush-01.svg",
+    "credito_imagen": "Archivo Histórico Malvinas"
   }
 ]

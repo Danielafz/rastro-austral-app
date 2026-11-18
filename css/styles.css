@@ -426,8 +426,6 @@ html:not(.dark) .copo-nieve::before {
 /* Globito de diálogo interactivo sobre el pingüino */
 #burbuja-dialogo {
   position: absolute;
-  top: -6px;
-  left: -14px;
   max-width: 220px;
   padding: 6px 12px;
   border-radius: 14px;
@@ -569,6 +567,13 @@ html.dark #burbuja-dialogo::after {
   animation: pinguinoFlotacion3D 3.8s ease-in-out infinite;
   transform-origin: center bottom;
   will-change: transform;
+}
+
+/* Impulso suave y postura alegre mientras dura el saludo */
+.pinguino-saludando-activo,
+#svg-pinguino-bienvenida.pinguino-saludando-activo {
+  transform: scale(1.06) translateY(-6px) !important;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 @keyframes pinguinoFlotacion3D {

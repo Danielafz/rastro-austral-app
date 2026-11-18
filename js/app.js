@@ -4362,6 +4362,58 @@ function actualizarMetricasDistancia() {
     cont.classList.remove("hidden");
 }
 
+// Capitaliza la primera letra del nombre del explorador
+function capitalizarNombre(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+let timerSaludoPinguino = null;
+
+// Alterna entre la pose en reposo y el saludo dinámico de la mascota
+function activarSaludoPinguino(duracionMs = 1600) {
+    const imgReposo = document.getElementById("img-pinguino-reposo");
+    const imgSaludo = document.getElementById("img-pinguino-saludo");
+    const contenedorPinguino = document.getElementById("svg-pinguino-bienvenida");
+    const inputNombre = document.getElementById("input-nombre-explorador");
+
+    if (!imgReposo || !imgSaludo) return;
+
+    if (timerSaludoPinguino) {
+        clearTimeout(timerSaludoPinguino);
+        timerSaludoPinguino = null;
+    }
+
+    // Ocultar reposo y mostrar saludo
+    imgReposo.classList.remove("opacity-100");
+    imgReposo.classList.add("opacity-0");
+
+    imgSaludo.classList.remove("opacity-0", "pointer-events-none");
+    imgSaludo.classList.add("opacity-100");
+
+    if (contenedorPinguino) {
+        contenedorPinguino.classList.add("pinguino-saludando-activo", "antorcha-avivada");
+    }
+
+    timerSaludoPinguino = setTimeout(() => {
+        imgSaludo.classList.remove("opacity-100");
+        imgSaludo.classList.add("opacity-0", "pointer-events-none");
+
+        imgReposo.classList.remove("opacity-0");
+        imgReposo.classList.add("opacity-100");
+
+        if (contenedorPinguino) {
+            contenedorPinguino.classList.remove("pinguino-saludando-activo");
+            const tieneTexto = inputNombre && inputNombre.value.trim().length > 0;
+            if (!tieneTexto) {
+                contenedorPinguino.classList.remove("antorcha-avivada");
+            }
+        }
+        timerSaludoPinguino = null;
+    }, duracionMs);
+}
+window.activarSaludoPinguino = activarSaludoPinguino;
+
 // Actualiza el texto traducido, visibilidad del globito de diálogo y energía de la antorcha
 function actualizarBurbujaSaludoPinguino(valorNombre) {
     const burbujaDialogo = document.getElementById("burbuja-dialogo");
@@ -4373,7 +4425,8 @@ function actualizarBurbujaSaludoPinguino(valorNombre) {
         if (hayTexto) {
             const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
             const prefijo = t.saludoPinguino || (idiomaActual === "en" ? "Hello" : "¡Hola");
-            burbujaDialogo.textContent = `${prefijo}, ${texto}!`;
+            const nombreCapitalizado = capitalizarNombre(texto);
+            burbujaDialogo.textContent = `${prefijo}, ${nombreCapitalizado}!`;
             burbujaDialogo.classList.add("visible");
         } else {
             burbujaDialogo.textContent = "";
@@ -4483,6 +4536,13 @@ function configurarPantallaBienvenida() {
         moverPupilas(Math.cos(angulo) * radio, Math.sin(angulo) * radio);
     });
 
+    // Saludo al hacer clic / toque directamente sobre la mascota
+    if (svgPinguinoBienvenida) {
+        svgPinguinoBienvenida.addEventListener("click", () => {
+            activarSaludoPinguino(1800);
+        });
+    }
+
     inputNombre.addEventListener("click", (e) => {
         e.stopPropagation();
     });
@@ -4495,6 +4555,7 @@ function configurarPantallaBienvenida() {
     inputNombre.addEventListener("input", () => {
         focoEnInputNombre = true;
         actualizarDialogoYMirada();
+        activarSaludoPinguino(1800);
     });
 
     inputNombre.addEventListener("blur", () => {
@@ -4529,6 +4590,8 @@ function configurarPantallaBienvenida() {
 
         if (nombreDisplay) nombreDisplay.innerText = nombre;
         if (badgeExplorador) badgeExplorador.classList.remove("hidden");
+
+        activarSaludoPinguino(1800);
 
         const svgPinguino = document.getElementById("svg-pinguino-bienvenida");
         const resplandorFuego = document.getElementById("resplandor-antorcha-fuego");

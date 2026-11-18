@@ -74,10 +74,10 @@
 
       <!-- Contenedor del Pingüino Rey Fueguino con halo, burbuja de diálogo e interactividad -->
       <div id="contenedor-pinguino-bienvenida"
-        class="w-44 h-48 sm:w-56 sm:h-60 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
+        class="w-56 h-60 sm:w-64 sm:h-72 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
         <!-- Globito de diálogo interactivo (oculto por defecto) -->
         <div id="burbuja-dialogo" role="status" aria-live="polite"
-          class="text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg">
+          class="absolute -top-2 -left-2 sm:-left-4 z-30 text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg">
         </div>
 
         <!-- Destello / Resplandor cálido de la antorcha al encender el mapa -->
@@ -86,13 +86,19 @@
         </div>
 
         <!-- Escultura Ilustrada Definitiva: Mascota Pingüino Rey Fueguino 3D -->
-        <div id="wrapper-pinguino-3d" class="relative w-44 h-48 sm:w-56 sm:h-60 flex items-center justify-center z-10">
-          <div id="svg-pinguino-bienvenida" class="relative w-44 h-48 sm:w-56 sm:h-60 flex items-center justify-center select-none pinguino-flotante-3d">
+        <div id="wrapper-pinguino-3d" class="relative w-56 h-60 sm:w-64 sm:h-72 flex items-center justify-center z-10">
+          <div id="svg-pinguino-bienvenida" class="relative w-56 h-60 sm:w-64 sm:h-72 flex items-center justify-center select-none cursor-pointer pinguino-flotante-3d">
             <!-- Halo ambiental detrás -->
             <div class="absolute inset-2 rounded-full bg-gradient-to-tr from-amber-500/25 via-orange-500/15 to-sky-400/10 blur-2xl animate-pulse pointer-events-none"></div>
 
-            <!-- Imagen principal de la mascota -->
-            <img src="assets/pinguino-mascota.png" alt="Mascota Pingüino Rey de Rastro Austral con antorcha" class="relative z-10 w-full h-full object-contain drop-shadow-[0_12px_24px_rgba(245,158,11,0.28)] transition-transform duration-300" />
+            <!-- Imagen principal de la mascota en reposo -->
+            <img id="img-pinguino-reposo" src="assets/pinguino-mascota.png" alt="Mascota Pingüino Rey de Rastro Austral" class="relative z-10 w-full h-full object-contain drop-shadow-[0_14px_28px_rgba(245,158,11,0.32)] transition-opacity duration-200 opacity-100" />
+
+            <!-- Imagen de la mascota saludando -->
+            <img id="img-pinguino-saludo" src="assets/pinguino-saludando.png" alt="Mascota Pingüino Rey saludando" class="absolute inset-0 z-10 w-full h-full object-contain drop-shadow-[0_16px_32px_rgba(245,158,11,0.45)] transition-opacity duration-200 opacity-0 pointer-events-none" />
+
+            <!-- Brillo de hielo polar debajo de sus patas -->
+            <div class="absolute bottom-1 w-40 h-5 rounded-full bg-gradient-to-r from-sky-400/20 via-amber-400/30 to-sky-400/20 blur-md pointer-events-none"></div>
 
             <!-- Resplandor vivo superpuesto en la llama de la antorcha (arriba a la derecha) -->
             <div id="halo-llama-mascota" class="pointer-events-none absolute top-[12%] right-[14%] w-12 h-12 rounded-full bg-amber-400/50 blur-md llama-parpadeo-3d z-20 mix-blend-screen"></div>

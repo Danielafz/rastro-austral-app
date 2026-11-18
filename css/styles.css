@@ -2307,15 +2307,18 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   scrollbar-width: none !important;
 }
 
-/* Ajuste de controles inferiores de Leaflet en pantallas móviles (< 768px) sobre la barra inferior */
+/* Ajuste de controles inferiores de Leaflet en pantallas móviles (< 768px) apoyados en el borde inferior */
 @media (max-width: 767px) {
   .leaflet-control-zoom {
-    margin-bottom: 72px !important;
+    margin-bottom: 12px !important;
+    margin-left: 10px !important;
   }
   #btn-geolocalizacion {
-    bottom: 152px !important;
+    bottom: 92px !important;
+    left: 10px !important;
   }
   #contenedor-leyenda-mapa {
-    bottom: 72px !important;
+    bottom: 12px !important;
+    right: 10px !important;
   }
 }

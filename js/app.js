@@ -552,9 +552,14 @@ function inicializarMapa() {
     window.addEventListener("resize", () => {
         if (mapa) mapa.invalidateSize();
     });
+    window.addEventListener("orientationchange", () => {
+        setTimeout(() => {
+            if (mapa) mapa.invalidateSize();
+        }, 150);
+    });
     setTimeout(() => {
         if (mapa) mapa.invalidateSize();
-    }, 200);
+    }, 350);
 
     // Capa de ruta ("Mi Rastro en el Mapa") compuesta exclusivamente por huellas debajo de los marcadores
     capaHuellas = L.layerGroup().addTo(mapa);

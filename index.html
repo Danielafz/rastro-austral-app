@@ -504,7 +504,7 @@
 
   <!-- Contenedor Principal (Dashboard Layout) -->
   <div id="app-container"
-    class="flex flex-col md:flex-row flex-1 h-[calc(100vh-145px)] md:h-full w-full overflow-hidden bg-slate-50 relative">
+    class="flex flex-col md:flex-row flex-1 h-[calc(100dvh-146px)] md:h-full w-full overflow-hidden bg-slate-50 relative">
 
     <!-- Panel Lateral (Filtros, Bitácora, Observatorio) -->
     <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
@@ -748,7 +748,7 @@
     </aside>
 
     <!-- Contenedor del Mapa Cartográfico (100% de la pantalla) -->
-    <main class="w-full md:w-2/3 lg:w-3/4 flex-grow h-[calc(100vh-145px)] md:h-full relative order-1 md:order-2 z-[10]">
+    <main class="w-full md:w-2/3 lg:w-3/4 flex-1 h-[calc(100dvh-146px)] md:h-full relative order-1 md:order-2 z-[10]">
       <!-- Contenedor del Mapa Cartográfico -->
       <div id="map" role="region" aria-label="Mapa interactivo de Tierra del Fuego" class="w-full h-full"></div>
 
@@ -846,7 +846,7 @@
 
       <!-- Botón flotante de geolocalización en tiempo real (justo encima de la torre de zoom) -->
       <button id="btn-geolocalizacion" type="button"
-        class="absolute z-[400] w-[34px] h-[34px] bg-white/95 rounded-xl shadow-md border border-slate-200 text-slate-700 flex items-center justify-center cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition"
+        class="absolute z-[400] bottom-[92px] left-[10px] md:bottom-[104px] md:left-3 w-[34px] h-[34px] bg-white/95 rounded-xl shadow-md border border-slate-200 text-slate-700 flex items-center justify-center cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition"
         title="Ubicar mi posición actual" data-i18n-title="geoloc_titulo"
         aria-label="Ubicar mi posición actual en el mapa">
         <span id="icono-geoloc" class="flex items-center justify-center">

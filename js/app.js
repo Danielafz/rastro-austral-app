@@ -223,8 +223,8 @@ const DICCIONARIO = {
         obs_m2_titulo: "Glaciar Vinciguerra: El tanque de agua natural",
         obs_m2_sub: "Hielo que nos queda para beber y abastecer a la ciudad",
         obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su volumen estimado.",
-        obs_m2_alerta_lbl: "Fuente:",
-        obs_m2_alerta_val: "Agua potable de Ushuaia",
+        obs_m2_alerta_lbl: "Contexto:",
+        obs_m2_alerta_val: "Abastecimiento de agua de Ushuaia",
         obs_m2_ver: "Ver glaciar en mapa →"
     },
     en: {
@@ -359,8 +359,8 @@ const DICCIONARIO = {
         obs_m2_titulo: "Vinciguerra Glacier: Natural freshwater tank",
         obs_m2_sub: "Ice left to supply clean drinking water to the city",
         obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its estimated volume.",
-        obs_m2_alerta_lbl: "Source:",
-        obs_m2_alerta_val: "Ushuaia drinking water",
+        obs_m2_alerta_lbl: "Context:",
+        obs_m2_alerta_val: "Ushuaia water supply",
         obs_m2_ver: "View glacier on map →"
     }
 };
@@ -2793,7 +2793,7 @@ function obtenerDatosObservatorioActivos() {
             descripcion: "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
             variacion_pct: "+80%",
             tipo_dato: "ilustrativo_prototipo",
-            fuente_referencia: "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+            fuente_referencia: "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
             metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
             ultima_actualizacion: "2026-11-17"
         },
@@ -2802,7 +2802,7 @@ function obtenerDatosObservatorioActivos() {
             descripcion: "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
             variacion_pct: "-16%",
             tipo_dato: "ilustrativo_prototipo",
-            fuente_referencia: "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+            fuente_referencia: "Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
             metodo_proyeccion: "Extrapolación lineal simple (2015–2024)",
             ultima_actualizacion: "2026-11-17"
         }

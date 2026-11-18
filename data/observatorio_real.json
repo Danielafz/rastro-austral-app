@@ -25,7 +25,7 @@
     "descripcion": "Días anuales sin humedad efectiva (P < 1mm & T > 10.5°C)",
     "variacion_pct": "+80%",
     "tipo_dato": "ilustrativo_prototipo",
-    "fuente_referencia": "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+    "fuente_referencia": "Contexto regional: CADIC-CONICET e IDETDF. Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
     "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
     "ultima_actualizacion": "2026-11-17"
   },
@@ -41,7 +41,7 @@
     "descripcion": "Superficie de hielo remanente en porcentaje (Base 100% en 2015)",
     "variacion_pct": "-16%",
     "tipo_dato": "ilustrativo_prototipo",
-    "fuente_referencia": "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)",
+    "fuente_referencia": "Contexto regional: IANIGLA (Inventario Nacional de Glaciares). Los valores numéricos son un escenario ilustrativo para este prototipo y no constituyen mediciones oficiales.",
     "metodo_proyeccion": "Extrapolación lineal simple (2015–2024)",
     "ultima_actualizacion": "2026-11-17"
   }

@@ -388,6 +388,81 @@
         }
     }
 
+    // Resolver y cargar imagen de obra de forma robusta con caché en localStorage y fallback API Wikimedia
+    async function resolverImagenObra(obra, imgElement, titulo = "", anio = "") {
+        if (!obra || !imgElement) return;
+        const obraId = obra.id;
+        imgElement.dataset.obraIdActual = obraId;
+
+        const tituloFinal = titulo || tBilingue(obra.titulo) || "Obra Histórica";
+        const anioFinal = anio || obra.anio || "";
+        const fallbackSvg = window.generarSvgFallbackObra ? window.generarSvgFallbackObra(tituloFinal, anioFinal) : "";
+
+        function aplicarFallback() {
+            if (imgElement.dataset.obraIdActual !== obraId) return;
+            imgElement.onerror = null;
+            imgElement.src = fallbackSvg;
+        }
+
+        const cacheKey = `museo_img_cache_${obraId}`;
+        let urlGuardada = null;
+        try {
+            urlGuardada = localStorage.getItem(cacheKey);
+        } catch (_) {}
+
+        if (urlGuardada) {
+            imgElement.onerror = () => {
+                if (imgElement.dataset.obraIdActual !== obraId) return;
+                try { localStorage.removeItem(cacheKey); } catch (_) {}
+                consultarApiWikimedia();
+            };
+            imgElement.src = urlGuardada;
+            return;
+        }
+
+        if (obra.imagenUrl) {
+            imgElement.onload = () => {
+                if (imgElement.dataset.obraIdActual !== obraId) return;
+                try { localStorage.setItem(cacheKey, obra.imagenUrl); } catch (_) {}
+            };
+            imgElement.onerror = () => {
+                if (imgElement.dataset.obraIdActual !== obraId) return;
+                consultarApiWikimedia();
+            };
+            imgElement.src = obra.imagenUrl;
+        } else {
+            consultarApiWikimedia();
+        }
+
+        async function consultarApiWikimedia() {
+            const termino = obra.terminoBusquedaWikimedia;
+            if (!termino) {
+                aplicarFallback();
+                return;
+            }
+            try {
+                const endpoint = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(termino)}&gsrnamespace=6&gsrlimit=1&prop=imageinfo&iiprop=url&iiurlwidth=800&format=json&origin=*`;
+                const resp = await fetch(endpoint, { cache: "default" });
+                if (!resp.ok) throw new Error("HTTP " + resp.status);
+                const data = await resp.json();
+                const pages = data?.query?.pages;
+                if (!pages) throw new Error("No pages found");
+                const firstKey = Object.keys(pages)[0];
+                const info = pages[firstKey]?.imageinfo?.[0];
+                const finalUrl = info?.thumburl || info?.url;
+                if (!finalUrl) throw new Error("No URL in imageinfo");
+
+                if (imgElement.dataset.obraIdActual !== obraId) return;
+                try { localStorage.setItem(cacheKey, finalUrl); } catch (_) {}
+                imgElement.onerror = () => aplicarFallback();
+                imgElement.src = finalUrl;
+            } catch (err) {
+                console.warn(`[Museo] Fallback para obra "${obraId}":`, err.message);
+                aplicarFallback();
+            }
+        }
+    }
+
     // Cargar sala temática
     function cargarSala(indice) {
         const salas = window.SALAS_MUSEO || [];
@@ -451,8 +526,6 @@
                 const anioObra = obra.anio || "";
                 const lugarObra = tBilingue(obra.lugar);
 
-                const fallbackSvg = window.generarSvgFallbackObra ? window.generarSvgFallbackObra(tituloObra, anioObra) : "";
-
                 cuadroEl.innerHTML = `
                     <!-- Haz de luz cenital sobre el cuadro -->
                     <div class="luz-cenital-spot pointer-events-none"></div>
@@ -467,11 +540,9 @@
                     <div class="marco-cuadro-patagonico relative rounded-lg p-2 sm:p-2.5 shadow-2xl transition-all duration-300">
                         <div class="lienzo-cuadro-interior relative overflow-hidden rounded bg-stone-900 border border-amber-900/40">
                             <img 
-                                src="${obra.imagenUrl}" 
                                 alt="${tituloObra}" 
                                 loading="lazy" 
                                 class="foto-obra-lienzo w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                                onerror="this.onerror=null; this.src='${fallbackSvg}';"
                             />
                             <div class="overlay-brillo-oleo pointer-events-none absolute inset-0"></div>
                         </div>
@@ -483,6 +554,12 @@
                         </div>
                     </div>
                 `;
+
+                // Resolver imagen de forma asíncrona robusta con fallback
+                const imgLienzo = cuadroEl.querySelector(".foto-obra-lienzo");
+                if (imgLienzo) {
+                    resolverImagenObra(obra, imgLienzo, tituloObra, anioObra);
+                }
 
                 // Clic en el cuadro para abrir la ficha
                 cuadroEl.addEventListener("click", () => {
@@ -533,12 +610,8 @@
         if (dom.sheetCredito) dom.sheetCredito.textContent = obra.credito ? `📷 ${obra.credito}` : "";
 
         if (dom.sheetImg) {
-            dom.sheetImg.src = obra.imagenUrl;
             dom.sheetImg.alt = titulo;
-            dom.sheetImg.onerror = function () {
-                this.onerror = null;
-                this.src = fallbackSvg;
-            };
+            resolverImagenObra(obra, dom.sheetImg, titulo, anio);
         }
 
         // Etiqueta de hito relacionado
@@ -742,7 +815,7 @@
         estadoMuseo.obraProxima = obraEnRango;
     }
 
-    // Manejo de controles táctiles: Joystick circular blindado
+    // Manejo de controles táctiles: Joystick circular blindado con Pointer Events y Pointer Capture
     function inicializarJoystickMuseo() {
         if (!dom.joystickBase) {
             dom.joystickBase = document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo");
@@ -767,94 +840,73 @@
         dom.joystickPerilla.style.pointerEvents = "none";
 
         const maxRadio = 28;
+        let activePointerId = null;
+        let centroX = 0;
 
-        function moverJoystick(clientX) {
-            if (!estadoMuseo.joystickActivo) return;
-            let dx = clientX - estadoMuseo.joystickCentroX;
+        function mover(clientX) {
+            let dx = clientX - centroX;
             dx = Math.max(-maxRadio, Math.min(dx, maxRadio));
-
             dom.joystickPerilla.style.transform = `translate3d(${dx}px, 0px, 0)`;
-
-            // Factor continuo normalizado entre -1 y 1
-            const factorX = dx / maxRadio;
-            estadoMuseo.velocidadX = factorX;
+            estadoMuseo.velocidadX = dx / maxRadio;
         }
 
-        function soltarJoystick() {
+        function soltar() {
+            activePointerId = null;
             estadoMuseo.joystickActivo = false;
-            estadoMuseo.joystickTouchId = null;
             estadoMuseo.velocidadX = 0;
             if (dom.joystickPerilla) {
                 dom.joystickPerilla.style.transform = "translate3d(0px, 0px, 0)";
             }
         }
 
-        // Eventos táctiles nativos puros (Touch Events) con captura en window
-        dom.joystickBase.addEventListener("touchstart", (e) => {
-            if (e.cancelable) e.preventDefault();
-            e.stopPropagation();
-            const touch = e.changedTouches[0];
-            if (!touch) return;
-
-            estadoMuseo.joystickActivo = true;
-            estadoMuseo.joystickTouchId = touch.identifier;
-            const rect = dom.joystickBase.getBoundingClientRect();
-            estadoMuseo.joystickCentroX = rect.left + rect.width / 2;
-            moverJoystick(touch.clientX);
-        }, { passive: false });
-
-        window.addEventListener("touchmove", (e) => {
-            if (!estadoMuseo.joystickActivo) return;
-            for (let i = 0; i < e.touches.length; i++) {
-                const touch = e.touches[i];
-                if (touch.identifier === estadoMuseo.joystickTouchId) {
-                    if (e.cancelable) e.preventDefault();
-                    e.stopPropagation();
-                    moverJoystick(touch.clientX);
-                    break;
-                }
-            }
-        }, { passive: false });
-
-        window.addEventListener("touchend", (e) => {
-            if (!estadoMuseo.joystickActivo) return;
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                if (e.changedTouches[i].identifier === estadoMuseo.joystickTouchId) {
-                    e.stopPropagation();
-                    soltarJoystick();
-                    break;
-                }
-            }
-        }, { passive: false });
-
-        window.addEventListener("touchcancel", (e) => {
-            if (estadoMuseo.joystickActivo) {
-                e.stopPropagation();
-                soltarJoystick();
-            }
-        }, { passive: false });
-
-        // Fallback Mouse para pruebas en entorno de escritorio
-        dom.joystickBase.addEventListener("mousedown", (e) => {
+        // Pointer Events (Touch, Mouse, Pen) con Pointer Capture
+        dom.joystickBase.addEventListener("pointerdown", (e) => {
             e.preventDefault();
             e.stopPropagation();
+            activePointerId = e.pointerId;
+            try {
+                dom.joystickBase.setPointerCapture(e.pointerId);
+            } catch (_) {}
             estadoMuseo.joystickActivo = true;
-            estadoMuseo.joystickTouchId = null;
             const rect = dom.joystickBase.getBoundingClientRect();
-            estadoMuseo.joystickCentroX = rect.left + rect.width / 2;
-            moverJoystick(e.clientX);
+            centroX = rect.left + rect.width / 2;
+            mover(e.clientX);
         });
 
-        window.addEventListener("mousemove", (e) => {
-            if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === null) {
-                e.preventDefault();
-                moverJoystick(e.clientX);
+        dom.joystickBase.addEventListener("pointermove", (e) => {
+            if (!estadoMuseo.joystickActivo || e.pointerId !== activePointerId) return;
+            e.preventDefault();
+            e.stopPropagation();
+            mover(e.clientX);
+        });
+
+        dom.joystickBase.addEventListener("pointerup", (e) => {
+            if (e.pointerId !== activePointerId) return;
+            e.stopPropagation();
+            try {
+                dom.joystickBase.releasePointerCapture(e.pointerId);
+            } catch (_) {}
+            soltar();
+        });
+
+        dom.joystickBase.addEventListener("pointercancel", (e) => {
+            if (e.pointerId !== activePointerId) return;
+            e.stopPropagation();
+            try {
+                dom.joystickBase.releasePointerCapture(e.pointerId);
+            } catch (_) {}
+            soltar();
+        });
+
+        // Eventos de resguardo en window
+        window.addEventListener("pointerup", (e) => {
+            if (estadoMuseo.joystickActivo && e.pointerId === activePointerId) {
+                soltar();
             }
         });
-
-        window.addEventListener("mouseup", () => {
-            if (estadoMuseo.joystickActivo && estadoMuseo.joystickTouchId === null) {
-                soltarJoystick();
+        window.addEventListener("pointercancel", (e) => {
+            if (estadoMuseo.joystickActivo && e.pointerId === activePointerId) {
+                soltar();
             }
         });
     }

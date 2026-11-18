@@ -2491,7 +2491,7 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   position: fixed !important;
   bottom: 24px !important;
   left: 20px !important;
-  z-index: 980 !important;
+  z-index: 9999 !important;
   pointer-events: auto !important;
   touch-action: none !important;
   user-select: none !important;
@@ -2519,6 +2519,12 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   -webkit-user-select: none !important;
   -webkit-touch-callout: none !important;
   pointer-events: none !important;
+}
+
+#lbl-joystick-museo {
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
 /* Ficha de Obra (Bottom Sheet marfil/pergamino) */

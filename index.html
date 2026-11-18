@@ -1010,16 +1010,8 @@
         </div>
       </div>
 
-      <!-- Controles Superpuestos Flotantes: Joystick + Botón Salas + Pista de Navegación -->
+      <!-- Controles Superpuestos Flotantes: Botón Salas + Pista de Navegación -->
       <div class="absolute inset-0 pointer-events-none z-30">
-        <!-- Joystick circular táctil (84x84px) con margen inferior holgado para leer CAMINAR -->
-        <div id="joystick-contenedor" class="fixed bottom-6 left-5 md:bottom-7 md:left-7 z-[980] flex flex-col items-center pointer-events-auto select-none" style="touch-action: none; user-select: none; -webkit-user-select: none;">
-          <div id="museo-joystick-base" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing select-none shadow-2xl pointer-events-auto" style="touch-action: none; user-select: none; -webkit-user-select: none;">
-            <div id="museo-joystick-knob" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75" style="pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none;"></div>
-          </div>
-          <span id="lbl-joystick-museo" class="mt-1 text-[10px] font-bold text-amber-300 tracking-wider uppercase select-none drop-shadow-md pointer-events-none">CAMINAR</span>
-        </div>
-
         <!-- Indicador de controles en escritorio -->
         <div id="indicador-teclas-museo" class="hidden md:flex absolute bottom-7 left-1/2 -translate-x-1/2 items-center gap-2 bg-stone-950/85 border border-stone-800/80 px-4 py-2 rounded-full text-xs text-stone-200 pointer-events-none shadow-xl backdrop-blur-md">
           <span>⌨️ Usá las flechas <strong class="text-amber-400">←</strong> / <strong class="text-amber-400">→</strong> o la rueda del mouse para caminar</span>
@@ -1035,6 +1027,14 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- Joystick circular táctil (84x84px) - DIRECTO EN VISTA MUSEO -->
+    <div id="joystick-contenedor" class="fixed bottom-6 left-5 md:bottom-7 md:left-7 z-[9999] flex flex-col items-center pointer-events-auto select-none" style="position: fixed; bottom: 24px; left: 20px; z-index: 9999; touch-action: none; pointer-events: auto; user-select: none; -webkit-user-select: none;">
+      <div id="museo-joystick-base" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing select-none shadow-2xl pointer-events-auto" style="touch-action: none; pointer-events: auto; user-select: none; -webkit-user-select: none;">
+        <div id="museo-joystick-knob" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75" style="pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none;"></div>
+      </div>
+      <span id="lbl-joystick-museo" class="mt-1 text-[10px] font-bold text-amber-300 tracking-wider uppercase select-none drop-shadow-md pointer-events-none" style="pointer-events: none;">CAMINAR</span>
     </div>
 
     <!-- Modal / Drawer Selector Rápido de las 9 Salas -->

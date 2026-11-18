@@ -42,6 +42,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Retrato y cartografía histórica / Archivo Histórico Nacional (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferdinand_Magellan.jpg",
+                terminoBusquedaWikimedia: "Ferdinand Magellan portrait",
                 hitoRelacionado: {
                     es: "Hito Cabo Espíritu Santo y Estrecho",
                     en: "Cape Espiritu Santo & Strait Landmark"
@@ -64,6 +65,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Grabado náutico de expediciones australes (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Patagonians_and_Fuegians_-_Magellan_Strait.jpg",
+                terminoBusquedaWikimedia: "Patagonians and Fuegians Magellan Strait",
                 hitoRelacionado: {
                     es: "Cabo San Pablo y Costa Atlántica",
                     en: "Cape San Pablo & Atlantic Coast"
@@ -86,6 +88,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Abraham Ortelius / Mapoteca Histórica (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/5/59/Maris_Pacifici_%28Ortelius%2C_1589%29.jpg",
+                terminoBusquedaWikimedia: "Abraham Ortelius Maris Pacifici 1589",
                 hitoRelacionado: {
                     es: "Paso Garibaldi y Cordillera Fueguina",
                     en: "Garibaldi Pass & Fuegian Mountain Range"
@@ -127,6 +130,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Archivo fotográfico etnográfico / Colección P. Alberto De Agostini (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/66/Ona_Selknam.jpg",
+                terminoBusquedaWikimedia: "Selknam Ona Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Misión Salesiana La Candelaria",
                     en: "La Candelaria Salesian Mission"
@@ -149,6 +153,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Mission Scientifique du Cap Horn (1882-1883) (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Chile%2C_Yaghan_%28Yamana%29_canoe%2C_model_in_the_Vatican_Museums.jpg",
+                terminoBusquedaWikimedia: "Yamana Yaghan canoe Beagle",
                 hitoRelacionado: {
                     es: "Parque Nacional Tierra del Fuego",
                     en: "Tierra del Fuego National Park"
@@ -171,6 +176,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Registro documental del Dr. Martin Gusinde (1923) (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Ona_%281938%29.JPG",
+                terminoBusquedaWikimedia: "Selknam Hain ceremony",
                 hitoRelacionado: {
                     es: "Reserva Provincial Corazón de la Isla",
                     en: "Heart of the Island Provincial Reserve"
@@ -212,6 +218,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Acuarela de Conrad Martens (1832) / National Maritime Museum (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/2/22/HMS_Beagle_by_Conrad_Martens.jpg",
+                terminoBusquedaWikimedia: "HMS Beagle Conrad Martens",
                 hitoRelacionado: {
                     es: "Faro Les Éclaireurs y Canal Beagle",
                     en: "Les Éclaireurs Lighthouse & Beagle Channel"
@@ -234,6 +241,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Archivo Histórico de la Armada Argentina (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/0/08/ARA_Estrecho_de_San_Carlos_y_Faro_del_Fin_del_Mundo.jpg",
+                terminoBusquedaWikimedia: "Faro San Juan de Salvamento",
                 hitoRelacionado: {
                     es: "Faro Les Éclaireurs",
                     en: "Les Éclaireurs Lighthouse"
@@ -256,6 +264,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Colección Fotográfica Histórica Austral / AGN (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/37/FMIB_47233_HMS_Beagle_in_Straits_of_Magellan_Mt_Sarmiento_in_the_Distance.jpeg",
+                terminoBusquedaWikimedia: "HMS Beagle Straits of Magellan Mt Sarmiento",
                 hitoRelacionado: {
                     es: "Barco Varado Desdémona (Cabo San Pablo)",
                     en: "Desdémona Shipwreck (Cape San Pablo)"
@@ -297,6 +306,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Fototeca del Museo del Fin del Mundo / Colección Popper (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Julio_Popper.jpg",
+                terminoBusquedaWikimedia: "Julio Popper Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Bahía San Sebastián y El Páramo",
                     en: "San Sebastián Bay & El Páramo"
@@ -319,6 +329,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Archivo Histórico Salesiano de la Patagonia (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/86/Primera_Casa_Misi%C3%B3n_Salesiana_en_R%C3%ADo_Grande%2C_Tierra_del_Fuego_-_Los_Shelknam_%28page_77_crop%29.jpg",
+                terminoBusquedaWikimedia: "Mision Salesiana Rio Grande Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Misión Salesiana Nuestra Señora de la Candelaria",
                     en: "Our Lady of La Candelaria Salesian Mission"
@@ -341,6 +352,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Colección Fotográfica Familia Bridges (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Estancia_Harberton_001.JPG",
+                terminoBusquedaWikimedia: "Estancia Harberton Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Estancia Harberton y Museo Acatushún",
                     en: "Harberton Ranch & Acatushún Museum"
@@ -382,6 +394,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Archivo General de la Nación (AGN) (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Museo_Maritimo_y_Ex_Presidio_de_Ushuaia_01.JPG",
+                terminoBusquedaWikimedia: "Presidio Ushuaia",
                 hitoRelacionado: {
                     es: "Presidio de Ushuaia y Museo Marítimo",
                     en: "Ushuaia Prison & Maritime Museum"
@@ -404,6 +417,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Archivo Fotográfico Ferroviario / AGN (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/7/72/El_Tren_del_Fin_del_Mundo.jpg",
+                terminoBusquedaWikimedia: "Tren del Fin del Mundo Ushuaia",
                 hitoRelacionado: {
                     es: "Estación del Tren del Fin del Mundo",
                     en: "End of the World Train Station"
@@ -426,6 +440,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Fototeca Histórica Antártica Argentina / AGN (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Ushuaia_tdf_agn_1900.jpg",
+                terminoBusquedaWikimedia: "Ushuaia tdf agn 1900",
                 hitoRelacionado: {
                     es: "Puerto de Ushuaia y Cartel del Fin del Mundo",
                     en: "Ushuaia Port & End of the World Signpost"
@@ -467,6 +482,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Mapoteca Histórica del Archivo General de la Nación (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Puerto_Soledad%2C_Malvinas%2C_1785.jpg",
+                terminoBusquedaWikimedia: "Puerto Soledad Malvinas 1785",
                 hitoRelacionado: {
                     es: "Plaza Malvinas e Identidad Provincial",
                     en: "Malvinas Square & Provincial Identity"
@@ -489,6 +505,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Retrato Histórico de Luis Vernet / Archivo General de la Nación (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Vernet_Luis_Portrait.jpg",
+                terminoBusquedaWikimedia: "Luis Vernet Malvinas portrait",
                 hitoRelacionado: {
                     es: "Monumento a los Pioneros Fueguinos",
                     en: "Fuegian Pioneers Monument"
@@ -511,6 +528,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Pintura Histórica del Gaucho Rivero / Colección del Museo Malvinas (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/7/75/Gaucho_Rivero_pintura.jpg",
+                terminoBusquedaWikimedia: "Gaucho Rivero pintura",
                 hitoRelacionado: {
                     es: "Monumento a los Héroes de Malvinas (Río Grande)",
                     en: "Malvinas Heroes Monument (Río Grande)"
@@ -533,6 +551,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Mural Escultórico Héroes de Malvinas / Archivo Histórico Provincial (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Mural_escult%C3%B3rico_H%C3%A9roes_de_Malvinas_II.jpg",
+                terminoBusquedaWikimedia: "Mural Heroes de Malvinas",
                 hitoRelacionado: {
                     es: "Monumento a los Héroes de Malvinas (Río Grande)",
                     en: "Malvinas Heroes Monument (Río Grande)"
@@ -555,6 +574,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Plaza Islas Malvinas, Ushuaia / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Plaza_Islas_Malvinas%2C_Ushuaia.jpg",
+                terminoBusquedaWikimedia: "Plaza Islas Malvinas Ushuaia",
                 hitoRelacionado: {
                     es: "Plaza Islas Malvinas (Ushuaia)",
                     en: "Plaza Islas Malvinas (Ushuaia)"
@@ -596,6 +616,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Bosque de Lenga / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c4/TDFNPLengaForest.jpg",
+                terminoBusquedaWikimedia: "Nothofagus pumilio Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Parque Nacional Tierra del Fuego",
                     en: "Tierra del Fuego National Park"
@@ -618,6 +639,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Calafate en fruto / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Calafate_%28Berberis_Microphylla%29.JPG",
+                terminoBusquedaWikimedia: "Berberis microphylla calafate",
                 hitoRelacionado: {
                     es: "Sendero de la Costa y Bahía Lapataia",
                     en: "Coastal Trail & Lapataia Bay"
@@ -640,6 +662,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Bosque de Macrocystis pyrifera en Canal Beagle / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/5/58/Macrocystis_pyrifera_kelp_forest.jpg",
+                terminoBusquedaWikimedia: "Macrocystis pyrifera kelp forest",
                 hitoRelacionado: {
                     es: "Faro Les Éclaireurs y Canal Beagle",
                     en: "Les Éclaireurs Lighthouse & Beagle Channel"
@@ -681,6 +704,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Pingüino Rey en Isla Martillo / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/b/be/Aptenodytes_patagonicus_-Falkland_Islands-8.jpg",
+                terminoBusquedaWikimedia: "Aptenodytes patagonicus king penguin",
                 hitoRelacionado: {
                     es: "Isla Martillo - Pingüinera",
                     en: "Martillo Island - Penguin Rookery"
@@ -703,6 +727,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Guanaco corriendo en Tierra del Fuego / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Running_Guanaco_Tierra_del_Fuego_Chile.jpg",
+                terminoBusquedaWikimedia: "Lama guanicoe Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Reserva Costa Atlántica (Río Grande)",
                     en: "Atlantic Coastal Reserve (Río Grande)"
@@ -725,6 +750,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Lobos Marinos en el Canal Beagle / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/0/09/Beagle_Channel_-_La_Isla_de_Los_Lobos.jpg",
+                terminoBusquedaWikimedia: "Beagle Channel La Isla de Los Lobos",
                 hitoRelacionado: {
                     es: "Faro Les Éclaireurs y Canal Beagle",
                     en: "Les Éclaireurs Lighthouse & Beagle Channel"
@@ -766,6 +792,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Turbal en Valle de Andorra, Ushuaia / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Sphagnum_bog_Tierra_del_Fuego.jpg",
+                terminoBusquedaWikimedia: "Sphagnum bog Tierra del Fuego",
                 hitoRelacionado: {
                     es: "Sitio Ramsar Glaciar Vinciguerra y Turbales de Andorra",
                     en: "Vinciguerra Glacier & Andorra Peatlands Ramsar Site"
@@ -788,6 +815,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Glaciar Martial en Ushuaia / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Glaciar_Martial_Ushuaia.jpg",
+                terminoBusquedaWikimedia: "Glaciar Martial Ushuaia",
                 hitoRelacionado: {
                     es: "Glaciar Martial",
                     en: "Glaciar Martial"
@@ -810,6 +838,7 @@ const SALAS_MUSEO = [
                 },
                 credito: "Ríos de Piedra (Stone Run) / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/East_Falkland_-_Stone_Run.jpg",
+                terminoBusquedaWikimedia: "East Falkland Stone Run",
                 hitoRelacionado: {
                     es: "Reserva Geológica y Paleontológica Austral",
                     en: "Southern Geological & Paleontological Reserve"
@@ -844,7 +873,7 @@ function generarSvgFallbackObra(titulo, anio) {
             <path d="M400 160 L430 220 L495 230 L450 275 L460 340 L400 310 L340 340 L350 275 L305 230 L370 220 Z" fill="url(#bronce)" opacity="0.85"/>
             <circle cx="400" cy="245" r="32" fill="#1E140E"/>
             <text x="400" y="252" font-family="serif" font-size="24" fill="#E5C158" text-anchor="middle" font-weight="bold">RA</text>
-            <text x="400" y="420" font-family="'Outfit', serif, sans-serif" font-size="28" fill="#F4F1EA" text-anchor="middle" font-weight="bold">${tituloEsc}</text>
+            <text x="400" y="420" font-family="Outfit, serif, sans-serif" font-size="28" fill="#F4F1EA" text-anchor="middle" font-weight="bold">${tituloEsc}</text>
             <text x="400" y="460" font-family="sans-serif" font-size="18" fill="#C59B27" text-anchor="middle" letter-spacing="2">${anioEsc} · ARCHIVO HISTÓRICO AUSTRAL</text>
             <text x="400" y="500" font-family="sans-serif" font-size="13" fill="#A89F91" text-anchor="middle">Patrimonio Histórico y Cultural de Tierra del Fuego</text>
         </svg>

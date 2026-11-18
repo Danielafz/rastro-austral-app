@@ -180,6 +180,14 @@
         <span data-i18n="nav_museo">Museo</span>
       </button>
 
+      <!-- Botón Píldora Guía de Caminata y Emergencias en Desktop -->
+      <button type="button" id="btn-header-guia-caminata"
+        class="btn-abrir-guia-caminata hidden md:flex items-center gap-1.5 bg-slate-800/80 hover:bg-emerald-600 text-emerald-300 hover:text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-500/30 hover:border-emerald-400 text-xs font-semibold cursor-pointer transition-all shadow-sm"
+        title="Recomendaciones de caminata y teléfonos de emergencia" aria-label="Guía de Caminata y Emergencias">
+        <span class="text-sm">🎒</span>
+        <span data-i18n="guia_sos_header">Guía y Emergencias</span>
+      </button>
+
       <!-- Identificador de Explorador/a (Acceso directo a bienvenida / edición) -->
       <button type="button" id="badge-explorador"
         class="hidden bg-slate-800/80 hover:bg-amber-100/80 hover:text-slate-900 group px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-amber-500/30 hover:border-amber-400 flex items-center gap-1 sm:gap-2 text-xs cursor-pointer transition-colors"
@@ -229,20 +237,33 @@
       </span>
     </div>
 
-    <!-- Botón de Guardar Fichas -->
-    <button id="btn-guardar-offline" type="button"
-      class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold rounded-lg border border-orange-200 transition-colors shrink-0 cursor-pointer text-xs"
-      title="Descarga local de fichas territoriales"
-      aria-label="Guardar fichas territoriales y pautas ambientales para expedición sin conexión">
-      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-      </svg>
-      <!-- En móviles mostramos "Guardar", en desktop "Guardar Fichas para Expedición" -->
-      <span id="lbl-guardar-desktop" class="hidden sm:inline" data-i18n="guardar_fichas_offline">Guardar Fichas para
-        Expedición</span>
-      <span id="lbl-guardar-mobile" class="inline sm:hidden" data-i18n="guardar_fichas_offline_corto">Guardar</span>
-    </button>
+    <!-- Botones de Acción (Guía/SOS + Guardar Fichas) -->
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <!-- Botón Guía de Caminata y Emergencias SOS -->
+      <button id="btn-abrir-guia-caminata" type="button"
+        class="btn-abrir-guia-caminata flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-800 font-bold rounded-lg border border-emerald-200 transition-colors shrink-0 cursor-pointer text-xs"
+        title="Recomendaciones de seguridad en caminata y teléfonos de emergencia"
+        aria-label="Abrir guía de caminata y teléfonos de emergencia por ciudad">
+        <span class="text-xs sm:text-sm">🎒</span>
+        <span class="inline sm:hidden" data-i18n="guia_sos_corto">Guía y SOS</span>
+        <span class="hidden sm:inline" data-i18n="guia_sos_largo">Guía de Caminata y Emergencias</span>
+      </button>
+
+      <!-- Botón de Guardar Fichas -->
+      <button id="btn-guardar-offline" type="button"
+        class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold rounded-lg border border-orange-200 transition-colors shrink-0 cursor-pointer text-xs"
+        title="Descarga local de fichas territoriales"
+        aria-label="Guardar fichas territoriales y pautas ambientales para expedición sin conexión">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+        </svg>
+        <!-- En móviles mostramos "Guardar", en desktop "Guardar Fichas para Expedición" -->
+        <span id="lbl-guardar-desktop" class="hidden sm:inline" data-i18n="guardar_fichas_offline">Guardar Fichas para
+          Expedición</span>
+        <span id="lbl-guardar-mobile" class="inline sm:hidden" data-i18n="guardar_fichas_offline_corto">Guardar</span>
+      </button>
+    </div>
   </div>
 
   <!-- Contenedor Principal (Dashboard Layout) -->
@@ -1352,6 +1373,351 @@
           Cerrar
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal de Guía de Caminata y Líneas de Emergencia por Ciudad -->
+  <div id="modal-guia-caminata" role="dialog" aria-modal="true" aria-labelledby="modal-guia-titulo"
+    class="fixed inset-0 z-[750] bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+    <div
+      class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
+      
+      <!-- Cabecera del Modal con alto contraste -->
+      <div class="bg-slate-100 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 px-5 sm:px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-100 dark:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-emerald-400 text-lg sm:text-xl shrink-0">
+            🎒
+          </div>
+          <div>
+            <h3 id="modal-guia-titulo" data-i18n="modal_guia_titulo" class="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-wide leading-tight">
+              Seguridad en Montaña y Emergencias
+            </h3>
+            <p data-i18n="modal_guia_subtitulo" class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+              Recomendaciones para senderos fueguinos y teléfonos de auxilio
+            </p>
+          </div>
+        </div>
+        <button id="btn-cerrar-modal-guia" type="button"
+          class="text-slate-500 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 text-lg font-bold p-1.5 rounded-lg transition cursor-pointer"
+          title="Cerrar guía" aria-label="Cerrar ventana de recomendaciones y emergencias">
+          ✕
+        </button>
+      </div>
+
+      <!-- Segmented Control de Pestañas (Recomendaciones vs Emergencias) -->
+      <div class="bg-slate-50 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-2.5 flex items-center gap-2 flex-shrink-0">
+        <div role="tablist" aria-label="Secciones de la guía" class="grid grid-cols-2 gap-1.5 w-full bg-slate-200/80 dark:bg-slate-800 p-1 rounded-xl">
+          <button type="button" id="tab-btn-guia-caminata" role="tab" aria-selected="true" aria-controls="tab-panel-guia-caminata"
+            class="tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all bg-emerald-600 text-white shadow-sm cursor-pointer">
+            <span>🎒</span>
+            <span data-i18n="tab_recomendaciones_caminata">Recomendaciones</span>
+          </button>
+          <button type="button" id="tab-btn-guia-emergencias" role="tab" aria-selected="false" aria-controls="tab-panel-guia-emergencias"
+            class="tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white cursor-pointer">
+            <span>🚨</span>
+            <span data-i18n="tab_emergencias_ciudad">Emergencias por Ciudad</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor con Scroll de las Pestañas -->
+      <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-xs text-slate-700 dark:text-slate-300">
+        
+        <!-- PESTAÑA 1: RECOMENDACIONES DE CAMINATA -->
+        <div id="tab-panel-guia-caminata" role="tabpanel" aria-labelledby="tab-btn-guia-caminata" class="space-y-4">
+          <!-- Intro -->
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed" data-i18n="guia_intro">
+            El entorno subantártico de Tierra del Fuego presenta terrenos agrestes, turbales húmedos y clima sumamente cambiante. Seguí estas pautas esenciales para una experiencia segura y responsable.
+          </p>
+
+          <!-- 1. Calzado adecuado -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">🥾</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_calzado_tit">1. Calzado adecuado</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_calzado_desc">
+                Usá borcegos de trekking impermeables o zapatillas de montaña con buen agarre, suela antideslizante (tipo Vibram) y soporte de tobillo. Evitá calzado urbano, tacos, plataformas o suelas lisas que resbalen sobre roca húmeda, raíces o barro.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. Vestimenta -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">👖</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_vestimenta_tit">2. Vestimenta para aire libre</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_vestimenta_desc">
+                Elegí ropa cómoda y sintética de secado rápido que permita libre movimiento. Usá pantalones largos resistentes para protegerte de vegetación y turba. Evitá jeans pesados, telas de algodón que absorben humedad o prendas delicadas que puedan engancharse.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3. Abrigo y cambios de clima -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">🧥</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_abrigo_tit">3. Abrigo en capas y cambios de clima</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_abrigo_desc">
+                En la Patagonia austral pueden vivirse las cuatro estaciones en un mismo día. Vestite en sistema de capas (primera piel térmica, capa media de abrigo polar y tercera capa impermeable/cortaviento). Llevá siempre campera o abrigo impermeable adicional ante cambios bruscos de temperatura, viento o lluvia.
+              </p>
+            </div>
+          </div>
+
+          <!-- 4. Agua e hidratación -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">💧</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_agua_tit">4. Agua e hidratación constante</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_agua_desc">
+                Llevá al menos 1,5 a 2 litros de agua por persona en botella o cantimplora individual para hidratarte periódicamente durante toda la travesía.
+              </p>
+            </div>
+          </div>
+
+          <!-- 5. Protección solar -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">☀️</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_sol_tit">5. Protección solar en altas latitudes</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_sol_desc">
+                Por proximidad al vórtice polar y la reflexión en nieve y agua, la radiación UV en el extremo austral es elevada incluso con cielo nublado. Usá protector solar FPS 50+, lentes de sol con filtro UV y gorra o sombrero.
+              </p>
+            </div>
+          </div>
+
+          <!-- 6. Checklist de Mochila Interactiva -->
+          <div class="bg-emerald-50/70 dark:bg-emerald-950/30 p-4 rounded-xl border border-emerald-200/80 dark:border-emerald-800/50 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-emerald-900 dark:text-emerald-300 text-xs flex items-center gap-1.5">
+                <span>🎒</span>
+                <span data-i18n="guia_mochila_tit">6. Checklist Interactivo de Mochila</span>
+              </h4>
+              <span id="contador-mochila-check" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-200/60 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 font-bold">0/6 listo</span>
+            </div>
+            <p class="text-[11px] text-emerald-800 dark:text-emerald-300" data-i18n="guia_mochila_desc">
+              Tildá los elementos que ya guardaste en tu mochila. Tu progreso se conserva automáticamente sin conexión:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-agua" data-item="agua" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_agua">💧 Agua (1.5L - 2L)</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-protector" data-item="protector" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_protector">🧴 Protector solar y lentes</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-abrigo" data-item="abrigo" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_abrigo">🧥 Campera impermeable / abrigo</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-snack" data-item="snack" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_snack">🍫 Alimento liviano o snack</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-remera" data-item="remera" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_remera">👕 Remera de recambio</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer hover:bg-emerald-100/50 transition">
+                <input type="checkbox" id="check-mochila-bolsa" data-item="bolsa" class="check-mochila-item w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer">
+                <span class="text-slate-800 dark:text-slate-200 font-medium" data-i18n="item_bolsa">🗑️ Bolsa para residuos propios</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 7. Seguridad durante el recorrido -->
+          <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-3">
+            <span class="text-xl shrink-0">🧭</span>
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_seguridad_tit">7. Seguridad durante el recorrido</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_seguridad_desc">
+                Respetá indicaciones del guía o guardaparques; permanecé siempre en senderos señalizados; no te alejes del grupo sin aviso; mantené un ritmo adecuado; avisá ante cualquier malestar físico; no arrojes residuos ni alteres el entorno; <strong>e informá siempre a un familiar o persona de confianza el recorrido elegido y el horario aproximado de regreso</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Recuadro IMPORTANTE -->
+          <div class="bg-amber-50 dark:bg-amber-950/40 p-4 rounded-xl border border-amber-200/80 dark:border-amber-800/60 flex items-start gap-3">
+            <span class="text-xl shrink-0">⚠️</span>
+            <div>
+              <h5 class="font-bold text-amber-950 dark:text-amber-200 text-xs uppercase tracking-wide mb-1" data-i18n="guia_importante_tit">
+                IMPORTANTE · Planificación Previa
+              </h5>
+              <p class="text-amber-950/90 dark:text-amber-300 text-xs leading-relaxed" data-i18n="guia_importante_desc">
+                Planificá el recorrido con suficiente anticipación y luz natural, consultá el módulo de <strong>Clima Austral en Tiempo Real</strong> dentro de esta aplicación para chequear vientos y temperaturas, y verificá todo el equipo antes de salir.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 2: EMERGENCIAS POR CIUDAD -->
+        <div id="tab-panel-guia-emergencias" role="tabpanel" aria-labelledby="tab-btn-guia-emergencias" class="space-y-4 hidden">
+          <!-- Barra Superior de Emergencias Rápidas -->
+          <div class="bg-red-50/80 dark:bg-red-950/30 p-3.5 rounded-xl border border-red-200 dark:border-red-900/50">
+            <h4 class="text-xs font-bold text-red-900 dark:text-red-300 mb-2 flex items-center gap-1.5">
+              <span>🚨</span>
+              <span data-i18n="emergencias_rapidas_tit">Líneas Rápidas de Emergencia Provincial</span>
+            </h4>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-center">
+              <a href="tel:103" class="flex flex-col items-center justify-center p-2 rounded-lg bg-white dark:bg-slate-900 border border-red-200 dark:border-red-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 transition group shadow-2xs">
+                <span class="text-base font-black text-red-600 group-hover:text-white">103</span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-300 group-hover:text-white font-medium" data-i18n="tel_defensa_civil">Defensa Civil</span>
+              </a>
+              <a href="tel:101" class="flex flex-col items-center justify-center p-2 rounded-lg bg-white dark:bg-slate-900 border border-red-200 dark:border-red-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 transition group shadow-2xs">
+                <span class="text-base font-black text-red-600 group-hover:text-white">101</span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-300 group-hover:text-white font-medium" data-i18n="tel_policia">Policía</span>
+              </a>
+              <a href="tel:107" class="flex flex-col items-center justify-center p-2 rounded-lg bg-white dark:bg-slate-900 border border-red-200 dark:border-red-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 transition group shadow-2xs">
+                <span class="text-base font-black text-red-600 group-hover:text-white">107</span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-300 group-hover:text-white font-medium" data-i18n="tel_salud">Emerg. Médicas</span>
+              </a>
+              <a href="tel:100" class="flex flex-col items-center justify-center p-2 rounded-lg bg-white dark:bg-slate-900 border border-red-200 dark:border-red-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 transition group shadow-2xs">
+                <span class="text-base font-black text-red-600 group-hover:text-white">100</span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-300 group-hover:text-white font-medium" data-i18n="tel_bomberos">Bomberos</span>
+              </a>
+              <a href="tel:106" class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-2 rounded-lg bg-white dark:bg-slate-900 border border-red-200 dark:border-red-800 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 transition group shadow-2xs">
+                <span class="text-base font-black text-red-600 group-hover:text-white">106</span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-300 group-hover:text-white font-medium" data-i18n="tel_prefectura">Prefectura</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Directorio por Ciudad -->
+          <div class="space-y-3">
+            
+            <!-- Ushuaia -->
+            <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-2.5">
+                <h4 class="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
+                  <span>🏔️</span>
+                  <span>Ushuaia</span>
+                </h4>
+                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Prefijo 02901</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Defensa Civil Municipal</div>
+                    <div class="text-[11px] text-slate-500">Emergencias 103</div>
+                  </div>
+                  <a href="tel:103" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Comisión de Auxilio Ushuaia</div>
+                    <div class="text-[11px] text-slate-500">Rescate en montaña</div>
+                  </div>
+                  <a href="tel:+5492901422103" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Hospital Regional Ushuaia</div>
+                    <div class="text-[11px] text-slate-500">Guardia 107 / 42-2950</div>
+                  </div>
+                  <a href="tel:02901422950" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Parque Nacional TDF</div>
+                    <div class="text-[11px] text-slate-500">Intendencia 42-1315</div>
+                  </div>
+                  <a href="tel:02901421315" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tolhuin -->
+            <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-2.5">
+                <h4 class="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
+                  <span>🌲</span>
+                  <span>Tolhuin (Corazón de la Isla)</span>
+                </h4>
+                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Prefijo 02901</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Defensa Civil Tolhuin</div>
+                    <div class="text-[11px] text-slate-500">103 / 49-2031</div>
+                  </div>
+                  <a href="tel:02901492031" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Centro Asistencial Tolhuin</div>
+                    <div class="text-[11px] text-slate-500">107 / 49-2121</div>
+                  </div>
+                  <a href="tel:02901492121" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Bomberos Tolhuin</div>
+                    <div class="text-[11px] text-slate-500">100 / 49-2222</div>
+                  </div>
+                  <a href="tel:02901492222" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Río Grande -->
+            <div class="bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-2.5">
+                <h4 class="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
+                  <span>🌊</span>
+                  <span>Río Grande</span>
+                </h4>
+                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Prefijo 02964</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Defensa Civil R.G.</div>
+                    <div class="text-[11px] text-slate-500">103 / 42-4163</div>
+                  </div>
+                  <a href="tel:02964424163" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Hospital Regional R.G.</div>
+                    <div class="text-[11px] text-slate-500">107 / 42-2088</div>
+                  </div>
+                  <a href="tel:02964422088" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                  <div>
+                    <div class="font-semibold text-slate-800 dark:text-slate-200">Prefectura Río Grande</div>
+                    <div class="text-[11px] text-slate-500">106 / 42-2382</div>
+                  </div>
+                  <a href="tel:02964422382" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[11px] transition">Llamar</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Nota Preventiva de Sin Señal -->
+          <div class="bg-blue-50/80 dark:bg-blue-950/30 p-3.5 rounded-xl border border-blue-200 dark:border-blue-800/50 flex items-start gap-2.5">
+            <span class="text-base shrink-0">📶</span>
+            <p class="text-[11px] text-blue-900 dark:text-blue-300 leading-relaxed" data-i18n="emergencias_nota_sin_senal">
+              <strong>Zonas sin cobertura móvil:</strong> En valles cordilleranos, turbales y pasos de altura la señal celular puede interrumpirse por completo. Descargá previamente las fichas y mapa offline desde esta app y recordá haber avisado a un allegado tu horario de regreso.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pie del Modal -->
+      <div class="bg-slate-100 dark:bg-slate-950 px-5 sm:px-6 py-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+        <span class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="guia_pie_ayuda">Seguridad en montaña · Rastro Austral</span>
+        <button id="btn-cerrar-modal-guia-secundario" type="button"
+          class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-lg border border-slate-300 dark:border-slate-700 transition text-xs font-semibold cursor-pointer"
+          data-i18n="cerrar">
+          Cerrar
+        </button>
+      </div>
+
     </div>
   </div>
 

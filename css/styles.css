@@ -907,6 +907,18 @@ html.dark #modal-creditos>div {
   border-color: #334155 !important;
 }
 
+/* Modal de Guía de Caminata y Emergencias con borde neutro */
+html:not(.dark) #modal-guia-caminata>div {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark #modal-guia-caminata>div {
+  border-color: #334155 !important;
+}
+
 /* Modal de Alerta y Bloqueo con borde de advertencia */
 html:not(.dark) #modal-bloqueo>div {
   background-color: #ffffff !important;

@@ -158,6 +158,44 @@ const DICCIONARIO = {
         creditos_privacidad_desc: "Esta aplicación no recopila telemetría, identificadores ni geolocalización en servidores remotos. Todas las visitas marcadas, sellos, notas de campo, caché de obras y reportes meteorológicos quedan almacenados de manera 100% local en este dispositivo mediante localStorage y Service Worker offline (Ley 25.326 de Protección de los Datos Personales).",
         creditos_licencia_titulo: "Licencias Abiertas",
         creditos_licencia_desc: "Código fuente distribuido bajo licencia permisiva MIT. Cartografía oficial del Instituto Geográfico Nacional (IGN Argentina), imágenes satelitales complementarias de Esri, datos meteorológicos abiertos de Open-Meteo (CC BY 4.0) y contenidos educativos y patrimoniales bajo Creative Commons CC BY-SA 4.0.",
+        guia_sos_corto: "Guía y SOS",
+        guia_sos_largo: "Guía de Caminata y Emergencias",
+        guia_sos_header: "Guía y Emergencias",
+        modal_guia_titulo: "Seguridad en Montaña y Emergencias",
+        modal_guia_subtitulo: "Recomendaciones para senderos fueguinos y teléfonos de auxilio",
+        tab_recomendaciones_caminata: "Recomendaciones",
+        tab_emergencias_ciudad: "Emergencias por Ciudad",
+        guia_intro: "El entorno subantártico de Tierra del Fuego presenta terrenos agrestes, turbales húmedos y clima sumamente cambiante. Seguí estas pautas esenciales para una experiencia segura y responsable.",
+        guia_calzado_tit: "1. Calzado adecuado",
+        guia_calzado_desc: "Usá borcegos de trekking impermeables o zapatillas de montaña con buen agarre, suela antideslizante (tipo Vibram) y soporte de tobillo. Evitá calzado urbano, tacos, plataformas o suelas lisas que resbalen sobre roca húmeda, raíces o barro.",
+        guia_vestimenta_tit: "2. Vestimenta para aire libre",
+        guia_vestimenta_desc: "Elegí ropa cómoda y sintética de secado rápido que permita libre movimiento. Usá pantalones largos resistentes para protegerte de vegetación y turba. Evitá jeans pesados, telas de algodón que absorben humedad o prendas delicadas que puedan engancharse.",
+        guia_abrigo_tit: "3. Abrigo en capas y cambios de clima",
+        guia_abrigo_desc: "En la Patagonia austral pueden vivirse las cuatro estaciones en un mismo día. Vestite en sistema de capas (primera piel térmica, capa media de abrigo polar y tercera capa impermeable/cortaviento). Llevá siempre campera o abrigo impermeable adicional ante cambios bruscos de temperatura, viento o lluvia.",
+        guia_agua_tit: "4. Agua e hidratación constante",
+        guia_agua_desc: "Llevá al menos 1,5 a 2 litros de agua por persona en botella o cantimplora individual para hidratarte periódicamente durante toda la travesía.",
+        guia_sol_tit: "5. Protección solar en altas latitudes",
+        guia_sol_desc: "Por proximidad al vórtice polar y la reflexión en nieve y agua, la radiación UV en el extremo austral es elevada incluso con cielo nublado. Usá protector solar FPS 50+, lentes de sol con filtro UV y gorra o sombrero.",
+        guia_mochila_tit: "6. Checklist Interactivo de Mochila",
+        guia_mochila_desc: "Tildá los elementos que ya guardaste en tu mochila. Tu progreso se conserva automáticamente sin conexión:",
+        item_agua: "💧 Agua (1.5L - 2L)",
+        item_protector: "🧴 Protector solar y lentes",
+        item_abrigo: "🧥 Campera impermeable / abrigo",
+        item_snack: "🍫 Alimento liviano o snack",
+        item_remera: "👕 Remera de recambio",
+        item_bolsa: "🗑️ Bolsa para residuos propios",
+        guia_seguridad_tit: "7. Seguridad durante el recorrido",
+        guia_seguridad_desc: "Respetá indicaciones del guía o guardaparques; permanecé siempre en senderos señalizados; no te alejes del grupo sin aviso; mantené un ritmo adecuado; avisá ante cualquier malestar físico; no arrojes residuos ni alteres el entorno; e informá siempre a un familiar o persona de confianza el recorrido elegido y el horario aproximado de regreso.",
+        guia_importante_tit: "IMPORTANTE · Planificación Previa",
+        guia_importante_desc: "Planificá el recorrido con suficiente anticipación y luz natural, consultá el módulo de Clima Austral en Tiempo Real dentro de esta aplicación para chequear vientos y temperaturas, y verificá todo el equipo antes de salir.",
+        emergencias_rapidas_tit: "Líneas Rápidas de Emergencia Provincial",
+        tel_defensa_civil: "Defensa Civil",
+        tel_policia: "Policía",
+        tel_salud: "Emerg. Médicas",
+        tel_bomberos: "Bomberos",
+        tel_prefectura: "Prefectura",
+        emergencias_nota_sin_senal: "Zonas sin cobertura móvil: En valles cordilleranos, turbales y pasos de altura la señal celular puede interrumpirse por completo. Descargá previamente las fichas y mapa offline desde esta app y recordá haber avisado a un allegado tu horario de regreso.",
+        guia_pie_ayuda: "Seguridad en montaña · Rastro Austral",
         cerrar: "Cerrar",
         compartir: "Compartir",
         copiado: "✔ Copiado",
@@ -307,6 +345,44 @@ const DICCIONARIO = {
         creditos_privacidad_desc: "This application collects no telemetry, tracking identifiers, or geolocation on remote servers. All marked visits, passport stamps, field notes, cached museum artworks, and weather reports are stored 100% locally on this device via localStorage and offline Service Worker (Personal Data Protection Act 25.326).",
         creditos_licencia_titulo: "Open Licenses",
         creditos_licencia_desc: "Source code released under the MIT License. Official cartography by the National Geographic Institute (IGN Argentina), complementary satellite imagery by Esri, open weather data by Open-Meteo (CC BY 4.0), and educational and heritage contents under Creative Commons CC BY-SA 4.0.",
+        guia_sos_corto: "Guide & SOS",
+        guia_sos_largo: "Trekking Guide & Emergencies",
+        guia_sos_header: "Guide & SOS",
+        modal_guia_titulo: "Mountain Safety & Emergency Directory",
+        modal_guia_subtitulo: "Recommendations for Fuegian trails and emergency phone numbers",
+        tab_recomendaciones_caminata: "Recommendations",
+        tab_emergencias_ciudad: "City Emergencies",
+        guia_intro: "Tierra del Fuego's subantarctic environment features rugged terrain, wet peat bogs, and highly unpredictable weather. Follow these guidelines for a safe, responsible expedition.",
+        guia_calzado_tit: "1. Proper Footwear",
+        guia_calzado_desc: "Wear waterproof trekking boots or trail shoes with reliable non-slip soles and ankle support. Avoid urban sneakers, platforms, or smooth soles that slip on wet rocks and mud.",
+        guia_vestimenta_tit: "2. Outdoor Clothing",
+        guia_vestimenta_desc: "Wear comfortable, quick-drying synthetic clothing allowing free movement. Long trousers are essential against scrub and peat. Avoid heavy denim or cotton fabrics.",
+        guia_abrigo_tit: "3. Layering & Rapid Weather Shifts",
+        guia_abrigo_desc: "Dress in layers (thermal base layer, warm fleece mid-layer, and waterproof/windproof shell jacket). Always carry extra warm layers against sudden temperature drops or rain.",
+        guia_agua_tit: "4. Water & Steady Hydration",
+        guia_agua_desc: "Carry at least 1.5 to 2 liters of water per person in an individual reusable bottle or flask to hydrate regularly throughout your journey.",
+        guia_sol_tit: "5. High-Latitude Sun Protection",
+        guia_sol_desc: "Due to high-latitude UV intensity and reflection off water and snow, sun protection is critical even on overcast days. Use SPF 50+ sunscreen, UV sunglasses, and a brimmed hat.",
+        guia_mochila_tit: "6. Interactive Backpack Checklist",
+        guia_mochila_desc: "Check off items packed in your backpack. Your progress saves automatically offline:",
+        item_agua: "💧 Water (1.5L - 2L)",
+        item_protector: "🧴 Sunscreen & sunglasses",
+        item_abrigo: "🧥 Waterproof jacket / extra layer",
+        item_snack: "🍫 Light snacks & trail mix",
+        item_remera: "👕 Change of t-shirt",
+        item_bolsa: "🗑️ Trash bag (Leave No Trace)",
+        guia_seguridad_tit: "7. Trail Safety & Etiquette",
+        guia_seguridad_desc: "Follow ranger and guide advice; stay strictly on marked paths; never leave your group unannounced; maintain a steady pace; carry out all trash; and always notify a trusted person of your itinerary and estimated return time.",
+        guia_importante_tit: "IMPORTANT · Prior Planning",
+        guia_importante_desc: "Plan your route with adequate daylight, consult the Real-Time Weather module in the app, and verify gear thoroughly before heading out.",
+        emergencias_rapidas_tit: "Provincial Emergency Hotlines",
+        tel_defensa_civil: "Civil Defense",
+        tel_policia: "Police",
+        tel_salud: "Medical Emerg.",
+        tel_bomberos: "Fire Dept.",
+        tel_prefectura: "Coast Guard",
+        emergencias_nota_sin_senal: "Zero cellular coverage areas: In mountain valleys, passes, and peatlands cellular signal may drop completely. Download offline cards beforehand and always inform someone of your planned return time.",
+        guia_pie_ayuda: "Mountain Safety · Rastro Austral",
         cerrar: "Close",
         compartir: "Share",
         copiado: "✔ Copied",
@@ -524,6 +600,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarModalCreditos();
     configurarModalHuella();
     configurarModalBloqueo();
+    configurarModalGuiaCaminata();
     configurarSelectorCapasBase();
     configurarCapaAreasProtegidas();
     configurarCapaAlertasSAR();
@@ -3193,6 +3270,14 @@ function actualizarTextosUI() {
     const btnGeoloc = document.getElementById("btn-geolocalizacion");
     if (btnGeoloc && t.geoloc_titulo) btnGeoloc.setAttribute("title", t.geoloc_titulo);
 
+    const contadorMochila = document.getElementById("contador-mochila-check");
+    if (contadorMochila) {
+        const checks = document.querySelectorAll(".check-mochila-item");
+        let listos = 0;
+        checks.forEach(c => { if (c.checked) listos++; });
+        contadorMochila.innerText = `${listos}/${checks.length} ${idiomaActual === "en" ? "ready" : "listo"}`;
+    }
+
     actualizarHuellaConsciente();
     actualizarMetricasDistancia();
     if (typeof actualizarBadgesObservatorio === "function") {
@@ -4501,6 +4586,113 @@ function desviarASenderoSeguro() {
                 : `Ruta desviada hacia sendero seguro autorizado: ${hitoSeguro.nombre}`
         );
     }
+}
+
+// 17.4. Modal de Guía de Caminata y Líneas de Emergencia por Ciudad
+function inicializarChecklistMochila() {
+    const checks = document.querySelectorAll(".check-mochila-item");
+    const contador = document.getElementById("contador-mochila-check");
+
+    const actualizarContador = () => {
+        let listos = 0;
+        checks.forEach(c => {
+            if (c.checked) listos++;
+        });
+        if (contador) {
+            const total = checks.length;
+            contador.innerText = `${listos}/${total} ${idiomaActual === "en" ? "ready" : "listo"}`;
+        }
+    };
+
+    checks.forEach(check => {
+        const itemKey = check.getAttribute("data-item");
+        if (itemKey) {
+            try {
+                const saved = localStorage.getItem(`rastro_mochila_${itemKey}`);
+                if (saved === "1") {
+                    check.checked = true;
+                }
+            } catch (e) {
+                console.error("Error al leer item de mochila:", e);
+            }
+            check.addEventListener("change", () => {
+                try {
+                    localStorage.setItem(`rastro_mochila_${itemKey}`, check.checked ? "1" : "0");
+                } catch (e) {
+                    console.error("Error al guardar item de mochila:", e);
+                }
+                actualizarContador();
+            });
+        }
+    });
+
+    actualizarContador();
+}
+
+function configurarModalGuiaCaminata() {
+    const modal = document.getElementById("modal-guia-caminata");
+    const btnsAbrir = document.querySelectorAll(".btn-abrir-guia-caminata, #btn-abrir-guia-caminata, #btn-header-guia-caminata");
+    const btnCerrar = document.getElementById("btn-cerrar-modal-guia");
+    const btnCerrarSec = document.getElementById("btn-cerrar-modal-guia-secundario");
+
+    const tabBtnCaminata = document.getElementById("tab-btn-guia-caminata");
+    const tabBtnEmergencias = document.getElementById("tab-btn-guia-emergencias");
+    const tabPanelCaminata = document.getElementById("tab-panel-guia-caminata");
+    const tabPanelEmergencias = document.getElementById("tab-panel-guia-emergencias");
+
+    if (!modal) return;
+
+    const cambiarTab = (tab) => {
+        if (!tabBtnCaminata || !tabBtnEmergencias || !tabPanelCaminata || !tabPanelEmergencias) return;
+        if (tab === "caminata") {
+            tabBtnCaminata.className = "tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all bg-emerald-600 text-white shadow-sm cursor-pointer";
+            tabBtnCaminata.setAttribute("aria-selected", "true");
+
+            tabBtnEmergencias.className = "tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white cursor-pointer";
+            tabBtnEmergencias.setAttribute("aria-selected", "false");
+
+            tabPanelCaminata.classList.remove("hidden");
+            tabPanelEmergencias.classList.add("hidden");
+        } else {
+            tabBtnEmergencias.className = "tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all bg-red-600 text-white shadow-sm cursor-pointer";
+            tabBtnEmergencias.setAttribute("aria-selected", "true");
+
+            tabBtnCaminata.className = "tab-btn-guia flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white cursor-pointer";
+            tabBtnCaminata.setAttribute("aria-selected", "false");
+
+            tabPanelEmergencias.classList.remove("hidden");
+            tabPanelCaminata.classList.add("hidden");
+        }
+    };
+
+    if (tabBtnCaminata) tabBtnCaminata.addEventListener("click", () => cambiarTab("caminata"));
+    if (tabBtnEmergencias) tabBtnEmergencias.addEventListener("click", () => cambiarTab("emergencias"));
+
+    const abrir = () => {
+        modal.classList.remove("hidden");
+        cambiarTab("caminata");
+        inicializarChecklistMochila();
+    };
+    const cerrar = () => modal.classList.add("hidden");
+
+    btnsAbrir.forEach(btn => btn.addEventListener("click", abrir));
+    if (btnCerrar) btnCerrar.addEventListener("click", cerrar);
+    if (btnCerrarSec) btnCerrarSec.addEventListener("click", cerrar);
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) cerrar();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            cerrar();
+        }
+    });
+
+    inicializarChecklistMochila();
+
+    window.abrirGuiaCaminata = abrir;
+    window.cerrarGuiaCaminata = cerrar;
 }
 
 function renderizarModalPasaporte() {

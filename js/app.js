@@ -225,7 +225,12 @@ const DICCIONARIO = {
         obs_m2_simple: "Por el aumento de temperatura, para el año 2030 el glaciar habrá perdido aproximadamente 1 de cada 6 partes de su masa de 2015.",
         obs_m2_alerta_lbl: "Contexto:",
         obs_m2_alerta_val: "Abastecimiento de agua de Ushuaia",
-        obs_m2_ver: "Ver glaciar en mapa →"
+        obs_m2_ver: "Ver glaciar en mapa →",
+        lbl_leyenda: "Leyenda",
+        leyenda_patrimonio: "Patrimonio",
+        leyenda_senderos: "Senderos",
+        leyenda_creativos: "Creativos",
+        leyenda_visitado: "Visitado en bitácora"
     },
     en: {
         subtitulo: "Atlas & Territorial Exploration Journal",
@@ -361,7 +366,12 @@ const DICCIONARIO = {
         obs_m2_simple: "Because of rising temperatures, by 2030 the glacier will have lost approximately 1 out of every 6 parts of its 2015 mass.",
         obs_m2_alerta_lbl: "Context:",
         obs_m2_alerta_val: "Ushuaia water supply",
-        obs_m2_ver: "View glacier on map →"
+        obs_m2_ver: "View glacier on map →",
+        lbl_leyenda: "Legend",
+        leyenda_patrimonio: "Heritage",
+        leyenda_senderos: "Trails",
+        leyenda_creativos: "Creative",
+        leyenda_visitado: "Visited in logbook"
     }
 };
 
@@ -542,7 +552,34 @@ function inicializarMapa() {
 
     // Capa de ruta ("Mi Rastro en el Mapa") compuesta exclusivamente por huellas debajo de los marcadores
     capaHuellas = L.layerGroup().addTo(mapa);
-    capaMarcadores = L.layerGroup().addTo(mapa);
+
+    // Agrupamiento inteligente de marcadores con Leaflet.markercluster y fallback a L.layerGroup
+    if (typeof L.markerClusterGroup === "function") {
+        capaMarcadores = L.markerClusterGroup({
+            maxClusterRadius: 42,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            iconCreateFunction: function(cluster) {
+                const count = cluster.getChildCount();
+                let dimension = 36;
+                if (count >= 10) dimension = 40;
+                if (count >= 50) dimension = 44;
+
+                return L.divIcon({
+                    html: `
+                        <div class="rastro-cluster-icon" style="width: ${dimension}px; height: ${dimension}px; font-size: ${count >= 100 ? '11px' : '13px'};">
+                            ${count}
+                        </div>
+                    `,
+                    className: "rastro-cluster-wrapper",
+                    iconSize: [dimension, dimension],
+                    iconAnchor: [dimension / 2, dimension / 2]
+                });
+            }
+        }).addTo(mapa);
+    } else {
+        capaMarcadores = L.layerGroup().addTo(mapa);
+    }
 
     // Ajustar densidad y escala de huellas al cambiar el nivel de zoom
     mapa.on("zoomend", actualizarTrazadoRuta);
@@ -941,16 +978,21 @@ function limpiarTodosLosFiltros() {
 function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCompleta = false) {
     hitoSeleccionadoId = hito.id;
 
-    if (volar && mapa) {
-        mapa.flyTo(hito.coordenadas, 12, {
-            animate: true,
-            duration: 1.2
+    const marcador = marcadoresPorId && marcadoresPorId[hito.id];
+    if (marcador && capaMarcadores && typeof capaMarcadores.zoomToShowLayer === "function") {
+        capaMarcadores.zoomToShowLayer(marcador, () => {
+            if (abrirPopup) marcador.openPopup();
         });
-    }
-
-    const marcador = marcadoresPorId[hito.id];
-    if (marcador && abrirPopup) {
-        marcador.openPopup();
+    } else {
+        if (volar && mapa && hito.coordenadas) {
+            mapa.flyTo(hito.coordenadas, 12, {
+                animate: true,
+                duration: 1.2
+            });
+        }
+        if (marcador && abrirPopup) {
+            marcador.openPopup();
+        }
     }
 
     // Actualizar la tarjeta del hito seleccionado en el panel
@@ -3313,6 +3355,25 @@ window.toggleMetodoObservatorio = function(btn) {
 };
 window.togglePanelMetodo = window.toggleMetodoObservatorio;
 
+// Helper global para alternar la leyenda cartográfica colapsable
+window.toggleLeyendaMapa = function() {
+    const cuerpo = document.getElementById("cuerpo-leyenda-mapa");
+    const btn = document.getElementById("btn-toggle-leyenda");
+    const flecha = document.getElementById("icono-flecha-leyenda");
+    if (!cuerpo) return;
+
+    const estaOculto = cuerpo.classList.contains("hidden");
+    if (estaOculto) {
+        cuerpo.classList.remove("hidden");
+        if (btn) btn.setAttribute("aria-expanded", "true");
+        if (flecha) flecha.classList.add("rotate-180");
+    } else {
+        cuerpo.classList.add("hidden");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        if (flecha) flecha.classList.remove("rotate-180");
+    }
+};
+
 // Listener global para cerrar tooltips en celulares al tocar afuera
 document.addEventListener("touchstart", (e) => {
     if (!e.target.closest(".punto-interactivo")) {
@@ -3363,6 +3424,17 @@ document.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
             navegarAGlaciarObservatorio();
+        }
+        return;
+    }
+
+    // 4. Delegación para botón de alternar leyenda del mapa
+    const btnLeyenda = e.target.closest("#btn-toggle-leyenda");
+    if (btnLeyenda) {
+        if (!btnLeyenda.getAttribute("onclick")) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.toggleLeyendaMapa();
         }
         return;
     }

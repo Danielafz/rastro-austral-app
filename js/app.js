@@ -1078,8 +1078,11 @@ function renderizarMarcadores(anunciarResultados = false) {
             autoPanPadding: [12, 65]
         });
 
-        // Evento clic: centrado suave y apertura del popup compacto (sin abrir el cajón inferior en móvil)
+        // Evento clic: centrado suave con panTo y apertura del popup compacto (cerrando el panel en móvil si estuviera abierto)
         marcador.on("click", () => {
+            if (window.innerWidth < 768 && typeof cerrarPanelMobile === "function") {
+                cerrarPanelMobile();
+            }
             seleccionarHito(hito, true, true, false);
             cambiarPestanaSidebar("explorar");
         });
@@ -1213,6 +1216,10 @@ function limpiarTodosLosFiltros() {
 function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCompleta = false) {
     hitoSeleccionadoId = hito.id;
 
+    if (window.innerWidth < 768 && typeof cerrarPanelMobile === "function") {
+        cerrarPanelMobile();
+    }
+
     // Si el marcador no está renderizado (por ej. modo provincia solo visitados y el hito no estaba visitado), actualizar marcadores
     if (!marcadoresPorId || !marcadoresPorId[hito.id]) {
         renderizarMarcadores();
@@ -1220,10 +1227,19 @@ function seleccionarHito(hito, volar = true, abrirPopup = false, abrirPantallaCo
 
     const marcador = marcadoresPorId && marcadoresPorId[hito.id];
     if (volar && mapa && hito.coordenadas) {
-        mapa.flyTo(hito.coordenadas, 12, {
-            animate: true,
-            duration: 1.2
-        });
+        const bounds = typeof mapa.getBounds === "function" ? mapa.getBounds() : null;
+        const visibleEnPantalla = bounds ? bounds.contains(hito.coordenadas) : false;
+
+        // Si el marcador ya está visible en pantalla, usamos panTo sin alterar zoom
+        // Esto evita disparar el evento "zoomend" que ejecutaría renderizarMarcadores (clearLayers) y destruiría el popup
+        if (visibleEnPantalla) {
+            mapa.panTo(hito.coordenadas, { animate: true, duration: 0.5 });
+        } else {
+            mapa.flyTo(hito.coordenadas, 12, {
+                animate: true,
+                duration: 1.0
+            });
+        }
     }
     if (marcador && abrirPopup) {
         marcador.openPopup();
@@ -1508,7 +1524,7 @@ function renderizarListaHitosCompacta(hitosFiltradosParam) {
 
 // Función Maestra para abrir el detalle inmersivo (Ficha Completa)
 function abrirDetalleHito(id) {
-    if (window.innerWidth < 768 && typeof cerrarPanelMobile === "function") {
+    if (typeof cerrarPanelMobile === "function") {
         cerrarPanelMobile();
     }
     // datosHitos es tu base de datos o JSON con la info de los lugares
@@ -2342,7 +2358,7 @@ function reducirPanelMobileSiExpandido() {
     if (!panel) return;
     if (panel.classList.contains("max-md:h-[82dvh]")) {
         panel.classList.remove("max-md:h-[82dvh]");
-        panel.classList.add("max-md:h-[46dvh]");
+        panel.classList.add("max-md:h-[42dvh]");
         setTimeout(() => mapa && mapa.invalidateSize(), 250);
     }
 }
@@ -2406,7 +2422,7 @@ function configurarPanelMobile() {
         });
     }
 
-    // Reducir suavemente a 46dvh al interactuar con filtros si estaba expandido
+    // Reducir suavemente a 42dvh al interactuar con filtros si estaba expandido
     document.addEventListener("click", (e) => {
         if (e.target.closest(".filtro-cat-btn, #filtro-fragilidad, #filtro-estado-visita, .btn-filtro-estado")) {
             reducirPanelMobileSiExpandido();
@@ -2431,11 +2447,11 @@ function abrirPanelMobile(expandirCompleto = false) {
     panel.classList.remove("translate-y-[120%]", "translate-y-full");
     panel.classList.add("translate-y-0");
     if (expandirCompleto) {
-        panel.classList.remove("max-md:h-[46dvh]");
+        panel.classList.remove("max-md:h-[42dvh]");
         panel.classList.add("max-md:h-[82dvh]");
     } else {
         panel.classList.remove("max-md:h-[82dvh]");
-        panel.classList.add("max-md:h-[46dvh]");
+        panel.classList.add("max-md:h-[42dvh]");
     }
     actualizarEstadoMobileNav("hitos");
     setTimeout(() => mapa && mapa.invalidateSize(), 250);
@@ -2447,7 +2463,7 @@ function cerrarPanelMobile() {
     panel.classList.add("translate-y-[120%]");
     panel.classList.remove("translate-y-0", "translate-y-full");
     panel.classList.remove("max-md:h-[82dvh]");
-    panel.classList.add("max-md:h-[46dvh]");
+    panel.classList.add("max-md:h-[42dvh]");
     actualizarEstadoMobileNav("mapa");
     if (mapa) {
         mapa.invalidateSize();
@@ -2530,7 +2546,7 @@ function configurarMobileBottomNav() {
                 panel.classList.add("translate-y-[120%]");
                 panel.classList.remove("translate-y-0", "translate-y-full");
                 panel.classList.remove("max-md:h-[82dvh]");
-                panel.classList.add("max-md:h-[46dvh]");
+                panel.classList.add("max-md:h-[42dvh]");
             }
             cambiarPestanaSidebar("pasaporte");
             actualizarEstadoMobileNav("bitacora");
@@ -2543,7 +2559,7 @@ function configurarMobileBottomNav() {
                 panel.classList.add("translate-y-[120%]");
                 panel.classList.remove("translate-y-0", "translate-y-full");
                 panel.classList.remove("max-md:h-[82dvh]");
-                panel.classList.add("max-md:h-[46dvh]");
+                panel.classList.add("max-md:h-[42dvh]");
             }
             cambiarPestanaSidebar("observatorio");
             actualizarEstadoMobileNav("observatorio");

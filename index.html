@@ -811,58 +811,200 @@
         <!-- Suelo de Parquet de Lenga Patagónica -->
         <div class="suelo-parquet-museo absolute bottom-0 left-0 right-0 h-[32%] pointer-events-none"></div>
 
-        <!-- Mascota Pingüino de Rastro Austral visto de espaldas -->
-        <div id="pinguino-mascota-museo" class="absolute bottom-[20%] z-30 select-none pointer-events-none transition-transform will-change-transform">
-          <div class="relative w-28 h-36 sm:w-32 sm:h-40 flex items-center justify-center">
-            <!-- Sombra en el piso de parquet -->
-            <div class="absolute -bottom-2 w-24 h-5 rounded-full bg-black/45 blur-sm"></div>
+        <!-- Mascota Pingüino de Rastro Austral con Antorcha y Ropa Oficial 3D -->
+        <div id="pinguino-mascota-museo" class="absolute bottom-[20%] z-30 select-none pointer-events-none will-change-transform">
+          <div id="pinguino-sprite-animado" class="relative w-[92px] h-[112px] sm:w-[106px] sm:h-[128px] flex items-center justify-center pinguino-inner-wrapper">
+            <!-- Sombra en el piso de parquet con resplandor cálido de la antorcha -->
+            <div class="absolute -bottom-1.5 w-20 h-4 rounded-full bg-black/45 blur-xs"></div>
+            <div class="antorcha-resplandor-piso absolute -bottom-2 -right-3 w-16 h-5 rounded-full bg-amber-500/25 blur-md pointer-events-none"></div>
 
-            <svg viewBox="0 0 160 200" class="w-full h-full filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]">
+            <svg viewBox="0 0 160 200" class="w-full h-full filter drop-shadow-[0_10px_22px_rgba(0,0,0,0.45)]">
               <defs>
-                <linearGradient id="degrade-cuerpo-pinguino-espalda" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1E293B"/>
-                  <stop offset="60%" stop-color="#0F172A"/>
-                  <stop offset="100%" stop-color="#020617"/>
+                <!-- Degradado 3D del cuerpo azul marino aterciopelado -->
+                <radialGradient id="grad-cuerpo-3d" cx="45%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#2A3B53"/>
+                  <stop offset="50%" stop-color="#141E2E"/>
+                  <stop offset="90%" stop-color="#0A0F18"/>
+                  <stop offset="100%" stop-color="#05080E"/>
+                </radialGradient>
+
+                <!-- Degradado 3D de la cabeza con plumaje suave -->
+                <radialGradient id="grad-cabeza-3d" cx="40%" cy="35%" r="60%">
+                  <stop offset="0%" stop-color="#334766"/>
+                  <stop offset="55%" stop-color="#182335"/>
+                  <stop offset="95%" stop-color="#0C121D"/>
+                  <stop offset="100%" stop-color="#05080E"/>
+                </radialGradient>
+
+                <!-- Degradado 3D para la remera blanca -->
+                <linearGradient id="grad-remera-3d" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="70%" stop-color="#F1F5F9"/>
+                  <stop offset="100%" stop-color="#CBD5E1"/>
                 </linearGradient>
-                <linearGradient id="degrade-bufanda" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#DC2626"/>
-                  <stop offset="35%" stop-color="#F59E0B"/>
-                  <stop offset="65%" stop-color="#DC2626"/>
-                  <stop offset="100%" stop-color="#F59E0B"/>
+
+                <!-- Degradado para mangas cortas de la remera -->
+                <linearGradient id="grad-manga-3d" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="100%" stop-color="#E2E8F0"/>
+                </linearGradient>
+
+                <!-- Degradado de la bufanda tejida roja fueguina -->
+                <linearGradient id="grad-bufanda-3d" x1="0%" y1="0%" x2="100%" y2="80%">
+                  <stop offset="0%" stop-color="#EF4444"/>
+                  <stop offset="35%" stop-color="#DC2626"/>
+                  <stop offset="65%" stop-color="#B91C1C"/>
+                  <stop offset="100%" stop-color="#991B1B"/>
+                </linearGradient>
+
+                <!-- Degradado de la madera de la antorcha -->
+                <linearGradient id="grad-madera-antorcha" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#854D0E"/>
+                  <stop offset="40%" stop-color="#A16207"/>
+                  <stop offset="80%" stop-color="#713F12"/>
+                  <stop offset="100%" stop-color="#451A03"/>
+                </linearGradient>
+
+                <!-- Degradado cálido de la llama viva -->
+                <radialGradient id="grad-llama-antorcha" cx="50%" cy="65%" r="65%">
+                  <stop offset="0%" stop-color="#FEF08A"/>
+                  <stop offset="25%" stop-color="#FDE047"/>
+                  <stop offset="55%" stop-color="#F97316"/>
+                  <stop offset="85%" stop-color="#EA580C"/>
+                  <stop offset="100%" stop-color="#DC2626" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- Degradado de las patitas anaranjadas -->
+                <linearGradient id="grad-pata" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FB923C"/>
+                  <stop offset="60%" stop-color="#F97316"/>
+                  <stop offset="100%" stop-color="#C2410C"/>
                 </linearGradient>
               </defs>
 
-              <!-- Patas anaranjadas pisando el parquet -->
+              <!-- Patas anaranjadas pisando el parquet (animadas al caminar) -->
               <g class="patas-pinguino">
-                <ellipse cx="62" cy="186" rx="14" ry="7" fill="#F97316"/>
-                <ellipse cx="98" cy="186" rx="14" ry="7" fill="#EA580C"/>
+                <g class="pata-izq">
+                  <ellipse cx="60" cy="184" rx="14" ry="7" fill="url(#grad-pata)"/>
+                  <path d="M 50 186 C 53 190, 67 190, 70 186" stroke="#9A3412" stroke-width="1.2" fill="none"/>
+                </g>
+                <g class="pata-der">
+                  <ellipse cx="100" cy="184" rx="14" ry="7" fill="url(#grad-pata)"/>
+                  <path d="M 90 186 C 93 190, 107 190, 110 186" stroke="#9A3412" stroke-width="1.2" fill="none"/>
+                </g>
               </g>
 
-              <!-- Aletas laterales -->
-              <path d="M 44 95 C 32 110, 30 135, 36 150 C 40 152, 46 142, 48 130 C 50 115, 48 102, 44 95 Z" fill="#0F172A"/>
-              <path d="M 116 95 C 128 110, 130 135, 124 150 C 120 152, 114 142, 112 130 C 110 115, 112 102, 116 95 Z" fill="#0F172A"/>
+              <!-- Aleta izquierda libre -->
+              <path class="aleta-izquierda-svg" d="M 44 98 C 30 112, 28 136, 34 150 C 38 152, 44 144, 46 132 C 48 118, 48 106, 44 98 Z" fill="url(#grad-cuerpo-3d)"/>
 
-              <!-- Cuerpo principal (espalda) -->
-              <ellipse cx="80" cy="120" rx="42" ry="58" fill="url(#degrade-cuerpo-pinguino-espalda)"/>
+              <!-- Cuerpo principal (espalda y costados 3D) -->
+              <ellipse cx="80" cy="122" rx="42" ry="56" fill="url(#grad-cuerpo-3d)"/>
 
-              <!-- Remera blanca oficial Rastro Austral -->
-              <path d="M 46 102 C 55 92, 105 92, 114 102 C 118 128, 115 152, 110 162 C 90 166, 70 166, 50 162 C 45 152, 42 128, 46 102 Z" fill="#F8FAFC"/>
-              <!-- Isotipo oficial Rastro Austral en la espalda -->
-              <circle cx="80" cy="128" r="14" fill="#F97316" opacity="0.95"/>
-              <circle cx="80" cy="128" r="10" fill="#0284C7"/>
-              <polygon points="80,118 83,126 91,128 83,130 80,138 77,130 69,128 77,126" fill="#F8FAFC"/>
+              <!-- Remera blanca oficial Rastro Austral con mangas y costuras -->
+              <g class="remera-oficial-pinguino">
+                <!-- Manga izquierda -->
+                <path d="M 44 95 C 36 102, 34 116, 40 120 C 44 122, 48 116, 49 104 Z" fill="url(#grad-manga-3d)" stroke="#CBD5E1" stroke-width="0.8"/>
 
-              <!-- Cabeza (nuca / espaldas con copete y sombreado azul marino) -->
-              <path d="M 76 34 C 77 24, 83 24, 84 34 C 88 28, 92 31, 89 38 C 84 37, 76 37, 71 38 C 68 31, 72 28, 76 34 Z" fill="#0F172A"/>
-              <ellipse cx="80" cy="62" rx="28" ry="30" fill="url(#degrade-cuerpo-pinguino-espalda)"/>
-              <ellipse cx="80" cy="58" rx="20" ry="18" fill="#1E293B" opacity="0.85"/>
-              <path d="M 72 44 C 76 40, 84 40, 88 44 C 85 49, 75 49, 72 44 Z" fill="#334155" opacity="0.6"/>
+                <!-- Torso de la remera blanca -->
+                <path d="M 46 100 C 56 90, 104 90, 114 100 C 118 124, 116 148, 110 158 C 90 163, 70 163, 50 158 C 44 148, 42 124, 46 100 Z" fill="url(#grad-remera-3d)" stroke="#CBD5E1" stroke-width="0.8"/>
+                <path d="M 52 155 C 70 160, 90 160, 108 155" stroke="#94A3B8" stroke-width="1" fill="none" stroke-linecap="round"/>
 
-              <!-- Bufanda roja y amarilla cruzada en el cuello -->
-              <path d="M 54 84 C 62 80, 98 80, 106 84 C 108 92, 104 96, 80 96 C 56 96, 52 92, 54 84 Z" fill="url(#degrade-bufanda)"/>
-              <rect x="73" y="88" width="14" height="28" rx="3" fill="#DC2626" transform="rotate(8 73 88)"/>
-              <rect x="73" y="94" width="14" height="5" fill="#F59E0B" transform="rotate(8 73 94)"/>
-              <rect x="73" y="104" width="14" height="5" fill="#F59E0B" transform="rotate(8 73 104)"/>
+                <!-- Manga derecha -->
+                <path d="M 116 95 C 124 102, 126 116, 120 120 C 116 122, 112 116, 111 104 Z" fill="url(#grad-manga-3d)" stroke="#CBD5E1" stroke-width="0.8"/>
+
+                <!-- Isotipo oficial Rastro Austral completo estampado en la espalda -->
+                <g class="estampa-rastro-austral" transform="translate(80, 126)">
+                  <!-- Cielo celeste con estrellas australes -->
+                  <circle cx="0" cy="0" r="16" fill="#0284C7" stroke="#F59E0B" stroke-width="1.2"/>
+                  <circle cx="-5" cy="-8" r="0.9" fill="#FFFFFF"/>
+                  <circle cx="3" cy="-10" r="1" fill="#FFFFFF"/>
+                  <circle cx="7" cy="-5" r="0.8" fill="#FFFFFF"/>
+                  <circle cx="-1" cy="-4" r="0.7" fill="#FFFFFF"/>
+                  <!-- Montañas fueguinas anaranjadas -->
+                  <polygon points="-14,8 -6,-3 2,8" fill="#EA580C"/>
+                  <polygon points="-4,8 4,-5 14,8" fill="#F97316"/>
+                  <polygon points="4,-5 7,-1 1,-1" fill="#FEF08A"/>
+                  <!-- Sendero o rastro austral blanco/dorado -->
+                  <path d="M -10 14 C -4 10, -2 6, 2 4 C 6 2, 8 8, 12 14" stroke="#FEF3C7" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                </g>
+              </g>
+
+              <!-- Aleta derecha sosteniendo la Antorcha Austral con llama animada -->
+              <g class="aleta-antorcha">
+                <!-- Aleta derecha -->
+                <path d="M 116 98 C 126 108, 134 122, 136 138 C 134 142, 126 142, 122 134 C 118 124, 114 112, 114 100 Z" fill="url(#grad-cuerpo-3d)"/>
+
+                <!-- Antorcha de madera y fuego -->
+                <g class="antorcha-austral" transform="translate(132, 110) rotate(-12)">
+                  <!-- Mango de madera torneada -->
+                  <rect x="-3" y="10" width="6" height="34" rx="2" fill="url(#grad-madera-antorcha)"/>
+                  <rect x="-4" y="20" width="8" height="2" fill="#D97706"/>
+                  <rect x="-4" y="28" width="8" height="2" fill="#D97706"/>
+                  <!-- Copa metálica de la antorcha -->
+                  <path d="M -7 10 L 7 10 L 5 4 L -5 4 Z" fill="#78350F" stroke="#B45309" stroke-width="0.8"/>
+                  <ellipse cx="0" cy="4" rx="5" ry="1.5" fill="#451A03"/>
+
+                  <!-- Resplandor ambiental de la llama -->
+                  <circle cx="0" cy="-6" r="16" fill="#F59E0B" opacity="0.3" class="llama-resplandor-halo"/>
+
+                  <!-- Llama viva viva exterior animada -->
+                  <path class="llama-antorcha-svg" d="M 0 5 C -6 2, -7 -6, -3 -12 C -1 -15, 0 -22, 0 -22 C 0 -22, 2 -15, 4 -11 C 7 -5, 6 2, 0 5 Z" fill="url(#grad-llama-antorcha)"/>
+
+                  <!-- Núcleo brillante interior de la llama -->
+                  <path class="llama-nucleo-svg" d="M 0 4 C -3 2, -4 -3, -1 -7 C 0 -9, 0 -14, 0 -14 C 0 -14, 1 -9, 2 -6 C 4 -2, 3 2, 0 4 Z" fill="#FFFBEB"/>
+
+                  <!-- Chispas incandescentes que suben -->
+                  <circle cx="-5" cy="-18" r="0.9" fill="#FDE047" class="chispa-flotante-1"/>
+                  <circle cx="4" cy="-24" r="0.8" fill="#F59E0B" class="chispa-flotante-2"/>
+                </g>
+              </g>
+
+              <!-- Cabeza con plumaje suave y rostro de perfil/tres cuartos -->
+              <g class="cabeza-pinguino">
+                <!-- Copete de plumas en la nuca -->
+                <path d="M 77 28 C 77 18, 83 18, 84 28 C 88 22, 93 25, 90 32 C 85 31, 77 31, 72 32 C 68 25, 73 22, 77 28 Z" fill="#0F172A"/>
+                <!-- Masa principal de la cabeza 3D -->
+                <ellipse cx="80" cy="56" rx="28" ry="30" fill="url(#grad-cabeza-3d)"/>
+                <ellipse cx="80" cy="52" rx="20" ry="18" fill="#1E293B" opacity="0.8"/>
+
+                <!-- Rostro en tres cuartos (asoma a la derecha) -->
+                <g class="perfil-tres-cuartos" transform="translate(94, 50)">
+                  <!-- Mancha auricular amarilla dorada de pingüino rey -->
+                  <ellipse cx="2" cy="4" rx="8" ry="11" fill="#FBBF24" opacity="0.95" transform="rotate(-15 2 4)"/>
+                  <ellipse cx="3" cy="4" rx="5" ry="7" fill="#F59E0B" opacity="0.9"/>
+                  <!-- Ojo expresivo con brillo blanco que asoma -->
+                  <ellipse cx="7" cy="-2" rx="3.5" ry="4.5" fill="#0F172A"/>
+                  <circle cx="8" cy="-3.5" r="1.3" fill="#FFFFFF"/>
+                  <circle cx="6.5" cy="-1" r="0.6" fill="#FFFFFF"/>
+                  <!-- Pico naranja que asoma de perfil -->
+                  <path d="M 10 -1 C 18 1, 23 4, 14 7 Z" fill="#F97316" stroke="#EA580C" stroke-width="0.6"/>
+                  <path d="M 12 1 C 16 3, 18 4, 13 5" stroke="#FFEDD5" stroke-width="0.6" fill="none"/>
+                </g>
+              </g>
+
+              <!-- Bufanda tejida roja y amarilla con flecos -->
+              <g class="bufanda-pinguino">
+                <!-- Envoltorio del cuello -->
+                <path d="M 52 78 C 64 74, 96 74, 108 78 C 112 86, 106 92, 80 92 C 54 92, 48 86, 52 78 Z" fill="url(#grad-bufanda-3d)"/>
+                <!-- Rayas doradas tejidas -->
+                <path d="M 58 84 C 70 82, 90 82, 102 84" stroke="#FBBF24" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M 62 88 C 72 87, 88 87, 98 88" stroke="#FDE047" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+                <!-- Extremo colgante con ondeo dinámico -->
+                <g class="bufanda-extremo-colgante">
+                  <path d="M 74 84 L 89 85 L 86 114 L 71 113 Z" fill="url(#grad-bufanda-3d)"/>
+                  <line x1="73" y1="92" x2="88" y2="93" stroke="#FBBF24" stroke-width="2.2"/>
+                  <line x1="72" y1="102" x2="87" y2="103" stroke="#FBBF24" stroke-width="2.2"/>
+                  <!-- Flecos amarillos en la punta -->
+                  <g class="flecos-bufanda" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round">
+                    <line x1="72" y1="113" x2="71" y2="121"/>
+                    <line x1="75" y1="113.3" x2="74.5" y2="122"/>
+                    <line x1="78" y1="113.6" x2="78" y2="122"/>
+                    <line x1="81" y1="113.8" x2="81.5" y2="122"/>
+                    <line x1="84" y1="114" x2="85" y2="121"/>
+                  </g>
+                </g>
+              </g>
             </svg>
           </div>
         </div>

@@ -2308,20 +2308,162 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   transform: translateY(0px) scale(1);
 }
 
-/* Animación de paso balanceado del Pingüino (Waddle) */
+/* Animaciones del Pingüino Explorador 3D (Caminata, Reposo, Salto y Llama) */
 .pinguino-caminando-museo {
-  animation: pinguinoPasoBalanceado 0.42s ease-in-out infinite alternate;
+  animation: pinguinoPasoBalanceado 0.36s ease-in-out infinite alternate;
+  transform-origin: bottom center;
 }
 
 @keyframes pinguinoPasoBalanceado {
   0% {
-    transform-origin: bottom center;
     rotate: -4deg;
   }
   100% {
-    transform-origin: bottom center;
     rotate: 4deg;
   }
+}
+
+/* Patas que se elevan alternadamente al caminar */
+.pinguino-caminando-museo .pata-izq {
+  animation: pasoPataIzq 0.36s ease-in-out infinite alternate;
+}
+
+.pinguino-caminando-museo .pata-der {
+  animation: pasoPataDer 0.36s ease-in-out infinite alternate;
+}
+
+@keyframes pasoPataIzq {
+  0% { transform: translateY(-3.5px) rotate(-3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pasoPataDer {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-3.5px) rotate(3deg); }
+}
+
+/* Ondeo dinámico de los flecos y extremo de la bufanda al caminar */
+.pinguino-caminando-museo .bufanda-extremo-colgante {
+  animation: ondeoBufandaPinguino 0.36s ease-in-out infinite alternate;
+  transform-origin: 80px 85px;
+}
+
+@keyframes ondeoBufandaPinguino {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(10deg); }
+}
+
+/* Aleteo suave al caminar */
+.pinguino-caminando-museo .aleta-izquierda-svg {
+  animation: aleteoIzquierdo 0.36s ease-in-out infinite alternate;
+  transform-origin: 44px 100px;
+}
+
+@keyframes aleteoIzquierdo {
+  0% { transform: rotate(-5deg); }
+  100% { transform: rotate(4deg); }
+}
+
+/* Respiración suave en reposo frente a las obras */
+.pinguino-idle-museo {
+  animation: pinguinoRespiracionIdle 2.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes pinguinoRespiracionIdle {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.025) translateY(-1.5px);
+  }
+}
+
+/* Saltito de celebración al interactuar con una obra */
+.pinguino-salto-celebracion {
+  animation: pinguinoSaltoCelebrar 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+  transform-origin: bottom center;
+}
+
+@keyframes pinguinoSaltoCelebrar {
+  0% {
+    transform: translateY(0px) scale(1, 1);
+  }
+  30% {
+    transform: translateY(-22px) scale(0.96, 1.05);
+  }
+  55% {
+    transform: translateY(-14px) scale(1.02, 0.98);
+  }
+  75% {
+    transform: translateY(2px) scale(1.04, 0.95);
+  }
+  100% {
+    transform: translateY(0px) scale(1, 1);
+  }
+}
+
+/* Llama viva de la antorcha austral y chispas flotantes */
+.llama-antorcha-svg {
+  animation: parpadeoLlamaAntorcha 0.26s ease-in-out infinite alternate;
+  transform-origin: 0px 4px;
+}
+
+@keyframes parpadeoLlamaAntorcha {
+  0% {
+    transform: scale(0.93, 0.95) rotate(-3deg);
+    filter: brightness(0.96);
+  }
+  100% {
+    transform: scale(1.07, 1.08) rotate(3deg);
+    filter: brightness(1.18) drop-shadow(0 0 6px #F59E0B);
+  }
+}
+
+.llama-nucleo-svg {
+  animation: parpadeoNucleoLlama 0.18s ease-in-out infinite alternate;
+  transform-origin: 0px 4px;
+}
+
+@keyframes parpadeoNucleoLlama {
+  0% { transform: scale(0.88, 0.9); }
+  100% { transform: scale(1.12, 1.15); }
+}
+
+.llama-resplandor-halo {
+  animation: resplandorAntorcha 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes resplandorAntorcha {
+  0% { opacity: 0.22; transform: scale(0.92); }
+  100% { opacity: 0.42; transform: scale(1.15); }
+}
+
+.chispa-flotante-1 {
+  animation: chispaAntorchaSube1 1.2s ease-out infinite;
+}
+
+.chispa-flotante-2 {
+  animation: chispaAntorchaSube2 1.5s ease-out 0.45s infinite;
+}
+
+@keyframes chispaAntorchaSube1 {
+  0% { transform: translate(0, 0); opacity: 1; }
+  100% { transform: translate(-4px, -14px); opacity: 0; }
+}
+
+@keyframes chispaAntorchaSube2 {
+  0% { transform: translate(0, 0); opacity: 1; }
+  100% { transform: translate(3px, -16px); opacity: 0; }
+}
+
+.antorcha-resplandor-piso {
+  animation: resplandorPisoAntorcha 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes resplandorPisoAntorcha {
+  0% { opacity: 0.2; transform: scale(0.9); }
+  100% { opacity: 0.45; transform: scale(1.18); }
 }
 
 /* Motas de polvo dorado flotando en el haz de luz */

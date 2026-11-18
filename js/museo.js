@@ -57,6 +57,7 @@
             pasilloMuro: document.getElementById("pasillo-muro-museo"),
             contenedorObras: document.getElementById("contenedor-obras-museo"),
             pinguinoMascota: document.getElementById("pinguino-mascota-museo"),
+            pinguinoSprite: document.getElementById("pinguino-sprite-animado"),
             joystickBase: document.getElementById("museo-joystick-base") || document.getElementById("joystick-base-museo"),
             joystickPerilla: document.getElementById("museo-joystick-knob") || document.getElementById("joystick-perilla-museo"),
             lblJoystick: document.getElementById("lbl-joystick-museo"),
@@ -410,10 +411,23 @@
         verificarProximidadObras();
     }
 
+    // Saltito de celebración al interactuar o abrir una obra
+    function saltarCelebracionPinguino() {
+        const spriteEl = dom.pinguinoSprite || (dom.pinguinoMascota ? dom.pinguinoMascota.querySelector(".pinguino-inner-wrapper") : null);
+        if (!spriteEl) return;
+        spriteEl.classList.remove("pinguino-salto-celebracion");
+        void spriteEl.offsetWidth; // Forzar reflow
+        spriteEl.classList.add("pinguino-salto-celebracion");
+        setTimeout(() => {
+            spriteEl.classList.remove("pinguino-salto-celebracion");
+        }, 580);
+    }
+
     // Abrir ficha de obra (Bottom Sheet estilo pergamino)
     function abrirSheetObra(obra) {
         if (!dom.sheetDetalle) return;
         detenerAudioguia();
+        saltarCelebracionPinguino();
         estadoMuseo.obraAbierta = obra;
 
         const titulo = tBilingue(obra.titulo);
@@ -585,14 +599,18 @@
     function actualizarPosicionPinguino() {
         if (!dom.pinguinoMascota) return;
 
-        // Transformación del sprite del pingüino
+        // Transformación del sprite del pingüino (desplazamiento y orientación de marcha)
         const escalaX = estadoMuseo.mirandoDerecha ? 1 : -1;
         dom.pinguinoMascota.style.transform = `translateX(${estadoMuseo.posicionX}px) scaleX(${escalaX})`;
 
+        const spriteEl = dom.pinguinoSprite || (dom.pinguinoMascota ? dom.pinguinoMascota.querySelector(".pinguino-inner-wrapper") : null) || dom.pinguinoMascota;
+
         if (estadoMuseo.caminando) {
-            dom.pinguinoMascota.classList.add("pinguino-caminando-museo");
+            spriteEl.classList.add("pinguino-caminando-museo");
+            spriteEl.classList.remove("pinguino-idle-museo");
         } else {
-            dom.pinguinoMascota.classList.remove("pinguino-caminando-museo");
+            spriteEl.classList.remove("pinguino-caminando-museo");
+            spriteEl.classList.add("pinguino-idle-museo");
         }
 
         // Movimiento de cámara suave (centrar el pingüino en la pantalla)

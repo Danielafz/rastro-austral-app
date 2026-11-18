@@ -1,10 +1,11 @@
-const CACHE_NAME = 'rastro-austral-v101'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v102'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const FONT_OUTFIT_URL = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap';
 const urlsToCache = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
+  './js/clima.js',
   './js/storage.js',
   './js/museo-data.js',
   './js/museo.js',

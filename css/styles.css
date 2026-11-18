@@ -2593,3 +2593,56 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Widget de Clima Austral en Tiempo Real y Popover Responsivo */
+#widget-clima-austral {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (max-width: 379px) {
+  #clima-viento-separador,
+  #clima-viento {
+    display: none !important;
+  }
+}
+
+html.dark #widget-clima-austral {
+  background-color: rgba(15, 23, 42, 0.95);
+  border-color: rgba(51, 65, 85, 0.8);
+  color: #f1f5f9;
+}
+
+html.dark #widget-clima-austral #clima-temp {
+  color: #f8fafc;
+}
+
+html.dark #widget-clima-austral #clima-viento {
+  color: #cbd5e1;
+}
+
+html.dark #popover-clima-detalle {
+  background-color: rgba(15, 23, 42, 0.98);
+  border-color: rgba(51, 65, 85, 0.9);
+  color: #f1f5f9;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+html.dark #popover-clima-detalle .bg-slate-50 {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+}
+
+html.dark #popover-clima-detalle .text-slate-900,
+html.dark #popover-clima-detalle .text-slate-800,
+html.dark #popover-clima-lugar,
+html.dark #popover-clima-temp {
+  color: #f8fafc !important;
+}
+
+html.dark #popover-clima-detalle .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark #popover-clima-detalle .border-slate-100 {
+  border-color: rgba(51, 65, 85, 0.7) !important;
+}

@@ -2096,6 +2096,10 @@ function configurarFiltros() {
             actualizarContadoresCategoria();
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
+
+            if (typeof window.actualizarClimaTerritorio === "function") {
+                window.actualizarClimaTerritorio(territorioActivo);
+            }
         });
     });
 
@@ -2443,6 +2447,11 @@ function configurarSelectorLocalidades() {
                 renderizarMarcadores(true);
                 actualizarTrazadoRuta();
 
+                // Sincronizar clima en tiempo real del territorio seleccionado
+                if (typeof window.actualizarClimaTerritorio === "function") {
+                    window.actualizarClimaTerritorio(vista);
+                }
+
                 anunciarAccesibilidad(
                     idiomaActual === "en"
                         ? `Map view updated: ${texto}`
@@ -2478,6 +2487,10 @@ function configurarSelectorLocalidades() {
 
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
+
+            if (typeof window.actualizarClimaTerritorio === "function") {
+                window.actualizarClimaTerritorio(territorioActivo);
+            }
 
             botones.forEach(b => {
                 b.className = "btn-vista flex-1 flex items-center justify-center py-1.5 px-1 text-slate-700 font-semibold hover:bg-slate-50 cursor-pointer";
@@ -2839,6 +2852,10 @@ function cambiarIdioma(nuevoIdioma) {
         window.actualizarBotonesIdiomaMuseo();
     }
 
+    if (typeof window.actualizarClimaTerritorio === "function") {
+        window.actualizarClimaTerritorio();
+    }
+
     anunciarAccesibilidad(nuevoIdioma === "en" ? "Language switched to English." : "Idioma cambiado a español.");
 }
 window.cambiarIdioma = cambiarIdioma;
@@ -3030,6 +3047,10 @@ function configurarFiltroEstadoVisita() {
             filtroEstadoVisita = e.target.value;
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
+
+            if (typeof window.actualizarClimaTerritorio === "function") {
+                window.actualizarClimaTerritorio(territorioActivo);
+            }
         });
     } else {
         const botones = el.querySelectorAll(".btn-filtro-estado");
@@ -4756,6 +4777,15 @@ function configurarGeolocalizacion() {
 
                 mapa.flyTo([lat, lon], 13, { duration: 1.5 });
                 marcadorUsuario.openPopup();
+
+                // Sincronizar clima en vivo con las coordenadas GPS del explorador
+                if (typeof window.actualizarClimaTerritorio === "function") {
+                    window.actualizarClimaTerritorio("gps", {
+                        lat,
+                        lon,
+                        nombre: t.geoloc_mi_posicion || (idiomaActual === "en" ? "My GPS position" : "Mi ubicación")
+                    });
+                }
             },
             (err) => {
                 if (iconoGeoloc) iconoGeoloc.innerHTML = iconoGeoBase;

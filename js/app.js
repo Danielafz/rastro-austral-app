@@ -3660,8 +3660,15 @@ document.addEventListener("click", (e) => {
         if (typeof window.ocultarTodosLosTooltips === "function") {
             window.ocultarTodosLosTooltips();
         }
-        if (document.activeElement && typeof document.activeElement.blur === "function") {
-            document.activeElement.blur();
+        const pantallaBienvenida = document.getElementById("pantalla-bienvenida");
+        const bienvenidaVisible = pantallaBienvenida && !pantallaBienvenida.classList.contains("hidden");
+        const esControlEntrada = e.target.closest("input, textarea, select, button, form, [contenteditable='true']");
+        if (!bienvenidaVisible && !esControlEntrada) {
+            if (document.activeElement && typeof document.activeElement.blur === "function" && document.activeElement !== document.body) {
+                if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+                    document.activeElement.blur();
+                }
+            }
         }
     }
 
@@ -4209,8 +4216,14 @@ function configurarPantallaBienvenida() {
         if (badgeExplorador) badgeExplorador.classList.add("hidden");
         pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
         setTimeout(() => {
-            if (inputNombre) inputNombre.focus();
-        }, 100);
+            if (inputNombre) {
+                inputNombre.focus();
+                const len = inputNombre.value.length;
+                if (typeof inputNombre.setSelectionRange === "function") {
+                    inputNombre.setSelectionRange(len, len);
+                }
+            }
+        }, 120);
     }
 
     // Interactividad ocular y globito de diálogo del Pingüino Rey
@@ -4271,6 +4284,10 @@ function configurarPantallaBienvenida() {
         const radio = Math.min(1.9, Math.hypot(dx, dy) / 70);
 
         moverPupilas(Math.cos(angulo) * radio, Math.sin(angulo) * radio);
+    });
+
+    inputNombre.addEventListener("click", (e) => {
+        e.stopPropagation();
     });
 
     inputNombre.addEventListener("focus", () => {
@@ -4367,14 +4384,19 @@ function configurarPantallaBienvenida() {
 
     // Permitir editar el nombre abriendo nuevamente la pantalla sin pre-seleccionar el texto
     if (btnEditar) {
-        btnEditar.addEventListener("click", () => {
+        btnEditar.addEventListener("click", (e) => {
+            e.stopPropagation();
             pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
             actualizarDialogoYMirada();
-            inputNombre.focus();
-            const len = inputNombre.value.length;
-            if (typeof inputNombre.setSelectionRange === "function") {
-                inputNombre.setSelectionRange(len, len);
-            }
+            setTimeout(() => {
+                if (inputNombre) {
+                    inputNombre.focus();
+                    const len = inputNombre.value.length;
+                    if (typeof inputNombre.setSelectionRange === "function") {
+                        inputNombre.setSelectionRange(len, len);
+                    }
+                }
+            }, 60);
         });
     }
 }

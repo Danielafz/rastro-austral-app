@@ -2196,12 +2196,19 @@ html:not(.dark) #pantalla-bienvenida #lbl-nombre-explorador {
   color: #a3a3a3 !important;
 }
 
+#input-nombre-explorador,
+#input-nombre-explorador:-webkit-autofill,
+#input-nombre-explorador:-webkit-autofill:hover,
+#input-nombre-explorador:-webkit-autofill:focus,
 #pantalla-bienvenida input,
 #pantalla-bienvenida input#input-nombre-explorador,
 html:not(.dark) #pantalla-bienvenida input,
 html:not(.dark) #pantalla-bienvenida input#input-nombre-explorador {
-  background-color: #171717 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #f97316 !important;
+  background-color: #171717 !important;
+  -webkit-box-shadow: 0 0 0 1000px #171717 inset !important;
   border-color: #262626 !important;
 }
 

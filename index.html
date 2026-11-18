@@ -736,24 +736,62 @@
       <!-- CONTENEDOR GENERAL DE BARRAS SUPERIORES -->
       <div class="absolute top-2 left-0 right-0 px-2 sm:px-3 md:px-4 z-[800] flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-3 w-full pointer-events-none">
 
-        <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Limpio con Flecha SVG) -->
+        <!-- BARRA 1: SELECTOR DE TERRITORIOS (Dropdown Personalizado HTML/Tailwind) -->
         <div class="relative pointer-events-auto z-[950] shrink-0" style="pointer-events: auto;">
-          <select id="filtro-territorio" aria-label="Seleccionar territorio o localidad"
-            style="pointer-events: auto;"
-            class="pointer-events-auto relative z-[950] appearance-none bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-md pl-3.5 pr-9 py-2 text-xs font-bold text-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500">
-            <option value="todos">📍 Toda la Provincia</option>
-            <option value="ushuaia">Ushuaia</option>
-            <option value="tolhuin">Tolhuin</option>
-            <option value="rio-grande">Río Grande</option>
-            <option value="almanza">Puerto Almanza</option>
-            <option value="san-sebastian">San Sebastián</option>
-            <option value="esperanza">Base Esperanza</option>
-          </select>
-          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 flex items-center">
-            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button type="button" id="btn-dropdown-territorio" aria-haspopup="listbox" aria-expanded="false"
+            class="bg-white/95 backdrop-blur-md border border-slate-200/80 hover:border-orange-400 rounded-2xl shadow-md px-3.5 py-2 text-xs font-bold text-slate-800 flex items-center justify-between gap-2.5 cursor-pointer transition min-w-[165px]">
+            <span id="lbl-territorio-activo" data-i18n="vista_provincia">📍 Toda la Provincia</span>
+            <svg class="w-3.5 h-3.5 text-slate-500 shrink-0 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
             </svg>
-          </div>
+          </button>
+
+          <!-- Menú Flotante de Opciones de Territorio -->
+          <ul id="menu-dropdown-territorio" role="listbox"
+            class="hidden absolute left-0 mt-1.5 w-48 bg-white border border-slate-200 rounded-2xl shadow-xl py-1.5 z-[1000] text-xs font-semibold text-slate-700">
+            <li>
+              <button type="button" data-territorio="todos"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-bold text-orange-600 flex items-center gap-2 cursor-pointer transition">
+                <span>📍 Toda la Provincia</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="ushuaia"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>Ushuaia</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="tolhuin"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>Tolhuin</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="rio-grande"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>Río Grande</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="almanza"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>Puerto Almanza</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="san-sebastian"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>San Sebastián</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-territorio="esperanza"
+                class="opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition">
+                <span>Base Esperanza</span>
+              </button>
+            </li>
+          </ul>
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->

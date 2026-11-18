@@ -100,7 +100,7 @@ const DICCIONARIO = {
         btn_volver_mapa: "Volver al Mapa",
         sitios_en_rastro: "Sitios en mi Rastro:",
         descargar_bitacora: "Descargar Bitácora",
-        vista_provincia: "Toda la Provincia",
+        vista_provincia: "📍 Toda la Provincia",
         capa_estandar: "Estándar",
         capa_relieve: "Relieve",
         capa_areas_protegidas: "Áreas Protegidas",
@@ -242,7 +242,7 @@ const DICCIONARIO = {
         btn_volver_mapa: "Back to Map",
         sitios_en_rastro: "Sites in my Trail:",
         descargar_bitacora: "Download Journal",
-        vista_provincia: "Whole Province",
+        vista_provincia: "📍 Entire Province",
         capa_estandar: "Standard",
         capa_relieve: "Topographic",
         capa_areas_protegidas: "Protected Areas",
@@ -965,8 +965,7 @@ function limpiarTodosLosFiltros() {
     }
 
     territorioActivo = "todos";
-    const selTerritorio = document.getElementById("filtro-territorio");
-    if (selTerritorio) selTerritorio.value = "todos";
+    actualizarDropdownTerritorioUI("todos", idiomaActual === "en" ? "📍 Entire Province" : "📍 Toda la Provincia");
     hitoSeleccionadoId = null;
 
     // Recentrar mapa en toda la provincia
@@ -1971,31 +1970,87 @@ function cerrarPanelMobile() {
     panel.classList.remove("expandido");
 }
 
-// 12. Selector rápido de localidades y visión provincial (Dropdown Limpio con Flecha SVG)
+// 12. Actualizar visualmente el dropdown de territorios
+function actualizarDropdownTerritorioUI(vista, textoOpcion) {
+    const lbl = document.getElementById("lbl-territorio-activo");
+    if (lbl) {
+        if (textoOpcion) {
+            lbl.innerText = textoOpcion;
+        } else if (vista === "todos" || vista === "provincia") {
+            lbl.innerText = (idiomaActual === "en") ? "📍 Entire Province" : "📍 Toda la Provincia";
+        } else {
+            const btnOpcion = document.querySelector(`.opcion-territorio[data-territorio="${vista}"]`);
+            if (btnOpcion) lbl.innerText = btnOpcion.textContent.trim();
+        }
+    }
+
+    const opciones = document.querySelectorAll(".opcion-territorio");
+    opciones.forEach(opt => {
+        const t = opt.getAttribute("data-territorio");
+        const activo = (t === vista) || (t === "todos" && (vista === "todos" || vista === "provincia"));
+        if (activo) {
+            opt.className = "opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-bold text-orange-600 flex items-center gap-2 cursor-pointer transition";
+        } else {
+            opt.className = "opcion-territorio w-full text-left px-3.5 py-2 hover:bg-orange-50 hover:text-orange-700 font-semibold text-slate-700 flex items-center gap-2 cursor-pointer transition";
+        }
+    });
+}
+
+// 12. Selector rápido de localidades y visión provincial (Dropdown HTML personalizado)
 function configurarSelectorLocalidades() {
-    const selectorTerritorio = document.getElementById("filtro-territorio");
-    if (selectorTerritorio) {
-        selectorTerritorio.addEventListener("change", (e) => {
-            const vista = e.target.value || "todos";
-            territorioActivo = vista;
+    const btnDropdown = document.getElementById("btn-dropdown-territorio");
+    const menuDropdown = document.getElementById("menu-dropdown-territorio");
 
-            const configVista = VISTAS_TERRITORIO[vista] || VISTAS_TERRITORIO["todos"];
-            if (configVista && mapa) {
-                mapa.flyTo(configVista.centro, configVista.zoom, {
-                    animate: true,
-                    duration: 1.2
-                });
+    if (btnDropdown && menuDropdown) {
+        btnDropdown.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const abierto = !menuDropdown.classList.contains("hidden");
+            if (abierto) {
+                menuDropdown.classList.add("hidden");
+                btnDropdown.setAttribute("aria-expanded", "false");
+            } else {
+                menuDropdown.classList.remove("hidden");
+                btnDropdown.setAttribute("aria-expanded", "true");
             }
+        });
 
-            renderizarMarcadores(true);
-            actualizarTrazadoRuta();
+        const opciones = menuDropdown.querySelectorAll(".opcion-territorio");
+        opciones.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const vista = btn.getAttribute("data-territorio") || "todos";
+                const texto = btn.textContent.trim();
+                territorioActivo = vista;
 
-            const nombreTerritorio = selectorTerritorio.options[selectorTerritorio.selectedIndex]?.text || vista;
-            anunciarAccesibilidad(
-                idiomaActual === "en"
-                    ? `Map view updated: ${nombreTerritorio}`
-                    : `Vista de mapa actualizada: ${nombreTerritorio}`
-            );
+                actualizarDropdownTerritorioUI(vista, texto);
+                menuDropdown.classList.add("hidden");
+                btnDropdown.setAttribute("aria-expanded", "false");
+
+                const configVista = VISTAS_TERRITORIO[vista] || VISTAS_TERRITORIO["todos"];
+                if (configVista && mapa) {
+                    mapa.flyTo(configVista.centro, configVista.zoom, {
+                        animate: true,
+                        duration: 1.2
+                    });
+                }
+
+                renderizarMarcadores(true);
+                actualizarTrazadoRuta();
+
+                anunciarAccesibilidad(
+                    idiomaActual === "en"
+                        ? `Map view updated: ${texto}`
+                        : `Vista de mapa actualizada: ${texto}`
+                );
+            });
+        });
+
+        // Cerrar el menú flotante al hacer clic en cualquier otra parte de la pantalla o del mapa
+        document.addEventListener("click", (e) => {
+            if (!menuDropdown.contains(e.target) && !btnDropdown.contains(e.target)) {
+                menuDropdown.classList.add("hidden");
+                btnDropdown.setAttribute("aria-expanded", "false");
+            }
         });
     }
 
@@ -2005,7 +2060,7 @@ function configurarSelectorLocalidades() {
         btn.addEventListener("click", () => {
             const vista = btn.getAttribute("data-vista");
             territorioActivo = vista === "rio_grande" ? "rio-grande" : (vista || "todos");
-            if (selectorTerritorio) selectorTerritorio.value = territorioActivo;
+            actualizarDropdownTerritorioUI(territorioActivo);
 
             const configVista = VISTAS_TERRITORIO[vista] || VISTAS_TERRITORIO["todos"];
             if (configVista && mapa) {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v76'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v77'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const urlsToCache = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const urlsToCache = [
   './manifest.json',
   './icon.svg',
   './assets/logo-rastro-austral.png',
+  './assets/pinguino-mascota.png',
   './assets/hitos/tol-01.svg',
   './assets/hitos/rg-01.svg',
   './assets/hitos/ush-01.svg',

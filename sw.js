@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v87'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v89'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const FONT_OUTFIT_URL = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap';
 const urlsToCache = [
   './',
@@ -6,6 +6,8 @@ const urlsToCache = [
   './css/styles.css',
   './js/app.js',
   './js/storage.js',
+  './js/museo-data.js',
+  './js/museo.js',
   './data/hitos.json',
   './data/observatorio_real.json',
   './data/areas_protegidas.geojson',
@@ -56,11 +58,37 @@ self.addEventListener('activate', event => {
   );
 });
 
-// ESTRATEGIA DEFINITIVA: NETWORK FIRST (Primero la red, si falla usa caché)
+// ESTRATEGIA DE RED Y CACHÉ DINÁMICO
 self.addEventListener('fetch', event => {
   // Solo procesar solicitudes HTTP / HTTPS
   if (!event.request.url.startsWith('http')) return;
 
+  const url = new URL(event.request.url);
+
+  // Imágenes del Museo Austral (Wikimedia Commons): Cache-First con guardado dinámico para 100% offline
+  if (url.hostname.includes('wikimedia.org')) {
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request).then(networkResponse => {
+          if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        }).catch(() => {
+          return caches.match(event.request);
+        });
+      })
+    );
+    return;
+  }
+
+  // Estrategia general: Network-First con fallback a caché
   event.respondWith(
     fetch(event.request)
       .then(networkResponse => {

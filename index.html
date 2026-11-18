@@ -172,6 +172,14 @@
 
     <!-- Identidad del Usuario + Controles de Sistema (Idioma, Tema) -->
     <div class="flex items-center gap-1.5 sm:gap-2.5 text-xs flex-shrink-0">
+      <!-- Botón Píldora Acceso Museo Austral en Desktop -->
+      <button type="button" id="btn-header-museo-desktop"
+        class="hidden md:flex items-center gap-1.5 bg-slate-800/80 hover:bg-amber-600 text-amber-300 hover:text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-amber-500/30 hover:border-amber-400 text-xs font-semibold cursor-pointer transition-all shadow-sm"
+        title="Ingresar al Museo Austral 2D" aria-label="Ingresar al Museo Austral">
+        <span class="text-sm">🏛️</span>
+        <span data-i18n="nav_museo">Museo</span>
+      </button>
+
       <!-- Identificador de Explorador/a (Acceso directo a bienvenida / edición) -->
       <button type="button" id="badge-explorador"
         class="hidden bg-slate-800/80 hover:bg-amber-100/80 hover:text-slate-900 group px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-amber-500/30 hover:border-amber-400 flex items-center gap-1 sm:gap-2 text-xs cursor-pointer transition-colors"
@@ -655,54 +663,279 @@
 
   <!-- Barra de Navegación Inferior fija en Mobile (Bottom Navigation Bar) -->
   <nav id="mobile-bottom-nav" aria-label="Navegación principal móvil"
-    class="md:hidden fixed bottom-0 left-0 right-0 z-[600] bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 grid grid-cols-4 gap-1 shadow-[0_-4px_12px_rgba(15,23,42,0.06)]">
+    class="md:hidden fixed bottom-0 left-0 right-0 z-[600] bg-white/95 backdrop-blur-md border-t border-slate-200 px-1 py-1 grid grid-cols-5 gap-0.5 sm:gap-1 shadow-[0_-4px_12px_rgba(15,23,42,0.06)]">
     <!-- Botón 1: Mapa (Activo por defecto) -->
     <button type="button" id="btn-mobile-nav-mapa" aria-current="page"
       class="btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-orange-600 font-bold bg-orange-50/50">
-      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
         <line x1="8" y1="2" x2="8" y2="18"></line>
         <line x1="16" y1="6" x2="16" y2="22"></line>
       </svg>
-      <span class="text-[11px] mt-0.5 leading-none" data-i18n="nav_mapa">Mapa</span>
+      <span class="text-[10px] sm:text-xs mt-0.5 leading-none" data-i18n="nav_mapa">Mapa</span>
     </button>
 
     <!-- Botón 2: Hitos -->
     <button type="button" id="btn-mobile-nav-hitos"
       class="btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-slate-500 font-medium hover:text-slate-800">
-      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10"></circle>
         <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
       </svg>
-      <span class="text-[11px] mt-0.5 leading-none" data-i18n="tab_explorador">Hitos</span>
+      <span class="text-[10px] sm:text-xs mt-0.5 leading-none" data-i18n="tab_explorador">Hitos</span>
     </button>
 
     <!-- Botón 3: Bitácora -->
     <button type="button" id="btn-mobile-nav-bitacora"
       class="btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-slate-500 font-medium hover:text-slate-800 relative">
       <div class="relative">
-        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
         <span id="mobile-nav-badge-sellos"
-          class="absolute -top-1.5 -right-3 px-1 py-0.2 text-[9px] font-bold rounded-full bg-amber-500 text-slate-950 leading-tight">
+          class="absolute -top-1.5 -right-3 px-1 py-0.2 text-[8px] sm:text-[9px] font-bold rounded-full bg-amber-500 text-slate-950 leading-tight">
           <span id="mobile-bitacora-visitas">0</span>/<span id="mobile-bitacora-total">25</span>
         </span>
       </div>
-      <span class="text-[11px] mt-0.5 leading-none" data-i18n="tab_pasaporte">Bitácora</span>
+      <span class="text-[10px] sm:text-xs mt-0.5 leading-none" data-i18n="tab_pasaporte">Bitácora</span>
     </button>
 
     <!-- Botón 4: Observatorio -->
     <button type="button" id="btn-mobile-nav-observatorio"
       class="btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-slate-500 font-medium hover:text-slate-800">
-      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M3 3v18h18"></path>
         <path d="m19 9-5 5-4-4-3 3"></path>
       </svg>
-      <span class="text-[11px] mt-0.5 leading-none" data-i18n="tab_observatorio">Observatorio</span>
+      <span class="text-[10px] sm:text-xs mt-0.5 leading-none" data-i18n="tab_observatorio">Observatorio</span>
+    </button>
+
+    <!-- Botón 5: Museo -->
+    <button type="button" id="nav-mobile-museo"
+      class="btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-slate-500 font-medium hover:text-slate-800">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 21h18M4 18h16M6 18v-7M10 18v-7M14 18v-7M18 18v-7M2 7l10-4 10 4M2 7v3M22 7v3"></path>
+      </svg>
+      <span class="text-[10px] sm:text-xs mt-0.5 leading-none" data-i18n="nav_museo">Museo</span>
     </button>
   </nav>
+
+  <!-- ============================================================
+       VISTA COMPLETA 2D: MUSEO AUSTRAL
+       ============================================================ -->
+  <div id="vista-museo-austral"
+    class="fixed inset-0 z-[950] hidden flex-col bg-[#0E1A18] text-amber-50 select-none overflow-hidden"
+    role="region" aria-label="Museo Austral 2D">
+
+    <!-- Barra Superior del Museo -->
+    <header class="relative z-40 bg-stone-950/90 border-b border-amber-600/30 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 shadow-lg backdrop-blur-md flex-shrink-0">
+      <!-- Botón Volver al Mapa + Navegación entre salas -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button type="button" id="btn-cerrar-museo"
+          class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-700 hover:bg-amber-600 hover:text-slate-950 hover:border-amber-400 text-xs font-bold transition cursor-pointer"
+          title="Cerrar museo y volver al mapa" aria-label="Cerrar museo">
+          <span>✕</span>
+          <span class="hidden sm:inline" data-i18n="btn_volver_mapa">Volver al Mapa</span>
+        </button>
+
+        <div class="flex items-center bg-stone-900/90 rounded-xl p-0.5 border border-stone-800">
+          <button type="button" id="btn-prev-sala-museo" class="p-1 sm:p-1.5 rounded-lg text-amber-300 hover:bg-stone-800 transition cursor-pointer" title="Sala anterior" aria-label="Sala anterior">
+            ◀
+          </button>
+          <button type="button" id="btn-next-sala-museo" class="p-1 sm:p-1.5 rounded-lg text-amber-300 hover:bg-stone-800 transition cursor-pointer" title="Sala siguiente" aria-label="Sala siguiente">
+            ▶
+          </button>
+        </div>
+      </div>
+
+      <!-- Título de la Sala en el centro -->
+      <div class="min-w-0 text-center flex-1 px-1">
+        <h2 id="titulo-sala-actual-museo" class="text-xs sm:text-sm md:text-base font-bold text-amber-200 truncate font-marca-austral">
+          <span class="text-amber-400">Sala 1 de 6</span> · Origen del Nombre e Historia
+        </h2>
+      </div>
+
+      <!-- Selector de Idioma sincronizado -->
+      <div class="flex items-center gap-1 bg-stone-900/90 border border-stone-800 rounded-xl p-1 text-xs">
+        <button type="button" id="btn-museo-lang-es" class="px-2 py-0.5 rounded font-bold bg-amber-600 text-white transition cursor-pointer">ES</button>
+        <button type="button" id="btn-museo-lang-en" class="px-2 py-0.5 rounded text-amber-200/60 hover:text-white transition cursor-pointer">EN</button>
+      </div>
+    </header>
+
+    <!-- Escenario 2D: Museo Elegante Patagónico con Pasillo Desplazable -->
+    <div class="flex-1 relative overflow-hidden flex flex-col justify-end">
+      <!-- Muro Superior en Verde Bosque Profundo con Zócalo de Lenga -->
+      <div class="absolute inset-0 muro-bosque-profundo pointer-events-none">
+        <!-- Moldura de bronce superior -->
+        <div class="moldura-bronce-lenga w-full"></div>
+
+        <!-- Partículas sutiles de polvo dorado flotando -->
+        <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <span class="mota-polvo-dorado absolute top-[25%] left-[20%] w-1.5 h-1.5 rounded-full bg-amber-300"></span>
+          <span class="mota-polvo-dorado absolute top-[40%] left-[45%] w-1 h-1 rounded-full bg-amber-400"></span>
+          <span class="mota-polvo-dorado absolute top-[18%] left-[70%] w-2 h-2 rounded-full bg-yellow-200"></span>
+          <span class="mota-polvo-dorado absolute top-[35%] left-[85%] w-1.5 h-1.5 rounded-full bg-amber-300"></span>
+        </div>
+      </div>
+
+      <!-- Pasillo Muro Desplazable con Cuadros y Columnas -->
+      <div id="pasillo-muro-museo" class="absolute inset-0 w-[1680px] will-change-transform transition-transform duration-75 ease-out">
+        <!-- Columnas Clásicas de Madera tallada entre cuadros -->
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[120px] w-12 rounded-sm pointer-events-none">
+          <div class="capitel-bronce h-3 w-full"></div>
+        </div>
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[640px] w-12 rounded-sm pointer-events-none">
+          <div class="capitel-bronce h-3 w-full"></div>
+        </div>
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1080px] w-12 rounded-sm pointer-events-none">
+          <div class="capitel-bronce h-3 w-full"></div>
+        </div>
+        <div class="columna-madera-museo absolute top-0 bottom-[32%] left-[1520px] w-12 rounded-sm pointer-events-none">
+          <div class="capitel-bronce h-3 w-full"></div>
+        </div>
+
+        <!-- Paneles de Lenga Patagónica en el tercio inferior del muro -->
+        <div class="panel-lenga-patagonica absolute bottom-[32%] left-0 right-0 h-28 pointer-events-none">
+          <div class="moldura-bronce-lenga w-full"></div>
+        </div>
+
+        <!-- Contenedor dinámico de Cuadros Históricos -->
+        <div id="contenedor-obras-museo" class="absolute top-[14%] bottom-[32%] left-0 right-0"></div>
+
+        <!-- Suelo de Parquet de Lenga Patagónica -->
+        <div class="suelo-parquet-museo absolute bottom-0 left-0 right-0 h-[32%] pointer-events-none"></div>
+
+        <!-- Mascota Pingüino de Rastro Austral visto de espaldas -->
+        <div id="pinguino-mascota-museo" class="absolute bottom-[20%] z-30 select-none pointer-events-none transition-transform will-change-transform">
+          <div class="relative w-28 h-36 sm:w-32 sm:h-40 flex items-center justify-center">
+            <!-- Sombra en el piso de parquet -->
+            <div class="absolute -bottom-2 w-24 h-5 rounded-full bg-black/45 blur-sm"></div>
+
+            <svg viewBox="0 0 160 200" class="w-full h-full filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]">
+              <defs>
+                <linearGradient id="degrade-cuerpo-pinguino-espalda" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1E293B"/>
+                  <stop offset="60%" stop-color="#0F172A"/>
+                  <stop offset="100%" stop-color="#020617"/>
+                </linearGradient>
+                <linearGradient id="degrade-bufanda" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#DC2626"/>
+                  <stop offset="35%" stop-color="#F59E0B"/>
+                  <stop offset="65%" stop-color="#DC2626"/>
+                  <stop offset="100%" stop-color="#F59E0B"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Patas anaranjadas pisando el parquet -->
+              <g class="patas-pinguino">
+                <ellipse cx="62" cy="186" rx="14" ry="7" fill="#F97316"/>
+                <ellipse cx="98" cy="186" rx="14" ry="7" fill="#EA580C"/>
+              </g>
+
+              <!-- Aletas laterales -->
+              <path d="M 44 95 C 32 110, 30 135, 36 150 C 40 152, 46 142, 48 130 C 50 115, 48 102, 44 95 Z" fill="#0F172A"/>
+              <path d="M 116 95 C 128 110, 130 135, 124 150 C 120 152, 114 142, 112 130 C 110 115, 112 102, 116 95 Z" fill="#0F172A"/>
+
+              <!-- Cuerpo principal (espalda) -->
+              <ellipse cx="80" cy="120" rx="42" ry="58" fill="url(#degrade-cuerpo-pinguino-espalda)"/>
+
+              <!-- Remera blanca oficial Rastro Austral -->
+              <path d="M 46 102 C 55 92, 105 92, 114 102 C 118 128, 115 152, 110 162 C 90 166, 70 166, 50 162 C 45 152, 42 128, 46 102 Z" fill="#F8FAFC"/>
+              <!-- Isotipo oficial Rastro Austral en la espalda -->
+              <circle cx="80" cy="128" r="14" fill="#F97316" opacity="0.95"/>
+              <circle cx="80" cy="128" r="10" fill="#0284C7"/>
+              <polygon points="80,118 83,126 91,128 83,130 80,138 77,130 69,128 77,126" fill="#F8FAFC"/>
+
+              <!-- Cabeza (nuca / espaldas) -->
+              <ellipse cx="80" cy="62" rx="28" ry="30" fill="url(#degrade-cuerpo-pinguino-espalda)"/>
+              <!-- Plumas doradas características en la nuca del pingüino rey -->
+              <path d="M 64 56 C 68 45, 92 45, 96 56 C 92 68, 68 68, 64 56 Z" fill="#F59E0B" opacity="0.75"/>
+
+              <!-- Bufanda roja y amarilla cruzada en el cuello -->
+              <path d="M 54 84 C 62 80, 98 80, 106 84 C 108 92, 104 96, 80 96 C 56 96, 52 92, 54 84 Z" fill="url(#degrade-bufanda)"/>
+              <rect x="73" y="88" width="14" height="28" rx="3" fill="#DC2626" transform="rotate(8 73 88)"/>
+              <rect x="73" y="94" width="14" height="5" fill="#F59E0B" transform="rotate(8 73 94)"/>
+              <rect x="73" y="104" width="14" height="5" fill="#F59E0B" transform="rotate(8 73 104)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles Superpuestos Flotantes: Joystick + Botón Salas + Pista de Navegación -->
+      <div class="absolute inset-x-0 bottom-3 px-4 flex items-end justify-between pointer-events-none z-30">
+        <!-- Joystick circular táctil (84x84px) -->
+        <div id="joystick-base-museo" class="relative w-[84px] h-[84px] rounded-full flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing select-none shadow-2xl">
+          <div id="joystick-perilla-museo" class="w-[38px] h-[38px] rounded-full pointer-events-none transition-transform duration-75"></div>
+          <span class="absolute -bottom-5 text-[9px] font-bold text-amber-300 tracking-wider uppercase">Caminar</span>
+        </div>
+
+        <!-- Indicador de controles en escritorio -->
+        <div class="hidden md:flex items-center gap-2 bg-stone-950/80 border border-stone-800 px-3 py-1.5 rounded-full text-xs text-stone-300 pointer-events-none shadow-md backdrop-blur">
+          <span>⌨️ Usá las flechas <strong class="text-amber-400">←</strong> / <strong class="text-amber-400">→</strong> o la rueda del mouse para caminar</span>
+        </div>
+
+        <!-- Botón Píldora "Salas" para desplegar menú rápido -->
+        <button type="button" id="btn-abrir-menu-salas"
+          class="pointer-events-auto flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-full border border-amber-300 shadow-xl transition active:scale-95 cursor-pointer text-xs sm:text-sm">
+          <span>🏛️</span>
+          <span>Salas</span>
+          <span class="bg-amber-900/30 text-slate-950 px-1.5 py-0.2 rounded-full text-[10px]">6</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal / Drawer Selector Rápido de las 6 Salas -->
+    <div id="drawer-selector-salas" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5">
+      <div class="bg-stone-950 border border-amber-600/40 rounded-2xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="p-4 border-b border-stone-800 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🏛️</span>
+            <h3 class="font-bold text-amber-200 text-sm sm:text-base font-marca-austral">Salas del Museo Austral</h3>
+          </div>
+          <button type="button" id="btn-cerrar-drawer-salas" class="w-8 h-8 rounded-full bg-stone-900 text-stone-400 hover:text-white flex items-center justify-center text-sm transition cursor-pointer">✕</button>
+        </div>
+        <div id="lista-salas-selector" class="p-3 sm:p-4 space-y-2 overflow-y-auto flex-1"></div>
+      </div>
+    </div>
+
+    <!-- Ficha de Obra (Bottom Sheet Pergamino / Marfil) -->
+    <div id="sheet-detalle-obra-museo"
+      class="fixed inset-x-0 bottom-0 z-50 sheet-pergamino-museo rounded-t-3xl max-h-[88vh] overflow-y-auto transform translate-y-full transition-transform duration-300 ease-out pointer-events-none p-4 sm:p-6 shadow-2xl">
+      <div class="max-w-2xl mx-auto flex flex-col gap-4">
+        <!-- Tirador superior para cerrar -->
+        <div class="flex items-center justify-between border-b border-amber-900/20 pb-3">
+          <span class="text-[11px] font-mono uppercase tracking-widest text-amber-900 font-bold">Colección Histórica Fueguina</span>
+          <button type="button" id="btn-cerrar-sheet-obra" class="w-8 h-8 rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 flex items-center justify-center font-bold text-sm transition cursor-pointer">✕</button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 items-start">
+          <!-- Miniatura real enmarcada -->
+          <div class="w-full sm:w-56 shrink-0 aspect-[4/3] rounded-lg overflow-hidden bg-stone-900 border-2 border-amber-700/60 shadow-md">
+            <img id="sheet-obra-img" src="" alt="" class="w-full h-full object-cover" />
+          </div>
+
+          <!-- Información editorial de la obra -->
+          <div class="flex-1 min-w-0">
+            <h3 id="sheet-obra-titulo" class="font-serif font-bold text-lg sm:text-xl text-slate-900 leading-tight"></h3>
+            <p id="sheet-obra-meta" class="text-xs font-semibold text-amber-800 mt-1"></p>
+            <p id="sheet-obra-desc" class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-2.5"></p>
+            <p id="sheet-obra-credito" class="text-[10px] text-stone-500 font-mono mt-3"></p>
+          </div>
+        </div>
+
+        <!-- Etiqueta de Hito territorial relacionado -->
+        <div id="sheet-obra-hito-badge" class="hidden p-2.5 rounded-xl bg-amber-100/70 border border-amber-300 text-xs flex items-center gap-2"></div>
+
+        <!-- Botón Seguir Recorriendo -->
+        <button type="button" id="btn-seguir-recorriendo-obra"
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+          <span>🏛️</span>
+          <span>Seguir recorriendo</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal Completo de Pasaporte de Sellos / Libreta -->
   <div id="modal-pasaporte" data-modal="libreta" role="dialog" aria-modal="true"
@@ -1564,6 +1797,8 @@
 
   <!-- Scripts -->
   <script src="./js/storage.js"></script>
+  <script src="./js/museo-data.js"></script>
+  <script src="./js/museo.js"></script>
   <script src="./js/app.js"></script>
 
   <!-- Registro de Service Worker PWA con Auto-Actualización -->

@@ -95,6 +95,7 @@ const DICCIONARIO = {
     es: {
         subtitulo: "Atlas y Diario de Exploración Territorial",
         nav_mapa: "Mapa",
+        nav_museo: "Museo",
         tab_explorador: "Hitos",
         tab_pasaporte: "Bitácora",
         tab_observatorio: "Observatorio Climático",
@@ -238,6 +239,7 @@ const DICCIONARIO = {
     en: {
         subtitulo: "Atlas & Territorial Exploration Journal",
         nav_mapa: "Map",
+        nav_museo: "Museum",
         tab_explorador: "Sites",
         tab_pasaporte: "Logbook",
         tab_observatorio: "Climate Observatory",
@@ -2268,7 +2270,8 @@ function actualizarEstadoMobileNav(activa) {
         mapa: document.getElementById("btn-mobile-nav-mapa"),
         hitos: document.getElementById("btn-mobile-nav-hitos"),
         bitacora: document.getElementById("btn-mobile-nav-bitacora"),
-        observatorio: document.getElementById("btn-mobile-nav-observatorio")
+        observatorio: document.getElementById("btn-mobile-nav-observatorio"),
+        museo: document.getElementById("nav-mobile-museo")
     };
 
     const claseActiva = "btn-mobile-nav flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer text-orange-600 font-bold bg-orange-50/50";
@@ -2354,6 +2357,20 @@ function configurarMobileBottomNav() {
             }
             cambiarPestanaSidebar("observatorio");
             actualizarEstadoMobileNav("observatorio");
+        });
+    }
+
+    const btnMuseo = document.getElementById("nav-mobile-museo");
+    if (btnMuseo) {
+        btnMuseo.addEventListener("click", () => {
+            if (panel) {
+                panel.classList.add("translate-y-[120%]");
+                panel.classList.remove("translate-y-0", "translate-y-full");
+            }
+            if (typeof window.abrirMuseoAustral === "function") {
+                window.abrirMuseoAustral(0);
+            }
+            actualizarEstadoMobileNav("museo");
         });
     }
 }
@@ -2816,6 +2833,10 @@ function cambiarIdioma(nuevoIdioma) {
         renderizarGraficosObservatorio();
     }
 
+    if (typeof window.actualizarBotonesIdiomaMuseo === "function") {
+        window.actualizarBotonesIdiomaMuseo();
+    }
+
     anunciarAccesibilidad(nuevoIdioma === "en" ? "Language switched to English." : "Idioma cambiado a español.");
 }
 
@@ -3217,6 +3238,7 @@ function cerrarTodasLasVistas() {
     const vistaBitacoraFull = document.getElementById("vista-bitacora-full");
     const vistaObservatorioFull = document.getElementById("vista-observatorio-full");
     const vistaDetalleFull = document.getElementById("modal-detalle-hito") || document.getElementById("vista-detalle-hito-full");
+    const vistaMuseo = document.getElementById("vista-museo-austral");
 
     if (vistaBitacoraFull) {
         vistaBitacoraFull.classList.add("hidden");
@@ -3229,6 +3251,14 @@ function cerrarTodasLasVistas() {
     if (vistaDetalleFull) {
         vistaDetalleFull.classList.add("hidden");
         vistaDetalleFull.classList.remove("flex");
+    }
+    if (vistaMuseo && !vistaMuseo.classList.contains("hidden")) {
+        if (typeof window.cerrarMuseoAustral === "function") {
+            window.cerrarMuseoAustral();
+        } else {
+            vistaMuseo.classList.add("hidden");
+            vistaMuseo.classList.remove("flex");
+        }
     }
 
     // Regresar a la vista de Hitos en #panel-lateral

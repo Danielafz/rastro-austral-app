@@ -28,11 +28,69 @@ La provincia de Tierra del Fuego enfrenta una amenaza sobre su soberanía y patr
 
 Elegimos este desafío para unir la identidad provincial, la memoria histórica y la preservación ambiental en una sola herramienta digital. Transformamos datos institucionales, históricos y científicos en una interfaz visual, accesible y portátil que reconecta al habitante y al visitante con el valor estratégico del territorio austral.
 
-## 💡 3. La Solución (Los 3 Pilares)
-**Rastro Austral** es una Aplicación Web Progresiva (PWA) de funcionamiento 100% offline (Ley 25.326) que actúa como un **Pasaporte de Expedición** interactivo. Se estructura en tres pilares:
+## 💡 3. La Solución (Los 3 Pilares + Museo Austral 2D)
+**Rastro Austral** es una Aplicación Web Progresiva (PWA) de funcionamiento 100% offline (Ley 25.326) que actúa como un **Pasaporte de Expedición** interactivo. Se estructura en tres pilares y una galería histórica interactiva:
 * **1. Pilar Cultural (Cartografía Descolonizada):** Mapas con toponimia originaria, trazado interactivo de huellas y visibilización de creadores locales bajo el "Sello Identidad Fueguina". El explorador colecciona "sellos" offline al visitar y registrar hitos territoriales.
 * **2. Pilar Científico (Observatorio Climático Austral):** Módulo de Ciencia de Datos Cívica que presenta escenarios ilustrativos de prototipo basados en tendencias ambientales regionales reportadas por CADIC-CONICET e IDETDF, modelados mediante extrapolación lineal simple (2015–2024 → 2030) y empaquetados en `data/observatorio_real.json`. Visualiza la evolución de días secos en turbales y la pérdida estimada de masa en el Glaciar Vinciguerra para concientización ciudadana.
 * **3. Pilar de Acción (Bloqueo Turístico Digital y Alertas SAR):** Sistema de alerta temprana basado en capas vectoriales pre-empaquetadas en formato GeoJSON (`data/alertas_turbales.geojson`) para garantizar disponibilidad 100% offline en territorio sin requerir conectividad de red ni servidores intermedios. Si un área presenta alerta crítica de estrés hídrico o riesgo ambiental, la PWA intercepta la navegación del usuario in situ y despliega un modal pedagógico de "Zona Restringida", orientándolo hacia senderos seguros y preservando los ecosistemas frágiles.
+* **4. Museo Austral 2D (Galería Histórica Interactiva):** Espacio pedagógico inmersivo que permite recorrer los pasillos de un museo elegante patagónico guiando al Pingüino Mascota para descubrir 18 obras históricas curadas a lo largo de 6 salas temáticas, con fichas bilingües y fotografías históricas reales de dominio público.
+
+---
+
+## 🏛️ 3.1. Museo Austral 2D: Patrimonio Vivo de Tierra del Fuego
+
+El **Museo Austral 2D** es una experiencia interactiva accesible desde el botón `"🏛️ Museo"` en el `<header>` (escritorio) y el 5.º botón de la barra `#mobile-bottom-nav` (móvil).
+
+### Estética y Escenario Patagónico
+Diseñado con una atmósfera de **Museo Elegante Patagónico**:
+* **Muros:** Acabado superior en verde bosque profundo (`#172A27`) con sutiles franjas victorianas y zócalos en madera cálida de lenga patagónica (`#5A351C` / `#2B160A`) con molduras en bronce envejecido.
+* **Piso:** Parquet entablonado de madera nativa con perspectiva y reflejos sutiles.
+* **Iluminación Cenital:** Focos cenitales sobre cada marco que respiran suavemente (`@keyframes luzCenitalRespiracion`) con motas de polvo dorado suspendidas en el haz de luz.
+* **Protagonista Animado:** El explorador guía a nuestra **Mascota Pingüino Rey de Rastro Austral** (plumaje azul marino oscuro, bufanda roja y amarilla, remera blanca oficial con el isotipo de la brújula en la espalda y patitas naranjas), con animación orgánica de paso balanceado (*waddle*).
+
+### Las 6 Salas Temáticas (`SALAS_MUSEO`)
+La colección contiene 18 obras históricas (3 por sala), curadas bilingüemente (`es` / `en`) con fotografías reales de dominio público de Wikimedia Commons:
+1. **Sala 1: Origen del Nombre e Historia de Tierra del Fuego:** El cruce de Hernando de Magallanes en 1520, el avistamiento de las fogatas canoeras que bautizaron *"Tierra de los Fuegos"* y la primera cartografía antigua de la *Terra Australis Incognita*.
+2. **Sala 2: Pueblos Originarios:** Culturas ancestrales Selk'nam, Yámana/Yagán, Haush y Kawésqar: caza en la estepa, navegación en canoas de corteza de guindo por el Canal Beagle y la ceremonia sagrada del Hain.
+3. **Sala 3: Expediciones, Navegantes y Naufragios:** La expedición del HMS Beagle con Charles Darwin y Robert FitzRoy, el mítico Faro del Fin del Mundo (San Juan de Salvamento) en Isla de los Estados y los naufragios en el Cabo de Hornos y el estrecho de Le Maire (como el Desdémona).
+4. **Sala 4: Pioneros, Estancias y Fiebre del Oro:** Los lavaderos auríferos de Julio Popper en El Páramo (1886), la fundación salesiana de La Candelaria en Río Grande por Monseñor Fagnano y el establecimiento de la histórica Estancia Harberton por la familia Bridges.
+5. **Sala 5: Ushuaia, el Presidio y la Puerta Antártica:** La colonia penal que levantó la capital fueguina, el Ferrocarril Austral Fueguino ("Tren de los Presos") y el rol geopolítico y logístico de Ushuaia como puerta de entrada a la Antártida Argentina.
+6. **Sala 6: Islas Malvinas:** Cartografía histórica, soberanía en el Atlántico Sur, primeros asentamientos en Puerto Soledad, patrimonio cultural en Puerto Argentino y la fauna austral compartida (colonias de pingüinos rey y papúa).
+
+### Controles Mobile-First y Accesibilidad
+* **Móvil:** **Joystick circular táctil** (`84x84px`) en la esquina inferior izquierda con perilla arrastrable con físicas de resorte para caminar izquierda/derecha suavemente (`requestAnimationFrame`). Botón flotante **"Salas"** para saltar instantáneamente a cualquiera de las 6 salas.
+* **Escritorio:** Teclas de cursor `←` / `→` o `A` / `D`, arrastre con ratón o rueda de desplazamiento (*mouse wheel*).
+* **Interacción por Proximidad:** Al acercar la mascota a menos de 140px de una obra, el foco cenital se intensifica, el marco de lenga y bronce resplandece y emerge la píldora `"Tocá la foto"` / `"Tap photo"`.
+* **Ficha de Obra (Bottom Sheet Pergamino):** Al tocar el cuadro iluminado, se despliega una tarjeta color marfil/pergamino (`#F4F1EA`) con miniatura enmarcada, título en serif editorial, año, lugar, descripción histórica completa, crédito del archivo y una etiqueta interactiva que vincula la pieza con su hito territorial en el mapa (ej. `"📍 Corresponde al hito: Faro Les Éclaireurs"`).
+
+### Modo Offline y Resiliencia Visual
+* **Caché Dinámico en Service Worker (`sw.js`):** Las fotografías históricas externas de `upload.wikimedia.org` se interceptan y almacenan automáticamente en caché (`cache-first` con captura de respuestas opacas), asegurando que una vez vistas funcionen 100% offline.
+* **Fallback SVG Elegante:** Si la aplicación se inicia sin conexión antes de haber cargado alguna imagen, la función `generarSvgFallbackObra()` inyecta dinámicamente un grabado vectorial en sepia y bronce con el título y año de la pieza, evitando recuadros rotos.
+
+### ¿Cómo sumar nuevas obras o salas?
+Para expandir el museo, editá `js/museo-data.js` agregando un objeto a `SALAS_MUSEO`:
+```javascript
+{
+  id: "sala-7",
+  numero: 7,
+  titulo: { es: "Título en Español", en: "English Title" },
+  subtitulo: { es: "Subtítulo descriptivo", en: "Descriptive subtitle" },
+  descripcionCorta: { es: "Resumen breve", en: "Brief summary" },
+  icono: "🏛️",
+  obras: [
+    {
+      id: "obra-01",
+      titulo: { es: "Nombre de la Obra", en: "Artwork Name" },
+      anio: "Año histórico",
+      lugar: { es: "Ubicación en TDF", en: "Location in TDF" },
+      descripcion: { es: "Contexto histórico...", en: "Historical context..." },
+      credito: "Archivo o Colección (Dominio Público)",
+      imagenUrl: "https://upload.wikimedia.org/.../archivo.jpg",
+      hitoRelacionado: { es: "Nombre de Hito en Mapa", en: "Map Landmark Name" }
+    }
+  ]
+}
+```
 
 ## ⚙️ 4. Stack Tecnológico
 * **Frontend & Interfaz:** HTML5, CSS3, JavaScript (Vanilla), TailwindCSS (vía CDN), Chart.js (vía CDN), diseño de alto contraste y accesibilidad auditiva (WCAG 2.1 AA / Ley 26.653).

@@ -2141,3 +2141,186 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
     right: 10px !important;
   }
 }
+
+/* ============================================================
+   MUSEO AUSTRAL 2D - ESCENARIO ELEGANTE PATAGÓNICO & CONTROLES
+   ============================================================ */
+
+#vista-museo-austral {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  background-color: #0E1A18;
+}
+
+/* Muro superior en verde bosque profundo con sutiles franjas victorianas */
+.muro-bosque-profundo {
+  background: 
+    linear-gradient(90deg, rgba(23, 42, 39, 0.95) 0%, rgba(18, 34, 31, 0.98) 50%, rgba(23, 42, 39, 0.95) 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(14, 26, 24, 0.4) 48px, rgba(14, 26, 24, 0.4) 50px);
+}
+
+/* Zócalo y paneles inferiores en madera cálida de lenga patagónica */
+.panel-lenga-patagonica {
+  background: linear-gradient(180deg, #5A351C 0%, #3D2211 12%, #2B160A 85%, #1D0E06 100%);
+  border-top: 4px solid #8C532B;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6), 0 -4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.moldura-bronce-lenga {
+  background: linear-gradient(90deg, #8A6828 0%, #D4AF37 50%, #8A6828 100%);
+  height: 3px;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+}
+
+/* Piso de parquet de madera de lenga con perspectiva */
+.suelo-parquet-museo {
+  background: 
+    linear-gradient(180deg, rgba(14, 26, 24, 0.5) 0%, transparent 15%),
+    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px),
+    linear-gradient(180deg, #4A2B15 0%, #341D0D 40%, #201007 100%);
+  background-size: 100% 100%, 60px 100%, 100% 100%;
+  border-top: 5px solid #1A0D06;
+  box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* Columnas clásicas de madera con capiteles en bronce */
+.columna-madera-museo {
+  background: linear-gradient(90deg, #2D180C 0%, #4D2B16 35%, #5E351C 50%, #4D2B16 65%, #2D180C 100%);
+  box-shadow: 6px 0 16px rgba(0,0,0,0.5), -6px 0 16px rgba(0,0,0,0.5);
+}
+
+.capitel-bronce {
+  background: linear-gradient(90deg, #6B4E1B 0%, #D4AF37 30%, #F5DE7B 50%, #D4AF37 70%, #6B4E1B 100%);
+}
+
+/* Foco cenital que respira suavemente sobre los cuadros */
+.luz-cenital-spot {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 340px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(253, 230, 138, 0.28) 0%, rgba(245, 158, 11, 0.12) 45%, transparent 75%);
+  filter: blur(8px);
+  animation: luzCenitalRespiracion 4.5s ease-in-out infinite alternate;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  opacity: 0.65;
+}
+
+@keyframes luzCenitalRespiracion {
+  0% {
+    opacity: 0.55;
+    transform: translateX(-50%) scaleX(0.95);
+  }
+  100% {
+    opacity: 0.75;
+    transform: translateX(-50%) scaleX(1.05);
+  }
+}
+
+/* Marco de cuadro de lenga y bronce patagónico */
+.marco-cuadro-patagonico {
+  background: linear-gradient(135deg, #5A351C 0%, #8A532C 40%, #3B200F 100%);
+  border: 3px solid #D4AF37;
+  outline: 2px solid #281408;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 18px rgba(212, 175, 55, 0.15);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.plaqueta-bronce-cuadro {
+  background: linear-gradient(180deg, #F3E5AB 0%, #D4AF37 40%, #AA8222 100%);
+  border: 1px solid #735314;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.overlay-brillo-oleo {
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 45%, rgba(0,0,0,0.25) 100%);
+}
+
+/* Efecto al aproximarse el pingüino */
+.cuadro-activo-proximidad .luz-cenital-spot {
+  opacity: 1 !important;
+  background: radial-gradient(ellipse at 50% 0%, rgba(254, 243, 199, 0.55) 0%, rgba(245, 158, 11, 0.28) 50%, transparent 80%);
+  filter: blur(10px);
+}
+
+.cuadro-activo-proximidad .marco-cuadro-patagonico {
+  transform: translateY(-8px) scale(1.03);
+  border-color: #FCD34D !important;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.85), 0 0 28px rgba(251, 191, 36, 0.55) !important;
+}
+
+.pildora-toca-foto {
+  position: absolute;
+  top: -46px;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #1E1202;
+  border: 1px solid #FDE68A;
+  opacity: 0;
+  transform: translateY(10px) scale(0.9);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cuadro-activo-proximidad .pildora-toca-foto {
+  opacity: 1;
+  transform: translateY(0px) scale(1);
+}
+
+/* Animación de paso balanceado del Pingüino (Waddle) */
+.pinguino-caminando-museo {
+  animation: pinguinoPasoBalanceado 0.42s ease-in-out infinite alternate;
+}
+
+@keyframes pinguinoPasoBalanceado {
+  0% {
+    transform-origin: bottom center;
+    rotate: -4deg;
+  }
+  100% {
+    transform-origin: bottom center;
+    rotate: 4deg;
+  }
+}
+
+/* Motas de polvo dorado flotando en el haz de luz */
+.mota-polvo-dorado {
+  animation: flotacionPolvo 8s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes flotacionPolvo {
+  0% {
+    transform: translate(0px, 0px);
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(-14px, -28px);
+    opacity: 0.2;
+  }
+}
+
+/* Joystick circular táctil */
+#joystick-base-museo {
+  background: radial-gradient(circle at 40% 40%, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 2px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.1);
+  touch-action: none;
+}
+
+#joystick-perilla-museo {
+  background: radial-gradient(circle at 35% 35%, #F59E0B 0%, #D97706 60%, #92400E 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 12px rgba(245, 158, 11, 0.4);
+  touch-action: none;
+}
+
+/* Ficha de Obra (Bottom Sheet marfil/pergamino) */
+.sheet-pergamino-museo {
+  background: linear-gradient(180deg, #F9F6F0 0%, #F4F1EA 60%, #ECE6DC 100%);
+  border-top: 4px solid #D4AF37;
+  color: #1E293B;
+  box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.55);
+}

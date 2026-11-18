@@ -3853,11 +3853,25 @@ function configurarPantallaBienvenida() {
 
     if (!pantalla || !form || !inputNombre) return;
 
-    // Sin persistencia entre recargas: siempre solicitar inicio de sesión en bienvenida
-    inputNombre.value = "";
-    pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
-    if (nombreDisplay) nombreDisplay.innerText = "";
-    if (badgeExplorador) badgeExplorador.classList.add("hidden");
+    // Verificar si ya existe un nombre de explorador persistido
+    const nombreGuardado = typeof obtenerNombreExplorador === "function" ? obtenerNombreExplorador() : "";
+
+    if (nombreGuardado && nombreGuardado.trim().length > 0) {
+        // Usuario recurrente: mostrar identidad en header y omitir pantalla de bienvenida
+        inputNombre.value = nombreGuardado.trim();
+        if (nombreDisplay) nombreDisplay.innerText = nombreGuardado.trim();
+        if (badgeExplorador) badgeExplorador.classList.remove("hidden");
+        pantalla.classList.add("hidden");
+    } else {
+        // Primera visita: mostrar pantalla de bienvenida y enfocar input inmediatamente
+        inputNombre.value = "";
+        if (nombreDisplay) nombreDisplay.innerText = "";
+        if (badgeExplorador) badgeExplorador.classList.add("hidden");
+        pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
+        setTimeout(() => {
+            if (inputNombre) inputNombre.focus();
+        }, 100);
+    }
 
     // Interactividad ocular y globito de diálogo del Pingüino Rey
     const svgPinguinoBienvenida = document.getElementById("svg-pinguino-bienvenida");

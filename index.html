@@ -393,7 +393,7 @@
         data-i18n="bienvenida_subtitulo">Atlas y Diario de Exploración Territorial de Tierra del Fuego</p>
 
       <!-- Formulario de Ingreso -->
-      <form id="form-bienvenida" class="relative z-10 w-full space-y-4">
+      <form id="form-bienvenida" class="relative z-30 pointer-events-auto w-full space-y-4">
         <div class="text-left">
           <label for="input-nombre-explorador"
             class="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1"
@@ -401,9 +401,9 @@
             Nombre del Expedicionario / Exploradora
           </label>
           <input type="text" id="input-nombre-explorador" placeholder="Tu nombre de explorador" required
-            autocomplete="off" enterkeyhint="go"
+            autofocus autocomplete="off" enterkeyhint="go"
             style="background-color: #171717 !important; border: 1px solid #262626 !important; color: #ffffff !important;"
-            class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
+            class="relative z-30 pointer-events-auto w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" />
         </div>
         <button type="submit" id="btn-ingresar-app"
           class="w-full bg-amber-600 hover:bg-amber-500 active:scale-95 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">

@@ -513,6 +513,8 @@ function inicializarMapa() {
 
     // Control de zoom
     L.control.zoom({ position: "bottomleft" }).addTo(mapa);
+    window.map = mapa;
+    window.mapa = mapa;
 
     // Cartografía base estándar abierta de OpenStreetMap
     capaBaseEstandar = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -2962,9 +2964,8 @@ function renderizarGraficosObservatorio() {
     });
 }
 
-// Helper global para centrar el mapa desde accesos directos del Observatorio
-function centrarEnSitio(clave) {
-    // 1. Cerrar inmediatamente la vista a pantalla completa del Observatorio y cualquier overlay
+// 1. Cerrar la vista de pantalla completa del Observatorio y volver al mapa interactivo
+function cerrarObservatorioYVolverAlMapa() {
     const vistaObsFull = document.getElementById("vista-observatorio-full");
     if (vistaObsFull) {
         vistaObsFull.classList.add("hidden");
@@ -2977,65 +2978,137 @@ function centrarEnSitio(clave) {
         cerrarDetalleHitoCompleto();
     }
 
-    // 2. Cambiar la pestaña lateral a "explorar" para ver el mapa y los hitos
     if (typeof cambiarPestanaSidebar === "function") {
         cambiarPestanaSidebar("explorar");
     }
 
-    if (!Array.isArray(listaHitos) || listaHitos.length === 0) return;
+    setTimeout(() => {
+        const m = window.map || window.mapa || mapa;
+        if (m) m.invalidateSize();
+    }, 150);
+}
+window.cerrarObservatorioYVolverAlMapa = cerrarObservatorioYVolverAlMapa;
 
-    const aliasMap = {
-        "laguna-esmeralda": ["ush-04", "tol-02", "laguna esmeralda"],
-        "glaciar-vinciguerra": ["ush-02", "vinciguerra"]
-    };
-    const terminos = aliasMap[clave] || [String(clave || "").toLowerCase()];
+// 2. Navegar y activar alerta SAR de Turbal Valle Tierra Mayor
+function navegarATurbalObservatorio() {
+    cerrarObservatorioYVolverAlMapa();
 
-    let hito = null;
-    for (const term of terminos) {
-        hito = listaHitos.find(h =>
-            (h.id && h.id.toLowerCase() === term) ||
-            (h.nombre && h.nombre.toLowerCase().includes(term))
-        );
-        if (hito) break;
-    }
+    setTimeout(() => {
+        const m = window.map || window.mapa || mapa;
+        if (m) {
+            m.invalidateSize();
+            m.flyTo([-54.68, -67.75], 11, {
+                animate: true,
+                duration: 1.2
+            });
 
-    if (hito) {
-        seleccionarHito(hito, true, true, false);
-
-        if (mapa && hito.coordenadas) {
-            setTimeout(() => {
-                mapa.invalidateSize();
-                mapa.flyTo(hito.coordenadas, 13, {
-                    animate: true,
-                    duration: 1.0
-                });
-                const marcador = marcadoresPorId && marcadoresPorId[hito.id];
-                if (marcador) {
-                    marcador.openPopup();
+            // Activar capa y alerta SAR si corresponde
+            if (capaAlertasSAR) {
+                if (!m.hasLayer(capaAlertasSAR)) {
+                    m.addLayer(capaAlertasSAR);
+                    alertasSARVisibles = true;
+                    const btnSAR = document.getElementById("btn-capa-alertas-sar");
+                    if (btnSAR) {
+                        btnSAR.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
+                    }
                 }
-            }, 100);
+
+                // Abrir popup de Turbal Valle Tierra Mayor
+                let popupAbierto = false;
+                capaAlertasSAR.eachLayer(layer => {
+                    const props = layer.feature && layer.feature.properties;
+                    if (props && (props.id === "turbal_tierra_mayor" || props.nombre?.includes("Tierra Mayor"))) {
+                        layer.openPopup();
+                        popupAbierto = true;
+                    }
+                });
+
+                if (!popupAbierto && typeof mostrarModalBloqueoPorNombre === "function") {
+                    mostrarModalBloqueoPorNombre("Turbal Valle Tierra Mayor");
+                }
+            } else if (typeof mostrarModalBloqueoPorNombre === "function") {
+                mostrarModalBloqueoPorNombre("Turbal Valle Tierra Mayor");
+            }
         }
+    }, 150);
+}
+window.navegarATurbalObservatorio = navegarATurbalObservatorio;
+
+// 3. Navegar y abrir ficha territorial de Glaciar Vinciguerra ("ush-02")
+function navegarAGlaciarObservatorio() {
+    cerrarObservatorioYVolverAlMapa();
+
+    setTimeout(() => {
+        const m = window.map || window.mapa || mapa;
+        if (m) {
+            m.invalidateSize();
+            m.flyTo([-54.765, -68.345], 13, {
+                animate: true,
+                duration: 1.2
+            });
+
+            // Abrir directamente la ficha territorial del hito del Glaciar Vinciguerra
+            if (typeof abrirDetalleHito === "function") {
+                abrirDetalleHito("ush-02");
+            } else if (typeof seleccionarHito === "function") {
+                const hito = Array.isArray(listaHitos) ? listaHitos.find(h => h.id === "ush-02") : null;
+                if (hito) seleccionarHito(hito, false, true, true);
+            }
+            const marcador = marcadoresPorId && marcadoresPorId["ush-02"];
+            if (marcador) {
+                marcador.openPopup();
+            }
+        }
+    }, 150);
+}
+window.navegarAGlaciarObservatorio = navegarAGlaciarObservatorio;
+
+// Helper global para centrar el mapa desde accesos directos del Observatorio
+function centrarEnSitio(clave) {
+    if (clave === "laguna-esmeralda" || String(clave || "").includes("turbal")) {
+        navegarATurbalObservatorio();
+    } else if (clave === "glaciar-vinciguerra" || String(clave || "").includes("glaciar")) {
+        navegarAGlaciarObservatorio();
+    } else {
+        cerrarObservatorioYVolverAlMapa();
+        setTimeout(() => {
+            const hito = Array.isArray(listaHitos) ? listaHitos.find(h => h.id === clave || h.nombre?.toLowerCase().includes(clave)) : null;
+            if (hito && typeof seleccionarHito === "function") {
+                seleccionarHito(hito, true, true, false);
+            }
+        }, 150);
     }
 }
 window.centrarEnSitio = centrarEnSitio;
 
-// Helper global para desplegar/ocultar la ficha de transparencia metodológica
-function toggleMetodoObservatorio(targetId, btnEl) {
-    const caja = document.getElementById(targetId);
-    if (!caja) return;
+// Helper para alternar la ficha metodológica y de transparencia
+function togglePanelMetodo(btnEl) {
+    if (!btnEl) return;
+    const card = btnEl.closest(".tarjeta-observatorio") || btnEl.closest("[data-metrica]") || btnEl.parentElement?.parentElement;
+    const panel = (card && card.querySelector(".panel-metodo")) || 
+                  document.getElementById(btnEl.getAttribute("data-target")) ||
+                  btnEl.parentElement?.parentElement?.querySelector(".panel-metodo");
+    if (!panel) return;
 
-    const dataReal = obtenerDatosObservatorioActivos();
-    const esIngles = idiomaActual === "en";
-    const esTurbal = targetId.includes("turbal");
+    const dataReal = (typeof obtenerDatosObservatorioActivos === "function") 
+        ? obtenerDatosObservatorioActivos() 
+        : (window.datosObservatorio || {});
+    const esTurbal = (panel.id && panel.id.includes("turbal")) || 
+                     (card && card.getAttribute("data-metrica") === "turbales") ||
+                     (btnEl.getAttribute("data-target")?.includes("turbal"));
     const info = esTurbal ? (dataReal.turbales || {}) : (dataReal.glaciar || {});
+    const esIngles = typeof idiomaActual !== "undefined" && idiomaActual === "en";
 
-    if (caja.classList.contains("hidden")) {
+    const estabaOculto = panel.classList.contains("hidden");
+    panel.classList.toggle("hidden");
+
+    if (estabaOculto) {
         const tipoDato = info.tipo_dato || "ilustrativo_prototipo";
         const fuente = info.fuente_referencia || "Modelado sobre tendencias regionales reportadas por CADIC-CONICET / IDETDF (serie ilustrativa de prototipo)";
         const metodo = info.metodo_proyeccion || "Extrapolación lineal simple (2015–2024)";
         const fecha = info.ultima_actualizacion || "2026-11-17";
 
-        caja.innerHTML = `
+        panel.innerHTML = `
             <div class="flex items-center justify-between font-bold text-slate-800 pb-1 border-b border-slate-200">
                 <span class="flex items-center gap-1.5">📋 <span>${esIngles ? "Methodological Metadata" : "Ficha Metodológica y Transparencia"}</span></span>
                 <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">${tipoDato}</span>
@@ -3044,16 +3117,46 @@ function toggleMetodoObservatorio(targetId, btnEl) {
             <p><strong>${esIngles ? "Projection method:" : "Método de proyección:"}</strong> ${metodo}</p>
             <p class="text-[10px] text-slate-500 pt-0.5"><strong>${esIngles ? "Last updated:" : "Última actualización:"}</strong> ${fecha}</p>
         `;
-        caja.classList.remove("hidden");
-        const btn = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
-        if (btn) btn.innerHTML = esIngles ? "✕ Hide source & method" : "✕ Ocultar fuente y método";
+        btnEl.textContent = esIngles ? "🔼 Hide source & method" : "🔼 Ocultar fuente y método";
     } else {
-        caja.classList.add("hidden");
-        const btn = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
-        if (btn) btn.innerHTML = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
+        btnEl.textContent = esIngles ? "ℹ️ View source & method" : "ℹ️ Ver fuente y método";
     }
 }
-window.toggleMetodoObservatorio = toggleMetodoObservatorio;
+window.togglePanelMetodo = togglePanelMetodo;
+window.toggleMetodoObservatorio = function(targetId, btnEl) {
+    const el = btnEl || document.querySelector(`.btn-toggle-metodo[data-target="${targetId}"]`);
+    togglePanelMetodo(el);
+};
+
+// Delegación de eventos global para el Observatorio y controles territoriales
+document.addEventListener("click", (e) => {
+    // 1. Delegación para botón "ℹ️ Ver fuente y método"
+    const btnToggle = e.target.closest(".btn-toggle-metodo");
+    if (btnToggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        togglePanelMetodo(btnToggle);
+        return;
+    }
+
+    // 2. Delegación para botón "Ver turbal en mapa →"
+    const btnTurbal = e.target.closest("#btn-obs-ir-turbal, .btn-ir-turbal");
+    if (btnTurbal) {
+        e.preventDefault();
+        e.stopPropagation();
+        navegarATurbalObservatorio();
+        return;
+    }
+
+    // 3. Delegación para botón "Ver glaciar en mapa →"
+    const btnGlaciar = e.target.closest("#btn-obs-ir-vinciguerra, .btn-ir-glaciar");
+    if (btnGlaciar) {
+        e.preventDefault();
+        e.stopPropagation();
+        navegarAGlaciarObservatorio();
+        return;
+    }
+});
 
 function configurarObservatorio() {
     const btnNarrarObs = document.getElementById("btn-narrar-observatorio");
@@ -3092,8 +3195,7 @@ function configurarObservatorio() {
     // Configuración de botones "Ver fuente y método"
     document.querySelectorAll(".btn-toggle-metodo").forEach(btn => {
         btn.addEventListener("click", () => {
-            const targetId = btn.getAttribute("data-target");
-            toggleMetodoObservatorio(targetId, btn);
+            togglePanelMetodo(btn);
         });
     });
 }

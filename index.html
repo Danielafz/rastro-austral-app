@@ -62,7 +62,7 @@
       </div>
 
       <!-- Controles de Accesibilidad en Pantalla de Bienvenida (Idioma + Tema) -->
-      <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10">
+      <div class="absolute top-4 left-4 flex items-center gap-1.5 z-40">
         <!-- Conmutador de Idioma en Bienvenida -->
         <div class="flex items-center bg-neutral-900 rounded-xl p-1 border border-neutral-800 text-xs shadow-sm">
           <button type="button" id="btn-bienvenida-lang-es"
@@ -74,10 +74,10 @@
 
       <!-- Contenedor del Pingüino Rey Fueguino con halo, burbuja de diálogo e interactividad -->
       <div id="contenedor-pinguino-bienvenida"
-        class="w-56 h-60 sm:w-64 sm:h-72 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
+        class="w-56 h-60 sm:w-64 sm:h-72 pt-6 relative z-10 flex items-center justify-center mb-2 sm:mb-3 select-none perspective-1000 overflow-visible">
         <!-- Globito de diálogo interactivo (oculto por defecto) -->
         <div id="burbuja-dialogo" role="status" aria-live="polite"
-          class="absolute -top-3 -right-2 sm:-right-4 z-30 text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg">
+          class="absolute top-2 right-0 sm:-right-2 z-30 whitespace-nowrap text-xs md:text-sm px-3 py-1.5 bg-neutral-900/90 border border-orange-500/50 text-orange-400 shadow-lg">
         </div>
 
         <!-- Destello / Resplandor cálido de la antorcha al encender el mapa -->

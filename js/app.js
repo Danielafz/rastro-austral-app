@@ -561,19 +561,11 @@ function inicializarMapa() {
             showCoverageOnHover: false,
             iconCreateFunction: function(cluster) {
                 const count = cluster.getChildCount();
-                let dimension = 36;
-                if (count >= 10) dimension = 40;
-                if (count >= 50) dimension = 44;
-
                 return L.divIcon({
-                    html: `
-                        <div class="rastro-cluster-icon" style="width: ${dimension}px; height: ${dimension}px; font-size: ${count >= 100 ? '11px' : '13px'};">
-                            ${count}
-                        </div>
-                    `,
-                    className: "rastro-cluster-wrapper",
-                    iconSize: [dimension, dimension],
-                    iconAnchor: [dimension / 2, dimension / 2]
+                    html: `<div class="flex items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-amber-600 border-2 border-white text-white font-extrabold text-[12px] shadow-md" style="width: 32px; height: 32px;">${count}</div>`,
+                    className: 'cluster-personalizado bg-transparent border-none',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
                 });
             }
         }).addTo(mapa);
@@ -772,51 +764,41 @@ function renderizarMarcadores(anunciarResultados = false) {
         const colorPin = visitado ? '#10b981' : colorBase;
         const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
 
-        // Ícono vectorial minimalista según categoría (14x14px, stroke-width="2.2")
+        // Ícono vectorial minimalista según categoría (14x14px, stroke="currentColor" stroke-width="2.5")
         let iconoCategoriaSVG = "";
         if (hito.categoria === "senderos") {
             // Cumbre doble / montañas
-            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`;
+            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`;
         } else if (hito.categoria === "economia_creativa") {
-            // Estrella / destello artesanal
-            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"></path></svg>`;
+            // Estrella
+            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"></path></svg>`;
         } else {
-            // Patrimonio (por defecto): Brújula
-            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>`;
+            // Patrimonio (por defecto): Monumento / Columna
+            iconoCategoriaSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="20" y2="21"></line><line x1="6" y1="4" x2="18" y2="4"></line><line x1="8" y1="4" x2="8" y2="21"></line><line x1="16" y1="4" x2="16" y2="21"></line><polygon points="12 2 4 4 20 4 12 2"></polygon></svg>`;
         }
 
         // Halo animado detrás del pin cuando está seleccionado
         const haloSeleccionado = seleccionado
-            ? `<div class="absolute w-8 h-8 rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>
-               <div class="absolute w-8 h-8 rounded-full opacity-25 blur-[2px]" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
+            ? `<div class="absolute w-8 h-8 rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
             : "";
 
         const icono = L.divIcon({
-            className: `marcador-hito cursor-pointer ${seleccionado ? 'marcador-seleccionado' : ''}`,
+            className: `marcador-hito cursor-pointer ${seleccionado ? 'marcador-seleccionado scale-110' : ''}`,
             html: `
-        <div class="relative flex items-center justify-center transform hover:scale-125 transition-all duration-200 ${seleccionado ? 'scale-125' : ''}" style="width: 32px; height: 38px;">
-          <!-- Halo radial animado para hito activo -->
+        <div class="relative flex items-center justify-center transform hover:scale-110 transition-all duration-200" style="width: 32px; height: 40px;">
           ${haloSeleccionado}
-
-          <!-- Pin del Mapa (Globo portador con fondo interior blanco) -->
-          <svg class="absolute drop-shadow-md z-[1]" width="32" height="38" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 0C7.16 0 0 7.16 0 16C0 26.5 16 38 16 38C16 38 32 26.5 32 16C32 7.16 24.84 0 16 0Z" fill="${colorPin}" />
-            <path d="M16 2.5C8.54 2.5 2.5 8.54 2.5 16C2.5 24.5 16 33.5 16 33.5C16 33.5 29.5 24.5 29.5 16C29.5 8.54 23.46 2.5 16 2.5Z" fill="#ffffff" />
+          <svg class="absolute drop-shadow-md" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 0C7.16344 0 0 7.16344 0 16C0 27.5 16 40 16 40C16 40 32 27.5 32 16C32 7.16344 24.8366 0 16 0Z" fill="${colorPin}" />
+            <circle cx="16" cy="15" r="10" fill="white" />
           </svg>
-          
-          <!-- Ícono temático de categoría -->
-          ${iconoCategoriaSVG}
-
-          <!-- Pequeño check vibrante si ya está visitado -->
-          ${visitado ? `
-            <div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border border-slate-900 animate-bounce" style="width: 12px; height: 12px; font-size: 8px; font-weight: bold;">
-              ✓
-            </div>
-          ` : ''}
+          <div class="absolute z-10 flex items-center justify-center" style="top: 7px; color: ${colorPin};">
+            ${iconoCategoriaSVG}
+          </div>
+          ${visitado ? `<div class="absolute z-20 -top-1 -right-1 bg-emerald-500 text-white rounded-full flex items-center justify-center border-2 border-white w-4 h-4 text-[9px] font-bold">✓</div>` : ''}
         </div>
       `,
-            iconSize: [32, 38],
-            iconAnchor: [16, 38]
+            iconSize: [32, 40],
+            iconAnchor: [16, 40]
         });
 
         const descripcionAlt = `${nombre}, ${hito.localidad}, ${visitado ? (idiomaActual === 'en' ? 'recorded' : 'registrado') : (idiomaActual === 'en' ? 'to explore' : 'por explorar')}`;

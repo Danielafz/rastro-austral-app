@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v57'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v58'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const urlsToCache = [
   './',
   './index.html',

@@ -441,29 +441,29 @@ const SALAS_MUSEO = [
             en: "Room 6: Falkland / Malvinas Islands"
         },
         subtitulo: {
-            es: "Historia, memoria del Atlántico Sur, soberanía y geografía austral",
-            en: "History, South Atlantic memory, sovereignty & southern geography"
+            es: "Historia, soberanía y memoria permanente del Atlántico Sur",
+            en: "History, sovereignty & enduring South Atlantic memory"
         },
         descripcionCorta: {
-            es: "Cartografía virreinal, Puerto Soledad, memoria permanente de Malvinas y santuario natural del archipiélago.",
-            en: "Viceroyalty cartography, Puerto Soledad, enduring Malvinas memory, and southern island sanctuary."
+            es: "Cartografía virreinal, Puerto Soledad, la resistencia de 1833 y el homenaje a los héroes de 1982.",
+            en: "Colonial cartography, Puerto Soledad, 1833 resistance, and tribute to 1982 heroes."
         },
-        icono: "🌊",
+        icono: "🇦🇷",
         obras: [
             {
                 id: "malvinas-01",
                 titulo: {
-                    es: "Comandancia Política y Militar de Malvinas",
-                    en: "Political and Military Command of Malvinas"
+                    es: "Cartografía Histórica del Atlántico Sur",
+                    en: "Historical Cartography of the South Atlantic"
                 },
-                anio: "1829",
+                anio: "1764 - 1820",
                 lugar: {
-                    es: "Puerto Soledad, Isla Soledad",
-                    en: "Puerto Soledad, East Falkland"
+                    es: "Archipiélago de las Islas Malvinas",
+                    en: "Falkland / Malvinas Islands Archipelago"
                 },
                 descripcion: {
-                    es: "El 10 de junio de 1829, el gobierno de Buenos Aires dictó el histórico decreto que creó la Comandancia Política y Militar de las Islas Malvinas y adyacentes al Cabo de Hornos en el mar Atlántico, designando a Luis Vernet como primer comandante. Desde Puerto Soledad se consolidó la administración civil y ganadera argentina, regulando la pesca de cetáceos y la cría de ganado criollo.",
-                    en: "On June 10, 1829, the government of Buenos Aires created the Political and Military Command of the Malvinas Islands and waters adjacent to Cape Horn, appointing Luis Vernet as its governor. From Puerto Soledad, Argentine civic, fisheries, and pastoral administration was established across the South Atlantic."
+                    es: "Primeros mapas y registros cartográficos históricos del archipiélago austroamericano. La cartografía colonial y virreinal atestigua la presencia y soberanía territorial sobre las islas desde la fundación de Puerto Soledad y la toma de posesión formal por David Jewett en 1820 en nombre de las Provincias Unidas del Río de la Plata.",
+                    en: "Early historical maps and cartographic registers of the southern archipelago. Colonial and republican charts document the territorial administration and the formal act of sovereignty conducted by David Jewett in 1820 on behalf of the United Provinces of the Río de la Plata."
                 },
                 credito: "Mapoteca Histórica del Archivo General de la Nación (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Puerto_Soledad%2C_Malvinas%2C_1785.jpg",
@@ -475,8 +475,52 @@ const SALAS_MUSEO = [
             {
                 id: "malvinas-02",
                 titulo: {
-                    es: "Memoria del Conflicto del Atlántico Sur",
-                    en: "Memory of the South Atlantic Conflict"
+                    es: "Comandancia Política y Militar de Malvinas",
+                    en: "Political and Military Command of Malvinas"
+                },
+                anio: "1829",
+                lugar: {
+                    es: "Puerto Soledad, Isla Soledad",
+                    en: "Puerto Soledad, East Falkland"
+                },
+                descripcion: {
+                    es: "El 10 de junio de 1829, el gobierno de Buenos Aires creó por decreto la Comandancia Política y Militar de las Islas Malvinas y adyacentes al Cabo de Hornos, designando a Luis Vernet como gobernador. Desde Puerto Soledad se ejerció la administración de justicia, regulación pesquera y fomento de la cría de ganado criollo.",
+                    en: "On June 10, 1829, the government of Buenos Aires created by decree the Political and Military Command of the Malvinas Islands and adjacent waters to Cape Horn, naming Luis Vernet as governor to administer civil law, fisheries, and pastoral development."
+                },
+                credito: "Retrato Histórico de Luis Vernet / Archivo General de la Nación (Dominio Público)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Vernet_Luis_Portrait.jpg",
+                hitoRelacionado: {
+                    es: "Monumento a los Pioneros Fueguinos",
+                    en: "Fuegian Pioneers Monument"
+                }
+            },
+            {
+                id: "malvinas-03",
+                titulo: {
+                    es: "Resistencia de 1833 y el Gaucho Antonio Rivero",
+                    en: "1833 Resistance & Gaucho Antonio Rivero"
+                },
+                anio: "1833",
+                lugar: {
+                    es: "Puerto Luis / Puerto Soledad, Isla Soledad",
+                    en: "Port Louis / Puerto Soledad, East Falkland"
+                },
+                descripcion: {
+                    es: "Tras la ocupación forzada británica de enero de 1833, el gaucho entrerriano Antonio Rivero encabezó el 26 de agosto una rebelión criolla en Puerto Soledad junto a un grupo de peones y gauchos, izando el pabellón argentino y resistiendo el despojo colonial en defensa de los derechos soberanos sobre las islas.",
+                    en: "Following the forcible British occupation of January 1833, Argentine gaucho Antonio Rivero led a rebellion on August 26 in Puerto Soledad alongside fellow gauchos and workers, raising the Argentine flag and resisting colonial dispossession in defense of sovereign rights."
+                },
+                credito: "Pintura Histórica del Gaucho Rivero / Colección del Museo Malvinas (Dominio Público)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/7/75/Gaucho_Rivero_pintura.jpg",
+                hitoRelacionado: {
+                    es: "Monumento a los Héroes de Malvinas (Río Grande)",
+                    en: "Malvinas Heroes Monument (Río Grande)"
+                }
+            },
+            {
+                id: "malvinas-04",
+                titulo: {
+                    es: "Conflicto del Atlántico Sur",
+                    en: "South Atlantic Conflict"
                 },
                 anio: "1982",
                 lugar: {
@@ -484,8 +528,8 @@ const SALAS_MUSEO = [
                     en: "Tierra del Fuego & South Atlantic"
                 },
                 descripcion: {
-                    es: "Tierra del Fuego cumplió un papel estratégico vital en el conflicto de 1982 como plataforma operativa austral, puente aeronaval y retaguardia de abastecimiento. La provincia mantiene un compromiso inquebrantable de memoria, homenaje y gratitud permanente hacia los 649 combatientes caídos y veteranos de guerra que defendieron la soberanía argentina en el archipiélago malvinense.",
-                    en: "Tierra del Fuego played a vital operational and logistical role during the 1982 South Atlantic conflict as the southern maritime and air staging territory. The province honors an enduring pledge of remembrance and gratitude to the 649 fallen heroes and veterans who defended Argentine sovereignty in the islands."
+                    es: "El archipiélago malvinense y el Atlántico Sur fueron escenario de la gesta de 1982. Tierra del Fuego cumplió un papel estratégico vital como plataforma aeronaval y logística. La provincia mantiene el homenaje constante a los combatientes y veteranos que defendieron con honor la soberanía territorial.",
+                    en: "The Malvinas archipelago and South Atlantic waters were the scene of the 1982 conflict. Tierra del Fuego fulfilled a crucial operational role as an air-naval base and staging territory, preserving an enduring tribute to all veterans and fallen combatants."
                 },
                 credito: "Mural Escultórico Héroes de Malvinas / Archivo Histórico Provincial (Dominio Público)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Mural_escult%C3%B3rico_H%C3%A9roes_de_Malvinas_II.jpg",
@@ -495,7 +539,7 @@ const SALAS_MUSEO = [
                 }
             },
             {
-                id: "malvinas-03",
+                id: "malvinas-05",
                 titulo: {
                     es: "Plaza Islas Malvinas y Monumento a los Caídos en Ushuaia",
                     en: "Islas Malvinas Square & Fallen Soldiers Memorial in Ushuaia"
@@ -506,8 +550,8 @@ const SALAS_MUSEO = [
                     en: "Ushuaia Waterfront, Beagle Channel"
                 },
                 descripcion: {
-                    es: "Emblemático espacio de homenaje y memoria ciudadana ubicado sobre la avenida Maipú frente al Canal Beagle. Alberga el Monumento Nacional a los Caídos en Malvinas con su silueta recortada en metal, el cenotafio que inscribe los nombres de los 649 héroes argentinos caídos en 1982 y la llama votiva eterna que arde sin extinguirse frente a las aguas australes.",
-                    en: "Iconic commemorative site facing the Beagle Channel on Ushuaia's shoreline. It holds the National Fallen Soldiers Memorial featuring a cut-out steel silhouette of the archipelago, the cenotaph engraved with the 649 names of Argentine heroes fallen in 1982, and an eternal flame burning perpetually."
+                    es: "Emblemático espacio de memoria y soberanía sobre la costanera de Ushuaia frente al Canal Beagle. Alberga el Monumento Nacional a los Caídos, el cenotafio con los nombres de los 649 héroes argentinos que dieron su vida en 1982 y la llama votiva eterna que arde de forma perpetua.",
+                    en: "Iconic commemorative site on Ushuaia's shoreline facing the Beagle Channel. It features the National Fallen Soldiers Memorial, the cenotaph inscribed with the 649 names of Argentine heroes fallen in 1982, and an eternal flame burning perpetually."
                 },
                 credito: "Plaza Islas Malvinas, Ushuaia / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Plaza_Islas_Malvinas%2C_Ushuaia.jpg",
@@ -515,71 +559,260 @@ const SALAS_MUSEO = [
                     es: "Plaza Islas Malvinas (Ushuaia)",
                     en: "Plaza Islas Malvinas (Ushuaia)"
                 }
-            },
+            }
+        ]
+    },
+    {
+        id: "sala-7",
+        numero: 7,
+        titulo: {
+            es: "Sala 7: Flora Fueguina y Bosques Subantárticos",
+            en: "Room 7: Fuegian Flora & Subantarctic Forests"
+        },
+        subtitulo: {
+            es: "Lenga, ñire, guindo, sotobosque de calafate y praderas de cachiyuyo",
+            en: "Lenga, ñire, Magellan's beech, calafate shrub and giant kelp forests"
+        },
+        descripcionCorta: {
+            es: "El bosque caducifolio más austral del mundo y las praderas submarinas del Canal Beagle.",
+            en: "The southernmost deciduous forest on Earth and Beagle Channel's kelp beds."
+        },
+        icono: "🌿",
+        obras: [
             {
-                id: "malvinas-04",
+                id: "flora-01",
                 titulo: {
-                    es: "Ríos de Piedra y Geografía del Archipiélago",
-                    en: "Stone Runs & Archipelago Geography"
+                    es: "Bosques de Lenga, Guindo y Ñire",
+                    en: "Lenga, Guindo & Ñire Subantarctic Forests"
                 },
-                anio: "Formación Cuaternaria",
+                anio: "Vegetación Autóctona",
                 lugar: {
-                    es: "Isla Soledad y Gran Malvina",
-                    en: "East & West Falkland"
+                    es: "Parque Nacional Tierra del Fuego",
+                    en: "Tierra del Fuego National Park"
                 },
                 descripcion: {
-                    es: "Los 'ríos de piedra' (stone runs) constituyen una de las formaciones periglaciares más singulares del planeta, observada y descrita con fascinación por Charles Darwin en 1833 durante su viaje a bordo del HMS Beagle. Bloques colosales de cuarcita fluyen lentamente por valles glaciarios entre colinas de turba, brezo y pastizales subantárticos similares a los fueguinos.",
-                    en: "The 'stone runs' are among the most striking periglacial geological formations on Earth, described with awe by Charles Darwin in 1833 during his voyage on HMS Beagle. Massive quartzite boulders cascade through glacial valleys across moorlands and peat tussacs akin to the Fuegian steppes."
+                    es: "Los bosques andino-patagónicos de Nothofagus pumilio (lenga), Nothofagus betuloides (guindo) y Nothofagus antarctica (ñire) forman la masa forestal caducifolia más austral del planeta. En otoño tiñen las laderas de los Andes fueguinos de intensos tonos escarlata, ocre y dorado.",
+                    en: "The Fuegian subantarctic forests of Nothofagus pumilio (lenga), Nothofagus betuloides (Magellan's beech), and Nothofagus antarctica (ñire) represent the southernmost deciduous forest on Earth, turning mountain slopes into breathtaking scarlet and gold during autumn."
                 },
-                credito: "East Falkland Stone Run / Wikimedia Commons (CC BY-SA)",
+                credito: "Bosque de Lenga / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c4/TDFNPLengaForest.jpg",
+                hitoRelacionado: {
+                    es: "Parque Nacional Tierra del Fuego",
+                    en: "Tierra del Fuego National Park"
+                }
+            },
+            {
+                id: "flora-02",
+                titulo: {
+                    es: "El Calafate y Sotobosque Patagónico",
+                    en: "Calafate & Patagonian Understory"
+                },
+                anio: "Flora Silvestre Fueguina",
+                lugar: {
+                    es: "Estepa y Bosques Fueguinos",
+                    en: "Fuegian Steppe & Forests"
+                },
+                descripcion: {
+                    es: "El calafate (Berberis microphylla) es el arbusto espinoso símbolo de la Patagonia austral. Sus bayas de color azul oscuro, ricas en antioxidantes, fueron alimento esencial de los pueblos Selk'nam y Yámana. La tradición popular sostiene que 'quien come calafate, siempre regresa a la Tierra del Fuego'.",
+                    en: "The calafate (Berberis microphylla) is an iconic thorny shrub of southern Patagonia. Its antioxidant-rich dark blue berries were vital food for the Selk'nam and Yámana peoples. Local folklore says that whoever eats a calafate berry will inevitably return to Tierra del Fuego."
+                },
+                credito: "Calafate en fruto / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Calafate_%28Berberis_Microphylla%29.JPG",
+                hitoRelacionado: {
+                    es: "Sendero de la Costa y Bahía Lapataia",
+                    en: "Coastal Trail & Lapataia Bay"
+                }
+            },
+            {
+                id: "flora-03",
+                titulo: {
+                    es: "Bosques Submarinos de Cachiyuyo",
+                    en: "Giant Kelp Subsea Forests"
+                },
+                anio: "Ecosistema Marino Austral",
+                lugar: {
+                    es: "Canal Beagle y Costas del Atlántico Sur",
+                    en: "Beagle Channel & South Atlantic Coasts"
+                },
+                descripcion: {
+                    es: "Las algas gigantes de cachiyuyo (Macrocystis pyrifera) forman densas selvas submarinas de hasta 30 metros de altura en las aguas gélidas del Canal Beagle. Amortiguan el oleaje oceánico, absorben enormes volúmenes de dióxido de carbono y constituyen la guardería vital de centollas, caracoles, erizos y peces australes.",
+                    en: "Giant kelp (Macrocystis pyrifera) groves form towering underwater forests up to 30 meters high in the frigid waters of Beagle Channel. They buffer ocean swell, capture substantial carbon, and serve as nursery habitat for king crabs, sea urchins, and subantarctic fish."
+                },
+                credito: "Bosque de Macrocystis pyrifera en Canal Beagle / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Macrocystis_pyrifera_Canal_Beagle.jpg",
+                hitoRelacionado: {
+                    es: "Faro Les Éclaireurs y Canal Beagle",
+                    en: "Les Éclaireurs Lighthouse & Beagle Channel"
+                }
+            }
+        ]
+    },
+    {
+        id: "sala-8",
+        numero: 8,
+        titulo: {
+            es: "Sala 8: Fauna Austral y Santuario Marino",
+            en: "Room 8: Southern Wildlife & Marine Sanctuary"
+        },
+        subtitulo: {
+            es: "Pingüinos rey, guanacos de la estepa, lobos marinos y aves del Beagle",
+            en: "King penguins, steppe guanacos, sea lions and Beagle seabirds"
+        },
+        descripcionCorta: {
+            es: "La biodiversidad animal que habita las aguas gélidas y los llanos fueguinos.",
+            en: "Animal biodiversity thriving across Fuegian steppes and subantarctic waters."
+        },
+        icono: "🐧",
+        obras: [
+            {
+                id: "fauna-01",
+                titulo: {
+                    es: "Pingüinos Rey, Magallánicos y de Penacho Amarillo",
+                    en: "King, Magellanic & Rockhopper Penguins"
+                },
+                anio: "Fauna Silvestre Protegida",
+                lugar: {
+                    es: "Isla Martillo e Islas del Atlántico Sur",
+                    en: "Martillo Island & South Atlantic Islands"
+                },
+                descripcion: {
+                    es: "La colonia de Isla Martillo en el Canal Beagle es el único apostadero reproductivo accesible en territorio continental argentino de pingüinos de Magallanes (Spheniscus magellanicus), papúa (Pygoscelis papua) y ejemplares de pingüino rey (Aptenodytes patagonicus) y de penacho amarillo.",
+                    en: "Martillo Island in the Beagle Channel is the only accessible breeding colony in Argentine territory where Magellanic (Spheniscus magellanicus) and Gentoo (Pygoscelis papua) penguins nest alongside occasional king and rockhopper penguins."
+                },
+                credito: "Pingüino Rey en Isla Martillo / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Ping%C3%BCino_rey_en_Isla_Martillo.jpg",
+                hitoRelacionado: {
+                    es: "Isla Martillo - Pingüinera",
+                    en: "Martillo Island - Penguin Rookery"
+                }
+            },
+            {
+                id: "fauna-02",
+                titulo: {
+                    es: "Guanacos Fueguinos de la Estepa y el Bosque",
+                    en: "Fuegian Guanacos of Steppe & Forest"
+                },
+                anio: "Mamífero Autóctono Emblemático",
+                lugar: {
+                    es: "Estepa Norte y Cordillera Fueguina",
+                    en: "Northern Steppe & Fuegian Range"
+                },
+                descripcion: {
+                    es: "El guanaco (Lama guanicoe) es el mayor herbívoro nativo de la Isla Grande de Tierra del Fuego. Adaptado a inviernos rigurosos con pelaje denso y patas acolchadas que no erosionan los suelos frágiles, fue el pilar fundamental de la subsistencia del pueblo Selk'nam para abrigo, vivienda y alimento.",
+                    en: "The guanaco (Lama guanicoe) is the largest native herbivore of Tierra del Fuego. Adapted to severe subantarctic winters with insulating wool and soft-padded feet that preserve delicate soils, it was the cornerstone of Selk'nam culture for shelter, clothing, and sustenance."
+                },
+                credito: "Guanaco corriendo en Tierra del Fuego / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Running_Guanaco_Tierra_del_Fuego_Chile.jpg",
+                hitoRelacionado: {
+                    es: "Reserva Costa Atlántica (Río Grande)",
+                    en: "Atlantic Coastal Reserve (Río Grande)"
+                }
+            },
+            {
+                id: "fauna-03",
+                titulo: {
+                    es: "Lobos Marinos, Cormoranes y Albatros del Canal Beagle",
+                    en: "Sea Lions, Cormorants & Albatrosses of Beagle Channel"
+                },
+                anio: "Santuario Marino Austral",
+                lugar: {
+                    es: "Isla de los Lobos e Isla de los Pájaros, Canal Beagle",
+                    en: "Isla de los Lobos & Isla de los Pájaros, Beagle Channel"
+                },
+                descripcion: {
+                    es: "Los islotes rocosos del Canal Beagle albergan colonias densas de lobos marinos de un pelo (Otaria flavescens) y de dos pelos (Arctocephalus australis), junto a miles de cormoranes imperiales y de cuello negro. Sobre sus aguas planean majestuosos albatros de ceja negra procedentes del Océano Austral.",
+                    en: "Rocky islets across the Beagle Channel harbor breeding rookeries of South American sea lions (Otaria flavescens) and fur seals (Arctocephalus australis), alongside nesting imperial and rock cormorants, framed by soaring black-browed albatrosses."
+                },
+                credito: "Lobos Marinos en el Canal Beagle / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/0/09/Beagle_Channel_-_La_Isla_de_Los_Lobos.jpg",
+                hitoRelacionado: {
+                    es: "Faro Les Éclaireurs y Canal Beagle",
+                    en: "Les Éclaireurs Lighthouse & Beagle Channel"
+                }
+            }
+        ]
+    },
+    {
+        id: "sala-9",
+        numero: 9,
+        titulo: {
+            es: "Sala 9: Ecosistemas: Turbales, Glaciares y Relieve",
+            en: "Room 9: Ecosystems: Peatlands, Glaciers & Landforms"
+        },
+        subtitulo: {
+            es: "Turbales de Sphagnum, glaciares milenarios y ríos de piedra",
+            en: "Sphagnum peatlands, ancient glaciers and periglacial stone runs"
+        },
+        descripcionCorta: {
+            es: "Los reservorios hídricos, reguladores del clima y geoformas cuaternarias del confín austral.",
+            en: "Water reservoirs, climate stabilizers, and quaternary landforms of the southern tip."
+        },
+        icono: "🏔️",
+        obras: [
+            {
+                id: "ecosistema-01",
+                titulo: {
+                    es: "Turbales Milenarios de Musgo Sphagnum",
+                    en: "Ancient Sphagnum Peat Bogs"
+                },
+                anio: "Humedal Holoceno (10.000 Años)",
+                lugar: {
+                    es: "Valle de Andorra y Cuencas Fueguinas",
+                    en: "Andorra Valley & Fuegian Basins"
+                },
+                descripcion: {
+                    es: "Los turbales de musgo Sphagnum magellanicum cubren más de 2.700 km² en Tierra del Fuego, constituyendo el 95% de las turberas de Argentina. Actúan como gigantescas esponjas naturales que filtran y regulan el agua dulce hacia las ciudades y capturan carbono atmosférico a escala global.",
+                    en: "Sphagnum magellanicum peat bogs span over 2,700 km² across Tierra del Fuego, comprising 95% of Argentina's peatlands. They function as massive natural sponges regulating freshwater and storing exceptional amounts of terrestrial carbon."
+                },
+                credito: "Turbal en Valle de Andorra, Ushuaia / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Turbal_in_Valle_de_Andorra.jpg",
+                hitoRelacionado: {
+                    es: "Sitio Ramsar Glaciar Vinciguerra y Turbales de Andorra",
+                    en: "Vinciguerra Glacier & Andorra Peatlands Ramsar Site"
+                }
+            },
+            {
+                id: "ecosistema-02",
+                titulo: {
+                    es: "Glaciares Martial y Vinciguerra",
+                    en: "Martial & Vinciguerra Glaciers"
+                },
+                anio: "Relicto Glaciario Andino",
+                lugar: {
+                    es: "Cordillera Alvear y Montes Martial",
+                    en: "Alvear Range & Martial Mountains"
+                },
+                descripcion: {
+                    es: "Los glaciares de circo Martial y Vinciguerra coronan las cumbres que rodean a Ushuaia. Como fuentes primarias de agua de deshielo para consumo urbano y modeladores de lagunas glaciarias como la Laguna Esmeralda y Laguna del Caminante, son centinelas directos del cambio climático global en el extremo sur.",
+                    en: "Martial and Vinciguerra cirque glaciers crown the alpine ranges above Ushuaia. As critical headwaters supplying municipal drinking water and sculpting turquoise tarns like Laguna Esmeralda, they serve as vital barometers of global climate dynamics."
+                },
+                credito: "Glaciar Martial en Ushuaia / Wikimedia Commons (CC BY-SA)",
+                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Glaciar_Martial_Ushuaia.jpg",
+                hitoRelacionado: {
+                    es: "Glaciar Martial",
+                    en: "Glaciar Martial"
+                }
+            },
+            {
+                id: "ecosistema-03",
+                titulo: {
+                    es: "Ríos de Piedra (Stone Runs) y Relieve Periglaciar",
+                    en: "Stone Runs & Periglacial Landforms"
+                },
+                anio: "Geoforma Cuaternaria",
+                lugar: {
+                    es: "Extremo Austral e Islas Malvinas",
+                    en: "Southern Tip & Falkland / Malvinas Islands"
+                },
+                descripcion: {
+                    es: "Formaciones geológicas periglaciares originadas durante los ciclos de congelamiento y deshielo del Pleistoceno. Bloques angulares de cuarcita y roca dura forman verdaderas corrientes de roca estables que descienden por las laderas, hermanando el relieve de las Islas Malvinas con los cordones montañosos de Tierra del Fuego.",
+                    en: "Periglacial stone runs formed by intensive frost-shattering and solifluction during Pleistocene glacial cycles. Immense streams of quartzite boulders cascade across valley floors, linking the geomorphology of the Malvinas archipelago with Fuegian mountain chains."
+                },
+                credito: "Ríos de Piedra (Stone Run) / Wikimedia Commons (CC BY-SA)",
                 imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/East_Falkland_-_Stone_Run.jpg",
                 hitoRelacionado: {
                     es: "Reserva Geológica y Paleontológica Austral",
                     en: "Southern Geological & Paleontological Reserve"
-                }
-            },
-            {
-                id: "malvinas-05",
-                titulo: {
-                    es: "Puerto Argentino y Arquitectura Costera del Atlántico Sur",
-                    en: "Puerto Argentino & South Atlantic Coastal Architecture"
-                },
-                anio: "Siglo XX",
-                lugar: {
-                    es: "Puerto Argentino / Stanley, Isla Soledad",
-                    en: "Puerto Argentino / Stanley, East Falkland"
-                },
-                descripcion: {
-                    es: "Vista histórica del puerto natural protegido en Bahía de la Anunciación, con sus características construcciones de chapa acanalada, tejados de colores vivos y muelles de madera diseñados para soportar los vientos oceánicos del Atlántico Sur. Su historia marítima se entrelaza con naufragios, expediciones polares y la navegación de ultramar hacia el Cabo de Hornos.",
-                    en: "Historic view of the sheltered harbor featuring pioneer corrugated iron homes, vibrant roofs, and wooden jetties built to weather relentless South Atlantic gales. Its maritime history is woven with tall ships, Antarctic expeditions, and Cape Horn trade routes."
-                },
-                credito: "Archivo Histórico Oceánico y Meteorológico / NOAA (Dominio Público)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Port_Stanley_1961_-_NOAA_-_Corp1373.jpg",
-                hitoRelacionado: {
-                    es: "Puerto de Ushuaia y Patrimonio Marítimo",
-                    en: "Ushuaia Port & Maritime Heritage"
-                }
-            },
-            {
-                id: "malvinas-06",
-                titulo: {
-                    es: "Santuario de Aves Marinas y Pingüinos Australes",
-                    en: "Seabird Sanctuary & Southern Penguins"
-                },
-                anio: "Patrimonio Natural Vivo",
-                lugar: {
-                    es: "Punta Voluntario y Costas Australes",
-                    en: "Volunteer Point & Southern Coasts"
-                },
-                descripcion: {
-                    es: "El archipiélago malvinense alberga colonias multitudinarias de pingüinos rey (Aptenodytes patagonicus), magallánicos, papúa y de penacho amarillo, conviviendo con albatros de ceja negra y cormoranes. Este corredor biológico conecta directamente con el Banco Burdwood, la Isla de los Estados y el Canal Beagle, conformando uno de los ecosistemas marinos más ricos y protegidos del planeta.",
-                    en: "The archipelago hosts magnificent breeding colonies of king penguins, gentoo, magellanic, and rockhopper penguins, coexisting with black-browed albatrosses and cormorants. This oceanic biological corridor connects with Burdwood Bank, Isla de los Estados, and Beagle Channel into a vital marine sanctuary."
-                },
-                credito: "Colonia de Pingüinos Rey / Wikimedia Commons (CC BY-SA)",
-                imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Falkland_Islands_Penguins_49.jpg",
-                hitoRelacionado: {
-                    es: "Pingüinera de Isla Martillo (Canal Beagle)",
-                    en: "Martillo Island Penguin Rookery (Beagle Channel)"
                 }
             }
         ]

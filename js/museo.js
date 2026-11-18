@@ -53,6 +53,7 @@
             barraProgreso: document.getElementById("barra-progreso-museo"),
             btnSalasDrawer: document.getElementById("btn-abrir-menu-salas"),
             lblBtnSalas: document.getElementById("lbl-btn-salas-museo"),
+            badgeSalas: document.getElementById("badge-salas-museo") || document.querySelector("#btn-abrir-menu-salas span:last-child"),
             drawerSalas: document.getElementById("drawer-selector-salas"),
             tituloModalSalas: document.getElementById("titulo-modal-salas"),
             listaSalasDrawer: document.getElementById("lista-salas-selector"),
@@ -927,6 +928,9 @@
         // Botón Salas flotante
         if (dom.lblBtnSalas) {
             dom.lblBtnSalas.textContent = esEn ? "Rooms" : "Salas";
+        }
+        if (dom.badgeSalas) {
+            dom.badgeSalas.textContent = (window.SALAS_MUSEO || []).length || 9;
         }
 
         // Modal Salas título

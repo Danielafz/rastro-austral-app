@@ -2827,6 +2827,13 @@ function actualizarBadgesObservatorio() {
 function renderizarGraficosObservatorio() {
     if (typeof window.Chart !== "function") return;
 
+    // Registrar plugin de etiquetas sobre barras si está disponible
+    if (typeof window.ChartDataLabels !== "undefined" && typeof window.Chart?.register === "function") {
+        try {
+            window.Chart.register(window.ChartDataLabels);
+        } catch (_) {}
+    }
+
     const canvasTurbales = document.getElementById("chart-turbales");
     const canvasGlaciar = document.getElementById("chart-glaciar");
     if (!canvasTurbales || !canvasGlaciar) return;
@@ -2836,6 +2843,9 @@ function renderizarGraficosObservatorio() {
     const colorGrilla = esOscuro ? "rgba(148, 163, 184, 0.14)" : "rgba(100, 116, 139, 0.15)";
     const esIngles = idiomaActual === "en";
 
+    // Respeto de accesibilidad a preferencias de reducción de movimiento
+    const duracionAnimacion = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 0 : 1000;
+
     const dataReal = obtenerDatosObservatorioActivos();
     const anios = (dataReal.labels || []).map(lbl => {
         if (!esIngles) return lbl.replace("(Futuro)", "(est.)");
@@ -2843,7 +2853,6 @@ function renderizarGraficosObservatorio() {
     });
     const diasEstres = dataReal.turbales.dias_estres;
     const masaGlaciar = dataReal.glaciar.masa_remanente_pct;
-    const maxDias = Math.max(...diasEstres, 10);
 
     if (chartEstresTurbales) {
         chartEstresTurbales.destroy();
@@ -2854,7 +2863,39 @@ function renderizarGraficosObservatorio() {
         chartRetrocesoGlaciar = null;
     }
 
-    // Gráfico 1: Barras amigables de días secos por año en la gran esponja (datos reales IANIGLA / NASA POWER)
+    // Plugin Custom de Línea Divisoria entre Datos Observados (hasta 2024) y Proyección (desde 2027)
+    const pluginLineaDivisoria = {
+        id: "lineaDivisoriaObservadoProyeccion",
+        afterDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            if (!chartArea || !scales || !scales.x) return;
+            const x3 = scales.x.getPixelForTick(3); // 2024
+            const x4 = scales.x.getPixelForTick(4); // 2027
+            if (typeof x3 !== "number" || typeof x4 !== "number") return;
+            const xMid = (x3 + x4) / 2;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = esOscuro ? "rgba(148, 163, 184, 0.65)" : "rgba(100, 116, 139, 0.55)";
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(xMid, chartArea.top);
+            ctx.lineTo(xMid, chartArea.bottom);
+            ctx.stroke();
+
+            // Rótulos superiores "Observado" y "Proyección"
+            ctx.setLineDash([]);
+            ctx.font = "bold 9px sans-serif";
+            ctx.fillStyle = esOscuro ? "#94a3b8" : "#475569";
+            ctx.textAlign = "right";
+            ctx.fillText(esIngles ? "Observed" : "Observado", xMid - 6, chartArea.top + 10);
+            ctx.textAlign = "left";
+            ctx.fillText(esIngles ? "Projection" : "Proyección", xMid + 6, chartArea.top + 10);
+            ctx.restore();
+        }
+    };
+
+    // Gráfico 1: Barras de días secos por año en los turbales
     chartEstresTurbales = new window.Chart(canvasTurbales.getContext("2d"), {
         type: "bar",
         data: {
@@ -2870,8 +2911,15 @@ function renderizarGraficosObservatorio() {
                     "rgba(234, 88, 12, 0.30)",
                     "rgba(220, 38, 38, 0.30)"
                 ],
-                borderColor: "#d97706",
-                borderWidth: 1,
+                borderColor: [
+                    "#d97706",
+                    "#d97706",
+                    "#d97706",
+                    "#d97706",
+                    "#ea580c",
+                    "#dc2626"
+                ],
+                borderWidth: 1.5,
                 borderDash: [4, 4],
                 borderRadius: 6,
                 maxBarThickness: 32
@@ -2880,6 +2928,12 @@ function renderizarGraficosObservatorio() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: duracionAnimacion
+            },
+            layout: {
+                padding: { top: 16 }
+            },
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -2888,6 +2942,15 @@ function renderizarGraficosObservatorio() {
                             ? ` ${ctx.parsed.y} dry days without water`
                             : ` ${ctx.parsed.y} días sin agua al año`
                     }
+                },
+                datalabels: {
+                    display: true,
+                    anchor: "end",
+                    align: "end",
+                    offset: 2,
+                    color: colorTexto,
+                    font: { weight: "bold", size: 10 },
+                    formatter: (val) => val
                 }
             },
             scales: {
@@ -2897,7 +2960,7 @@ function renderizarGraficosObservatorio() {
                 },
                 y: {
                     beginAtZero: true,
-                    suggestedMax: maxDias + 3,
+                    max: 12,
                     ticks: {
                         color: colorTexto,
                         font: { size: 10 },
@@ -2907,10 +2970,11 @@ function renderizarGraficosObservatorio() {
                     grid: { color: colorGrilla }
                 }
             }
-        }
+        },
+        plugins: [pluginLineaDivisoria]
     });
 
-    // Gráfico 2: Tanque de agua natural (datos reales IANIGLA-CONICET / WGMS ID 3514)
+    // Gráfico 2: Tanque de agua natural (Glaciar Vinciguerra)
     chartRetrocesoGlaciar = new window.Chart(canvasGlaciar.getContext("2d"), {
         type: "bar",
         data: {
@@ -2923,11 +2987,18 @@ function renderizarGraficosObservatorio() {
                     "rgba(6, 182, 212, 0.84)",
                     "rgba(14, 165, 233, 0.78)",
                     "rgba(14, 165, 233, 0.72)",
-                    "rgba(56, 189, 248, 0.30)",
-                    "rgba(56, 189, 248, 0.30)"
+                    "rgba(37, 99, 235, 0.40)",
+                    "rgba(37, 99, 235, 0.40)"
                 ],
-                borderColor: "#0284c7",
-                borderWidth: 1,
+                borderColor: [
+                    "#0284c7",
+                    "#0284c7",
+                    "#0284c7",
+                    "#0284c7",
+                    "#1d4ed8",
+                    "#1d4ed8"
+                ],
+                borderWidth: 1.5,
                 borderDash: [4, 4],
                 borderRadius: 6,
                 maxBarThickness: 32
@@ -2936,6 +3007,12 @@ function renderizarGraficosObservatorio() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: duracionAnimacion
+            },
+            layout: {
+                padding: { top: 16 }
+            },
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -2944,6 +3021,15 @@ function renderizarGraficosObservatorio() {
                             ? ` ${ctx.parsed.y}% of 2015 glacier tank left`
                             : ` Queda ${ctx.parsed.y}% del hielo de 2015`
                     }
+                },
+                datalabels: {
+                    display: true,
+                    anchor: "end",
+                    align: "end",
+                    offset: 2,
+                    color: colorTexto,
+                    font: { weight: "bold", size: 10 },
+                    formatter: (val) => `${val}%`
                 }
             },
             scales: {
@@ -2963,7 +3049,8 @@ function renderizarGraficosObservatorio() {
                     grid: { color: colorGrilla }
                 }
             }
-        }
+        },
+        plugins: [pluginLineaDivisoria]
     });
 }
 

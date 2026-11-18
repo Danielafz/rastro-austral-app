@@ -251,7 +251,7 @@
 
     <!-- Panel Lateral (Filtros, Bitácora, Observatorio) -->
     <aside id="panel-lateral" tabindex="-1" aria-label="Panel de exploración territorial y bitácora"
-      class="max-md:fixed max-md:inset-x-0 max-md:bottom-[62px] max-md:h-[42dvh] max-md:z-[550] max-md:rounded-t-3xl max-md:shadow-2xl transition-all duration-300 translate-y-[120%] md:static md:w-1/3 lg:w-1/4 md:h-full md:translate-y-0 md:rounded-none md:border-r md:border-slate-200 md:z-[40] bg-white/80 backdrop-blur-md md:bg-white flex flex-col order-2 md:order-1 overflow-hidden">
+      class="max-md:fixed max-md:inset-x-0 max-md:bottom-[62px] max-md:h-[34dvh] max-md:z-[550] max-md:rounded-t-3xl max-md:shadow-2xl transition-all duration-300 translate-y-[120%] md:static md:w-1/3 lg:w-1/4 md:h-full md:translate-y-0 md:rounded-none md:border-r md:border-slate-200 md:z-[40] bg-white/80 backdrop-blur-md md:bg-white flex flex-col order-2 md:order-1 overflow-hidden">
 
       <!-- Tirador visual del Bottom Sheet en Mobile -->
       <div id="bottom-sheet-drag-handle" role="button" tabindex="0" aria-label="Expandir o contraer panel"
@@ -317,10 +317,10 @@
 
       <!-- VISTA 1: EXPLORADOR (Un solo panel continuo con scroll único) -->
       <div id="vista-tab-explorar" role="tabpanel" aria-labelledby="tab-btn-explorar"
-        class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-3 pb-10 space-y-3 custom-scrollbar">
+        class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-2.5 pb-10 space-y-2.5 custom-scrollbar">
 
-        <!-- Encabezado de Filtros -->
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-800 flex-shrink-0">
+        <!-- Encabezado de Filtros (solo visible en escritorio) -->
+        <div class="hidden md:flex items-center gap-2 text-xs font-bold text-slate-800 flex-shrink-0">
           <svg class="w-4 h-4 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" aria-hidden="true">
             <line x1="4" y1="21" x2="4" y2="14" />
@@ -336,95 +336,111 @@
           <span data-i18n="filtros_busqueda">Filtros de Búsqueda</span>
         </div>
 
-        <!-- Buscador -->
-        <div class="relative flex-shrink-0">
-          <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa"
-            placeholder="Buscar por nombre, localidad o toponimia..."
-            class="w-full py-2 pl-8 pr-7 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm transition">
-          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda"
-            class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
-            title="Limpiar búsqueda">✕</button>
-        </div>
+        <!-- Acordeón de Filtros de Búsqueda (Colapsable en móvil para visibilidad inmediata de tarjetas, abierto en escritorio) -->
+        <details id="acordeon-filtros" class="filtros-acordeon group bg-slate-50/80 md:bg-transparent border border-slate-200/80 md:border-0 rounded-2xl p-2 md:p-0 flex-shrink-0">
+          <summary class="flex items-center justify-between text-xs font-bold text-slate-700 cursor-pointer select-none py-1 px-1 md:hidden">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-orange-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="4" y1="21" x2="4" y2="14" /><line x1="4" y1="10" x2="4" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="12" /><line x1="12" y1="8" x2="12" y2="3" />
+                <line x1="20" y1="21" x2="20" y2="16" /><line x1="20" y1="12" x2="20" y2="3" />
+              </svg>
+              <span data-i18n="filtros_busqueda">Filtros y Búsqueda</span>
+            </div>
+            <span class="acordeon-chevron text-slate-400 transition-transform duration-200 text-xs">▼</span>
+          </summary>
+          <div class="mt-2 md:mt-0 space-y-2.5">
+            <!-- Buscador -->
+            <div class="relative flex-shrink-0">
+              <input type="text" id="buscador-hitos" aria-label="Buscar sitios por nombre, localidad o toponimia nativa"
+                placeholder="Buscar por nombre, localidad o toponimia..."
+                class="w-full py-2 pl-8 pr-7 text-xs rounded-xl bg-white md:bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 shadow-sm transition">
+              <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda"
+                class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+                title="Limpiar búsqueda">✕</button>
+            </div>
 
-        <!-- Subfiltros de Hitos (Compactos y deslizables) -->
-        <div
-          class="flex flex-nowrap overflow-x-auto hide-scrollbar gap-2 mb-3 pb-1 border-b border-slate-200 flex-shrink-0">
-          <button type="button"
-            class="filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm flex items-center"
-            data-cat="todas" title="Todos">
-            <span data-i18n="cat_todos">Todos</span>
-            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-mono">0</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
-            data-cat="patrimonio" title="Patrimonio">
-            <span data-i18n="cat_patrimonio">Patrimonio</span>
-            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
-            data-cat="senderos" title="Senderos">
-            <span data-i18n="cat_senderos">Senderos</span>
-            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
-          </button>
-          <button type="button"
-            class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
-            data-cat="economia_creativa" title="Creativos">
-            <span data-i18n="cat_creativos">Creativos</span>
-            <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
-          </button>
-        </div>
+            <!-- Subfiltros de Hitos (Compactos y deslizables) -->
+            <div
+              class="flex flex-nowrap overflow-x-auto hide-scrollbar gap-2 pb-1 border-b border-slate-200/70 md:border-slate-200 flex-shrink-0">
+              <button type="button"
+                class="filtro-cat-btn btn-cat-activo shrink-0 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition shadow-sm flex items-center"
+                data-cat="todas" title="Todos">
+                <span data-i18n="cat_todos">Todos</span>
+                <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-mono">0</span>
+              </button>
+              <button type="button"
+                class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
+                data-cat="patrimonio" title="Patrimonio">
+                <span data-i18n="cat_patrimonio">Patrimonio</span>
+                <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
+              </button>
+              <button type="button"
+                class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
+                data-cat="senderos" title="Senderos">
+                <span data-i18n="cat_senderos">Senderos</span>
+                <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
+              </button>
+              <button type="button"
+                class="filtro-cat-btn shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition flex items-center"
+                data-cat="economia_creativa" title="Creativos">
+                <span data-i18n="cat_creativos">Creativos</span>
+                <span class="contador-cat ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 font-mono">0</span>
+              </button>
+            </div>
 
-        <!-- Bloque de Sensibilidad y Estado -->
-        <div class="p-2 rounded-xl bg-white/60 md:bg-slate-50 backdrop-blur-sm border border-slate-200/80 grid grid-cols-2 gap-2 flex-shrink-0">
-          <div>
-            <label for="filtro-fragilidad"
-              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 flex items-center gap-1">
-              <span id="indicador-color-fragilidad" class="w-2 h-2 rounded-full bg-slate-400 inline-block transition-colors"></span>
-              <span>SENSIBILIDAD</span>
-            </label>
-            <div class="relative">
-              <select id="filtro-fragilidad"
-                class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
-                <option value="todas">Todos</option>
-                <option value="Baja">Baja</option>
-                <option value="Media">Media</option>
-                <option value="Alta">Alta</option>
-                <option value="Muy Alta">Muy Alta</option>
-              </select>
-              <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
-                </svg>
+            <!-- Bloque de Sensibilidad y Estado -->
+            <div class="p-2 rounded-xl bg-white/80 md:bg-slate-50 backdrop-blur-sm border border-slate-200/80 grid grid-cols-2 gap-2 flex-shrink-0">
+              <div>
+                <label for="filtro-fragilidad"
+                  class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 flex items-center gap-1">
+                  <span id="indicador-color-fragilidad" class="w-2 h-2 rounded-full bg-slate-400 inline-block transition-colors"></span>
+                  <span>SENSIBILIDAD</span>
+                </label>
+                <div class="relative">
+                  <select id="filtro-fragilidad"
+                    class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
+                    <option value="todas">Todos</option>
+                    <option value="Baja">Baja</option>
+                    <option value="Media">Media</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Muy Alta">Muy Alta</option>
+                  </select>
+                  <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label for="filtro-estado-visita"
+                  class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                  ESTADO
+                </label>
+                <div class="relative">
+                  <select id="filtro-estado-visita"
+                    class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
+                    <option value="todos">Todos</option>
+                    <option value="visitados">Visitados</option>
+                    <option value="pendientes">Pendientes</option>
+                  </select>
+                  <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          <div>
-            <label for="filtro-estado-visita"
-              class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
-              ESTADO
-            </label>
-            <div class="relative">
-              <select id="filtro-estado-visita"
-                class="appearance-none w-full rounded-xl border border-slate-200/80 bg-white pr-7 pl-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-2xs transition focus:outline-none focus:border-orange-500 cursor-pointer">
-                <option value="todos">Todos</option>
-                <option value="visitados">Visitados</option>
-                <option value="pendientes">Pendientes</option>
-              </select>
-              <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        </details>
 
         <!-- Barra de Estado de Filtros y Contador -->
         <div class="flex items-center justify-between text-xs text-slate-500 mt-2 mb-3">
@@ -486,7 +502,7 @@
 
       <!-- Pie de página del Panel Lateral: Fuentes Oficiales y Licencias -->
       <div
-        class="footer-panel-legal border-t border-slate-200/80 bg-white/60 md:bg-slate-50 backdrop-blur-sm px-4 py-2 flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
+        class="footer-panel-legal border-t border-slate-200/80 bg-white/60 md:bg-slate-50 backdrop-blur-sm px-4 py-2 hidden md:flex items-center justify-between text-[11px] text-slate-500 flex-shrink-0">
         <button id="btn-abrir-creditos" type="button"
           class="text-left text-slate-600 hover:text-amber-500 text-xs transition flex items-center gap-1 font-semibold cursor-pointer"
           title="Fuentes oficiales, licencias y soberanía">
@@ -636,38 +652,42 @@
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->
-        <div class="flex items-center gap-2 flex-1 pointer-events-auto overflow-x-auto no-scrollbar">
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap md:flex-nowrap flex-1 pointer-events-auto">
           <!-- Cápsula de Capas (Estándar IGN, Relieve IGN, Satelital, Áreas Protegidas) -->
           <div
-            class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0">
+            class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0 gap-0.5 sm:gap-1">
             <button type="button" id="btn-capa-estandar"
-              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer active"
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer active"
               title="Cartografía oficial de la República Argentina (Argenmap · IGN)">
-              <span data-i18n="capa_estandar">Argenmap (IGN)</span>
+              <span class="inline sm:hidden" data-i18n="capa_estandar_corto">IGN</span>
+              <span class="hidden sm:inline" data-i18n="capa_estandar">Argenmap (IGN)</span>
             </button>
             <button type="button" id="btn-capa-relieve"
-              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer"
               title="Cartografía topográfica oficial con curvas de nivel y relieve (IGN Argentina)">
-              <span data-i18n="capa_relieve">Relieve (IGN)</span>
+              <span class="inline sm:hidden" data-i18n="capa_relieve_corto">Relieve</span>
+              <span class="hidden sm:inline" data-i18n="capa_relieve">Relieve (IGN)</span>
             </button>
             <button type="button" id="btn-capa-satelital"
-              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
+              class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer"
               title="Fotografía satelital y aérea de alta resolución (Esri World Imagery)">
               <span data-i18n="capa_satelital">Satelital</span>
             </button>
             <button type="button" id="btn-capa-areas-protegidas"
-              class="btn-capa-areas shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer"
+              class="btn-capa-areas shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer"
               title="Mostrar/ocultar polígonos de Áreas Naturales Protegidas">
-              <span data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
+              <span class="inline sm:hidden" data-i18n="capa_areas_protegidas_corto">Áreas</span>
+              <span class="hidden sm:inline" data-i18n="capa_areas_protegidas">Áreas Protegidas</span>
             </button>
           </div>
 
           <!-- Botón Alertas SAR separado -->
           <button type="button" id="btn-capa-alertas-sar"
-            class="btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2 px-3.5 rounded-2xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer"
+            class="btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] sm:text-xs py-1.5 px-2.5 sm:px-3.5 rounded-2xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer"
             title="Mostrar/ocultar Alertas de Estrés Hídrico (Sentinel-1 SAR)">
             <span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse"></span>
-            <span data-i18n="capa_alertas_sar">Alertas SAR</span>
+            <span class="inline sm:hidden" data-i18n="capa_alertas_sar_corto">SAR</span>
+            <span class="hidden sm:inline" data-i18n="capa_alertas_sar">Alertas SAR</span>
           </button>
         </div>
 

@@ -108,10 +108,14 @@ const DICCIONARIO = {
         descargar_bitacora: "Descargar Bitácora",
         vista_provincia: "📍 Toda la Provincia",
         capa_estandar: "Argenmap (IGN)",
+        capa_estandar_corto: "IGN",
         capa_relieve: "Relieve (IGN)",
+        capa_relieve_corto: "Relieve",
         capa_satelital: "Satelital",
         capa_areas_protegidas: "Áreas Protegidas",
+        capa_areas_protegidas_corto: "Áreas",
         capa_alertas_sar: "Alertas SAR",
+        capa_alertas_sar_corto: "SAR",
         modal_bloqueo_badge_sar: "Alerta Temprana SAR",
         modal_bloqueo_titulo: "🚫 Zona Restringida al Acceso",
         modal_bloqueo_subtitulo: "Tránsito pedestre suspendido por protocolo de preservación ambiental",
@@ -253,10 +257,14 @@ const DICCIONARIO = {
         descargar_bitacora: "Download Journal",
         vista_provincia: "📍 Entire Province",
         capa_estandar: "Argenmap (IGN)",
+        capa_estandar_corto: "IGN",
         capa_relieve: "Topographic (IGN)",
+        capa_relieve_corto: "Relief",
         capa_satelital: "Satellite",
         capa_areas_protegidas: "Protected Areas",
+        capa_areas_protegidas_corto: "Areas",
         capa_alertas_sar: "SAR Alerts",
+        capa_alertas_sar_corto: "SAR",
         modal_bloqueo_badge_sar: "Early Warning SAR",
         modal_bloqueo_titulo: "🚫 Restricted Access Area",
         modal_bloqueo_subtitulo: "Pedestrian transit suspended due to environmental conservation protocol",
@@ -2356,9 +2364,9 @@ function configurarBuscador() {
 function reducirPanelMobileSiExpandido() {
     const panel = document.getElementById("panel-lateral");
     if (!panel) return;
-    if (panel.classList.contains("max-md:h-[82dvh]")) {
-        panel.classList.remove("max-md:h-[82dvh]");
-        panel.classList.add("max-md:h-[42dvh]");
+    if (panel.classList.contains("max-md:h-[78dvh]")) {
+        panel.classList.remove("max-md:h-[78dvh]");
+        panel.classList.add("max-md:h-[34dvh]");
         setTimeout(() => mapa && mapa.invalidateSize(), 250);
     }
 }
@@ -2367,13 +2375,18 @@ function configurarPanelMobile() {
     const panel = document.getElementById("panel-lateral");
     const dragHandle = document.getElementById("bottom-sheet-drag-handle");
     const btnCerrar = document.getElementById("btn-cerrar-panel-mobile");
+    const acordeonFiltros = document.getElementById("acordeon-filtros");
+
+    if (acordeonFiltros && window.innerWidth >= 768) {
+        acordeonFiltros.open = true;
+    }
 
     if (!panel) return;
 
     function alternarBottomSheet() {
         if (!panel.classList.contains("translate-y-0")) {
             abrirPanelMobile(false);
-        } else if (panel.classList.contains("max-md:h-[82dvh]")) {
+        } else if (panel.classList.contains("max-md:h-[78dvh]")) {
             abrirPanelMobile(false);
         } else {
             abrirPanelMobile(true);
@@ -2403,7 +2416,7 @@ function configurarPanelMobile() {
             if (deltaY < -24) {
                 abrirPanelMobile(true);
             } else if (deltaY > 24) {
-                if (panel.classList.contains("max-md:h-[82dvh]")) {
+                if (panel.classList.contains("max-md:h-[78dvh]")) {
                     abrirPanelMobile(false);
                 } else {
                     cerrarPanelMobile();
@@ -2412,7 +2425,7 @@ function configurarPanelMobile() {
         }, { passive: true });
     }
 
-    // Expandir a 82dvh al enfocar el buscador en móvil
+    // Expandir a 78dvh al enfocar el buscador en móvil
     const buscador = document.getElementById("buscador-hitos");
     if (buscador) {
         buscador.addEventListener("focus", () => {
@@ -2422,7 +2435,7 @@ function configurarPanelMobile() {
         });
     }
 
-    // Reducir suavemente a 42dvh al interactuar con filtros si estaba expandido
+    // Reducir suavemente a 34dvh al interactuar con filtros si estaba expandido
     document.addEventListener("click", (e) => {
         if (e.target.closest(".filtro-cat-btn, #filtro-fragilidad, #filtro-estado-visita, .btn-filtro-estado")) {
             reducirPanelMobileSiExpandido();
@@ -2447,11 +2460,11 @@ function abrirPanelMobile(expandirCompleto = false) {
     panel.classList.remove("translate-y-[120%]", "translate-y-full");
     panel.classList.add("translate-y-0");
     if (expandirCompleto) {
-        panel.classList.remove("max-md:h-[42dvh]");
-        panel.classList.add("max-md:h-[82dvh]");
+        panel.classList.remove("max-md:h-[34dvh]");
+        panel.classList.add("max-md:h-[78dvh]");
     } else {
-        panel.classList.remove("max-md:h-[82dvh]");
-        panel.classList.add("max-md:h-[42dvh]");
+        panel.classList.remove("max-md:h-[78dvh]");
+        panel.classList.add("max-md:h-[34dvh]");
     }
     actualizarEstadoMobileNav("hitos");
     setTimeout(() => mapa && mapa.invalidateSize(), 250);
@@ -2462,8 +2475,8 @@ function cerrarPanelMobile() {
     if (!panel) return;
     panel.classList.add("translate-y-[120%]");
     panel.classList.remove("translate-y-0", "translate-y-full");
-    panel.classList.remove("max-md:h-[82dvh]");
-    panel.classList.add("max-md:h-[42dvh]");
+    panel.classList.remove("max-md:h-[78dvh]");
+    panel.classList.add("max-md:h-[34dvh]");
     actualizarEstadoMobileNav("mapa");
     if (mapa) {
         mapa.invalidateSize();
@@ -2545,8 +2558,8 @@ function configurarMobileBottomNav() {
             if (panel) {
                 panel.classList.add("translate-y-[120%]");
                 panel.classList.remove("translate-y-0", "translate-y-full");
-                panel.classList.remove("max-md:h-[82dvh]");
-                panel.classList.add("max-md:h-[42dvh]");
+                panel.classList.remove("max-md:h-[78dvh]");
+                panel.classList.add("max-md:h-[34dvh]");
             }
             cambiarPestanaSidebar("pasaporte");
             actualizarEstadoMobileNav("bitacora");
@@ -2558,8 +2571,8 @@ function configurarMobileBottomNav() {
             if (panel) {
                 panel.classList.add("translate-y-[120%]");
                 panel.classList.remove("translate-y-0", "translate-y-full");
-                panel.classList.remove("max-md:h-[82dvh]");
-                panel.classList.add("max-md:h-[42dvh]");
+                panel.classList.remove("max-md:h-[78dvh]");
+                panel.classList.add("max-md:h-[34dvh]");
             }
             cambiarPestanaSidebar("observatorio");
             actualizarEstadoMobileNav("observatorio");
@@ -2711,8 +2724,8 @@ function configurarSelectorCapasBase() {
     if (!btnEstandar || !btnRelieve) return;
 
     const actualizarClasesBotonesBase = (activa) => {
-        const claseActivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer active";
-        const claseInactivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-xs font-bold py-1.5 px-3 transition-all cursor-pointer";
+        const claseActivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer active";
+        const claseInactivo = "btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer";
 
         if (btnEstandar) btnEstandar.className = activa === "estandar" ? claseActivo : claseInactivo;
         if (btnRelieve) btnRelieve.className = activa === "relieve" ? claseActivo : claseInactivo;
@@ -2863,10 +2876,10 @@ async function configurarCapaAreasProtegidas() {
                 if (mapa.hasLayer(capaBaseRelieve)) capaBaseRelieve.bringToBack();
                 if (capaBaseSatelital && mapa.hasLayer(capaBaseSatelital)) capaBaseSatelital.bringToBack();
 
-                btn.className = "btn-capa-areas active flex items-center justify-center bg-emerald-600 text-white shadow-sm rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
+                btn.className = "btn-capa-areas active shrink-0 whitespace-nowrap flex items-center justify-center bg-emerald-600 text-white shadow-sm rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer";
             } else {
                 mapa.removeLayer(capaAreasProtegidas);
-                btn.className = "btn-capa-areas flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-lg text-xs sm:text-sm font-bold py-1.5 px-2 transition-all cursor-pointer";
+                btn.className = "btn-capa-areas shrink-0 whitespace-nowrap flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer";
             }
         });
     } catch (error) {
@@ -3004,10 +3017,10 @@ async function configurarCapaAlertasSAR() {
 
                 if (alertasSARVisibles) {
                     mapa.addLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
+                    btn.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] sm:text-xs py-1.5 px-2.5 sm:px-3.5 rounded-2xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer";
                 } else {
                     mapa.removeLayer(capaAlertasSAR);
-                    btn.className = "btn-capa-alertas bg-white/95 backdrop-blur-md hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
+                    btn.className = "btn-capa-alertas bg-white/95 backdrop-blur-md hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 font-bold text-[11px] sm:text-xs py-1.5 px-2.5 sm:px-3.5 rounded-2xl shadow-md flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer";
                 }
             });
         }
@@ -3971,7 +3984,7 @@ function navegarATurbalObservatorio() {
                 alertasSARVisibles = true;
                 const btnSAR = document.getElementById("btn-capa-alertas-sar");
                 if (btnSAR) {
-                    btnSAR.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 md:px-4 rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 transition-all cursor-pointer";
+                    btnSAR.className = "btn-capa-alertas active bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] sm:text-xs py-1.5 px-2.5 sm:px-3.5 rounded-2xl shadow-md shadow-red-600/20 flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap transition-all cursor-pointer";
                 }
 
                 // Destacar polígono activo y rojo, y abrir popup/modal

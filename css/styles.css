@@ -1406,6 +1406,15 @@ details.filtros-acordeon[open] .acordeon-chevron {
   transform: rotate(180deg);
 }
 
+@media (min-width: 768px) {
+  details.filtros-acordeon summary {
+    display: none !important;
+  }
+  details.filtros-acordeon > div {
+    display: block !important;
+  }
+}
+
 /* Sensibilidad Ambiental Minimalista */
 .sensibilidad-minimal {
   background-color: rgba(248, 250, 252, 0.65);

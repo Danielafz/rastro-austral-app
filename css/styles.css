@@ -2306,3 +2306,16 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
+
+/* Ajuste de controles inferiores de Leaflet en pantallas móviles (< 768px) sobre la barra inferior */
+@media (max-width: 767px) {
+  .leaflet-control-zoom {
+    margin-bottom: 72px !important;
+  }
+  #btn-geolocalizacion {
+    bottom: 152px !important;
+  }
+  #contenedor-leyenda-mapa {
+    bottom: 72px !important;
+  }
+}

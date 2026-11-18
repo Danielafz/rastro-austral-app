@@ -46,6 +46,7 @@
             btnPrevSala: document.getElementById("btn-prev-sala-museo"),
             btnNextSala: document.getElementById("btn-next-sala-museo"),
             tituloSalaNav: document.getElementById("titulo-sala-actual-museo"),
+            barraProgreso: document.getElementById("barra-progreso-museo"),
             btnSalasDrawer: document.getElementById("btn-abrir-menu-salas"),
             drawerSalas: document.getElementById("drawer-selector-salas"),
             listaSalasDrawer: document.getElementById("lista-salas-selector"),
@@ -58,12 +59,21 @@
             sheetDetalle: document.getElementById("sheet-detalle-obra-museo"),
             btnCerrarSheet: document.getElementById("btn-cerrar-sheet-obra"),
             btnSeguirRecorriendo: document.getElementById("btn-seguir-recorriendo-obra"),
+            textoSeguirRecorriendo: document.getElementById("texto-seguir-recorriendo"),
             sheetImg: document.getElementById("sheet-obra-img"),
             sheetTitulo: document.getElementById("sheet-obra-titulo"),
             sheetMeta: document.getElementById("sheet-obra-meta"),
             sheetDesc: document.getElementById("sheet-obra-desc"),
             sheetCredito: document.getElementById("sheet-obra-credito"),
             sheetHitoBadge: document.getElementById("sheet-obra-hito-badge"),
+            btnAudioguia: document.getElementById("btn-audioguia-museo"),
+            iconoAudioguia: document.getElementById("icono-audioguia"),
+            textoAudioguia: document.getElementById("texto-audioguia"),
+            btnObraAnterior: document.getElementById("btn-obra-anterior"),
+            btnObraSiguiente: document.getElementById("btn-obra-siguiente"),
+            indicadorContador: document.getElementById("indicador-obra-contador"),
+            textoObraAnterior: document.getElementById("texto-obra-anterior"),
+            textoObraSiguiente: document.getElementById("texto-obra-siguiente"),
             btnLangEs: document.getElementById("btn-museo-lang-es"),
             btnLangEn: document.getElementById("btn-museo-lang-en")
         };
@@ -83,14 +93,163 @@
         return objetoTexto[idioma] || objetoTexto.es || "";
     }
 
+    // Configuración responsiva del pasillo (móvil: 245px entre centros, escritorio: 600px)
+    function obtenerConfigPasillo() {
+        const esMovil = window.innerWidth < 768;
+        if (esMovil) {
+            return {
+                esMovil: true,
+                posicionesX: [240, 485, 730],
+                anchoPasillo: 1040,
+                columnasX: [80, 362, 607, 890]
+            };
+        }
+        return {
+            esMovil: false,
+            posicionesX: [420, 1020, 1620],
+            anchoPasillo: 2100,
+            columnasX: [100, 720, 1320, 1940]
+        };
+    }
+
+    // Actualizar barra de progreso del recorrido global (1 a 18)
+    function actualizarBarraProgreso(indiceGlobal = 1) {
+        if (!dom.barraProgreso) return;
+        const total = 18;
+        const paso = Math.max(1, Math.min(indiceGlobal, total));
+        const pct = (paso / total) * 100;
+        dom.barraProgreso.style.width = `${pct.toFixed(2)}%`;
+        dom.barraProgreso.setAttribute("aria-valuenow", String(paso));
+    }
+
+    // Estado y lógica de la Audioguía con Web Speech API offline
+    let audioGuiaHablando = false;
+
+    function detenerAudioguia() {
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+        }
+        audioGuiaHablando = false;
+        actualizarBotonAudioguia();
+    }
+
+    function alternarAudioguia() {
+        if (!("speechSynthesis" in window)) {
+            alert(getIdioma() === "en" ? "Speech synthesis is not supported in this browser." : "La síntesis de voz no está soportada en este navegador.");
+            return;
+        }
+
+        if (audioGuiaHablando) {
+            detenerAudioguia();
+            return;
+        }
+
+        if (!estadoMuseo.obraAbierta) return;
+
+        const obra = estadoMuseo.obraAbierta;
+        const idioma = getIdioma();
+        const titulo = tBilingue(obra.titulo);
+        const anio = obra.anio ? (idioma === "en" ? `Year ${obra.anio}.` : `Año ${obra.anio}.`) : "";
+        const lugar = tBilingue(obra.lugar);
+        const desc = tBilingue(obra.descripcion);
+
+        const textoCompleto = `${titulo}. ${anio} ${lugar}. ${desc}`;
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(textoCompleto);
+        utterance.lang = idioma === "en" ? "en-US" : "es-AR";
+        utterance.rate = 0.95;
+        utterance.pitch = 1.0;
+
+        const voces = window.speechSynthesis.getVoices();
+        if (voces && voces.length > 0) {
+            if (idioma === "en") {
+                const vozEn = voces.find(v => v.lang.startsWith("en-") || v.lang === "en");
+                if (vozEn) utterance.voice = vozEn;
+            } else {
+                const vozEs = voces.find(v => v.lang === "es-AR") || voces.find(v => v.lang.startsWith("es-"));
+                if (vozEs) utterance.voice = vozEs;
+            }
+        }
+
+        utterance.onstart = () => {
+            audioGuiaHablando = true;
+            actualizarBotonAudioguia();
+        };
+
+        utterance.onend = () => {
+            audioGuiaHablando = false;
+            actualizarBotonAudioguia();
+        };
+
+        utterance.onerror = () => {
+            audioGuiaHablando = false;
+            actualizarBotonAudioguia();
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function actualizarBotonAudioguia() {
+        const btn = dom.btnAudioguia;
+        const icono = dom.iconoAudioguia;
+        const texto = dom.textoAudioguia;
+        if (!btn) return;
+
+        const idioma = getIdioma();
+        if (audioGuiaHablando) {
+            btn.classList.add("bg-amber-600", "text-white", "animate-pulse");
+            btn.classList.remove("bg-amber-200/70", "text-amber-950");
+            if (icono) icono.textContent = "⏹";
+            if (texto) texto.textContent = idioma === "en" ? "Stop audio" : "Detener audio";
+        } else {
+            btn.classList.remove("bg-amber-600", "text-white", "animate-pulse");
+            btn.classList.add("bg-amber-200/70", "text-amber-950");
+            if (icono) icono.textContent = "🔊";
+            if (texto) texto.textContent = idioma === "en" ? "Listen to audio guide" : "Escuchar audioguía";
+        }
+    }
+
+    // Navegación secuencial de obras (1 a 18) desde la ficha
+    function navegarObra(delta) {
+        detenerAudioguia();
+        const salas = window.SALAS_MUSEO || [];
+        const todasLasObras = [];
+        salas.forEach((s, sIdx) => {
+            s.obras.forEach((o, oIdx) => {
+                todasLasObras.push({ obra: o, salaIndex: sIdx, obraIndex: oIdx });
+            });
+        });
+        if (!todasLasObras.length || !estadoMuseo.obraAbierta) return;
+        const currIdx = todasLasObras.findIndex(item => item.obra.id === estadoMuseo.obraAbierta.id);
+        if (currIdx === -1) return;
+
+        let nextIdx = currIdx + delta;
+        if (nextIdx < 0) nextIdx = todasLasObras.length - 1;
+        if (nextIdx >= todasLasObras.length) nextIdx = 0;
+
+        const target = todasLasObras[nextIdx];
+        if (target.salaIndex !== estadoMuseo.salaIndex) {
+            cargarSala(target.salaIndex);
+        }
+        const config = obtenerConfigPasillo();
+        estadoMuseo.posicionX = config.posicionesX[target.obraIndex] || config.posicionesX[0];
+        actualizarPosicionPinguino();
+        verificarProximidadObras();
+        abrirSheetObra(target.obra);
+    }
+
     // Abrir el Museo Austral 2D
     function abrirMuseoAustral(salaIndice = 0) {
         if (!dom.vista) initDom();
         if (!dom.vista) return;
 
+        const config = obtenerConfigPasillo();
         estadoMuseo.activo = true;
         estadoMuseo.salaIndex = Math.max(0, Math.min(salaIndice, (window.SALAS_MUSEO || []).length - 1));
-        estadoMuseo.posicionX = 420;
+        estadoMuseo.anchoPasillo = config.anchoPasillo;
+        estadoMuseo.posicionX = config.posicionesX[0];
         estadoMuseo.velocidadX = 0;
         estadoMuseo.mirandoDerecha = true;
         estadoMuseo.caminando = false;
@@ -126,6 +285,7 @@
         estadoMuseo.activo = false;
         cancelAnimationFrame(estadoMuseo.animFrameId);
 
+        detenerAudioguia();
         cerrarSheetObra();
         cerrarDrawerSalas();
 
@@ -143,8 +303,23 @@
         const salas = window.SALAS_MUSEO || [];
         if (!salas[indice]) return;
 
+        detenerAudioguia();
         estadoMuseo.salaIndex = indice;
         const sala = salas[indice];
+
+        // Configuración espacial responsiva
+        const config = obtenerConfigPasillo();
+        estadoMuseo.anchoPasillo = config.anchoPasillo;
+
+        if (dom.pasilloMuro) {
+            dom.pasilloMuro.style.width = `${config.anchoPasillo}px`;
+            const cols = dom.pasilloMuro.querySelectorAll(".columna-madera-museo");
+            cols.forEach((col, i) => {
+                if (config.columnasX[i] !== undefined) {
+                    col.style.left = `${config.columnasX[i]}px`;
+                }
+            });
+        }
 
         // Actualizar título en la barra superior
         if (dom.tituloSalaNav) {
@@ -153,15 +328,18 @@
             dom.tituloSalaNav.innerHTML = `<span class="text-amber-400 font-bold">${prefijo}</span> · <span>${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}</span>`;
         }
 
-        // Posiciones espaciales amplias de los 3 cuadros en el pasillo (px) con columnas intercaladas
-        const posicionesX = [420, 1020, 1620];
+        // Progreso general en la barra del encabezado (al inicio de la sala)
+        actualizarBarraProgreso(indice * 3 + 1);
+
+        // Posiciones espaciales de los 3 cuadros en el pasillo (px)
+        const posicionesX = config.posicionesX;
 
         // Renderizar cuadros de la sala
         if (dom.contenedorObras) {
             dom.contenedorObras.innerHTML = "";
 
             sala.obras.forEach((obra, idx) => {
-                const posX = posicionesX[idx] || (420 + idx * 600);
+                const posX = posicionesX[idx] || (posicionesX[0] + idx * 245);
                 const cuadroEl = document.createElement("div");
                 cuadroEl.className = "cuadro-obra-museo absolute select-none cursor-pointer flex flex-col items-center";
                 cuadroEl.style.left = `${posX}px`;
@@ -223,6 +401,7 @@
     // Abrir ficha de obra (Bottom Sheet estilo pergamino)
     function abrirSheetObra(obra) {
         if (!dom.sheetDetalle) return;
+        detenerAudioguia();
         estadoMuseo.obraAbierta = obra;
 
         const titulo = tBilingue(obra.titulo);
@@ -260,12 +439,38 @@
             }
         }
 
+        // Calcular progreso global de la obra (1 a 18)
+        const salas = window.SALAS_MUSEO || [];
+        let indiceGlobal = 1;
+        let contador = 0;
+        salas.forEach((s) => {
+            s.obras.forEach((o) => {
+                contador++;
+                if (o.id === obra.id) {
+                    indiceGlobal = contador;
+                }
+            });
+        });
+
+        if (dom.indicadorContador) {
+            dom.indicadorContador.textContent = `${indiceGlobal} / 18`;
+        }
+        actualizarBarraProgreso(indiceGlobal);
+
+        // Textos bilingües de navegación y audioguía
+        const idioma = getIdioma();
+        if (dom.textoObraAnterior) dom.textoObraAnterior.textContent = idioma === "en" ? "Previous" : "Anterior";
+        if (dom.textoObraSiguiente) dom.textoObraSiguiente.textContent = idioma === "en" ? "Next" : "Siguiente";
+        if (dom.textoSeguirRecorriendo) dom.textoSeguirRecorriendo.textContent = idioma === "en" ? "Continue tour" : "Seguir recorriendo";
+        actualizarBotonAudioguia();
+
         dom.sheetDetalle.classList.remove("translate-y-full", "pointer-events-none");
         dom.sheetDetalle.classList.add("translate-y-0", "pointer-events-auto");
     }
 
     // Cerrar Bottom Sheet de obra
     function cerrarSheetObra() {
+        detenerAudioguia();
         if (!dom.sheetDetalle) return;
         estadoMuseo.obraAbierta = null;
         dom.sheetDetalle.classList.add("translate-y-full", "pointer-events-none");
@@ -278,6 +483,13 @@
 
         const salas = window.SALAS_MUSEO || [];
         dom.listaSalasDrawer.innerHTML = "";
+
+        // Asegurar contraste de título principal del modal
+        const tituloModal = document.getElementById("titulo-modal-salas");
+        if (tituloModal) {
+            tituloModal.style.setProperty("color", "#FAF6EE", "important");
+            tituloModal.textContent = getIdioma() === "en" ? "Rooms of the Austral Museum" : "Salas del Museo Austral";
+        }
 
         salas.forEach((sala, i) => {
             const btnSala = document.createElement("button");
@@ -293,11 +505,14 @@
                 <div class="text-2xl shrink-0 p-2 rounded-lg bg-stone-950 border border-stone-700/80 text-amber-300">${sala.icono || "🏛️"}</div>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center justify-between gap-2">
-                        <h4 class="font-bold text-sm sm:text-base text-white tracking-wide truncate">${tBilingue(sala.titulo)}</h4>
+                        <h4 class="font-bold text-sm sm:text-base tracking-wide truncate titulo-sala-card" style="color: #FAF6EE !important;">
+                            <span class="font-mono text-xs mr-1 numero-sala-badge" style="color: #FBBF24 !important;">${getIdioma() === "en" ? "Room" : "Sala"} ${sala.numero}:</span>
+                            ${tBilingue(sala.titulo).replace(/^Sala \d+: |^Room \d+: /, "")}
+                        </h4>
                         ${esActiva ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase tracking-wider">${getIdioma() === "en" ? "Current" : "En curso"}</span>` : ""}
                     </div>
-                    <p class="text-xs text-amber-100 font-semibold mt-0.5 leading-snug">${tBilingue(sala.subtitulo)}</p>
-                    <p class="text-[11px] text-stone-300 mt-1 line-clamp-2 leading-relaxed">${tBilingue(sala.descripcionCorta)}</p>
+                    <p class="text-xs font-semibold mt-0.5 leading-snug subtitulo-sala-card" style="color: #FEF3C7 !important;">${tBilingue(sala.subtitulo)}</p>
+                    <p class="text-[11px] mt-1 line-clamp-2 leading-relaxed desc-sala-card" style="color: #D6D3D1 !important;">${tBilingue(sala.descripcionCorta)}</p>
                 </div>
             `;
 
@@ -330,9 +545,10 @@
 
         if (hayMovimiento) {
             estadoMuseo.posicionX += vx * velocidadPaso;
-            // Limitar al pasillo
-            const margenMin = 80;
-            const margenMax = estadoMuseo.anchoPasillo - 120;
+            // Limitar al pasillo con márgenes responsivos
+            const config = obtenerConfigPasillo();
+            const margenMin = config.esMovil ? 50 : 80;
+            const margenMax = config.anchoPasillo - (config.esMovil ? 80 : 120);
             estadoMuseo.posicionX = Math.max(margenMin, Math.min(estadoMuseo.posicionX, margenMax));
 
             // Orientación de la mascota
@@ -524,8 +740,9 @@
             if (!estadoMuseo.activo || estadoMuseo.obraAbierta) return;
             const delta = Math.sign(e.deltaY || e.deltaX);
             estadoMuseo.posicionX += delta * 24;
-            const margenMin = 80;
-            const margenMax = estadoMuseo.anchoPasillo - 120;
+            const config = obtenerConfigPasillo();
+            const margenMin = config.esMovil ? 50 : 80;
+            const margenMax = config.anchoPasillo - (config.esMovil ? 80 : 120);
             estadoMuseo.posicionX = Math.max(margenMin, Math.min(estadoMuseo.posicionX, margenMax));
             if (delta > 0) estadoMuseo.mirandoDerecha = true;
             else if (delta < 0) estadoMuseo.mirandoDerecha = false;
@@ -559,6 +776,48 @@
         initDom();
         setupJoystick();
         setupTecladoYRueda();
+
+        // Gesto táctil de deslizamiento (swipe horizontal) en el mural del pasillo
+        if (dom.pasilloMuro) {
+            let swipeStartX = 0;
+            let swipeStartY = 0;
+            let swiping = false;
+
+            dom.pasilloMuro.addEventListener("touchstart", (e) => {
+                if (estadoMuseo.obraAbierta) return;
+                if (e.target.closest("#joystick-contenedor")) return;
+                const t = e.touches[0];
+                swipeStartX = t.clientX;
+                swipeStartY = t.clientY;
+                swiping = true;
+            }, { passive: true });
+
+            dom.pasilloMuro.addEventListener("touchmove", (e) => {
+                if (!swiping || estadoMuseo.obraAbierta) return;
+                const t = e.touches[0];
+                const dx = t.clientX - swipeStartX;
+                const dy = t.clientY - swipeStartY;
+
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
+                    swipeStartX = t.clientX;
+                    estadoMuseo.posicionX -= dx * 1.15;
+                    const config = obtenerConfigPasillo();
+                    const margenMin = config.esMovil ? 50 : 80;
+                    const margenMax = config.anchoPasillo - (config.esMovil ? 80 : 120);
+                    estadoMuseo.posicionX = Math.max(margenMin, Math.min(estadoMuseo.posicionX, margenMax));
+
+                    if (dx < 0) estadoMuseo.mirandoDerecha = true;
+                    else if (dx > 0) estadoMuseo.mirandoDerecha = false;
+
+                    actualizarPosicionPinguino();
+                    verificarProximidadObras();
+                }
+            }, { passive: true });
+
+            dom.pasilloMuro.addEventListener("touchend", () => {
+                swiping = false;
+            }, { passive: true });
+        }
 
         if (dom.btnCerrar) {
             dom.btnCerrar.addEventListener("click", cerrarMuseoAustral);
@@ -595,6 +854,39 @@
         if (dom.btnSeguirRecorriendo) {
             dom.btnSeguirRecorriendo.addEventListener("click", cerrarSheetObra);
         }
+
+        // Audioguía offline con síntesis de voz
+        if (dom.btnAudioguia) {
+            dom.btnAudioguia.addEventListener("click", alternarAudioguia);
+        }
+
+        // Navegación entre obras anterior / siguiente en la ficha
+        if (dom.btnObraAnterior) {
+            dom.btnObraAnterior.addEventListener("click", () => navegarObra(-1));
+        }
+
+        if (dom.btnObraSiguiente) {
+            dom.btnObraSiguiente.addEventListener("click", () => navegarObra(1));
+        }
+
+        // Adaptación dinámica si el usuario rota la pantalla o redimensiona ventana
+        window.addEventListener("resize", () => {
+            if (!estadoMuseo.activo) return;
+            const config = obtenerConfigPasillo();
+            estadoMuseo.anchoPasillo = config.anchoPasillo;
+            if (dom.pasilloMuro) dom.pasilloMuro.style.width = `${config.anchoPasillo}px`;
+            const cols = dom.pasilloMuro ? dom.pasilloMuro.querySelectorAll(".columna-madera-museo") : [];
+            cols.forEach((col, i) => {
+                if (config.columnasX[i] !== undefined) col.style.left = `${config.columnasX[i]}px`;
+            });
+            const cuadros = dom.contenedorObras ? dom.contenedorObras.querySelectorAll(".cuadro-obra-museo") : [];
+            cuadros.forEach((cuadro, idx) => {
+                const posX = config.posicionesX[idx] || (config.posicionesX[0] + idx * 245);
+                cuadro.style.left = `${posX}px`;
+                cuadro.dataset.posX = posX;
+            });
+            actualizarPosicionPinguino();
+        });
 
         // Conmutador de idioma en el Museo
         if (dom.btnLangEs) {

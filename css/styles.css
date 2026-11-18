@@ -2231,8 +2231,8 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 
 /* Marco de cuadro de lenga y bronce patagónico con dimensiones fijas equilibradas */
 .marco-cuadro-patagonico {
-  width: 230px;
-  height: 175px;
+  width: 196px;
+  height: 152px;
   background: linear-gradient(135deg, #5A351C 0%, #8A532C 40%, #3B200F 100%);
   border: 3px solid #D4AF37;
   outline: 2px solid #281408;
@@ -2245,8 +2245,8 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
 
 @media (min-width: 768px) {
   .marco-cuadro-patagonico {
-    width: 300px;
-    height: 220px;
+    width: 290px;
+    height: 215px;
   }
 }
 
@@ -2364,4 +2364,28 @@ html:not(.dark) #pantalla-bienvenida .border-neutral-800 {
   border-top: 4px solid #D4AF37;
   color: #1E293B;
   box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.55);
+}
+
+/* Alto contraste para Museo y Modal de Salas contra modo claro global */
+#vista-museo-austral h2,
+#vista-museo-austral h3,
+#vista-museo-austral h4,
+#drawer-selector-salas h2,
+#drawer-selector-salas h3,
+#drawer-selector-salas h4,
+#drawer-selector-salas .titulo-sala-card,
+#titulo-modal-salas {
+  color: #FAF6EE !important;
+}
+
+#drawer-selector-salas .numero-sala-badge {
+  color: #FBBF24 !important;
+}
+
+#drawer-selector-salas .subtitulo-sala-card {
+  color: #FEF3C7 !important;
+}
+
+#drawer-selector-salas .desc-sala-card {
+  color: #D6D3D1 !important;
 }

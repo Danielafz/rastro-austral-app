@@ -761,6 +761,11 @@
         <button type="button" id="btn-museo-lang-es" class="px-2 py-0.5 rounded font-bold bg-amber-600 text-white transition cursor-pointer">ES</button>
         <button type="button" id="btn-museo-lang-en" class="px-2 py-0.5 rounded text-amber-200/60 hover:text-white transition cursor-pointer">EN</button>
       </div>
+
+      <!-- Barra de Progreso del Recorrido (1/18 a 18/18) -->
+      <div class="absolute bottom-0 left-0 right-0 h-1 bg-stone-900 overflow-hidden" title="Progreso del recorrido">
+        <div id="barra-progreso-museo" class="h-full bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 transition-all duration-300" style="width: 5.55%;" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="18"></div>
+      </div>
     </header>
 
     <!-- Escenario 2D: Museo Elegante Patagónico con Pasillo Desplazable -->
@@ -896,7 +901,7 @@
         <div class="p-4 border-b border-stone-800 flex items-center justify-between bg-stone-900/90">
           <div class="flex items-center gap-2.5">
             <span class="text-2xl">🏛️</span>
-            <h3 class="font-bold text-white text-base sm:text-lg font-marca-austral tracking-wide">Salas del Museo Austral</h3>
+            <h3 id="titulo-modal-salas" class="font-bold text-white text-base sm:text-lg font-marca-austral tracking-wide" style="color: #FAF6EE !important;">Salas del Museo Austral</h3>
           </div>
           <button type="button" id="btn-cerrar-drawer-salas" class="w-8 h-8 rounded-full bg-stone-800 text-stone-200 hover:text-white hover:bg-stone-700 flex items-center justify-center text-sm font-bold transition cursor-pointer">✕</button>
         </div>
@@ -924,6 +929,15 @@
           <div class="flex-1 min-w-0">
             <h3 id="sheet-obra-titulo" class="font-serif font-bold text-lg sm:text-xl text-slate-900 leading-tight"></h3>
             <p id="sheet-obra-meta" class="text-xs font-semibold text-amber-800 mt-1"></p>
+
+            <!-- Botón de Audioguía con Web Speech API offline -->
+            <button type="button" id="btn-audioguia-museo"
+              class="mt-2.5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-200/70 hover:bg-amber-300 text-amber-950 text-xs font-bold transition active:scale-95 cursor-pointer border border-amber-400/60 shadow-sm"
+              title="Escuchar descripción por voz">
+              <span id="icono-audioguia">🔊</span>
+              <span id="texto-audioguia">Escuchar audioguía</span>
+            </button>
+
             <p id="sheet-obra-desc" class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-2.5"></p>
             <p id="sheet-obra-credito" class="text-[10px] text-stone-500 font-mono mt-3"></p>
           </div>
@@ -932,11 +946,28 @@
         <!-- Etiqueta de Hito territorial relacionado -->
         <div id="sheet-obra-hito-badge" class="hidden p-2.5 rounded-xl bg-amber-100/70 border border-amber-300 text-xs flex items-center gap-2"></div>
 
+        <!-- Navegación entre obras anterior / siguiente -->
+        <div class="flex items-center justify-between gap-3 pt-1">
+          <button type="button" id="btn-obra-anterior"
+            class="flex-1 py-2 px-3 rounded-xl bg-stone-200/90 hover:bg-stone-300 text-stone-800 font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 cursor-pointer border border-stone-300"
+            title="Obra anterior">
+            <span>◀</span>
+            <span id="texto-obra-anterior">Anterior</span>
+          </button>
+          <span id="indicador-obra-contador" class="text-xs font-mono font-bold text-amber-900 px-2 shrink-0">1 / 18</span>
+          <button type="button" id="btn-obra-siguiente"
+            class="flex-1 py-2 px-3 rounded-xl bg-stone-200/90 hover:bg-stone-300 text-stone-800 font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 cursor-pointer border border-stone-300"
+            title="Obra siguiente">
+            <span id="texto-obra-siguiente">Siguiente</span>
+            <span>▶</span>
+          </button>
+        </div>
+
         <!-- Botón Seguir Recorriendo -->
         <button type="button" id="btn-seguir-recorriendo-obra"
           class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2">
           <span>🏛️</span>
-          <span>Seguir recorriendo</span>
+          <span id="texto-seguir-recorriendo">Seguir recorriendo</span>
         </button>
       </div>
     </div>

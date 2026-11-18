@@ -1,4 +1,5 @@
-const CACHE_NAME = 'rastro-austral-v86'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v87'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const FONT_OUTFIT_URL = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap';
 const urlsToCache = [
   './',
   './index.html',
@@ -21,11 +22,21 @@ const urlsToCache = [
   './assets/hitos/rg-02.svg'
 ];
 
-// Instalar y tomar el control inmediatamente
+// Instalar y tomar el control inmediatamente con precaché seguro (sin fallar offline)
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(async cache => {
+      await cache.addAll(urlsToCache);
+      try {
+        const fontRes = await fetch(FONT_OUTFIT_URL, { mode: 'cors' });
+        if (fontRes && fontRes.ok) {
+          await cache.put(FONT_OUTFIT_URL, fontRes);
+        }
+      } catch (err) {
+        console.warn('No se pudo precachear fuente externa Outfit en install:', err);
+      }
+    })
   );
 });
 

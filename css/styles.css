@@ -1,3 +1,9 @@
+/* Tipografía oficial de marca Rastro Austral */
+.font-marca-austral {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.025em;
+}
+
 /* Utilidad para ocultar scrollbar en carruseles móviles */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;

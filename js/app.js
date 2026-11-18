@@ -4630,21 +4630,40 @@ function configurarPantallaBienvenida() {
         }, 880);
     });
 
-    // Permitir editar el nombre abriendo nuevamente la pantalla sin pre-seleccionar el texto
-    if (btnEditar) {
+    // Navegación directa a pantalla de bienvenida al hacer clic en la píldora/botón de identidad
+    function abrirPantallaBienvenidaParaEdicion() {
+        const nombreActual = (typeof obtenerNombreExplorador === "function" ? obtenerNombreExplorador() : "") || (inputNombre ? inputNombre.value : "");
+        if (inputNombre) {
+            inputNombre.value = (nombreActual || "").trim();
+        }
+        pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
+        pantalla.classList.add("z-[9999]");
+        actualizarBurbujaSaludoPinguino(inputNombre ? inputNombre.value : "");
+        actualizarDialogoYMirada();
+        activarSaludoPinguino(1600);
+        setTimeout(() => {
+            if (inputNombre) {
+                inputNombre.focus();
+                const len = inputNombre.value.length;
+                if (typeof inputNombre.setSelectionRange === "function") {
+                    inputNombre.setSelectionRange(len, len);
+                }
+            }
+        }, 80);
+    }
+    window.abrirPantallaBienvenidaParaEdicion = abrirPantallaBienvenidaParaEdicion;
+
+    if (badgeExplorador) {
+        badgeExplorador.addEventListener("click", (e) => {
+            e.stopPropagation();
+            abrirPantallaBienvenidaParaEdicion();
+        });
+    }
+
+    if (btnEditar && btnEditar !== badgeExplorador) {
         btnEditar.addEventListener("click", (e) => {
             e.stopPropagation();
-            pantalla.classList.remove("hidden", "opacity-0", "pointer-events-none");
-            actualizarDialogoYMirada();
-            setTimeout(() => {
-                if (inputNombre) {
-                    inputNombre.focus();
-                    const len = inputNombre.value.length;
-                    if (typeof inputNombre.setSelectionRange === "function") {
-                        inputNombre.setSelectionRange(len, len);
-                    }
-                }
-            }, 60);
+            abrirPantallaBienvenidaParaEdicion();
         });
     }
 }

@@ -3099,6 +3099,7 @@ function cambiarIdioma(nuevoIdioma) {
 window.cambiarIdioma = cambiarIdioma;
 
 function actualizarTextosUI() {
+    document.title = "Rastro Austral";
     const t = DICCIONARIO[idiomaActual];
     if (!t) return;
 

@@ -1,6 +1,6 @@
 {
   "name": "Rastro Austral",
-  "short_name": "Rastro",
+  "short_name": "Rastro Austral",
   "description": "Atlas y Diario de Expedición de Tierra del Fuego",
   "start_url": "./index.html",
   "display": "standalone",

@@ -772,36 +772,40 @@ function renderizarMarcadores(anunciarResultados = false) {
         const colorPin = visitado ? '#10b981' : colorBase;
         const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
 
+        // Ícono vectorial minimalista según categoría (14x14px, stroke-width="2.2")
+        let iconoCategoriaSVG = "";
+        if (hito.categoria === "senderos") {
+            // Cumbre doble / montañas
+            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`;
+        } else if (hito.categoria === "economia_creativa") {
+            // Estrella / destello artesanal
+            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"></path></svg>`;
+        } else {
+            // Patrimonio (por defecto): Brújula
+            iconoCategoriaSVG = `<svg class="absolute z-10" style="top: 9px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${colorPin}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>`;
+        }
+
+        // Halo animado detrás del pin cuando está seleccionado
+        const haloSeleccionado = seleccionado
+            ? `<div class="absolute w-8 h-8 rounded-full animate-ping opacity-60" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>
+               <div class="absolute w-8 h-8 rounded-full opacity-25 blur-[2px]" style="background-color: ${colorPin}; top: 0px; z-index: 0;"></div>`
+            : "";
+
         const icono = L.divIcon({
             className: `marcador-hito cursor-pointer ${seleccionado ? 'marcador-seleccionado' : ''}`,
             html: `
         <div class="relative flex items-center justify-center transform hover:scale-125 transition-all duration-200 ${seleccionado ? 'scale-125' : ''}" style="width: 32px; height: 38px;">
+          <!-- Halo radial animado para hito activo -->
+          ${haloSeleccionado}
+
           <!-- Pin del Mapa (Globo portador con fondo interior blanco) -->
-          <svg class="absolute drop-shadow-md" width="32" height="38" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="absolute drop-shadow-md z-[1]" width="32" height="38" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 0C7.16 0 0 7.16 0 16C0 26.5 16 38 16 38C16 38 32 26.5 32 16C32 7.16 24.84 0 16 0Z" fill="${colorPin}" />
             <path d="M16 2.5C8.54 2.5 2.5 8.54 2.5 16C2.5 24.5 16 33.5 16 33.5C16 33.5 29.5 24.5 29.5 16C29.5 8.54 23.46 2.5 16 2.5Z" fill="#ffffff" />
           </svg>
           
-          <!-- Ilustración del Pingüino -->
-          <svg class="absolute z-10" width="18" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="top: 6px;">
-            <!-- Cuerpo y Cabeza (Negro con trazo de contraste) -->
-            <path d="M12 2C8 2 5 6 5 12C5 17 8 21 12 21C16 21 19 17 19 12C19 6 16 2 12 2Z" fill="#0f172a" stroke="#334155" stroke-width="0.5"/>
-            <!-- Panza (Blanca) -->
-            <path d="M12 7C9.5 7 7.5 9.5 7.5 13.5C7.5 16.5 9.5 19 12 19C14.5 19 16.5 16.5 16.5 13.5C16.5 9.5 14.5 7 12 7Z" fill="#ffffff"/>
-            <!-- Ojos (Blanco y Negro) -->
-            <circle cx="10" cy="6.5" r="1.5" fill="#ffffff"/>
-            <circle cx="10" cy="6.5" r="0.75" fill="#000000"/>
-            <circle cx="14" cy="6.5" r="1.5" fill="#ffffff"/>
-            <circle cx="14" cy="6.5" r="0.75" fill="#000000"/>
-            <!-- Pico (Naranja) -->
-            <polygon points="12,7.5 10.5,9.5 13.5,9.5" fill="#f97316"/>
-            <!-- Alitas laterales (Negro) -->
-            <path d="M4.5 10C4 11.5 4 14.5 5 16C5.5 15 5.5 11.5 5 10" fill="#0f172a"/>
-            <path d="M19.5 10C20 11.5 20 14.5 19 16C18.5 15 18.5 11.5 19 10" fill="#0f172a" stroke="#334155" stroke-width="0.4"/>
-            <!-- Patitas (Naranja) -->
-            <ellipse cx="9.5" cy="20.5" rx="1.8" ry="1" fill="#f97316"/>
-            <ellipse cx="14.5" cy="20.5" rx="1.8" ry="1" fill="#f97316"/>
-          </svg>
+          <!-- Ícono temático de categoría -->
+          ${iconoCategoriaSVG}
 
           <!-- Pequeño check vibrante si ya está visitado -->
           ${visitado ? `

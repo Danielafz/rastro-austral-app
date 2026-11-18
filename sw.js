@@ -17,7 +17,10 @@ const urlsToCache = [
   './assets/hitos/ush-01.svg',
   './assets/hitos/ush-02.svg',
   './assets/hitos/tol-02.svg',
-  './assets/hitos/rg-02.svg'
+  './assets/hitos/rg-02.svg',
+  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css',
+  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css',
+  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js'
 ];
 
 // Instalar y tomar el control inmediatamente

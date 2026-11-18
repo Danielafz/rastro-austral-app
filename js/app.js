@@ -2153,7 +2153,7 @@ function configurarPanelMobile() {
     if (!panel) return;
 
     function alternarBottomSheet() {
-        if (!panel.classList.contains("translate-y-full") && panel.classList.contains("translate-y-0")) {
+        if (panel.classList.contains("translate-y-0")) {
             cerrarPanelMobile();
         } else {
             abrirPanelMobile();
@@ -2198,21 +2198,22 @@ function configurarPanelMobile() {
 function abrirPanelMobile() {
     const panel = document.getElementById("panel-lateral");
     if (!panel) return;
-    panel.classList.remove("translate-y-full");
+    panel.classList.remove("translate-y-[120%]", "translate-y-full");
     panel.classList.add("translate-y-0");
     actualizarEstadoMobileNav("hitos");
+    setTimeout(() => mapa && mapa.invalidateSize(), 250);
 }
 
 function cerrarPanelMobile() {
     const panel = document.getElementById("panel-lateral");
     if (!panel) return;
-    panel.classList.add("translate-y-full");
-    panel.classList.remove("translate-y-0");
+    panel.classList.add("translate-y-[120%]");
+    panel.classList.remove("translate-y-0", "translate-y-full");
     actualizarEstadoMobileNav("mapa");
     if (mapa) {
         mapa.invalidateSize();
-        setTimeout(() => mapa.invalidateSize(), 300);
     }
+    setTimeout(() => mapa && mapa.invalidateSize(), 250);
 }
 
 function actualizarEstadoMobileNav(activa) {
@@ -2249,8 +2250,8 @@ function configurarMobileBottomNav() {
     if (btnMapa) {
         btnMapa.addEventListener("click", () => {
             if (panel) {
-                panel.classList.add("translate-y-full");
-                panel.classList.remove("translate-y-0");
+                panel.classList.add("translate-y-[120%]");
+                panel.classList.remove("translate-y-0", "translate-y-full");
             }
             cerrarTodasLasVistas();
             const modalPasaporte = document.getElementById("modal-pasaporte") || document.getElementById("modal-libreta");
@@ -2261,8 +2262,8 @@ function configurarMobileBottomNav() {
             actualizarEstadoMobileNav("mapa");
             if (mapa) {
                 mapa.invalidateSize();
-                setTimeout(() => mapa.invalidateSize(), 150);
             }
+            setTimeout(() => mapa && mapa.invalidateSize(), 250);
         });
     }
 
@@ -2280,18 +2281,19 @@ function configurarMobileBottomNav() {
             }
             cambiarPestanaSidebar("explorar");
             if (panel) {
-                panel.classList.remove("translate-y-full");
+                panel.classList.remove("translate-y-[120%]", "translate-y-full");
                 panel.classList.add("translate-y-0");
             }
             actualizarEstadoMobileNav("hitos");
+            setTimeout(() => mapa && mapa.invalidateSize(), 250);
         });
     }
 
     if (btnBitacora) {
         btnBitacora.addEventListener("click", () => {
             if (panel) {
-                panel.classList.add("translate-y-full");
-                panel.classList.remove("translate-y-0");
+                panel.classList.add("translate-y-[120%]");
+                panel.classList.remove("translate-y-0", "translate-y-full");
             }
             cambiarPestanaSidebar("pasaporte");
             actualizarEstadoMobileNav("bitacora");
@@ -2301,8 +2303,8 @@ function configurarMobileBottomNav() {
     if (btnObservatorio) {
         btnObservatorio.addEventListener("click", () => {
             if (panel) {
-                panel.classList.add("translate-y-full");
-                panel.classList.remove("translate-y-0");
+                panel.classList.add("translate-y-[120%]");
+                panel.classList.remove("translate-y-0", "translate-y-full");
             }
             cambiarPestanaSidebar("observatorio");
             actualizarEstadoMobileNav("observatorio");

@@ -293,14 +293,13 @@
     class="flex items-center justify-between py-1.5 px-3 md:px-6 bg-white border-b border-slate-200 text-xs shadow-sm z-[20] relative flex-shrink-0">
 
     <!-- Estado de Sincronización -->
-    <div class="flex items-center gap-1.5 text-emerald-600 font-medium whitespace-nowrap overflow-hidden">
+    <div class="flex items-center gap-1.5 text-emerald-600 font-medium whitespace-nowrap shrink-0">
       <div id="indicador-estado-red"
         class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" aria-hidden="true"></div>
       <!-- En móviles mostramos un texto corto, en desktop el texto completo -->
-      <span class="truncate">
-        <span id="txt-estado-red-mobile" class="inline md:hidden">Modo Offline</span>
-        <span id="txt-estado-red" class="hidden md:inline" data-i18n="estado_red_sincronizado">Atlas Sincronizado · Modo
-          Offline Activo</span>
+      <span id="txt-estado-red-mobile" class="inline md:hidden shrink-0 whitespace-nowrap">Offline</span>
+      <span class="hidden md:inline truncate">
+        <span id="txt-estado-red" data-i18n="estado_red_sincronizado">Atlas Sincronizado · Modo Offline Activo</span>
       </span>
     </div>
 

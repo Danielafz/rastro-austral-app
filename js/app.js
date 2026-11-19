@@ -5879,17 +5879,17 @@ function actualizarBannerModoOffline() {
         banner.classList.add("modo-sin-conexion");
         indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0";
         txtEstado.innerText = t.estado_red_offline || "Sin Señal · Modo Expedición Offline Activo";
-        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline" : "Sin Señal";
+        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "No Signal" : "Sin Señal";
     } else if (tsOffline && listaHitos.length > 0) {
         banner.classList.remove("modo-sin-conexion");
         indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 shrink-0";
         txtEstado.innerText = `${t.estado_red_resguardado || "Expedición Lista Offline"} · ${listaHitos.length} ${idiomaActual === "en" ? "cards cached" : "fichas resguardadas"}`;
-        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline Ready" : "Listo Offline";
+        if (txtMobile) txtMobile.innerText = "Offline";
     } else {
         banner.classList.remove("modo-sin-conexion");
         indicador.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0";
         txtEstado.innerText = t.estado_red_sincronizado || "Atlas Sincronizado · Modo Offline Activo";
-        if (txtMobile) txtMobile.innerText = idiomaActual === "en" ? "Offline Mode" : "Modo Offline";
+        if (txtMobile) txtMobile.innerText = "Offline";
     }
 
     if (btnGuardar) {

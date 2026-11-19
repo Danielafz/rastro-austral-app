@@ -931,6 +931,13 @@ async function cargarDatos() {
         }
     }
 
+    // Asegurar preservación de ilustración local vectorial (.svg) como respaldo offline
+    listaHitos.forEach(h => {
+        if (!h.imagenOriginal) {
+            h.imagenOriginal = h.imagen || './assets/hitos/ush-01.svg';
+        }
+    });
+
     datosHitos = {};
     listaHitos.forEach((h, idx) => {
         datosHitos[h.id] = h;
@@ -950,7 +957,163 @@ async function cargarDatos() {
     actualizarMetricas();
     actualizarHuellaConsciente();
     actualizarTrazadoRuta();
+
+    // Resolver fotografías reales de Wikimedia Commons (con caché offline en localStorage)
+    resolverFotosRealesHitos();
 }
+
+// Mapa de consultas de fotografías reales en Wikimedia Commons para los 26 hitos territoriales
+const FOTOS_REALES_HITOS = {
+    "ush-01": "Ensenada Zaratiegui Ushuaia",
+    "ush-02": "Glaciar Vinciguerra",
+    "ush-03": "Presidio de Ushuaia Museo Maritimo",
+    "ush-04": "Laguna Esmeralda Ushuaia",
+    "ush-diseno-austral": "Casa Beban Ushuaia",
+    "ush-06": "Paso Garibaldi Tierra del Fuego",
+    "alm-centolla": "Puerto Almanza",
+    "tol-01": "Lago Fagnano Tolhuin",
+    "tol-02": "Laguna Negra Tierra del Fuego",
+    "tol-03": "Lago Yehuin",
+    "tol-04": "Tolhuin Argentina",
+    "rg-01": "Mision Salesiana Rio Grande",
+    "rg-02": "Ovejas Patagonia Argentina",
+    "rg-03": "Costa Atlantica Tierra del Fuego",
+    "rg-frigorifico-cap": "Frigorifico CAP Rio Grande",
+    "mit-01": "Desdemona Cabo San Pablo",
+    "taller-hilado-tolhuin": "Centre Tolhuin",
+    "ceramica-arcillas-rg": "Rio Grande Argentina",
+    "editorial-diseno-ushuaia": "Ushuaia Canal Beagle",
+    "ant-01": "Base Esperanza Antartida",
+    "alm-01": "Puerto Almanza Canal Beagle",
+    "ss-01": "Bahia San Sebastian Tierra del Fuego",
+    "ush-05": "Bahia Lapataia Tierra del Fuego",
+    "tol-05": "Lago Fagnano Hualo",
+    "rg-04": "Cabo Domingo Tierra del Fuego",
+    "mal-01": "Cementerio Argentino de Puerto Darwin"
+};
+
+// Sincronizar dinámicamente imagen de detalle si la ficha está activa o abierta
+function actualizarImagenDetalleSiAbierto(hitoId) {
+    if (!hitoId || hitoId === hitoSeleccionadoId) {
+        const idActual = hitoId || hitoSeleccionadoId;
+        const hito = (window.datosHitos && window.datosHitos[idActual]) ||
+                     (Array.isArray(listaHitos) ? listaHitos.find(h => h.id === idActual || String(h.id) === String(idActual)) : null);
+        if (hito) {
+            const fallback = hito.imagenOriginal || './assets/hitos/ush-01.svg';
+            const imgEl = document.getElementById('detalle-imagen');
+            if (imgEl) {
+                imgEl.src = hito.imagen || fallback;
+                imgEl.dataset.fallback = fallback;
+            }
+            const imgHito = document.getElementById('detalle-imagen-hito');
+            if (imgHito) {
+                imgHito.src = hito.imagen || fallback;
+                imgHito.dataset.fallback = fallback;
+            }
+            const credEl = document.getElementById('detalle-credito-imagen');
+            if (credEl && hito.credito_imagen) {
+                credEl.textContent = hito.credito_imagen;
+            }
+        }
+    }
+}
+window.actualizarImagenDetalleSiAbierto = actualizarImagenDetalleSiAbierto;
+
+// Resolver fotografías reales de Wikimedia Commons con persistencia en localStorage y fallback offline
+async function resolverFotosRealesHitos() {
+    if (!Array.isArray(listaHitos) || listaHitos.length === 0) return;
+
+    const CACHE_KEY = "rastro_hitos_fotos_cache_v1";
+    let cacheFotos = {};
+    try {
+        const guardado = localStorage.getItem(CACHE_KEY);
+        if (guardado) {
+            cacheFotos = JSON.parse(guardado);
+        }
+    } catch (e) {
+        console.warn("Error al leer caché local de fotografías:", e);
+    }
+
+    // 1. Aplicar de inmediato fotos ya existentes en el caché persistente
+    let cambiosDesdeCache = false;
+    listaHitos.forEach(hito => {
+        if (!hito.imagenOriginal) {
+            hito.imagenOriginal = hito.imagen || './assets/hitos/ush-01.svg';
+        }
+        if (cacheFotos[hito.id] && cacheFotos[hito.id].url) {
+            hito.imagen = cacheFotos[hito.id].url;
+            if (cacheFotos[hito.id].credito) {
+                hito.credito_imagen = cacheFotos[hito.id].credito;
+            }
+            cambiosDesdeCache = true;
+        }
+    });
+
+    if (cambiosDesdeCache) {
+        renderizarListaHitosCompacta();
+        actualizarImagenDetalleSiAbierto();
+    }
+
+    // Si estamos sin conexión de red, no intentar consultas remotas
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        return;
+    }
+
+    // 2. Para los hitos sin fotografía real resuelta, consultar Wikimedia Commons
+    let huboNuevasFotos = false;
+    for (const hito of listaHitos) {
+        const query = FOTOS_REALES_HITOS[hito.id];
+        if (!query) continue;
+
+        if (cacheFotos[hito.id] && cacheFotos[hito.id].url) {
+            continue; // Ya resuelta y persistida
+        }
+
+        try {
+            const urlApi = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(query)}&gsrnamespace=6&gsrlimit=1&prop=imageinfo&iiprop=url|user&iiurlwidth=800&format=json&origin=*`;
+            const resp = await fetch(urlApi);
+            if (resp.ok) {
+                const data = await resp.json();
+                const pages = data && data.query && data.query.pages;
+                if (pages) {
+                    const firstPage = Object.values(pages)[0];
+                    const info = firstPage && firstPage.imageinfo && firstPage.imageinfo[0];
+                    if (info) {
+                        const fotoUrl = info.thumburl || info.url;
+                        const autor = info.user ? `Wikimedia Commons / ${info.user}` : "Wikimedia Commons";
+
+                        hito.imagen = fotoUrl;
+                        hito.credito_imagen = autor;
+                        cacheFotos[hito.id] = {
+                            url: fotoUrl,
+                            credito: autor,
+                            timestamp: Date.now()
+                        };
+                        huboNuevasFotos = true;
+
+                        // Actualizar tarjetas y ficha abierta progresivamente
+                        renderizarListaHitosCompacta();
+                        actualizarImagenDetalleSiAbierto(hito.id);
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn(`[Wikimedia Commons] No se pudo resolver foto para hito ${hito.id}:`, err);
+        }
+
+        // Breve pausa para respetar las políticas de tasa de consulta de Wikimedia Commons
+        await new Promise(r => setTimeout(r, 200));
+    }
+
+    if (huboNuevasFotos) {
+        try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(cacheFotos));
+        } catch (e) {
+            console.warn("No se pudo persistir caché de fotos en localStorage:", e);
+        }
+    }
+}
+window.resolverFotosRealesHitos = resolverFotosRealesHitos;
 
 function actualizarTrazadoRuta() {
   actualizarMetricasDistancia();
@@ -1565,11 +1728,13 @@ function generarTarjetaHitoActivoHTML(hito, visitado) {
     const badgeFrag = obtenerBadgeFragilidad(hito.fragilidad, idiomaActual);
     const textoVerFicha = idiomaActual === "en" ? "View card →" : "Ver ficha →";
     const textoActivo = idiomaActual === "en" ? "Selected site" : "Hito activo";
+    const fallbackSvg = hito.imagenOriginal || './assets/hitos/ush-01.svg';
+    const imagenSrc = hito.imagen || fallbackSvg;
 
     return `
       <div class="tarjeta-hito-activa hito-card p-3 mb-2 bg-white/95 md:bg-orange-50/30 rounded-2xl border border-orange-500 ring-1 ring-orange-500 shadow-sm transition-all cursor-pointer group" data-id="${hito.id}">
         <div class="flex items-start gap-3">
-          <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-14 h-14 rounded-lg object-cover shrink-0 bg-slate-100 border border-orange-200">
+          <img src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-14 h-14 rounded-lg object-cover shrink-0 bg-slate-100 border border-orange-200">
           <div class="flex-grow min-w-0">
             <div class="flex items-center justify-between gap-1">
               <div class="flex items-center gap-1">
@@ -1598,10 +1763,12 @@ function generarTarjetaHitoCompactaHTML(hito, visitado) {
     const rubro = (idiomaActual === "en" && hito.rubroCreativo_en) ? hito.rubroCreativo_en : (hito.rubroCreativo || (hito.categoria ? hito.categoria.replace('_', ' ') : ''));
     const colorBase = COLORES_CATEGORIA[hito.categoria] || "#f59e0b";
     const colorDot = visitado ? '#10b981' : colorBase;
+    const fallbackSvg = hito.imagenOriginal || './assets/hitos/ush-01.svg';
+    const imagenSrc = hito.imagen || fallbackSvg;
 
     return `
       <div class="tarjeta-hito-compacta hito-card flex items-center gap-2.5 p-2 bg-white/95 hover:bg-slate-50/90 rounded-xl border border-slate-200/80 hover:border-slate-300 shadow-2xs transition-all cursor-pointer group" data-id="${hito.id}">
-        <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-100 border border-slate-100">
+        <img src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-100 border border-slate-100">
         <div class="flex-grow min-w-0">
           <div class="flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${colorDot}"></span>
@@ -1757,7 +1924,15 @@ function abrirDetalleHito(id) {
 
         // Inyectar datos en elementos estructurados
         const imgEl = document.getElementById('detalle-imagen');
-        if (imgEl) imgEl.src = data.imagen || './icon.svg';
+        if (imgEl) {
+            const fallbackSvg = data.imagenOriginal || './assets/hitos/ush-01.svg';
+            imgEl.dataset.fallback = fallbackSvg;
+            imgEl.onerror = function() {
+                this.onerror = null;
+                this.src = this.dataset.fallback || './assets/hitos/ush-01.svg';
+            };
+            imgEl.src = data.imagen || fallbackSvg;
+        }
 
         const titulo = (idiomaActual === "en" && data.nombre_en) ? data.nombre_en : (data.titulo || data.nombre);
         const titEl = document.getElementById('detalle-titulo');
@@ -1867,14 +2042,17 @@ function mostrarDetalleHito(hito) {
         speechSynthesis.cancel();
     }
 
+    const fallbackSvg = hito.imagenOriginal || './assets/hitos/ush-01.svg';
+    const imagenSrc = hito.imagen || fallbackSvg;
+
     panel.innerHTML = `
     <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
       <!-- Tarjeta Fotográfica de Cabecera (respeta el border-radius superior) -->
       <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
-        <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-full h-full object-cover">
+        <img id="detalle-imagen-hito" src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-full h-full object-cover">
         <div class="absolute bottom-2 right-2 bg-slate-900/85 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] text-slate-300 border border-slate-700/60 shadow-sm flex items-center gap-1">
           <span>📷</span>
-          <span class="truncate max-w-[170px]">${hito.credito_imagen || 'IDETDF'}</span>
+          <span id="detalle-credito-imagen" class="truncate max-w-[170px]">${hito.credito_imagen || 'IDETDF'}</span>
         </div>
       </div>
 

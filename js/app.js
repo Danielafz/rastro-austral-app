@@ -15,6 +15,7 @@ let datosHitos = {};
 let filtroActivo = "todos";
 let filtroFragilidad = "todas";
 let filtroEstadoVisita = "todos";
+let filtroSoloAccesibles = false;
 let busquedaActiva = "";
 let territorioActivo = "todos";
 let hitoSeleccionadoId = null;
@@ -281,7 +282,21 @@ const DICCIONARIO = {
         leyenda_senderos: "Senderos",
         leyenda_creativos: "Creativos",
         leyenda_visitado: "Visitado en bitácora",
-        aviso_modo_provincia: "🧭 Elegí una ciudad arriba para descubrir sus pingüinos, o marcá lugares visitados para verlos aquí"
+        aviso_modo_provincia: "🧭 Elegí una ciudad arriba para descubrir sus pingüinos, o marcá lugares visitados para verlos aquí",
+        a11y_titulo: "Accesibilidad Digital",
+        a11y_subtitulo: "WCAG 2.1 AA · Ley 26.653",
+        a11y_tamano_texto: "Tamaño de Texto",
+        a11y_alto_contraste: "Modo Alto Contraste",
+        a11y_alto_contraste_desc: "Bordes nítidos y máximo realce",
+        a11y_reducir_movimiento: "Reducir Animaciones",
+        a11y_reducir_movimiento_desc: "Minimiza efectos de movimiento",
+        a11y_leer_voz_alta: "Leer Hito / Vista en Voz Alta",
+        a11y_detener_voz_alta: "Detener Lectura de Voz",
+        filtro_solo_accesibles: "Solo sitios accesibles (Movilidad reducida)",
+        badge_accesible: "Accesible",
+        detalle_accesibilidad_tit: "Accesibilidad Física e Inclusiva:",
+        guia_inclusiva_tit: "8. Caminata Inclusiva y Accesibilidad en Senderos",
+        guia_inclusiva_desc: "Diversas reservas y parques (como el PN Tierra del Fuego en Bahía Lapataia y senderos de pasarelas en Ushuaia y Río Grande) cuentan con pasarelas de madera con pendiente suave, barandas y miradores accesibles para sillas de ruedas o cochecitos. En áreas de montaña agreste, consultá previamente a Defensa Civil (103) o guardaparques provinciales por disponibilidad de sillas de ruedas todoterreno (tipo Joëlette) o senderos adaptados para personas con movilidad reducida y personas ciegas."
     },
     en: {
         subtitulo: "Atlas & Territorial Exploration Journal",
@@ -468,7 +483,21 @@ const DICCIONARIO = {
         leyenda_senderos: "Trails",
         leyenda_creativos: "Creative",
         leyenda_visitado: "Visited in logbook",
-        aviso_modo_provincia: "🧭 Choose a city above to discover its penguins, or mark visited places to see them here"
+        aviso_modo_provincia: "🧭 Choose a city above to discover its penguins, or mark visited places to see them here",
+        a11y_titulo: "Digital Accessibility",
+        a11y_subtitulo: "WCAG 2.1 AA · Law 26.653",
+        a11y_tamano_texto: "Text Size",
+        a11y_alto_contraste: "High Contrast Mode",
+        a11y_alto_contraste_desc: "Sharp borders and high contrast",
+        a11y_reducir_movimiento: "Reduce Motion",
+        a11y_reducir_movimiento_desc: "Minimizes motion animations",
+        a11y_leer_voz_alta: "Read Site / View Aloud",
+        a11y_detener_voz_alta: "Stop Voice Reading",
+        filtro_solo_accesibles: "Only accessible sites (Reduced mobility)",
+        badge_accesible: "Accessible",
+        detalle_accesibilidad_tit: "Physical & Inclusive Accessibility:",
+        guia_inclusiva_tit: "8. Inclusive Hiking & Trail Accessibility",
+        guia_inclusiva_desc: "Several reserves and parks (such as Tierra del Fuego NP at Lapataia Bay and boardwalk trails in Ushuaia and Río Grande) feature gentle-slope wooden boardwalks, handrails, and scenic overlooks accessible for wheelchairs and strollers. In rugged mountain areas, check with Civil Defense (103) or provincial rangers in advance regarding all-terrain wheelchairs (Joëlette type) or adaptive trails for people with reduced mobility or visual impairment."
     }
 };
 
@@ -608,6 +637,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarSelectorLocalidades();
     configurarPanelMobile();
     configurarConmutadorIdioma();
+    configurarPanelAccesibilidad();
     configurarBotonExportar();
     configurarModoOffline();
     inicializarEstadoLeyendaMapa();
@@ -1044,6 +1074,8 @@ function renderizarMarcadores(anunciarResultados = false) {
         if (filtroEstadoVisita === "visitados" && !visitado) return false;
         if (filtroEstadoVisita === "pendientes" && visitado) return false;
 
+        if (filtroSoloAccesibles && !hito.accesible) return false;
+
         if (!coincideTerritorio(hito.localidad, valorTerritorio)) {
             return false;
         }
@@ -1228,8 +1260,9 @@ function actualizarContadorFiltros(totalFiltrados, totalTotal) {
         const hayFiltroCat = filtroActivo !== "todos" && filtroActivo !== "todas";
         const hayFiltroFrag = filtroFragilidad !== "todas" && filtroFragilidad !== "todos";
         const hayFiltroEstado = filtroEstadoVisita !== "todos";
+        const hayFiltroAccesible = filtroSoloAccesibles === true;
 
-        if (hayFiltroTerritorio || hayFiltroBusqueda || hayFiltroCat || hayFiltroFrag || hayFiltroEstado) {
+        if (hayFiltroTerritorio || hayFiltroBusqueda || hayFiltroCat || hayFiltroFrag || hayFiltroEstado || hayFiltroAccesible) {
             btnLimpiar.classList.remove("hidden");
         } else {
             btnLimpiar.classList.add("hidden");
@@ -1243,6 +1276,10 @@ function limpiarTodosLosFiltros() {
     const inputBusqueda = document.getElementById("buscador-hitos");
     if (inputBusqueda) inputBusqueda.value = "";
     document.getElementById("btn-limpiar-busqueda")?.classList.add("hidden");
+
+    filtroSoloAccesibles = false;
+    const chkAccesibles = document.getElementById("filtro-solo-accesibles");
+    if (chkAccesibles) chkAccesibles.checked = false;
 
     filtroActivo = "todos";
     const botonesCat = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
@@ -1360,6 +1397,7 @@ function actualizarContadoresCategoria() {
     const territorio = territorioActivo || "todos";
 
     const hitosBase = listaHitos.filter(hito => {
+        if (filtroSoloAccesibles && !hito.accesible) return false;
         if (!coincideTerritorio(hito.localidad, territorio)) return false;
         if (!q) return true;
         return (
@@ -1459,7 +1497,10 @@ function generarTarjetaHitoActivoHTML(hito, visitado) {
           <img src="${hito.imagen || './icon.svg'}" alt="${nombre}" class="w-14 h-14 rounded-lg object-cover shrink-0 bg-slate-100 border border-orange-200">
           <div class="flex-grow min-w-0">
             <div class="flex items-center justify-between gap-1">
-              <span class="text-[9px] font-bold uppercase tracking-wider text-orange-600 bg-orange-100/80 px-1.5 py-0.5 rounded">${textoActivo}</span>
+              <div class="flex items-center gap-1">
+                <span class="text-[9px] font-bold uppercase tracking-wider text-orange-600 bg-orange-100/80 px-1.5 py-0.5 rounded">${textoActivo}</span>
+                ${hito.accesible ? `<span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded flex items-center gap-0.5" title="${idiomaActual === 'en' ? 'Accessible' : 'Accesible'}">♿</span>` : ''}
+              </div>
               ${visitado ? '<span class="text-emerald-600 text-xs font-bold flex items-center gap-0.5" title="Visitado">✓ Visitado</span>' : ''}
             </div>
             <h3 class="text-xs font-bold text-slate-800 truncate mt-1 group-hover:text-orange-600 transition-colors">${nombre}</h3>
@@ -1490,6 +1531,7 @@ function generarTarjetaHitoCompactaHTML(hito, visitado) {
           <div class="flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${colorDot}"></span>
             <h4 class="text-xs font-bold text-slate-800 truncate group-hover:text-orange-600 transition-colors">${nombre}</h4>
+            ${hito.accesible ? `<span class="text-emerald-600 text-[10px] shrink-0 font-bold" title="${idiomaActual === 'en' ? 'Accessible' : 'Accesible'}">♿</span>` : ''}
             ${visitado ? '<span class="text-emerald-500 text-xs shrink-0 font-bold" title="Visitado">✓</span>' : ''}
           </div>
           <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mt-0.5">
@@ -1769,6 +1811,12 @@ function mostrarDetalleHito(hito) {
                     style="color: ${color}; border-color: ${color}40; background-color: ${color}15;">
                 ${hito.localidad} · ${hito.categoria.replace('_', ' ')}
               </span>
+              ${hito.accesible ? `
+                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-300/80 dark:border-emerald-700/80" title="${t.badge_accesible}">
+                  <span>♿</span>
+                  <span>${t.badge_accesible}</span>
+                </span>
+              ` : ''}
               ${hito.selloIdentidad ? `
                 <span class="badge-identidad-fueguina" title="${t.sello_identidad_sub}">
                   <svg class="w-3.5 h-3.5 text-amber-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1837,6 +1885,18 @@ function mostrarDetalleHito(hito) {
         <p class="text-xs text-slate-700 leading-relaxed border-t border-slate-200 pt-2.5">
           ${descripcion}
         </p>
+
+        ${hito.accesible && (hito.detalleAccesibilidad || hito.detalleAccesibilidad_en) ? `
+          <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl space-y-1 text-xs">
+            <div class="flex items-center gap-1.5 text-emerald-800 dark:text-emerald-300 font-bold">
+              <span>♿</span>
+              <span>${t.detalle_accesibilidad_tit}</span>
+            </div>
+            <p class="text-emerald-900/90 dark:text-emerald-200 text-[11px] leading-relaxed">
+              ${(idiomaActual === "en" && hito.detalleAccesibilidad_en) ? hito.detalleAccesibilidad_en : hito.detalleAccesibilidad}
+            </p>
+          </div>
+        ` : ''}
 
         ${(hito.selloIdentidad || rubroCreativo || hito.contacto) ? `
           <div class="bloque-comercio-justo p-3 rounded-xl text-[11px] space-y-1">
@@ -2396,6 +2456,16 @@ function configurarFiltros() {
     const btnLimpiar = document.getElementById("btn-limpiar-filtros");
     if (btnLimpiar) {
         btnLimpiar.addEventListener("click", limpiarTodosLosFiltros);
+    }
+
+    const chkAccesibles = document.getElementById("filtro-solo-accesibles");
+    if (chkAccesibles) {
+        chkAccesibles.addEventListener("change", (e) => {
+            filtroSoloAccesibles = e.target.checked;
+            actualizarContadoresCategoria();
+            renderizarMarcadores(true);
+            actualizarTrazadoRuta();
+        });
     }
 
     document.addEventListener("click", (e) => {
@@ -3128,6 +3198,189 @@ function configurarConmutadorIdioma() {
     }
     if (btnBienvenidaEn) {
         btnBienvenidaEn.addEventListener("click", () => cambiarIdioma("en"));
+    }
+}
+
+// 13.1. Panel de Accesibilidad Universal (WCAG 2.1 AA · Ley 26.653)
+function configurarPanelAccesibilidad() {
+    const btnPanel = document.getElementById("btn-panel-accesibilidad");
+    const popover = document.getElementById("popover-accesibilidad");
+    const btnCerrar = document.getElementById("btn-cerrar-popover-accesibilidad");
+    const toggleContraste = document.getElementById("toggle-alto-contraste");
+    const toggleMovimiento = document.getElementById("toggle-reducir-movimiento");
+    const btnVoz = document.getElementById("btn-leer-voz-alta");
+    const txtVoz = document.getElementById("txt-leer-voz-alta");
+    const btnsFont = document.querySelectorAll(".btn-a11y-font");
+
+    if (!btnPanel || !popover) return;
+
+    // Cargar preferencias guardadas
+    let prefs = { fontSize: "16px", altoContraste: false, reducirMovimiento: false };
+    try {
+        const guardado = localStorage.getItem("rastro_accesibilidad_prefs");
+        if (guardado) {
+            prefs = Object.assign(prefs, JSON.parse(guardado));
+        }
+    } catch (e) {
+        console.warn("No se pudieron cargar preferencias de accesibilidad", e);
+    }
+
+    const guardarPrefs = () => {
+        try {
+            localStorage.setItem("rastro_accesibilidad_prefs", JSON.stringify(prefs));
+        } catch (e) {
+            console.warn("No se pudieron guardar preferencias de accesibilidad", e);
+        }
+    };
+
+    // Aplicar preferencias
+    const aplicarPrefs = () => {
+        if (prefs.fontSize) {
+            document.documentElement.style.fontSize = prefs.fontSize;
+            btnsFont.forEach(btn => {
+                if (btn.getAttribute("data-size") === prefs.fontSize) {
+                    btn.classList.add("bg-white", "text-amber-700", "shadow-xs");
+                    btn.classList.remove("text-slate-600");
+                } else {
+                    btn.classList.remove("bg-white", "text-amber-700", "shadow-xs");
+                    btn.classList.add("text-slate-600");
+                }
+            });
+        }
+        if (prefs.altoContraste) {
+            document.documentElement.classList.add("alto-contraste");
+            if (toggleContraste) toggleContraste.checked = true;
+        } else {
+            document.documentElement.classList.remove("alto-contraste");
+            if (toggleContraste) toggleContraste.checked = false;
+        }
+        if (prefs.reducirMovimiento) {
+            document.documentElement.classList.add("reducir-movimiento");
+            if (toggleMovimiento) toggleMovimiento.checked = true;
+        } else {
+            document.documentElement.classList.remove("reducir-movimiento");
+            if (toggleMovimiento) toggleMovimiento.checked = false;
+        }
+    };
+
+    aplicarPrefs();
+
+    // Abrir/cerrar popover
+    btnPanel.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const estaOculto = popover.classList.contains("hidden");
+        if (estaOculto) {
+            popover.classList.remove("hidden");
+            btnPanel.setAttribute("aria-expanded", "true");
+        } else {
+            popover.classList.add("hidden");
+            btnPanel.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    if (btnCerrar) {
+        btnCerrar.addEventListener("click", () => {
+            popover.classList.add("hidden");
+            btnPanel.setAttribute("aria-expanded", "false");
+        });
+    }
+
+    document.addEventListener("click", (e) => {
+        if (!popover.contains(e.target) && !btnPanel.contains(e.target)) {
+            popover.classList.add("hidden");
+            btnPanel.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    // Control de tamaño de fuente
+    btnsFont.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const size = btn.getAttribute("data-size");
+            if (size) {
+                prefs.fontSize = size;
+                document.documentElement.style.fontSize = size;
+                guardarPrefs();
+                aplicarPrefs();
+            }
+        });
+    });
+
+    // Modo Alto Contraste
+    if (toggleContraste) {
+        toggleContraste.addEventListener("change", (e) => {
+            prefs.altoContraste = e.target.checked;
+            guardarPrefs();
+            aplicarPrefs();
+        });
+    }
+
+    // Modo Reducir Movimiento
+    if (toggleMovimiento) {
+        toggleMovimiento.addEventListener("change", (e) => {
+            prefs.reducirMovimiento = e.target.checked;
+            guardarPrefs();
+            aplicarPrefs();
+        });
+    }
+
+    // Lector de voz accesible
+    if (btnVoz) {
+        btnVoz.addEventListener("click", () => {
+            if (!('speechSynthesis' in window)) {
+                alert(idiomaActual === "en" ? "Speech synthesis not supported in this browser." : "La síntesis de voz no está soportada en este navegador.");
+                return;
+            }
+
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                if (txtVoz) {
+                    txtVoz.textContent = DICCIONARIO[idiomaActual].a11y_leer_voz_alta;
+                }
+                return;
+            }
+
+            let textoLectura = "";
+            const t = DICCIONARIO[idiomaActual];
+
+            if (hitoSeleccionadoId && Array.isArray(listaHitos)) {
+                const hito = listaHitos.find(h => h.id === hitoSeleccionadoId || String(h.id) === String(hitoSeleccionadoId));
+                if (hito) {
+                    const nombre = (idiomaActual === "en" && hito.nombre_en) ? hito.nombre_en : hito.nombre;
+                    const desc = (idiomaActual === "en" && hito.descripcion_en) ? hito.descripcion_en : hito.descripcion;
+                    const acc = hito.accesible ? (t.badge_accesible + ". " + ((idiomaActual === "en" && hito.detalleAccesibilidad_en) ? hito.detalleAccesibilidad_en : hito.detalleAccesibilidad || "")) : "";
+                    textoLectura = `${nombre}. ${hito.localidad}. ${desc}. ${acc}`;
+                }
+            }
+
+            if (!textoLectura) {
+                const contador = document.getElementById("contador-hitos")?.textContent || "";
+                textoLectura = idiomaActual === "en"
+                    ? `Rastro Austral. Exploration map. ${contador}. Universal Accessibility active.`
+                    : `Rastro Austral. Mapa y diario territorial. ${contador}. Accesibilidad universal activa.`;
+            }
+
+            const utter = new SpeechSynthesisUtterance(textoLectura);
+            utter.lang = idiomaActual === "en" ? "en-US" : "es-AR";
+            utter.rate = 0.95;
+
+            utter.onstart = () => {
+                if (txtVoz) {
+                    txtVoz.textContent = t.a11y_detener_voz_alta;
+                }
+            };
+            utter.onend = () => {
+                if (txtVoz) {
+                    txtVoz.textContent = t.a11y_leer_voz_alta;
+                }
+            };
+            utter.onerror = () => {
+                if (txtVoz) {
+                    txtVoz.textContent = t.a11y_leer_voz_alta;
+                }
+            };
+
+            window.speechSynthesis.speak(utter);
+        });
     }
 }
 

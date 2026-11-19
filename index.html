@@ -218,6 +218,72 @@
         <button id="btn-lang-en" type="button" aria-label="Cambiar idioma a inglés"
           class="px-2 sm:px-2.5 py-1 rounded-md transition text-slate-400 hover:text-white">EN</button>
       </div>
+
+      <!-- Botón y Popover de Accesibilidad Universal -->
+      <div class="relative">
+        <button id="btn-panel-accesibilidad" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false" aria-controls="popover-accesibilidad" title="Accesibilidad Universal (WCAG)"
+          class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-white text-sm font-semibold transition shadow-sm hover:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <span aria-hidden="true" class="text-base">♿</span>
+        </button>
+
+        <!-- Popover Accesibilidad -->
+        <div id="popover-accesibilidad" role="dialog" aria-label="Panel de Accesibilidad" class="hidden absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-2xl p-4 z-[999] text-slate-800">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">♿</span>
+              <div>
+                <h3 class="font-bold text-sm text-slate-900" data-i18n="a11y_titulo">Accesibilidad Digital</h3>
+                <p class="text-[11px] text-slate-500" data-i18n="a11y_subtitulo">WCAG 2.1 AA · Ley 26.653</p>
+              </div>
+            </div>
+            <button id="btn-cerrar-popover-accesibilidad" type="button" aria-label="Cerrar panel de accesibilidad" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1">✕</button>
+          </div>
+
+          <div class="space-y-3.5 text-xs">
+            <!-- Tamaño de Fuente -->
+            <div>
+              <label class="block font-semibold mb-1.5 text-slate-700" data-i18n="a11y_tamano_texto">Tamaño de Texto</label>
+              <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-lg">
+                <button type="button" id="btn-a11y-font-sm" class="btn-a11y-font py-1.5 px-2 rounded font-bold text-center transition bg-white text-amber-700 shadow-xs" data-size="16px">100%</button>
+                <button type="button" id="btn-a11y-font-md" class="btn-a11y-font py-1.5 px-2 rounded font-bold text-center transition text-slate-600 hover:bg-white/50" data-size="18px">115%</button>
+                <button type="button" id="btn-a11y-font-lg" class="btn-a11y-font py-1.5 px-2 rounded font-bold text-center transition text-slate-600 hover:bg-white/50" data-size="20px">130%</button>
+              </div>
+            </div>
+
+            <!-- Alto Contraste -->
+            <div class="flex items-center justify-between py-1">
+              <div>
+                <span class="font-semibold block text-slate-800" data-i18n="a11y_alto_contraste">Modo Alto Contraste</span>
+                <span class="text-[11px] text-slate-500" data-i18n="a11y_alto_contraste_desc">Bordes nítidos y máximo realce</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-alto-contraste" class="sr-only peer">
+                <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-600"></div>
+              </label>
+            </div>
+
+            <!-- Reducir Movimiento -->
+            <div class="flex items-center justify-between py-1">
+              <div>
+                <span class="font-semibold block text-slate-800" data-i18n="a11y_reducir_movimiento">Reducir Animaciones</span>
+                <span class="text-[11px] text-slate-500" data-i18n="a11y_reducir_movimiento_desc">Minimiza efectos de movimiento</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-reducir-movimiento" class="sr-only peer">
+                <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-600"></div>
+              </label>
+            </div>
+
+            <!-- Lector de Pantalla / Voz alta -->
+            <div class="pt-2 border-t border-slate-200">
+              <button type="button" id="btn-leer-voz-alta" class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300 transition">
+                <span class="text-base" aria-hidden="true">🔊</span>
+                <span id="txt-leer-voz-alta" data-i18n="a11y_leer_voz_alta">Leer Hito / Vista en Voz Alta</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -458,6 +524,18 @@
                     </svg>
                   </div>
                 </div>
+              </div>
+
+              <!-- Filtro Accesibilidad Física -->
+              <div class="col-span-1 sm:col-span-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+                <label for="filtro-solo-accesibles" class="flex items-center gap-2 cursor-pointer text-slate-700 select-none">
+                  <span class="text-sm">♿</span>
+                  <span class="text-[11px] font-semibold" data-i18n="filtro_solo_accesibles">Solo sitios accesibles (Movilidad reducida)</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="filtro-solo-accesibles" class="sr-only peer">
+                  <div class="w-8 h-4.5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-emerald-600"></div>
+                </label>
               </div>
             </div>
           </div>
@@ -1533,6 +1611,17 @@
               <h4 class="font-bold text-slate-900 dark:text-white text-xs mb-1" data-i18n="guia_seguridad_tit">7. Seguridad durante el recorrido</h4>
               <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed" data-i18n="guia_seguridad_desc">
                 Respetá indicaciones del guía o guardaparques; permanecé siempre en senderos señalizados; no te alejes del grupo sin aviso; mantené un ritmo adecuado; avisá ante cualquier malestar físico; no arrojes residuos ni alteres el entorno; <strong>e informá siempre a un familiar o persona de confianza el recorrido elegido y el horario aproximado de regreso</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- 8. Caminata Inclusiva y Accesibilidad en Senderos -->
+          <div class="bg-indigo-50/70 dark:bg-indigo-950/40 p-3.5 rounded-xl border border-indigo-200/80 dark:border-indigo-800/60 flex items-start gap-3">
+            <span class="text-xl shrink-0">♿</span>
+            <div>
+              <h4 class="font-bold text-indigo-950 dark:text-indigo-200 text-xs mb-1" data-i18n="guia_inclusiva_tit">8. Caminata Inclusiva y Accesibilidad en Senderos</h4>
+              <p class="text-indigo-900/90 dark:text-indigo-300 text-xs leading-relaxed" data-i18n="guia_inclusiva_desc">
+                Diversas reservas y parques (como el PN Tierra del Fuego en Bahía Lapataia y senderos de pasarelas en Ushuaia y Río Grande) cuentan con pasarelas de madera con pendiente suave, barandas y miradores accesibles para sillas de ruedas o cochecitos. En áreas de montaña agreste, consultá previamente a <strong>Defensa Civil (103)</strong> o guardaparques provinciales por disponibilidad de <strong>sillas de ruedas todoterreno (tipo Joëlette)</strong> o senderos adaptados para personas con movilidad reducida y personas ciegas.
               </p>
             </div>
           </div>

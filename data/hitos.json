@@ -19,7 +19,10 @@
     "fuente": "IDETDF - Áreas Naturales Protegidas / CADIC-CONICET",
     "insignia": "sello_costero",
     "imagen": "./assets/hitos/ush-01.svg",
-    "credito_imagen": "CADIC-CONICET / Parques Nacionales"
+    "credito_imagen": "CADIC-CONICET / Parques Nacionales",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ush-02",
@@ -41,7 +44,10 @@
     "fuente": "CADIC-CONICET / Secretaría de Ambiente TDF",
     "insignia": "sello_glaciar",
     "imagen": "./assets/hitos/ush-01.svg",
-    "credito_imagen": "CADIC-CONICET"
+    "credito_imagen": "CADIC-CONICET",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ush-03",
@@ -63,7 +69,10 @@
     "fuente": "Comisión Nacional de Monumentos / IDETDF",
     "insignia": "sello_presidio",
     "imagen": "./assets/hitos/tol-01.svg",
-    "credito_imagen": "Museo Marítimo de Ushuaia"
+    "credito_imagen": "Museo Marítimo de Ushuaia",
+    "accesible": true,
+    "detalleAccesibilidad": "Rampas de acceso, ascensor en pabellones centrales y pasillos amplios sin desniveles para sillas de ruedas.",
+    "detalleAccesibilidad_en": "Access ramps, elevator in central wings, and wide flat corridors suitable for wheelchairs."
   },
   {
     "id": "ush-04",
@@ -85,7 +94,10 @@
     "fuente": "InFueTur / Dirección General de Recursos Hídricos",
     "insignia": "sello_esmeralda",
     "imagen": "./assets/hitos/tol-02.svg",
-    "credito_imagen": "InFueTur / Ambiente TDF"
+    "credito_imagen": "InFueTur / Ambiente TDF",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ush-diseno-austral",
@@ -111,7 +123,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Cerámica, Tintes Botánicos & Ilustración",
     "rubroCreativo_en": "Ceramics, Botanical Dyes & Illustration",
-    "contacto": "Ushuaia Puerto · Red de Talleres Australes"
+    "contacto": "Ushuaia Puerto · Red de Talleres Australes",
+    "accesible": true,
+    "detalleAccesibilidad": "Entrada a nivel sobre calle San Martín, puertas dobles anchas y salón de exposición sin desniveles.",
+    "detalleAccesibilidad_en": "Street-level entrance on San Martín street, wide double doors, and step-free exhibition hall."
   },
   {
     "id": "ush-06",
@@ -133,7 +148,10 @@
     "fuente": "Vialidad Nacional / IDETDF",
     "insignia": "sello_garibaldi",
     "imagen": "./assets/hitos/tol-02.svg",
-    "credito_imagen": "IDETDF Cartografía"
+    "credito_imagen": "IDETDF Cartografía",
+    "accesible": true,
+    "detalleAccesibilidad": "Acceso vehicular directo hasta la explanada del mirador y plataforma de observación pavimentada sin escalones.",
+    "detalleAccesibilidad_en": "Direct vehicle access to the scenic overlook esplanade and paved observation platform without steps."
   },
   {
     "id": "alm-centolla",
@@ -155,7 +173,10 @@
     "fuente": "Secretaría de Desarrollo Productivo / CADIC",
     "insignia": "sello_almanza",
     "imagen": "./assets/hitos/rg-02.svg",
-    "credito_imagen": "Comunidad Pescadora Almanza"
+    "credito_imagen": "Comunidad Pescadora Almanza",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "tol-01",
@@ -177,7 +198,10 @@
     "fuente": "IDETDF / Pueblos Originarios (Cosmovisión y Toponimia Selk'nam)",
     "insignia": "sello_maderero",
     "imagen": "./assets/hitos/tol-01.svg",
-    "credito_imagen": "Archivo Histórico Provincial / IDETDF"
+    "credito_imagen": "Archivo Histórico Provincial / IDETDF",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "tol-02",
@@ -199,7 +223,10 @@
     "fuente": "IDETDF / CADIC-CONICET / Pueblos Originarios (Toponimia Selk'nam)",
     "insignia": "sello_turbal",
     "imagen": "./assets/hitos/tol-02.svg",
-    "credito_imagen": "CADIC-CONICET / Dirección de Áreas Protegidas"
+    "credito_imagen": "CADIC-CONICET / Dirección de Áreas Protegidas",
+    "accesible": true,
+    "detalleAccesibilidad": "Pasarelas de madera niveladas sobre turbal con pendiente suave, descansos intermedios y mirador accesible.",
+    "detalleAccesibilidad_en": "Leveled wooden boardwalks over peat bog with gentle slope, intermediate resting spots, and accessible lookout."
   },
   {
     "id": "tol-03",
@@ -221,7 +248,10 @@
     "fuente": "Secretaría de Ambiente / Sistema Provincial de Áreas Protegidas",
     "insignia": "sello_corazon",
     "imagen": "./assets/hitos/tol-02.svg",
-    "credito_imagen": "Áreas Protegidas TDF"
+    "credito_imagen": "Áreas Protegidas TDF",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "tol-04",
@@ -247,7 +277,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Tornería en Lenga & Alfarería",
     "rubroCreativo_en": "Fallen Lenga Woodturning & Pottery",
-    "contacto": "Tolhuin Pueblo · Cooperativa Raíces Fueguinas (articulación: dir.cultura@tolhuin.gob.ar)"
+    "contacto": "Tolhuin Pueblo · Cooperativa Raíces Fueguinas (articulación: dir.cultura@tolhuin.gob.ar)",
+    "accesible": true,
+    "detalleAccesibilidad": "Estacionamiento adaptado, rampas de ingreso al taller y salón de demostración con circulación despejada.",
+    "detalleAccesibilidad_en": "Adapted parking, workshop entrance ramps, and open-plan demonstration showroom."
   },
   {
     "id": "rg-01",
@@ -269,7 +302,10 @@
     "fuente": "Municipio de Río Grande (Historia y Patrimonio Selk'nam) / Pueblos Originarios",
     "insignia": "sello_norte",
     "imagen": "./assets/hitos/rg-01.svg",
-    "credito_imagen": "Museo Histórico Monseñor Fagnano / IDETDF"
+    "credito_imagen": "Museo Histórico Monseñor Fagnano / IDETDF",
+    "accesible": true,
+    "detalleAccesibilidad": "Senderos compactados nivelados y rampas de acceso al Museo Histórico Regional Monseñor Fagnano.",
+    "detalleAccesibilidad_en": "Leveled compacted gravel paths and access ramps to the Monsignor Fagnano Regional Historical Museum."
   },
   {
     "id": "rg-02",
@@ -295,7 +331,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Hilado & Tejido Ovino Comunitario",
     "rubroCreativo_en": "Community Sheep Wool Spinning & Weaving",
-    "contacto": "Margen Sur, Río Grande · Red Comunitaria"
+    "contacto": "Margen Sur, Río Grande · Red Comunitaria",
+    "accesible": true,
+    "detalleAccesibilidad": "Explanada de acceso nivelada sin escalones, salón de hilado espacioso y sanitarios adaptados.",
+    "detalleAccesibilidad_en": "Step-free leveled entrance esplanade, spacious spinning hall, and adapted restrooms."
   },
   {
     "id": "rg-03",
@@ -317,7 +356,10 @@
     "fuente": "Ramsar Convention / Municipio de Río Grande (Turismo y Patrimonio Selk'nam)",
     "insignia": "sello_aves",
     "imagen": "./assets/hitos/rg-01.svg",
-    "credito_imagen": "Sitio Ramsar Costa Atlántica"
+    "credito_imagen": "Sitio Ramsar Costa Atlántica",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "rg-frigorifico-cap",
@@ -339,7 +381,10 @@
     "fuente": "Comisión Nacional de Monumentos / Municipio Río Grande",
     "insignia": "sello_cap",
     "imagen": "./assets/hitos/tol-01.svg",
-    "credito_imagen": "Archivo Histórico Municipal Río Grande"
+    "credito_imagen": "Archivo Histórico Municipal Río Grande",
+    "accesible": true,
+    "detalleAccesibilidad": "Acceso vehicular pavimentado sobre la costa y recorrido exterior perimetral llano sin desniveles pronunciados.",
+    "detalleAccesibilidad_en": "Paved coastal vehicle access and flat exterior perimeter route without steep grades."
   },
   {
     "id": "mit-01",
@@ -361,7 +406,10 @@
     "fuente": "Prefectura Naval Argentina / IDETDF",
     "insignia": "sello_naufragio",
     "imagen": "./assets/hitos/rg-01.svg",
-    "credito_imagen": "IDETDF Turismo"
+    "credito_imagen": "IDETDF Turismo",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "taller-hilado-tolhuin",
@@ -387,7 +435,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Textil & Hilado Natural",
     "rubroCreativo_en": "Textiles & Natural Wool Spinning",
-    "contacto": "Tolhuin Centro · Red de Hilanderas Fueguinas"
+    "contacto": "Tolhuin Centro · Red de Hilanderas Fueguinas",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ceramica-arcillas-rg",
@@ -413,7 +464,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Alfarería con Arcillas Locales",
     "rubroCreativo_en": "Local Clay Pottery & Ceramics",
-    "contacto": "Barrio AGP, Río Grande"
+    "contacto": "Barrio AGP, Río Grande",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "editorial-diseno-ushuaia",
@@ -439,7 +493,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Diseño & Encuadernación Autoral",
     "rubroCreativo_en": "Authorial Design & Bookbinding",
-    "contacto": "Paseo de los Artesanos / Puerto Ushuaia"
+    "contacto": "Paseo de los Artesanos / Puerto Ushuaia",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ant-01",
@@ -461,7 +518,10 @@
     "fuente": "Comando Conjunto Antártico / Ministerio de Educación TDF",
     "insignia": "sello_antartida",
     "imagen": "./assets/hitos/ush-01.svg",
-    "credito_imagen": "Comando Conjunto Antártico / Base Esperanza"
+    "credito_imagen": "Comando Conjunto Antártico / Base Esperanza",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "alm-01",
@@ -487,7 +547,10 @@
     "selloIdentidad": true,
     "rubroCreativo": "Pesca Artesanal & Gastronomía Austral",
     "rubroCreativo_en": "Artisanal Fishing & Subantarctic Gastronomy",
-    "contacto": "Caleta de Pescadores, Puerto Almanza"
+    "contacto": "Caleta de Pescadores, Puerto Almanza",
+    "accesible": true,
+    "detalleAccesibilidad": "Acceso vehicular directo a orilla del Canal Beagle, restaurantes con rampas y pasarela costera baja accesible.",
+    "detalleAccesibilidad_en": "Direct coastal road access along the Beagle Channel, restaurants with ramps, and low accessible boardwalk."
   },
   {
     "id": "ss-01",
@@ -509,7 +572,10 @@
     "fuente": "Comisión Nacional de Límites / IGN Argentina",
     "insignia": "sello_frontera",
     "imagen": "./assets/hitos/rg-01.svg",
-    "credito_imagen": "IGN Argentina / IDETDF"
+    "credito_imagen": "IGN Argentina / IDETDF",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "ush-05",
@@ -531,7 +597,10 @@
     "fuente": "Parques Nacionales / CADIC-CONICET",
     "insignia": "sello_lapataia",
     "imagen": "./assets/hitos/ush-01.svg",
-    "credito_imagen": "Parques Nacionales / CADIC-CONICET"
+    "credito_imagen": "Parques Nacionales / CADIC-CONICET",
+    "accesible": true,
+    "detalleAccesibilidad": "Pasarelas de madera niveladas con pendiente suave, barandas de seguridad y mirador costero accesible apto para sillas de ruedas.",
+    "detalleAccesibilidad_en": "Leveled wooden boardwalks with gentle slope, safety handrails, and an accessible coastal lookout suitable for wheelchairs."
   },
   {
     "id": "tol-05",
@@ -553,7 +622,10 @@
     "fuente": "InFueTur / Municipio de Tolhuin",
     "insignia": "sello_mirador",
     "imagen": "./assets/hitos/tol-02.svg",
-    "credito_imagen": "InFueTur / Municipio de Tolhuin"
+    "credito_imagen": "InFueTur / Municipio de Tolhuin",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "rg-04",
@@ -575,7 +647,10 @@
     "fuente": "Municipio de Río Grande / IDETDF",
     "insignia": "sello_costero_norte",
     "imagen": "./assets/hitos/rg-01.svg",
-    "credito_imagen": "Municipio de Río Grande / IDETDF"
+    "credito_imagen": "Municipio de Río Grande / IDETDF",
+    "accesible": false,
+    "detalleAccesibilidad": null,
+    "detalleAccesibilidad_en": null
   },
   {
     "id": "mal-01",
@@ -597,6 +672,9 @@
     "fuente": "Comisión de Familiares de Caídos / IGN",
     "insignia": "sello_soberania_malvinas",
     "imagen": "./assets/hitos/ush-01.svg",
-    "credito_imagen": "Archivo Histórico Malvinas"
+    "credito_imagen": "Archivo Histórico Malvinas",
+    "accesible": true,
+    "detalleAccesibilidad": "Sendero entablonado nivelado con barandas perimetrales y acceso adaptado para visitantes de toda movilidad.",
+    "detalleAccesibilidad_en": "Leveled boardwalk with perimeter handrails and adapted access for visitors of all mobility levels."
   }
 ]

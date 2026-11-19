@@ -2904,3 +2904,72 @@ html.dark .rotulo-originario-bahia .rotulo-nombre-principal {
 html.dark .rotulo-originario-bahia .rotulo-subtexto {
   color: #6ee7b7;
 }
+
+/* ==========================================================================
+   Accesibilidad Universal (WCAG 2.1 AA · Ley 26.653)
+   ========================================================================== */
+
+/* Modo Alto Contraste */
+html.alto-contraste {
+  filter: contrast(115%);
+}
+
+html.alto-contraste body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.alto-contraste #header-principal,
+html.alto-contraste #panel-lateral,
+html.alto-contraste #banner-modo-offline,
+html.alto-contraste #modal-detalle-hito > div,
+html.alto-contraste #modal-creditos > div,
+html.alto-contraste #modal-guia-caminata > div,
+html.alto-contraste #modal-galeria-territorial > div,
+html.alto-contraste #popover-accesibilidad {
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 0 1px #000000 !important;
+}
+
+html.alto-contraste button,
+html.alto-contraste a,
+html.alto-contraste input,
+html.alto-contraste select {
+  outline: 2px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+
+html.alto-contraste .tarjeta-hito-lista,
+html.alto-contraste .tarjeta-hito-compacta,
+html.alto-contraste .tarjeta-hito-activa {
+  border: 2px solid #334155 !important;
+}
+
+html.alto-contraste .tarjeta-hito-lista:focus-visible,
+html.alto-contraste .tarjeta-hito-compacta:focus-visible,
+html.alto-contraste .tarjeta-hito-activa:focus-visible,
+html.alto-contraste .tarjeta-hito-lista:hover,
+html.alto-contraste .tarjeta-hito-compacta:hover,
+html.alto-contraste .tarjeta-hito-activa:hover {
+  border: 2px solid #f59e0b !important;
+}
+
+/* Indicadores de foco universales (WCAG 2.4.7) */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid #f59e0b !important;
+  outline-offset: 2px !important;
+}
+
+/* Reducción de Movimiento (WCAG 2.3.3) */
+html.reducir-movimiento *,
+html.reducir-movimiento *::before,
+html.reducir-movimiento *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

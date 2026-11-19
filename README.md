@@ -99,6 +99,23 @@ Para expandir el museo, editá `js/museo-data.js` agregando un objeto a `SALAS_M
 }
 ```
 
+---
+
+## ♿ 3.2. Accesibilidad Universal y Turismo Inclusivo (WCAG 2.1 AA · Ley 26.653)
+
+Rastro Austral incorpora un sistema integral de accesibilidad digital y física para garantizar el derecho a la información territorial y el turismo inclusivo:
+* **Panel Flotante de Accesibilidad Digital (`♿`):** Ubicado en la barra superior junto al selector de idiomas. Permite adaptar la experiencia en tiempo real con persistencia local (`localStorage`):
+  - **Escala tipográfica variable:** Ajuste entre 100% (16px), 115% (18px) y 130% (20px) para facilitar la lectura sin distorsionar la grilla.
+  - **Modo Alto Contraste:** Bordes reforzados, realce visual de botones y supresión de elementos de bajo contraste.
+  - **Reducción de movimiento:** Desactiva transiciones y animaciones para personas con sensibilidad vestibular.
+  - **Lector de voz integrado (Text-to-Speech):** Síntesis de voz nativa del navegador que lee en voz alta la ficha del hito seleccionado o el estado de la vista cartográfica.
+* **Filtro y Marcadores de Accesibilidad Física en Territorio:**
+  - Identificación de 11 hitos territoriales adaptados para personas con movilidad reducida (rampas, pasarelas de madera, sanitarios accesibles y senderos adaptados) con insignia visible `♿ Accesible`.
+  - Filtro booleano directo en el explorador para mostrar únicamente sitios con infraestructura accesible.
+* **Caminata Inclusiva y Senderismo Adaptado:** Recomendaciones específicas dentro del modal de Montaña y Emergencias sobre senderos accesibles y uso de sillas todoterreno tipo Joëlette en parques y reservas fueguinas en articulación con guardaparques y Defensa Civil (103).
+
+---
+
 ## ⚙️ 4. Stack Tecnológico
 * **Frontend & Interfaz:** HTML5, CSS3, JavaScript (Vanilla), TailwindCSS (vía CDN), Chart.js (vía CDN), diseño de alto contraste y accesibilidad auditiva (WCAG 2.1 AA / Ley 26.653).
 * **Cartografía & GIS:** Leaflet.js, OpenStreetMap, OpenTopoMap, capas vectoriales GeoJSON nativas (`data/areas_protegidas.geojson`, `data/alertas_turbales.geojson`).

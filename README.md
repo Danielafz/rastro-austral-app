@@ -173,5 +173,17 @@ Optimizado para despliegue estático continuo en **Vercel** u otras plataformas 
 
 ---
 
+## Uso Transparente de Inteligencia Artificial
+
+En **Rastro Austral**, la Inteligencia Artificial fue utilizada como herramienta de apoyo y aceleración durante el desarrollo, siempre bajo supervisión humana y validación contra fuentes oficiales argentinas:
+
+* **Generación de Identidad Visual y Multimedia:** Creación de la ilustración oficial de bienvenida del Pingüino Explorador (`assets/pinguino-bienvenida.webp`) y apoyo en la conceptualización visual y narrativa del video de presentación.
+* **Curaduría Territorial y Educativa:** Síntesis y estructuración de reseñas históricas, fichas ambientales de los 26 hitos y contenidos pedagógicos de las 9 salas del Museo Austral 2D.
+* **Internacionalización y Toponimia Originaria:** Traducción integral Español/Inglés de la interfaz y organización de guías fonéticas de voces Selk'nam y Yámana.
+* **Visualización de Datos Ambientales:** Estructuración de indicadores históricos y proyecciones al 2030 sobre turbales y glaciares para el Observatorio Climático.
+* **Control de Calidad y Accesibilidad (QA):** Auditoría técnica de cumplimiento WCAG 2.1 AA, contraste cromático, lectores de pantalla e integridad del caché offline.
+
+---
+
 ## 📄 7. Licencias
 Distribuido bajo Licencia **MIT**. Uso de cartografía según lineamientos oficiales del Instituto Geográfico Nacional (IGN Argentina). Fotografías y datos de repositorios institucionales y Wikimedia Commons citados bajo licencias de Dominio Público y Creative Commons (CC BY-SA 4.0). Datos meteorológicos provistos por Open-Meteo bajo licencia CC BY 4.0.

@@ -5271,7 +5271,7 @@ function renderizarModalPasaporte() {
                 </div>
 
                 <div class="mt-3 pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] text-amber-500 font-medium">
-                    <span>${visitado ? t.tocar_explorar : t.estado_por_explorar}</span>
+                    <span>${t.tocar_explorar}</span>
                     <span>→</span>
                 </div>
             </div>

@@ -301,7 +301,11 @@ const DICCIONARIO = {
         badge_accesible: "Accesible",
         detalle_accesibilidad_tit: "Accesibilidad Física e Inclusiva:",
         guia_inclusiva_tit: "8. Caminata Inclusiva y Accesibilidad en Senderos",
-        guia_inclusiva_desc: "Diversas reservas y parques (como el PN Tierra del Fuego en Bahía Lapataia y senderos de pasarelas en Ushuaia y Río Grande) cuentan con pasarelas de madera con pendiente suave, barandas y miradores accesibles para sillas de ruedas o cochecitos. En áreas de montaña agreste, consultá previamente a Defensa Civil (103) o guardaparques provinciales por disponibilidad de sillas de ruedas todoterreno (tipo Joëlette) o senderos adaptados para personas con movilidad reducida y personas ciegas."
+        guia_inclusiva_desc: "Diversas reservas y parques (como el PN Tierra del Fuego en Bahía Lapataia y senderos de pasarelas en Ushuaia y Río Grande) cuentan con pasarelas de madera con pendiente suave, barandas y miradores accesibles para sillas de ruedas o cochecitos. En áreas de montaña agreste, consultá previamente a Defensa Civil (103) o guardaparques provinciales por disponibilidad de sillas de ruedas todoterreno (tipo Joëlette) o senderos adaptados para personas con movilidad reducida y personas ciegas.",
+        guardar_fichas_offline_corto: "Guardar",
+        selecciona_punto_mapa: "Selecciona un punto en el mapa",
+        toca_marcador_desc: "Toca cualquier marcador para ver su información",
+        fuentes_oficiales: "Fuentes Oficiales"
     },
     en: {
         subtitulo: "Atlas & Territorial Exploration Journal",
@@ -507,7 +511,11 @@ const DICCIONARIO = {
         badge_accesible: "Accessible",
         detalle_accesibilidad_tit: "Physical & Inclusive Accessibility:",
         guia_inclusiva_tit: "8. Inclusive Hiking & Trail Accessibility",
-        guia_inclusiva_desc: "Several reserves and parks (such as Tierra del Fuego NP at Lapataia Bay and boardwalk trails in Ushuaia and Río Grande) feature gentle-slope wooden boardwalks, handrails, and scenic overlooks accessible for wheelchairs and strollers. In rugged mountain areas, check with Civil Defense (103) or provincial rangers in advance regarding all-terrain wheelchairs (Joëlette type) or adaptive trails for people with reduced mobility or visual impairment."
+        guia_inclusiva_desc: "Several reserves and parks (such as Tierra del Fuego NP at Lapataia Bay and boardwalk trails in Ushuaia and Río Grande) feature gentle-slope wooden boardwalks, handrails, and scenic overlooks accessible for wheelchairs and strollers. In rugged mountain areas, check with Civil Defense (103) or provincial rangers in advance regarding all-terrain wheelchairs (Joëlette type) or adaptive trails for people with reduced mobility or visual impairment.",
+        guardar_fichas_offline_corto: "Save",
+        selecciona_punto_mapa: "Select a point on the map",
+        toca_marcador_desc: "Tap any marker to view its information",
+        fuentes_oficiales: "Official Sources"
     }
 };
 
@@ -2610,6 +2618,130 @@ const ICONOS_3D_SELLOS = {
       <line x1="22.5" y1="10" x2="27" y2="10" stroke="#f59e0b" stroke-width="1.5"/>
       <rect x="15" y="22" width="2.5" height="3" fill="#fef08a"/>
       <rect x="19" y="22" width="2.5" height="3" fill="#fef08a"/>
+    </svg>`,
+
+  // 17. Base Esperanza y Antártida Argentina (Escudo polar celeste/blanco con estrella austral y glaciar)
+  sello_antartida: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_antartida" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#38bdf8"/>
+          <stop offset="100%" stop-color="#0284c7"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_antartida)"/>
+      <path d="M9 28L16 19L22 23L31 16L31 29H9Z" fill="#ffffff" fill-opacity="0.95"/>
+      <path d="M16 19L22 23L20 28H14L16 19Z" fill="#bae6fd" fill-opacity="0.8"/>
+      <polygon points="20,7 21.5,11.5 26,11.5 22.5,14 24,18.5 20,16 16,18.5 17.5,14 14,11.5 18.5,11.5" fill="#fef08a"/>
+    </svg>`,
+
+  // 18. Caleta de Pescadores Artesanales de Puerto Almanza (Timón, barca y olas del Beagle)
+  sello_pesca: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_pesca" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0d9488"/>
+          <stop offset="100%" stop-color="#115e59"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_pesca)"/>
+      <path d="M11 23L13 27H27L29 23H11Z" fill="#f8fafc"/>
+      <path d="M20 13V22M15 17H25" stroke="#fef08a" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="20" cy="17" r="4" fill="none" stroke="#fef08a" stroke-width="1.5"/>
+      <path d="M8 29C12 27 16 29 20 27C24 25 28 27 32 26" stroke="#99f6e4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>`,
+
+  // 19. Hito I Cabo Espíritu Santo (Hito limítrofe bicontinental celeste y blanco sobre estepa)
+  sello_frontera: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_frontera" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#38bdf8"/>
+          <stop offset="60%" stop-color="#0284c7"/>
+          <stop offset="60%" stop-color="#b45309"/>
+          <stop offset="100%" stop-color="#78350f"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_frontera)"/>
+      <polygon points="20,7 24,26 16,26" fill="#f8fafc"/>
+      <polygon points="20,7 24,26 20,26" fill="#e2e8f0"/>
+      <rect x="17.5" y="13" width="5" height="3" fill="#38bdf8"/>
+      <rect x="17.5" y="19" width="5" height="3" fill="#38bdf8"/>
+      <circle cx="20" cy="17.5" r="0.8" fill="#f59e0b"/>
+      <rect x="14" y="26" width="12" height="3" rx="0.5" fill="#334155"/>
+    </svg>`,
+
+  // 20. Sendero Bahía Lapataia / Fin RN 3 (Cartel/hito frente a bahía boscosa)
+  sello_lapataia: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_lapataia" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#16a34a"/>
+          <stop offset="60%" stop-color="#15803d"/>
+          <stop offset="60%" stop-color="#0284c7"/>
+          <stop offset="100%" stop-color="#0369a1"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_lapataia)"/>
+      <path d="M10 23L13 14L16 23ZM24 23L27 12L30 23Z" fill="#14532d"/>
+      <rect x="19" y="22" width="2" height="7" fill="#78350f"/>
+      <rect x="13" y="16" width="14" height="7" rx="1" fill="#92400e" stroke="#fef3c7" stroke-width="0.8"/>
+      <line x1="15" y1="18.5" x2="25" y2="18.5" stroke="#fef3c7" stroke-width="1"/>
+      <line x1="16" y1="20.5" x2="24" y2="20.5" stroke="#fef3c7" stroke-width="0.8"/>
+    </svg>`,
+
+  // 21. Mirador Cerro Jeujepén (Cumbre panorámica andina y sendero hacia el Lago Fagnano)
+  sello_mirador: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_mirador" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f59e0b"/>
+          <stop offset="45%" stop-color="#38bdf8"/>
+          <stop offset="100%" stop-color="#1e3a8a"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_mirador)"/>
+      <path d="M7 26C13 24 17 25 21 24C27 23 30 25 33 24L33 30H7Z" fill="#1e40af"/>
+      <polygon points="20,11 31,29 9,29" fill="#334155"/>
+      <polygon points="20,11 31,29 20,29" fill="#1e293b"/>
+      <path d="M20 14Q18 19 22 22Q19 26 21 29" stroke="#fde047" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <polygon points="20,11 23,15 20,17 17,15" fill="#f8fafc"/>
+    </svg>`,
+
+  // 22. Cabo Domingo (Acantilado sedimentario ocre sobre el Mar Atlántico)
+  sello_costero_norte: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_costa_norte" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0284c7"/>
+          <stop offset="55%" stop-color="#0369a1"/>
+          <stop offset="55%" stop-color="#b45309"/>
+          <stop offset="100%" stop-color="#78350f"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_costa_norte)"/>
+      <path d="M7 16H23L27 28H7Z" fill="#d97706"/>
+      <path d="M9 19H22L24 28H9Z" fill="#b45309" fill-opacity="0.6"/>
+      <line x1="7" y1="16" x2="23" y2="16" stroke="#fde047" stroke-width="1.5"/>
+      <path d="M22 26C25 24 28 27 33 25" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>`,
+
+  // 23. Cementerio Militar Argentino de Darwin / Islas Malvinas (Silueta insular con sol dorado austral)
+  sello_soberania_malvinas: `
+    <svg viewBox="0 0 40 40" class="w-7 h-7 drop-shadow-md sello-3d-ficha">
+      <defs>
+        <linearGradient id="g_malvinas" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1e3a8a"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+      </defs>
+      <circle cx="20" cy="20" r="17" fill="url(#g_malvinas)"/>
+      <circle cx="20" cy="11" r="3" fill="#f59e0b"/>
+      <path d="M20 6V8M20 14V16M15 11H17M23 11H25" stroke="#fbbf24" stroke-width="1" stroke-linecap="round"/>
+      <path d="M13 18C15 17 17 19 16 23C15 26 12 26 11 23C11 20 12 18 13 18Z" fill="#ffffff"/>
+      <path d="M13 20C14 19 15 21 14 23C13 24 12 24 12 23Z" fill="#38bdf8"/>
+      <path d="M19 17C23 16 27 18 28 22C28 25 25 27 22 26C20 25 18 22 19 17Z" fill="#ffffff"/>
+      <path d="M21 19C24 18 26 20 25 22C24 24 22 24 21 22Z" fill="#38bdf8"/>
     </svg>`
 };
 
@@ -5473,32 +5605,12 @@ function configurarPantallaBienvenida() {
         }, 120);
     }
 
-    // Interactividad ocular y globito de diálogo del Pingüino Rey
+    // Globito de diálogo y animaciones del Pingüino Rey
     const svgPinguinoBienvenida = document.getElementById("svg-pinguino-bienvenida");
-    const pupilaIzq = document.getElementById("pupila-izq");
-    const pupilaDer = document.getElementById("pupila-der");
-    const brilloIzq = document.getElementById("brillo-izq");
-    const brilloDer = document.getElementById("brillo-der");
     let focoEnInputNombre = false;
-
-    function moverPupilas(offsetX, offsetY) {
-        [pupilaIzq, pupilaDer, brilloIzq, brilloDer].forEach((circulo) => {
-            if (!circulo) return;
-            const baseCx = parseFloat(circulo.getAttribute("data-base-cx"));
-            const baseCy = parseFloat(circulo.getAttribute("data-base-cy"));
-            if (!Number.isNaN(baseCx) && !Number.isNaN(baseCy)) {
-                circulo.setAttribute("cx", (baseCx + offsetX).toFixed(2));
-                circulo.setAttribute("cy", (baseCy + offsetY).toFixed(2));
-            }
-        });
-    }
 
     function actualizarDialogoYMirada() {
         actualizarBurbujaSaludoPinguino(inputNombre.value);
-        if (focoEnInputNombre) {
-            // Mirar suavemente hacia abajo en dirección al campo de nombre
-            moverPupilas(0, 2.1);
-        }
     }
 
     const coposNieve = document.querySelectorAll("#capa-nieve-austral .copo-nieve");
@@ -5517,20 +5629,6 @@ function configurarPantallaBienvenida() {
                 copo.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
             });
         }
-
-        if (focoEnInputNombre || !svgPinguinoBienvenida) return;
-        const rect = svgPinguinoBienvenida.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-
-        // Punto medio entre ambos ojos dentro del viewBox (86/180, 36/200)
-        const centroOjosX = rect.left + rect.width * (86 / 180);
-        const centroOjosY = rect.top + rect.height * (36 / 200);
-        const dx = e.clientX - centroOjosX;
-        const dy = e.clientY - centroOjosY;
-        const angulo = Math.atan2(dy, dx);
-        const radio = Math.min(1.9, Math.hypot(dx, dy) / 70);
-
-        moverPupilas(Math.cos(angulo) * radio, Math.sin(angulo) * radio);
     });
 
     // Saludo al hacer clic / toque directamente sobre la mascota
@@ -5562,9 +5660,6 @@ function configurarPantallaBienvenida() {
 
     inputNombre.addEventListener("blur", () => {
         focoEnInputNombre = false;
-        if (inputNombre.value.trim().length === 0) {
-            moverPupilas(0, 0);
-        }
     });
 
     // Ingreso automático con tecla Enter en PC y botón Ir/Enter en teclados móviles

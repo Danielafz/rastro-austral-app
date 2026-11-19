@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rastro-austral-v132'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
+const CACHE_NAME = 'rastro-austral-v133'; // VERSIÓN NUEVA (Forzar reinicio y purga de versiones anteriores)
 const FONT_OUTFIT_URL = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap';
 const urlsToCache = [
   './',
@@ -66,8 +66,8 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
-  // Teselas del mapa oficial (IGN Argenmap wms.ign.gob.ar, Esri Satelital server.arcgisonline.com, OSM) e imágenes: Cache-First con guardado dinámico para 100% offline
-  if (url.hostname.includes('ign.gob.ar') || url.hostname.includes('arcgisonline.com') || url.hostname.includes('wikimedia.org') || url.hostname.includes('tile.openstreetmap.org') || url.hostname.includes('opentopomap.org') || url.hostname.includes('basemaps.cartocdn.com')) {
+  // Teselas del mapa oficial (IGN Argenmap wms.ign.gob.ar, Esri Satelital server.arcgisonline.com, OSM), meteorología (Open-Meteo) e imágenes: Cache-First con guardado dinámico para 100% offline
+  if (url.hostname.includes('ign.gob.ar') || url.hostname.includes('arcgisonline.com') || url.hostname.includes('wikimedia.org') || url.hostname.includes('open-meteo.com') || url.hostname.includes('tile.openstreetmap.org') || url.hostname.includes('opentopomap.org') || url.hostname.includes('basemaps.cartocdn.com')) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
         if (cachedResponse) {

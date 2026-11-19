@@ -927,6 +927,19 @@ html:not(.dark) #modal-bloqueo>div {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
 }
 
+#modal-bloqueo [data-i18n="modal_bloqueo_alternativa_desc"] {
+  color: #064e3b !important;
+}
+
+html.dark #modal-bloqueo [data-i18n="modal_bloqueo_alternativa_desc"] {
+  color: #a7f3d0 !important;
+}
+
+#btn-bloqueo-ruta-alternativa,
+#btn-bloqueo-ruta-alternativa span {
+  color: #ffffff !important;
+}
+
 /* Tarjeta pasaporte en modo claro */
 html:not(.dark) .tarjeta-pasaporte {
   background-color: #f8fafc !important;

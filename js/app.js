@@ -989,7 +989,7 @@ const FOTOS_REALES_HITOS = {
     "ush-05": "Bahia Lapataia Tierra del Fuego",
     "tol-05": "Lago Fagnano Hualo",
     "rg-04": "Cabo Domingo Tierra del Fuego",
-    "mal-01": "Cementerio Argentino de Puerto Darwin"
+    "mal-01": "Argentine Military Cemetery Darwin Falkland"
 };
 
 // Sincronizar dinámicamente imagen de detalle si la ficha está activa o abierta
@@ -1032,6 +1032,11 @@ async function resolverFotosRealesHitos() {
         }
     } catch (e) {
         console.warn("Error al leer caché local de fotografías:", e);
+    }
+
+    // Invalidar entrada previa de Cementerio de Darwin si contenía foto recortada de Padremurphy
+    if (cacheFotos["mal-01"] && cacheFotos["mal-01"].credito && cacheFotos["mal-01"].credito.includes("Padremurphy")) {
+        delete cacheFotos["mal-01"];
     }
 
     // 1. Aplicar de inmediato fotos ya existentes en el caché persistente
@@ -1356,7 +1361,7 @@ function renderizarMarcadores(anunciarResultados = false) {
               </div>
             ` : ''}
             <h4 class="font-bold text-xs text-slate-900 leading-tight">${nombre}</h4>
-            <p class="text-[10px] text-slate-500 font-mono truncate">${t.toponimia} ${hito.toponimia}</p>
+            <p class="text-[10px] text-slate-500 font-mono leading-snug break-words whitespace-normal">${t.toponimia} ${hito.toponimia}</p>
             <div class="text-[10px] text-slate-400 pt-0.5 border-t border-slate-100 flex items-center justify-between">
               <span>${hito.localidad}</span>
               <span class="capitalize text-orange-600 font-medium">${hito.categoria.replace('_', ' ')}</span>
@@ -2048,8 +2053,8 @@ function mostrarDetalleHito(hito) {
     panel.innerHTML = `
     <div class="tarjeta-detalle-hito rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
       <!-- Tarjeta Fotográfica de Cabecera (respeta el border-radius superior) -->
-      <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
-        <img id="detalle-imagen-hito" src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-full h-full object-cover">
+      <div class="foto-hito h-56 sm:h-72 w-full overflow-hidden relative bg-slate-950">
+        <img id="detalle-imagen-hito" src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-full h-full object-cover object-[center_70%]">
         <div class="absolute bottom-2 right-2 bg-slate-900/85 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] text-white font-medium border border-slate-700/60 shadow-sm flex items-center gap-1">
           <span>📷</span>
           <span id="detalle-credito-imagen" class="truncate max-w-[170px] text-white font-medium">${hito.credito_imagen || 'IDETDF'}</span>

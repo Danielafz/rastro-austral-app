@@ -2999,3 +2999,28 @@ html.reducir-movimiento *::after {
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
 }
+
+/* Botón Píldora Filtro Accesibles */
+#btn-filtro-accesibles {
+  touch-action: manipulation;
+}
+
+html.dark #btn-filtro-accesibles:not([aria-pressed="true"]) {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark #btn-filtro-accesibles:not([aria-pressed="true"]):hover {
+  background-color: #1e293b !important;
+}
+
+html.dark #btn-filtro-accesibles:not([aria-pressed="true"]) #contador-sitios-accesibles,
+html.dark #btn-filtro-accesibles:not([aria-pressed="true"]) #estado-filtro-accesibles {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+html.alto-contraste #btn-filtro-accesibles {
+  border: 2px solid currentColor !important;
+}

@@ -293,6 +293,10 @@ const DICCIONARIO = {
         a11y_leer_voz_alta: "Leer Hito / Vista en Voz Alta",
         a11y_detener_voz_alta: "Detener Lectura de Voz",
         filtro_solo_accesibles: "Solo sitios accesibles (Movilidad reducida)",
+        filtro_accesibles_mobile: "Sitios accesibles",
+        filtro_accesibles_desktop: "Solo sitios accesibles",
+        filtro_estado_inactivo: "Filtrar",
+        filtro_estado_activo: "✓ Activo",
         badge_accesible: "Accesible",
         detalle_accesibilidad_tit: "Accesibilidad Física e Inclusiva:",
         guia_inclusiva_tit: "8. Caminata Inclusiva y Accesibilidad en Senderos",
@@ -494,6 +498,10 @@ const DICCIONARIO = {
         a11y_leer_voz_alta: "Read Site / View Aloud",
         a11y_detener_voz_alta: "Stop Voice Reading",
         filtro_solo_accesibles: "Only accessible sites (Reduced mobility)",
+        filtro_accesibles_mobile: "Accessible sites",
+        filtro_accesibles_desktop: "Only accessible sites",
+        filtro_estado_inactivo: "Filter",
+        filtro_estado_activo: "✓ Active",
         badge_accesible: "Accessible",
         detalle_accesibilidad_tit: "Physical & Inclusive Accessibility:",
         guia_inclusiva_tit: "8. Inclusive Hiking & Trail Accessibility",
@@ -1278,8 +1286,7 @@ function limpiarTodosLosFiltros() {
     document.getElementById("btn-limpiar-busqueda")?.classList.add("hidden");
 
     filtroSoloAccesibles = false;
-    const chkAccesibles = document.getElementById("filtro-solo-accesibles");
-    if (chkAccesibles) chkAccesibles.checked = false;
+    actualizarBotonFiltroAccesiblesUI();
 
     filtroActivo = "todos";
     const botonesCat = document.querySelectorAll(".btn-filtro, .filtro-cat-btn");
@@ -1436,6 +1443,72 @@ function actualizarContadoresCategoria() {
             }
         }
     });
+
+    // Actualizar contador dinámico de sitios accesibles respetando territorio y búsqueda activos
+    const totalAccesibles = listaHitos.filter(hito => {
+        if (!coincideTerritorio(hito.localidad, territorio)) return false;
+        if (!q) return hito.accesible === true;
+        const coincideQ = (
+            hito.nombre.toLowerCase().includes(q) ||
+            (hito.nombre_en && hito.nombre_en.toLowerCase().includes(q)) ||
+            hito.localidad.toLowerCase().includes(q) ||
+            hito.toponimia.toLowerCase().includes(q) ||
+            hito.categoria.toLowerCase().includes(q) ||
+            hito.categoria.replace('_', ' ').toLowerCase().includes(q) ||
+            (hito.rubroCreativo && hito.rubroCreativo.toLowerCase().includes(q)) ||
+            (hito.rubroCreativo_en && hito.rubroCreativo_en.toLowerCase().includes(q)) ||
+            (hito.contacto && hito.contacto.toLowerCase().includes(q)) ||
+            (hito.descripcion && hito.descripcion.toLowerCase().includes(q)) ||
+            (hito.descripcion_en && hito.descripcion_en.toLowerCase().includes(q))
+        );
+        return coincideQ && hito.accesible === true;
+    }).length;
+
+    const contadorAccesibles = document.getElementById("contador-sitios-accesibles");
+    if (contadorAccesibles) {
+        contadorAccesibles.textContent = totalAccesibles;
+    }
+
+    actualizarBotonFiltroAccesiblesUI();
+}
+
+// Sincronizar estado visual del botón píldora interactivo de sitios accesibles
+function actualizarBotonFiltroAccesiblesUI() {
+    const btn = document.getElementById("btn-filtro-accesibles");
+    if (!btn) return;
+
+    const icono = btn.querySelector(".icono-filtro-accesible");
+    const contador = document.getElementById("contador-sitios-accesibles");
+    const estado = document.getElementById("estado-filtro-accesibles");
+    const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
+
+    if (filtroSoloAccesibles) {
+        btn.setAttribute("aria-pressed", "true");
+        btn.className = "min-h-[44px] w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-sky-600 bg-sky-600 text-white shadow-sm font-bold transition-all cursor-pointer select-none";
+        if (icono) {
+            icono.className = "w-4 h-4 shrink-0 text-white transition-colors icono-filtro-accesible";
+        }
+        if (contador) {
+            contador.className = "px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-bold";
+        }
+        if (estado) {
+            estado.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-white text-sky-800 shadow-2xs transition-all";
+            estado.textContent = t.filtro_estado_activo || "✓ Activo";
+        }
+    } else {
+        btn.setAttribute("aria-pressed", "false");
+        btn.className = "min-h-[44px] w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/70 text-slate-700 transition-all cursor-pointer select-none";
+        if (icono) {
+            icono.className = "w-4 h-4 shrink-0 text-sky-600 transition-colors icono-filtro-accesible";
+        }
+        if (contador) {
+            contador.className = "px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100 text-slate-600 font-bold";
+        }
+        if (estado) {
+            estado.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-all";
+            estado.textContent = t.filtro_estado_inactivo || "Filtrar";
+        }
+    }
 }
 
 // Sincronizar indicador de color dinámico de fragilidad
@@ -2458,10 +2531,11 @@ function configurarFiltros() {
         btnLimpiar.addEventListener("click", limpiarTodosLosFiltros);
     }
 
-    const chkAccesibles = document.getElementById("filtro-solo-accesibles");
-    if (chkAccesibles) {
-        chkAccesibles.addEventListener("change", (e) => {
-            filtroSoloAccesibles = e.target.checked;
+    const btnAccesibles = document.getElementById("btn-filtro-accesibles");
+    if (btnAccesibles) {
+        btnAccesibles.addEventListener("click", () => {
+            filtroSoloAccesibles = !filtroSoloAccesibles;
+            actualizarBotonFiltroAccesiblesUI();
             actualizarContadoresCategoria();
             renderizarMarcadores(true);
             actualizarTrazadoRuta();
@@ -3533,6 +3607,7 @@ function actualizarTextosUI() {
 
     actualizarHuellaConsciente();
     actualizarMetricasDistancia();
+    actualizarBotonFiltroAccesiblesUI();
     if (typeof actualizarBadgesObservatorio === "function") {
         actualizarBadgesObservatorio();
     }

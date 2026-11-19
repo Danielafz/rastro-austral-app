@@ -788,10 +788,11 @@
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->
-        <div id="selector-capas-base" class="flex items-center gap-1.5 sm:gap-2 flex-wrap md:flex-nowrap flex-1 pointer-events-auto">
+        <div id="selector-capas-base"
+          class="bg-transparent border-0 shadow-none p-0 flex items-center gap-2 overflow-x-auto no-scrollbar max-w-[calc(100vw-16px)] md:max-w-none pointer-events-auto">
           <!-- Cápsula de Capas (Estándar IGN, Relieve IGN, Satelital, Áreas Protegidas) -->
           <div
-            class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0 gap-0.5 sm:gap-1">
+            class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-1 shadow-md flex items-center gap-1 shrink-0">
             <button type="button" id="btn-capa-estandar"
               class="btn-capa-base shrink-0 whitespace-nowrap flex items-center justify-center bg-orange-500 text-white shadow-sm rounded-xl text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-3 transition-all cursor-pointer active"
               title="Cartografía oficial de la República Argentina (Argenmap · IGN)">

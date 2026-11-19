@@ -5224,12 +5224,12 @@ function renderizarModalPasaporte() {
 
         return `
             <div data-id="${hito.id}"
-                 class="tarjeta-pasaporte-item tarjeta-pasaporte flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[96px] pb-3 ${ visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75' } relative overflow-hidden group shadow-lg">
+                 class="tarjeta-pasaporte-item tarjeta-pasaporte min-h-[124px] h-auto flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${ visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75' } relative overflow-hidden group shadow-lg">
                 
                 <!-- Borde de categoría -->
                 <div class="absolute top-0 left-0 right-0 h-1" style="background-color: ${color};"></div>
 
-                <div class="space-y-2">
+                <div class="space-y-2 flex-1">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center justify-center w-8 h-8">${obtenerIconoSello(hito, visitado)}</div>
                         <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border"
@@ -5242,7 +5242,7 @@ function renderizarModalPasaporte() {
                         <h4 class="text-xs font-bold leading-snug line-clamp-2 text-slate-800 group-hover:text-amber-500 pb-1 mt-1 break-words transition-colors" title="${nombre}">
                             ${nombre}
                         </h4>
-                        <p class="text-[11px] text-amber-500 font-mono">${t.toponimia} ${hito.toponimia}</p>
+                        <p class="text-[11px] text-amber-500 font-mono leading-snug break-words whitespace-normal">${t.toponimia} ${hito.toponimia}</p>
                     </div>
 
                     <div class="text-[10px] text-slate-500 flex items-center justify-between gap-1.5 pt-1 border-t border-slate-200">

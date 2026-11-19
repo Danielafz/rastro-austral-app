@@ -1297,15 +1297,14 @@ html:not(.dark) #modal-pasaporte .pie-modal {
 }
 
 #modal-pasaporte .tarjeta-pasaporte-item {
-  height: 100%;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  height: auto !important;
+  min-height: 124px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
   position: relative;
   box-sizing: border-box;
-  overflow: hidden;
-  /* Previene desbordamientos que solapen las filas contiguas */
+  overflow: visible;
 }
 
 #modal-pasaporte .tarjeta-pasaporte-item h4 {

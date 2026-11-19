@@ -4913,6 +4913,7 @@ function configurarModalPasaporte() {
     const btnSidePasaporte = document.getElementById("btn-imprimir-pasaporte-side");
     const btnVerLibreta = document.getElementById("btn-ver-libreta");
     const btnCerrar = document.getElementById("btn-cerrar-modal-pasaporte");
+    const btnCerrarDesk = document.getElementById("btn-cerrar-modal-pasaporte-desktop");
     const btnCerrarSec = document.getElementById("btn-cerrar-modal-pasaporte-secundario");
     const btnImprimir = document.getElementById("btn-imprimir-pasaporte");
 
@@ -4936,6 +4937,7 @@ function configurarModalPasaporte() {
     if (btnVerLibreta) btnVerLibreta.addEventListener("click", abrir);
     document.querySelectorAll(".btn-ver-libreta").forEach(btn => btn.addEventListener("click", abrir));
     if (btnCerrar) btnCerrar.addEventListener("click", cerrar);
+    if (btnCerrarDesk) btnCerrarDesk.addEventListener("click", cerrar);
     if (btnCerrarSec) btnCerrarSec.addEventListener("click", cerrar);
     if (btnImprimir) {
         btnImprimir.addEventListener("click", () => {
@@ -5224,7 +5226,7 @@ function renderizarModalPasaporte() {
 
         return `
             <div data-id="${hito.id}"
-                 class="tarjeta-pasaporte-item tarjeta-pasaporte min-h-[124px] h-auto flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${ visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75' } relative overflow-hidden group shadow-lg">
+                 class="tarjeta-pasaporte-item tarjeta-pasaporte h-auto flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer ${ visitado ? 'border-amber-500/50 hover:border-amber-400' : 'border-slate-800 opacity-75' } relative group shadow-lg">
                 
                 <!-- Borde de categoría -->
                 <div class="absolute top-0 left-0 right-0 h-1" style="background-color: ${color};"></div>

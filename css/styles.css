@@ -1361,6 +1361,7 @@ html:not(.dark) #modal-pasaporte .pie-modal {
 
   /* Ocultar botones de control en la hoja impresa */
   #btn-cerrar-modal-pasaporte,
+  #btn-cerrar-modal-pasaporte-desktop,
   #btn-cerrar-modal-pasaporte-secundario,
   #btn-imprimir-pasaporte {
     display: none !important;

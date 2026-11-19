@@ -1289,32 +1289,41 @@ html:not(.dark) #modal-pasaporte .pie-modal {
 
 /* Corrección de cuadrícula y tarjetas del Pasaporte de Expedición */
 #modal-pasaporte #rejilla-pasaporte {
-  display: grid !important;
-  grid-auto-rows: auto !important;
-  align-items: stretch !important;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 1rem !important;
   overflow-y: auto !important;
 }
 
-#modal-pasaporte .tarjeta-pasaporte-item {
+@media (min-width: 640px) {
+  #modal-pasaporte #rejilla-pasaporte {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #modal-pasaporte #rejilla-pasaporte {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+#modal-pasaporte #rejilla-pasaporte .tarjeta-pasaporte,
+#modal-pasaporte #rejilla-pasaporte .tarjeta-pasaporte-item {
   height: auto !important;
-  min-height: 124px !important;
+  min-height: 0 !important;
+  max-height: none !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  position: relative;
-  box-sizing: border-box;
-  overflow: visible;
+  flex-shrink: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
 }
 
 #modal-pasaporte .tarjeta-pasaporte-item h4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  /* Propiedad estándar para compatibilidad */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible !important;
   line-height: 1.35;
   padding-bottom: 2px;
   word-break: break-word;
@@ -3085,4 +3094,41 @@ html.dark #btn-filtro-accesibles:not([aria-pressed="true"]) #estado-filtro-acces
 
 html.alto-contraste #btn-filtro-accesibles {
   border: 2px solid currentColor !important;
+}
+
+/* =========================================================
+   REGLA DE MÁXIMA ESPECIFICIDAD: LIBRETA Y PASAPORTE DE EXPEDICIÓN
+   ========================================================= */
+#modal-pasaporte #rejilla-pasaporte {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  overflow-y: auto !important;
+}
+
+@media (min-width: 640px) {
+  #modal-pasaporte #rejilla-pasaporte {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #modal-pasaporte #rejilla-pasaporte {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+#modal-pasaporte #rejilla-pasaporte .tarjeta-pasaporte,
+#modal-pasaporte #rejilla-pasaporte .tarjeta-pasaporte-item {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
 }

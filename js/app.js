@@ -293,6 +293,7 @@ const DICCIONARIO = {
         a11y_leer_voz_alta: "Leer Hito / Vista en Voz Alta",
         a11y_detener_voz_alta: "Detener Lectura de Voz",
         filtro_solo_accesibles: "Solo sitios accesibles (Movilidad reducida)",
+        filtro_accesibles_texto: "Sitios accesibles",
         filtro_accesibles_mobile: "Sitios accesibles",
         filtro_accesibles_desktop: "Solo sitios accesibles",
         filtro_estado_inactivo: "Filtrar",
@@ -498,6 +499,7 @@ const DICCIONARIO = {
         a11y_leer_voz_alta: "Read Site / View Aloud",
         a11y_detener_voz_alta: "Stop Voice Reading",
         filtro_solo_accesibles: "Only accessible sites (Reduced mobility)",
+        filtro_accesibles_texto: "Accessible sites",
         filtro_accesibles_mobile: "Accessible sites",
         filtro_accesibles_desktop: "Only accessible sites",
         filtro_estado_inactivo: "Filter",
@@ -1484,7 +1486,7 @@ function actualizarBotonFiltroAccesiblesUI() {
 
     if (filtroSoloAccesibles) {
         btn.setAttribute("aria-pressed", "true");
-        btn.className = "min-h-[44px] w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-sky-600 bg-sky-600 text-white shadow-sm font-bold transition-all cursor-pointer select-none";
+        btn.className = "col-span-2 w-full min-h-[44px] active flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-sky-600 bg-sky-600 text-white shadow-sm font-bold transition-all cursor-pointer select-none";
         if (icono) {
             icono.className = "w-4 h-4 shrink-0 text-white transition-colors icono-filtro-accesible";
         }
@@ -1492,12 +1494,12 @@ function actualizarBotonFiltroAccesiblesUI() {
             contador.className = "px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-bold";
         }
         if (estado) {
-            estado.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-white text-sky-800 shadow-2xs transition-all";
+            estado.className = "badge-estado-accesible text-[11px] font-bold px-2 py-0.5 rounded-full bg-white text-sky-800 shadow-2xs transition-all";
             estado.textContent = t.filtro_estado_activo || "✓ Activo";
         }
     } else {
         btn.setAttribute("aria-pressed", "false");
-        btn.className = "min-h-[44px] w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/70 text-slate-700 transition-all cursor-pointer select-none";
+        btn.className = "col-span-2 w-full min-h-[44px] flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/70 text-slate-700 transition-all cursor-pointer select-none";
         if (icono) {
             icono.className = "w-4 h-4 shrink-0 text-sky-600 transition-colors icono-filtro-accesible";
         }
@@ -1505,7 +1507,7 @@ function actualizarBotonFiltroAccesiblesUI() {
             contador.className = "px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100 text-slate-600 font-bold";
         }
         if (estado) {
-            estado.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-all";
+            estado.className = "badge-estado-accesible text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-all";
             estado.textContent = t.filtro_estado_inactivo || "Filtrar";
         }
     }

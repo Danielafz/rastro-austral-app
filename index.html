@@ -527,9 +527,9 @@
               </div>
 
               <!-- Filtro Accesibilidad Física (Botón Píldora Interactivo) -->
-              <div class="col-span-1 sm:col-span-2 pt-2 border-t border-slate-100">
+              <div class="col-span-2 w-full pt-2 border-t border-slate-100">
                 <button id="btn-filtro-accesibles" type="button" aria-pressed="false"
-                  class="min-h-[44px] w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/70 text-slate-700 transition-all cursor-pointer select-none">
+                  class="col-span-2 w-full min-h-[44px] flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/70 text-slate-700 transition-all cursor-pointer select-none">
                   <!-- Izquierda -->
                   <div class="flex items-center gap-2 min-w-0 flex-1 text-left">
                     <svg class="w-4 h-4 shrink-0 text-sky-600 transition-colors icono-filtro-accesible" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -538,16 +538,13 @@
                       <path d="M7 10h5l1 4"/>
                       <circle cx="9" cy="17" r="4"/>
                     </svg>
-                    <span class="text-xs leading-tight truncate">
-                      <span class="sm:hidden" data-i18n="filtro_accesibles_mobile">Sitios accesibles</span>
-                      <span class="hidden sm:inline" data-i18n="filtro_accesibles_desktop">Solo sitios accesibles</span>
-                    </span>
+                    <span class="text-xs font-bold leading-tight" data-i18n="filtro_accesibles_texto">Sitios accesibles</span>
                   </div>
 
                   <!-- Derecha -->
                   <div class="flex items-center gap-1.5 shrink-0">
                     <span id="contador-sitios-accesibles" class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100 text-slate-600 font-bold">11</span>
-                    <span id="estado-filtro-accesibles" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-all" data-i18n="filtro_estado_inactivo">Filtrar</span>
+                    <span id="estado-filtro-accesibles" class="badge-estado-accesible text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-all" data-i18n="filtro_estado_inactivo">Filtrar</span>
                   </div>
                 </button>
               </div>

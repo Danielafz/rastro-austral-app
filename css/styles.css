@@ -3005,6 +3005,20 @@ html.reducir-movimiento *::after {
   touch-action: manipulation;
 }
 
+#btn-filtro-accesibles[aria-pressed="true"],
+#btn-filtro-accesibles.active {
+  background-color: #0284c7 !important;
+  border-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+#btn-filtro-accesibles[aria-pressed="true"] span:not(.badge-estado-accesible),
+#btn-filtro-accesibles.active span:not(.badge-estado-accesible),
+#btn-filtro-accesibles[aria-pressed="true"] svg,
+#btn-filtro-accesibles.active svg {
+  color: #ffffff !important;
+}
+
 html.dark #btn-filtro-accesibles:not([aria-pressed="true"]) {
   background-color: #0f172a !important;
   border-color: #334155 !important;

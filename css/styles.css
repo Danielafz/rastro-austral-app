@@ -3140,9 +3140,28 @@ html.alto-contraste #btn-filtro-accesibles {
   box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.74), 0 0 24px rgba(245, 158, 11, 0.55);
 }
 
+#tour-spotlight-box,
+#tour-tooltip-card {
+  transition: top 0.22s ease-out, left 0.22s ease-out, width 0.22s ease-out, height 0.22s ease-out !important;
+}
+
 #tour-tooltip-card,
 #tour-tooltip-card button {
   pointer-events: auto !important;
+}
+
+#tour-tooltip-arrow {
+  transition: left 0.22s ease-out, top 0.22s ease-out, bottom 0.22s ease-out;
+}
+
+#tour-tooltip-arrow.arrow-top {
+  top: -6px;
+  border-width: 1px 0 0 1px;
+}
+
+#tour-tooltip-arrow.arrow-bottom {
+  bottom: -6px;
+  border-width: 0 1px 1px 0;
 }
 
 html:not(.dark) #tour-tooltip-card {
@@ -3159,5 +3178,18 @@ html:not(.dark) #tour-descripcion {
 }
 
 #btn-tour-siguiente {
+  color: #ffffff !important;
+}
+
+/* Modal de Invitación al Tour */
+html:not(.dark) #tour-invitacion-modal h3 {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #tour-invitacion-modal p {
+  color: #334155 !important;
+}
+
+#btn-inv-aceptar {
   color: #ffffff !important;
 }

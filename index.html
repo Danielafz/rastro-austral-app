@@ -2610,11 +2610,32 @@
       });
     }
   </script>
+  <!-- Globo / Modal de Invitación al Tour Guiado -->
+  <div id="tour-invitacion-modal" class="fixed inset-0 z-[9989] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs" role="dialog" aria-modal="true" aria-labelledby="tour-inv-titulo">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl max-w-[340px] w-full p-5 text-center space-y-3.5">
+      <div class="w-12 h-12 mx-auto rounded-full bg-orange-100 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
+      </div>
+      <h3 id="tour-inv-titulo" class="text-base font-extrabold text-slate-900 dark:text-white"></h3>
+      <p id="tour-inv-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+      <div class="space-y-2 pt-1">
+        <button id="btn-inv-aceptar" type="button" class="w-full py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">Sí, iniciar recorrido (30 seg)</button>
+        <button id="btn-inv-omitir" type="button" class="w-full py-2 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-xs transition cursor-pointer">Omitir por ahora (ver luego en ?)</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Tour Guiado Interactivo (Product Tour con Efecto Spotlight) -->
   <div id="tour-spotlight-overlay" class="fixed inset-0 z-[9990] hidden" role="dialog" aria-modal="true" aria-labelledby="tour-titulo">
     <div id="tour-click-shield" class="fixed inset-0 bg-transparent"></div>
-    <div id="tour-spotlight-box" class="fixed rounded-2xl border-2 border-amber-400 pointer-events-none transition-all duration-300 ease-out"></div>
-    <div id="tour-tooltip-card" class="fixed w-[calc(100vw-24px)] max-w-[340px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 space-y-3 transition-all duration-300 ease-out z-[9992]">
+    <div id="tour-spotlight-box" class="fixed rounded-2xl border-2 border-amber-400 pointer-events-none"></div>
+    <div id="tour-tooltip-card" class="fixed w-[calc(100vw-24px)] max-w-[340px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 space-y-3 z-[9992]">
+      <!-- Puntero triangular -->
+      <div id="tour-tooltip-arrow" class="w-3 h-3 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rotate-45 absolute pointer-events-none"></div>
+
       <div class="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-800">
         <span id="tour-progreso" class="text-xs font-bold text-amber-600 dark:text-amber-400">Paso 1 de 5</span>
         <button id="btn-tour-omitir" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium cursor-pointer">Omitir tour</button>
@@ -2625,6 +2646,7 @@
       </div>
       <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
         <button id="btn-tour-anterior" type="button" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">← Anterior</button>
+        <div id="tour-dots" class="flex items-center gap-1"></div>
         <button id="btn-tour-siguiente" type="button" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 active:scale-95 text-white text-xs font-bold transition shadow-sm cursor-pointer">Siguiente →</button>
       </div>
     </div>

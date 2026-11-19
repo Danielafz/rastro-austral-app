@@ -3692,6 +3692,11 @@ function cambiarIdioma(nuevoIdioma) {
         posicionarPasoTour(indicePasoTourActual);
     }
 
+    const modalInv = document.getElementById("tour-invitacion-modal");
+    if (modalInv && !modalInv.classList.contains("hidden") && typeof mostrarInvitacionTour === "function") {
+        mostrarInvitacionTour();
+    }
+
     anunciarAccesibilidad(nuevoIdioma === "en" ? "Language switched to English." : "Idioma cambiado a español.");
 }
 window.cambiarIdioma = cambiarIdioma;
@@ -5636,7 +5641,7 @@ function configurarPantallaBienvenida() {
                     txtBtn.innerText = t.btn_ingresar || (idiomaActual === "en" ? "Enter the Expedition" : "Ingresar a la Expedición");
                 }
                 if (!localStorage.getItem("rastro_tour_completado")) {
-                    setTimeout(() => iniciarTourGuiado(0), 350);
+                    setTimeout(() => mostrarInvitacionTour(), 350);
                 }
             }, 700);
         }, 880);
@@ -5980,6 +5985,55 @@ const PASOS_TOUR = [
     }
 ];
 
+function mostrarInvitacionTour() {
+    const modal = document.getElementById("tour-invitacion-modal");
+    if (!modal) return;
+
+    const nombre = (typeof obtenerNombreExplorador === "function" ? obtenerNombreExplorador() : "") || "";
+    const esIngles = idiomaActual === "en";
+
+    const elTitulo = document.getElementById("tour-inv-titulo");
+    const elDesc = document.getElementById("tour-inv-desc");
+    const btnAceptar = document.getElementById("btn-inv-aceptar");
+    const btnOmitir = document.getElementById("btn-inv-omitir");
+
+    if (elTitulo) {
+        if (nombre && nombre.trim().length > 0) {
+            elTitulo.innerText = esIngles 
+                ? `Hi, ${nombre.trim()}! Want a quick tour?` 
+                : `¡Hola, ${nombre.trim()}! ¿Querés una guía rápida?`;
+        } else {
+            elTitulo.innerText = esIngles 
+                ? "Want a quick tour?" 
+                : "¿Querés una guía rápida?";
+        }
+    }
+
+    if (elDesc) {
+        elDesc.innerText = esIngles
+            ? "Te mostramos en 5 pasos cómo usar los mapas oficiales IGN, las alertas ambientales, tu bitácora y el Museo Austral 2D."
+            : "Te mostramos en 5 pasos cómo usar los mapas oficiales IGN, las alertas ambientales, tu bitácora y el Museo Austral 2D.";
+        if (esIngles) {
+            elDesc.innerText = "We'll show you in 5 steps how to use official IGN maps, environmental alerts, your logbook, and the 2D Austral Museum.";
+        }
+    }
+
+    if (btnAceptar) {
+        btnAceptar.innerText = esIngles 
+            ? "Yes, start tour (30 sec)" 
+            : "Sí, iniciar recorrido (30 seg)";
+    }
+
+    if (btnOmitir) {
+        btnOmitir.innerText = esIngles 
+            ? "Skip for now (see later in ?)" 
+            : "Omitir por ahora (ver luego en ?)";
+    }
+
+    modal.classList.remove("hidden");
+    anunciarAccesibilidad(elTitulo ? elTitulo.innerText : "Invitación al recorrido guiado");
+}
+
 function posicionarPasoTour(indice) {
     const paso = PASOS_TOUR[indice];
     if (!paso) return;
@@ -5997,85 +6051,149 @@ function posicionarPasoTour(indice) {
         targetEl.scrollIntoView({ behavior: "instant", block: "nearest", inline: "nearest" });
     }
 
-    // Calcular rect del objetivo con 6px de margen alrededor
-    const rect = targetEl.getBoundingClientRect();
-    const pad = 6;
-    const sLeft = Math.max(0, rect.left - pad);
-    const sTop = Math.max(0, rect.top - pad);
-    const sWidth = rect.width + pad * 2;
-    const sHeight = rect.height + pad * 2;
-
-    spotlight.style.left = `${sLeft}px`;
-    spotlight.style.top = `${sTop}px`;
-    spotlight.style.width = `${sWidth}px`;
-    spotlight.style.height = `${sHeight}px`;
-
-    // Textos según idioma actual
-    const esIngles = idiomaActual === "en";
-    const data = esIngles ? paso.en : paso.es;
-
-    const elProgreso = document.getElementById("tour-progreso");
-    const btnOmitir = document.getElementById("btn-tour-omitir");
-    const elTitulo = document.getElementById("tour-titulo");
-    const elDesc = document.getElementById("tour-descripcion");
-    const btnAnt = document.getElementById("btn-tour-anterior");
-    const btnSig = document.getElementById("btn-tour-siguiente");
-
-    if (elProgreso) {
-        elProgreso.innerText = esIngles
-            ? `Step ${indice + 1} of ${PASOS_TOUR.length}`
-            : `Paso ${indice + 1} de ${PASOS_TOUR.length}`;
-    }
-    if (btnOmitir) {
-        btnOmitir.innerText = esIngles ? "Skip tour" : "Omitir tour";
-    }
-    if (elTitulo) elTitulo.innerText = data.titulo;
-    if (elDesc) elDesc.innerText = data.desc;
-
-    if (btnAnt) {
-        btnAnt.innerText = esIngles ? "← Previous" : "← Anterior";
-        btnAnt.disabled = indice === 0;
-        btnAnt.style.opacity = indice === 0 ? "0.4" : "1";
-        btnAnt.style.pointerEvents = indice === 0 ? "none" : "auto";
-    }
-
-    if (btnSig) {
-        if (indice === PASOS_TOUR.length - 1) {
-            btnSig.innerText = esIngles ? "Start exploring!" : "¡Empezar a explorar!";
+    // Foco combinado en el Paso 1 (Territorios + Clima) o rect individual
+    let rect;
+    if (indice === 0) {
+        const elTerritorio = document.getElementById("selector-localidades") || document.getElementById("btn-dropdown-territorio");
+        const elClima = document.getElementById("widget-clima-austral");
+        if (elTerritorio && elClima && elClima.offsetParent !== null) {
+            const r1 = elTerritorio.getBoundingClientRect();
+            const r2 = elClima.getBoundingClientRect();
+            rect = {
+                left: Math.min(r1.left, r2.left),
+                top: Math.min(r1.top, r2.top),
+                right: Math.max(r1.right, r2.right),
+                bottom: Math.max(r1.bottom, r2.bottom),
+                width: Math.max(r1.right, r2.right) - Math.min(r1.left, r2.left),
+                height: Math.max(r1.bottom, r2.bottom) - Math.min(r1.top, r2.top)
+            };
+        } else if (elTerritorio) {
+            rect = elTerritorio.getBoundingClientRect();
         } else {
-            btnSig.innerText = esIngles ? "Next →" : "Siguiente →";
+            rect = targetEl.getBoundingClientRect();
         }
-    }
-
-    // Medir dimensiones del tooltip tras volcar contenido
-    void card.offsetHeight;
-    const cardHeight = card.offsetHeight || 190;
-    const cardWidth = card.offsetWidth || Math.min(340, window.innerWidth - 24);
-
-    // Posicionamiento vertical:
-    // Si #tour-tooltip-card cabe debajo del foco (rect.bottom + 12 + cardHeight < window.innerHeight - 16), ubicarla debajo;
-    // Si no cabe abajo, ubicarla arriba (Math.max(12, rect.top - cardHeight - 12))
-    let topPos;
-    if (rect.bottom + 12 + cardHeight < window.innerHeight - 16) {
-        topPos = rect.bottom + 12;
     } else {
-        topPos = Math.max(12, rect.top - cardHeight - 12);
+        rect = targetEl.getBoundingClientRect();
     }
 
-    // Posicionamiento horizontal centrado, acotado dentro de [12px, window.innerWidth - cardWidth - 12px]
-    let leftPos = rect.left + (rect.width - cardWidth) / 2;
-    const minLeft = 12;
-    const maxLeft = Math.max(12, window.innerWidth - cardWidth - 12);
-    leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos));
+    requestAnimationFrame(() => {
+        // Calcular rect del objetivo con 6px de margen alrededor
+        const pad = 6;
+        const sLeft = Math.max(0, rect.left - pad);
+        const sTop = Math.max(0, rect.top - pad);
+        const sWidth = rect.width + pad * 2;
+        const sHeight = rect.height + pad * 2;
 
-    card.style.left = `${leftPos}px`;
-    card.style.top = `${topPos}px`;
+        spotlight.style.left = `${sLeft}px`;
+        spotlight.style.top = `${sTop}px`;
+        spotlight.style.width = `${sWidth}px`;
+        spotlight.style.height = `${sHeight}px`;
 
-    // Anuncio para tecnologías de asistencia
-    anunciarAccesibilidad(`${elProgreso ? elProgreso.innerText : ""}: ${data.titulo}. ${data.desc}`);
+        // Textos según idioma actual
+        const esIngles = idiomaActual === "en";
+        const data = esIngles ? paso.en : paso.es;
+
+        const elProgreso = document.getElementById("tour-progreso");
+        const btnOmitir = document.getElementById("btn-tour-omitir");
+        const elTitulo = document.getElementById("tour-titulo");
+        const elDesc = document.getElementById("tour-descripcion");
+        const btnAnt = document.getElementById("btn-tour-anterior");
+        const btnSig = document.getElementById("btn-tour-siguiente");
+        const elDots = document.getElementById("tour-dots");
+        const arrowEl = document.getElementById("tour-tooltip-arrow");
+
+        if (elProgreso) {
+            elProgreso.innerText = esIngles
+                ? `Step ${indice + 1} of ${PASOS_TOUR.length}`
+                : `Paso ${indice + 1} de ${PASOS_TOUR.length}`;
+        }
+        if (btnOmitir) {
+            btnOmitir.innerText = esIngles ? "Skip tour" : "Omitir tour";
+        }
+        if (elTitulo) elTitulo.innerText = data.titulo;
+        if (elDesc) elDesc.innerText = data.desc;
+
+        // Ocultar "← Anterior" en el Paso 1 (índice 0)
+        if (btnAnt) {
+            btnAnt.innerText = esIngles ? "← Previous" : "← Anterior";
+            if (indice === 0) {
+                btnAnt.classList.add("opacity-0", "pointer-events-none");
+                btnAnt.disabled = true;
+            } else {
+                btnAnt.classList.remove("opacity-0", "pointer-events-none");
+                btnAnt.disabled = false;
+            }
+        }
+
+        // Fila de 5 puntitos indicadores
+        if (elDots) {
+            elDots.innerHTML = PASOS_TOUR.map((_, i) => {
+                const activo = i === indice;
+                return `<span class="h-1.5 rounded-full transition-all duration-200 ${
+                    activo 
+                        ? 'bg-orange-600 w-3.5' 
+                        : 'bg-slate-300 dark:bg-slate-700 w-1.5'
+                }"></span>`;
+            }).join("");
+        }
+
+        if (btnSig) {
+            if (indice === PASOS_TOUR.length - 1) {
+                btnSig.innerText = esIngles ? "Start exploring!" : "¡Empezar a explorar!";
+            } else {
+                btnSig.innerText = esIngles ? "Next →" : "Siguiente →";
+            }
+        }
+
+        // Medir dimensiones del tooltip tras volcar contenido
+        void card.offsetHeight;
+        const cardHeight = card.offsetHeight || 190;
+        const cardWidth = card.offsetWidth || Math.min(340, window.innerWidth - 24);
+
+        // Posicionamiento vertical:
+        let topPos;
+        const debajo = rect.bottom + 12 + cardHeight < window.innerHeight - 16;
+        if (debajo) {
+            topPos = rect.bottom + 12;
+        } else {
+            topPos = Math.max(12, rect.top - cardHeight - 12);
+        }
+
+        // Posicionamiento horizontal centrado, acotado dentro de [12px, window.innerWidth - cardWidth - 12px]
+        let leftPos = rect.left + (rect.width - cardWidth) / 2;
+        const minLeft = 12;
+        const maxLeft = Math.max(12, window.innerWidth - cardWidth - 12);
+        leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos));
+
+        card.style.left = `${leftPos}px`;
+        card.style.top = `${topPos}px`;
+
+        // Posicionar el puntero #tour-tooltip-arrow apuntando al centro horizontal del elemento destacado
+        if (arrowEl) {
+            const targetCenterX = rect.left + rect.width / 2;
+            const arrowLeft = Math.max(16, Math.min(cardWidth - 28, targetCenterX - leftPos - 6));
+            arrowEl.style.left = `${arrowLeft}px`;
+
+            if (topPos > rect.top) {
+                // Tarjeta ubicada debajo del elemento -> flecha arriba apuntando al objetivo
+                arrowEl.className = "w-3 h-3 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rotate-45 absolute pointer-events-none arrow-top";
+            } else {
+                // Tarjeta ubicada arriba del elemento -> flecha abajo apuntando al objetivo
+                arrowEl.className = "w-3 h-3 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rotate-45 absolute pointer-events-none arrow-bottom";
+            }
+        }
+
+        // Anuncio para tecnologías de asistencia
+        anunciarAccesibilidad(`${elProgreso ? elProgreso.innerText : ""}: ${data.titulo}. ${data.desc}`);
+    });
 }
 
 function iniciarTourGuiado(paso = 0) {
+    const modalInv = document.getElementById("tour-invitacion-modal");
+    if (modalInv) {
+        modalInv.classList.add("hidden");
+    }
+
     const overlay = document.getElementById("tour-spotlight-overlay");
     if (!overlay) return;
 
@@ -6101,6 +6219,18 @@ function finalizarTourGuiado() {
 }
 
 function manejarTecladoTour(e) {
+    const modalInv = document.getElementById("tour-invitacion-modal");
+    if (modalInv && !modalInv.classList.contains("hidden")) {
+        if (e.key === "Escape") {
+            e.preventDefault();
+            modalInv.classList.add("hidden");
+            try {
+                localStorage.setItem("rastro_tour_completado", "1");
+            } catch (_) {}
+            return;
+        }
+    }
+
     if (!tourActivo) return;
 
     if (e.key === "Escape") {
@@ -6127,9 +6257,30 @@ function configurarTourGuiado() {
     const btnAnt = document.getElementById("btn-tour-anterior");
     const btnSig = document.getElementById("btn-tour-siguiente");
     const clickShield = document.getElementById("tour-click-shield");
+    const modalInv = document.getElementById("tour-invitacion-modal");
+    const btnInvAceptar = document.getElementById("btn-inv-aceptar");
+    const btnInvOmitir = document.getElementById("btn-inv-omitir");
+
+    if (btnInvAceptar) {
+        btnInvAceptar.addEventListener("click", () => {
+            if (modalInv) modalInv.classList.add("hidden");
+            iniciarTourGuiado(0);
+        });
+    }
+
+    if (btnInvOmitir) {
+        btnInvOmitir.addEventListener("click", () => {
+            if (modalInv) modalInv.classList.add("hidden");
+            try {
+                localStorage.setItem("rastro_tour_completado", "1");
+            } catch (_) {}
+            anunciarAccesibilidad(idiomaActual === "en" ? "Tour skipped." : "Recorrido omitido.");
+        });
+    }
 
     if (btnIniciar) {
         btnIniciar.addEventListener("click", () => {
+            if (modalInv) modalInv.classList.add("hidden");
             iniciarTourGuiado(0);
         });
     }
@@ -6178,5 +6329,6 @@ window.PASOS_TOUR = PASOS_TOUR;
 window.iniciarTourGuiado = iniciarTourGuiado;
 window.finalizarTourGuiado = finalizarTourGuiado;
 window.posicionarPasoTour = posicionarPasoTour;
+window.mostrarInvitacionTour = mostrarInvitacionTour;
 window.tourActivo = tourActivo;
 

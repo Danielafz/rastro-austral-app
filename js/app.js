@@ -650,6 +650,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarPanelAccesibilidad();
     configurarBotonExportar();
     configurarModoOffline();
+    configurarTourGuiado();
     inicializarEstadoLeyendaMapa();
     actualizarTextosUI();
 });
@@ -3687,6 +3688,10 @@ function cambiarIdioma(nuevoIdioma) {
         window.actualizarClimaTerritorio();
     }
 
+    if (typeof tourActivo !== "undefined" && tourActivo && typeof posicionarPasoTour === "function") {
+        posicionarPasoTour(indicePasoTourActual);
+    }
+
     anunciarAccesibilidad(nuevoIdioma === "en" ? "Language switched to English." : "Idioma cambiado a español.");
 }
 window.cambiarIdioma = cambiarIdioma;
@@ -5630,6 +5635,9 @@ function configurarPantallaBienvenida() {
                     const t = DICCIONARIO[idiomaActual] || DICCIONARIO.es;
                     txtBtn.innerText = t.btn_ingresar || (idiomaActual === "en" ? "Enter the Expedition" : "Ingresar a la Expedición");
                 }
+                if (!localStorage.getItem("rastro_tour_completado")) {
+                    setTimeout(() => iniciarTourGuiado(0), 350);
+                }
             }, 700);
         }, 880);
     });
@@ -5886,3 +5894,289 @@ function configurarModoOffline() {
         }, 2600);
     });
 }
+
+// =========================================================
+// RECORRIDO GUIADO INTERACTIVO (PRODUCT TOUR CON SPOTLIGHT)
+// =========================================================
+let indicePasoTourActual = 0;
+let tourActivo = false;
+
+const PASOS_TOUR = [
+    {
+        id: "territorios_clima",
+        getTarget: () => document.getElementById("selector-localidades") || document.getElementById("btn-dropdown-territorio"),
+        es: {
+            titulo: "Territorios Soberanos y Clima",
+            desc: "Elegí entre toda la provincia, ciudades fueguinas, Islas Malvinas o Antártida Argentina, y consultá el clima austral en tiempo real."
+        },
+        en: {
+            titulo: "Sovereign Territories & Weather",
+            desc: "Switch between the whole province, Fuegian cities, Islas Malvinas, or Argentine Antarctica, and check live austral weather."
+        }
+    },
+    {
+        id: "capas_ign_sar",
+        getTarget: () => document.getElementById("selector-capas-base") || document.querySelector(".btn-capa-base")?.parentElement,
+        es: {
+            titulo: "Capas Oficiales IGN y Alertas SAR",
+            desc: "Alterná entre cartografía oficial Argenmap (IGN), relieve, satelital, Áreas Protegidas y Alertas SAR de sequía en turbales."
+        },
+        en: {
+            titulo: "Official IGN Layers & SAR Alerts",
+            desc: "Toggle between official Argenmap (IGN) maps, relief, satellite, Protected Areas, and peatland drought SAR Alerts."
+        }
+    },
+    {
+        id: "explorador_hitos",
+        getTarget: () => {
+            if (window.innerWidth < 768) {
+                return document.getElementById("btn-mobile-nav-hitos") || document.getElementById("panel-lateral");
+            }
+            return document.getElementById("panel-lateral") || document.getElementById("btn-mobile-nav-hitos");
+        },
+        es: {
+            titulo: "Explorador y Accesibilidad Física",
+            desc: "Filtrá los 26 sitios por categoría, fragilidad o accesibilidad (♿) y tocá cualquier pingüino en el mapa para abrir su ficha."
+        },
+        en: {
+            titulo: "Site Explorer & Physical Accessibility",
+            desc: "Filter all 26 sites by category, fragility, or accessibility (♿), and tap any penguin on the map to open its card."
+        }
+    },
+    {
+        id: "bitacora_observatorio_museo",
+        getTarget: () => {
+            if (window.innerWidth < 768) {
+                return document.getElementById("mobile-bottom-nav") || document.querySelector(".tabs-contenedor");
+            }
+            return document.querySelector(".tabs-contenedor") || document.getElementById("mobile-bottom-nav");
+        },
+        es: {
+            titulo: "Bitácora, Observatorio y Museo 2D",
+            desc: "Registrá tus visitas para ganar sellos 3D, analizá proyecciones climáticas hasta 2030 y recorré las 9 salas del Museo Austral 2D."
+        },
+        en: {
+            titulo: "Logbook, Observatory & 2D Museum",
+            desc: "Record your visits to earn 3D stamps, explore climate projections to 2030, and walk through the 9 rooms of the 2D Austral Museum."
+        }
+    },
+    {
+        id: "guia_sos_offline",
+        getTarget: () => {
+            const btnGuia = document.getElementById("btn-header-guia-caminata");
+            if (btnGuia && btnGuia.offsetParent !== null && window.innerWidth >= 768) {
+                return btnGuia;
+            }
+            return document.getElementById("banner-modo-offline") || btnGuia;
+        },
+        es: {
+            titulo: "Guía de Caminata, SOS y Modo Offline",
+            desc: "Accedé a recomendaciones de seguridad, líneas de emergencia (103, 107), ajustes de accesibilidad y guardá fichas para usar sin señal."
+        },
+        en: {
+            titulo: "Hiking Guide, SOS & Offline Mode",
+            desc: "Access safety guidelines, emergency hotlines (103, 107), accessibility settings, and save cards for offline expedition use."
+        }
+    }
+];
+
+function posicionarPasoTour(indice) {
+    const paso = PASOS_TOUR[indice];
+    if (!paso) return;
+
+    const overlay = document.getElementById("tour-spotlight-overlay");
+    const spotlight = document.getElementById("tour-spotlight-box");
+    const card = document.getElementById("tour-tooltip-card");
+    if (!overlay || !spotlight || !card) return;
+
+    const targetEl = typeof paso.getTarget === "function" ? paso.getTarget() : document.querySelector(paso.target);
+    if (!targetEl) return;
+
+    // Asegurar visibilidad del objetivo si estuviese fuera del scroll
+    if (typeof targetEl.scrollIntoView === "function") {
+        targetEl.scrollIntoView({ behavior: "instant", block: "nearest", inline: "nearest" });
+    }
+
+    // Calcular rect del objetivo con 6px de margen alrededor
+    const rect = targetEl.getBoundingClientRect();
+    const pad = 6;
+    const sLeft = Math.max(0, rect.left - pad);
+    const sTop = Math.max(0, rect.top - pad);
+    const sWidth = rect.width + pad * 2;
+    const sHeight = rect.height + pad * 2;
+
+    spotlight.style.left = `${sLeft}px`;
+    spotlight.style.top = `${sTop}px`;
+    spotlight.style.width = `${sWidth}px`;
+    spotlight.style.height = `${sHeight}px`;
+
+    // Textos según idioma actual
+    const esIngles = idiomaActual === "en";
+    const data = esIngles ? paso.en : paso.es;
+
+    const elProgreso = document.getElementById("tour-progreso");
+    const btnOmitir = document.getElementById("btn-tour-omitir");
+    const elTitulo = document.getElementById("tour-titulo");
+    const elDesc = document.getElementById("tour-descripcion");
+    const btnAnt = document.getElementById("btn-tour-anterior");
+    const btnSig = document.getElementById("btn-tour-siguiente");
+
+    if (elProgreso) {
+        elProgreso.innerText = esIngles
+            ? `Step ${indice + 1} of ${PASOS_TOUR.length}`
+            : `Paso ${indice + 1} de ${PASOS_TOUR.length}`;
+    }
+    if (btnOmitir) {
+        btnOmitir.innerText = esIngles ? "Skip tour" : "Omitir tour";
+    }
+    if (elTitulo) elTitulo.innerText = data.titulo;
+    if (elDesc) elDesc.innerText = data.desc;
+
+    if (btnAnt) {
+        btnAnt.innerText = esIngles ? "← Previous" : "← Anterior";
+        btnAnt.disabled = indice === 0;
+        btnAnt.style.opacity = indice === 0 ? "0.4" : "1";
+        btnAnt.style.pointerEvents = indice === 0 ? "none" : "auto";
+    }
+
+    if (btnSig) {
+        if (indice === PASOS_TOUR.length - 1) {
+            btnSig.innerText = esIngles ? "Start exploring!" : "¡Empezar a explorar!";
+        } else {
+            btnSig.innerText = esIngles ? "Next →" : "Siguiente →";
+        }
+    }
+
+    // Medir dimensiones del tooltip tras volcar contenido
+    void card.offsetHeight;
+    const cardHeight = card.offsetHeight || 190;
+    const cardWidth = card.offsetWidth || Math.min(340, window.innerWidth - 24);
+
+    // Posicionamiento vertical:
+    // Si #tour-tooltip-card cabe debajo del foco (rect.bottom + 12 + cardHeight < window.innerHeight - 16), ubicarla debajo;
+    // Si no cabe abajo, ubicarla arriba (Math.max(12, rect.top - cardHeight - 12))
+    let topPos;
+    if (rect.bottom + 12 + cardHeight < window.innerHeight - 16) {
+        topPos = rect.bottom + 12;
+    } else {
+        topPos = Math.max(12, rect.top - cardHeight - 12);
+    }
+
+    // Posicionamiento horizontal centrado, acotado dentro de [12px, window.innerWidth - cardWidth - 12px]
+    let leftPos = rect.left + (rect.width - cardWidth) / 2;
+    const minLeft = 12;
+    const maxLeft = Math.max(12, window.innerWidth - cardWidth - 12);
+    leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos));
+
+    card.style.left = `${leftPos}px`;
+    card.style.top = `${topPos}px`;
+
+    // Anuncio para tecnologías de asistencia
+    anunciarAccesibilidad(`${elProgreso ? elProgreso.innerText : ""}: ${data.titulo}. ${data.desc}`);
+}
+
+function iniciarTourGuiado(paso = 0) {
+    const overlay = document.getElementById("tour-spotlight-overlay");
+    if (!overlay) return;
+
+    indicePasoTourActual = Math.max(0, Math.min(PASOS_TOUR.length - 1, paso));
+    tourActivo = true;
+
+    overlay.classList.remove("hidden");
+    posicionarPasoTour(indicePasoTourActual);
+}
+
+function finalizarTourGuiado() {
+    tourActivo = false;
+    try {
+        localStorage.setItem("rastro_tour_completado", "1");
+    } catch (_) {}
+
+    const overlay = document.getElementById("tour-spotlight-overlay");
+    if (overlay) {
+        overlay.classList.add("hidden");
+    }
+
+    anunciarAccesibilidad(idiomaActual === "en" ? "Interactive tour completed." : "Recorrido guiado finalizado.");
+}
+
+function manejarTecladoTour(e) {
+    if (!tourActivo) return;
+
+    if (e.key === "Escape") {
+        e.preventDefault();
+        finalizarTourGuiado();
+    } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        if (indicePasoTourActual < PASOS_TOUR.length - 1) {
+            iniciarTourGuiado(indicePasoTourActual + 1);
+        } else {
+            finalizarTourGuiado();
+        }
+    } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        if (indicePasoTourActual > 0) {
+            iniciarTourGuiado(indicePasoTourActual - 1);
+        }
+    }
+}
+
+function configurarTourGuiado() {
+    const btnIniciar = document.getElementById("btn-iniciar-tour");
+    const btnOmitir = document.getElementById("btn-tour-omitir");
+    const btnAnt = document.getElementById("btn-tour-anterior");
+    const btnSig = document.getElementById("btn-tour-siguiente");
+    const clickShield = document.getElementById("tour-click-shield");
+
+    if (btnIniciar) {
+        btnIniciar.addEventListener("click", () => {
+            iniciarTourGuiado(0);
+        });
+    }
+
+    if (btnOmitir) {
+        btnOmitir.addEventListener("click", () => {
+            finalizarTourGuiado();
+        });
+    }
+
+    if (btnAnt) {
+        btnAnt.addEventListener("click", () => {
+            if (indicePasoTourActual > 0) {
+                iniciarTourGuiado(indicePasoTourActual - 1);
+            }
+        });
+    }
+
+    if (btnSig) {
+        btnSig.addEventListener("click", () => {
+            if (indicePasoTourActual < PASOS_TOUR.length - 1) {
+                iniciarTourGuiado(indicePasoTourActual + 1);
+            } else {
+                finalizarTourGuiado();
+            }
+        });
+    }
+
+    if (clickShield) {
+        clickShield.addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    window.addEventListener("keydown", manejarTecladoTour);
+
+    window.addEventListener("resize", () => {
+        if (tourActivo) {
+            posicionarPasoTour(indicePasoTourActual);
+        }
+    });
+}
+
+// Exponer en window para integración y pruebas
+window.PASOS_TOUR = PASOS_TOUR;
+window.iniciarTourGuiado = iniciarTourGuiado;
+window.finalizarTourGuiado = finalizarTourGuiado;
+window.posicionarPasoTour = posicionarPasoTour;
+window.tourActivo = tourActivo;
+

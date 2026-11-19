@@ -3132,3 +3132,32 @@ html.alto-contraste #btn-filtro-accesibles {
   overflow: visible !important;
   position: relative !important;
 }
+
+/* =========================================================
+   TOUR GUIADO INTERACTIVO: SPOTLIGHT Y TOOLTIP
+   ========================================================= */
+#tour-spotlight-box {
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.74), 0 0 24px rgba(245, 158, 11, 0.55);
+}
+
+#tour-tooltip-card,
+#tour-tooltip-card button {
+  pointer-events: auto !important;
+}
+
+html:not(.dark) #tour-tooltip-card {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) #tour-titulo {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #tour-descripcion {
+  color: #334155 !important;
+}
+
+#btn-tour-siguiente {
+  color: #ffffff !important;
+}

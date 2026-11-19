@@ -304,6 +304,9 @@
           </div>
         </div>
       </div>
+
+      <!-- Botón Disparador del Tour Guiado -->
+      <button id="btn-iniciar-tour" type="button" class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 hover:bg-orange-100 text-slate-700 hover:text-orange-700 border border-slate-200 transition-colors cursor-pointer shrink-0 font-bold text-xs" title="Guía rápida de uso" aria-label="Iniciar recorrido guiado de la aplicación">?</button>
     </div>
   </header>
 
@@ -785,7 +788,7 @@
         </div>
 
         <!-- Grupo de Capas + Botón SAR independiente -->
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap md:flex-nowrap flex-1 pointer-events-auto">
+        <div id="selector-capas-base" class="flex items-center gap-1.5 sm:gap-2 flex-wrap md:flex-nowrap flex-1 pointer-events-auto">
           <!-- Cápsula de Capas (Estándar IGN, Relieve IGN, Satelital, Áreas Protegidas) -->
           <div
             class="flex items-center bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-md border border-slate-200/80 shrink-0 gap-0.5 sm:gap-1">
@@ -2607,6 +2610,25 @@
       });
     }
   </script>
+  <!-- Tour Guiado Interactivo (Product Tour con Efecto Spotlight) -->
+  <div id="tour-spotlight-overlay" class="fixed inset-0 z-[9990] hidden" role="dialog" aria-modal="true" aria-labelledby="tour-titulo">
+    <div id="tour-click-shield" class="fixed inset-0 bg-transparent"></div>
+    <div id="tour-spotlight-box" class="fixed rounded-2xl border-2 border-amber-400 pointer-events-none transition-all duration-300 ease-out"></div>
+    <div id="tour-tooltip-card" class="fixed w-[calc(100vw-24px)] max-w-[340px] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 space-y-3 transition-all duration-300 ease-out z-[9992]">
+      <div class="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-800">
+        <span id="tour-progreso" class="text-xs font-bold text-amber-600 dark:text-amber-400">Paso 1 de 5</span>
+        <button id="btn-tour-omitir" type="button" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium cursor-pointer">Omitir tour</button>
+      </div>
+      <div class="space-y-1">
+        <h3 id="tour-titulo" class="text-sm font-bold text-slate-900 dark:text-white leading-snug"></h3>
+        <p id="tour-descripcion" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+      </div>
+      <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+        <button id="btn-tour-anterior" type="button" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">← Anterior</button>
+        <button id="btn-tour-siguiente" type="button" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 active:scale-95 text-white text-xs font-bold transition shadow-sm cursor-pointer">Siguiente →</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

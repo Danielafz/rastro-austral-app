@@ -1631,6 +1631,29 @@ html:not(.dark) .tarjeta-detalle-hito {
   border-color: #e2e8f0;
 }
 
+/* 1.1 Accesibilidad y contraste en Ficha Completa del Hito */
+.tarjeta-detalle-hito .foto-hito > div,
+.tarjeta-detalle-hito .foto-hito > div span,
+html:not(.dark) .tarjeta-detalle-hito .foto-hito > div,
+html:not(.dark) .tarjeta-detalle-hito .foto-hito > div span {
+  color: #ffffff !important;
+}
+
+.tarjeta-detalle-hito .badge-sar-critico,
+.tarjeta-detalle-hito span.badge-sar-critico,
+html:not(.dark) .tarjeta-detalle-hito .badge-sar-critico {
+  background-color: #be123c !important;
+  color: #ffffff !important;
+  border-color: #9f1239 !important;
+}
+
+#btn-toggle-visita,
+#btn-toggle-visita span,
+html:not(.dark) #btn-toggle-visita,
+html:not(.dark) #btn-toggle-visita span {
+  color: #ffffff !important;
+}
+
 html:not(.dark) .btn-accion-icono {
   background-color: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
@@ -1918,8 +1941,17 @@ html:not(.dark) .badge-identidad-fueguina {
 }
 
 .bloque-comercio-justo {
-  background-color: rgba(91, 33, 182, 0.16);
-  border: 1px solid rgba(139, 92, 246, 0.35);
+  background-color: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.bloque-comercio-justo .comercio-justo-titulo {
+  color: #5b21b6 !important;
+}
+
+.bloque-comercio-justo .comercio-justo-texto,
+.bloque-comercio-justo .comercio-justo-texto * {
+  color: #1e293b !important;
 }
 
 html:not(.dark) .bloque-comercio-justo {
@@ -1931,8 +1963,23 @@ html:not(.dark) .bloque-comercio-justo .comercio-justo-titulo {
   color: #5b21b6 !important;
 }
 
-html:not(.dark) .bloque-comercio-justo .comercio-justo-texto {
-  color: #334155 !important;
+html:not(.dark) .bloque-comercio-justo .comercio-justo-texto,
+html:not(.dark) .bloque-comercio-justo .comercio-justo-texto * {
+  color: #1e293b !important;
+}
+
+html.dark .bloque-comercio-justo {
+  background-color: rgba(91, 33, 182, 0.25) !important;
+  border-color: rgba(139, 92, 246, 0.45) !important;
+}
+
+html.dark .bloque-comercio-justo .comercio-justo-titulo {
+  color: #ddd6fe !important;
+}
+
+html.dark .bloque-comercio-justo .comercio-justo-texto,
+html.dark .bloque-comercio-justo .comercio-justo-texto * {
+  color: #f1f5f9 !important;
 }
 
 /* Tarjetas didácticas del Observatorio Climático */

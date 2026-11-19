@@ -2050,9 +2050,9 @@ function mostrarDetalleHito(hito) {
       <!-- Tarjeta Fotográfica de Cabecera (respeta el border-radius superior) -->
       <div class="foto-hito h-36 w-full overflow-hidden relative bg-slate-950">
         <img id="detalle-imagen-hito" src="${imagenSrc}" alt="${nombre}" data-fallback="${fallbackSvg}" onerror="this.onerror=null; this.src=this.dataset.fallback || './assets/hitos/ush-01.svg';" class="w-full h-full object-cover">
-        <div class="absolute bottom-2 right-2 bg-slate-900/85 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] text-slate-300 border border-slate-700/60 shadow-sm flex items-center gap-1">
+        <div class="absolute bottom-2 right-2 bg-slate-900/85 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] text-white font-medium border border-slate-700/60 shadow-sm flex items-center gap-1">
           <span>📷</span>
-          <span id="detalle-credito-imagen" class="truncate max-w-[170px]">${hito.credito_imagen || 'IDETDF'}</span>
+          <span id="detalle-credito-imagen" class="truncate max-w-[170px] text-white font-medium">${hito.credito_imagen || 'IDETDF'}</span>
         </div>
       </div>
 
@@ -2154,15 +2154,15 @@ function mostrarDetalleHito(hito) {
         ${(hito.selloIdentidad || rubroCreativo || hito.contacto) ? `
           <div class="bloque-comercio-justo p-3 rounded-xl text-[11px] space-y-1">
             <div class="flex items-center justify-between gap-2">
-              <span class="comercio-justo-titulo font-bold text-violet-300">${t.sello_identidad_sub}</span>
+              <span class="comercio-justo-titulo font-bold text-violet-900 dark:text-violet-200">${t.sello_identidad_sub}</span>
             </div>
             ${rubroCreativo ? `
-              <div class="comercio-justo-texto text-slate-200">
+              <div class="comercio-justo-texto text-slate-800 dark:text-slate-200">
                 <strong class="font-semibold">${t.rubro_creativo}</strong> ${rubroCreativo}
               </div>
             ` : ''}
             ${hito.contacto ? `
-              <div class="comercio-justo-texto text-slate-300 text-[10px]">
+              <div class="comercio-justo-texto text-slate-700 dark:text-slate-300 text-[10px]">
                 <strong class="font-semibold">${t.punto_directo}</strong> ${hito.contacto}
               </div>
             ` : ''}
@@ -2170,18 +2170,18 @@ function mostrarDetalleHito(hito) {
         ` : ''}
 
         ${esZonaCriticaSAR ? `
-          <div class="p-3 bg-rose-500/15 border border-rose-500/40 rounded-xl space-y-1.5 text-xs">
-            <div class="flex items-center justify-between text-rose-500 font-bold">
+          <div class="p-3 bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/40 rounded-xl space-y-1.5 text-xs">
+            <div class="flex items-center justify-between text-rose-700 dark:text-rose-400 font-bold">
               <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4 shrink-0 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <svg class="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <span>${idiomaActual === 'en' ? 'RESTRICTED AREA (SAR ALERT)' : 'ZONA RESTRINGIDA (ALERTA SAR)'}</span>
               </span>
-              <span class="text-[10px] px-2 py-0.5 rounded font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">CRÍTICO</span>
+              <span class="badge-sar-critico text-[10px] px-2 py-0.5 rounded font-black bg-rose-700 text-white border border-rose-800 shadow-xs">CRÍTICO</span>
             </div>
-            <p class="text-slate-300 text-[11px] leading-relaxed">
+            <p class="text-rose-950 dark:text-rose-100 text-[11px] leading-relaxed">
               ${idiomaActual === 'en' ? 'Turbal Valle Tierra Mayor exhibits extreme drought under Copernicus Sentinel-1 SAR monitoring. Transit suspended.' : 'El turbal de Valle Tierra Mayor registra sequía severa según radar Copernicus Sentinel-1. Tránsito pedestre suspendido por preservación.'}
             </p>
-            <button type="button" onclick="mostrarModalBloqueoPorNombre('Turbal Valle Tierra Mayor')" class="text-rose-400 hover:text-rose-300 font-bold underline text-[11px] cursor-pointer flex items-center gap-1">
+            <button type="button" onclick="mostrarModalBloqueoPorNombre('Turbal Valle Tierra Mayor')" class="text-rose-700 hover:text-rose-800 dark:text-rose-300 font-bold underline text-[11px] cursor-pointer flex items-center gap-1">
               <span>${idiomaActual === 'en' ? 'View Restriction Protocol & Safe Route →' : 'Ver Protocolo de Bloqueo y Desvío Seguro →'}</span>
             </button>
           </div>
@@ -2224,8 +2224,8 @@ function mostrarDetalleHito(hito) {
 
         <div class="pt-1 flex flex-col sm:flex-row gap-2">
           <button id="btn-toggle-visita" 
-                  class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 ${esVisitado ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-amber-600 hover:bg-amber-500 active:scale-95 text-white' }">
-            <span>${esVisitado ? t.btn_quitar : t.btn_marcar}</span>
+                  class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition shadow flex items-center justify-center gap-2 text-white ${esVisitado ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-amber-600 hover:bg-amber-500 active:scale-95' }">
+            <span class="text-white font-bold">${esVisitado ? t.btn_quitar : t.btn_marcar}</span>
           </button>
           <button id="btn-ir-al-mapa-desde-ficha" type="button"
                   class="py-2.5 px-4 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">

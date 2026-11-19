@@ -3199,3 +3199,17 @@ html:not(.dark) #tour-invitacion-modal p {
 #btn-inv-aceptar {
   color: #ffffff !important;
 }
+
+/* Ajustes de ancho y legibilidad de marca en cabecera */
+header,
+#banner-modo-offline {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+header h1.font-marca-austral {
+  text-overflow: clip !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}

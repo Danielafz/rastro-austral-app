@@ -176,7 +176,14 @@
       <button type="button" id="btn-header-museo-desktop"
         class="hidden md:flex items-center gap-1.5 bg-slate-800/80 hover:bg-amber-600 text-amber-300 hover:text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-amber-500/30 hover:border-amber-400 text-xs font-semibold cursor-pointer transition-all shadow-sm"
         title="Ingresar al Museo Austral 2D" aria-label="Ingresar al Museo Austral">
-        <span class="text-sm">🏛️</span>
+        <svg class="w-4 h-4 shrink-0 text-slate-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="22" x2="21" y2="22"/>
+          <line x1="6" y1="18" x2="6" y2="11"/>
+          <line x1="10" y1="18" x2="10" y2="11"/>
+          <line x1="14" y1="18" x2="14" y2="11"/>
+          <line x1="18" y1="18" x2="18" y2="11"/>
+          <polygon points="12 2 20 7 4 7"/>
+        </svg>
         <span data-i18n="nav_museo">Museo</span>
       </button>
 
@@ -184,7 +191,10 @@
       <button type="button" id="btn-header-guia-caminata"
         class="btn-abrir-guia-caminata hidden md:flex items-center gap-1.5 bg-slate-800/80 hover:bg-emerald-600 text-emerald-300 hover:text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-500/30 hover:border-emerald-400 text-xs font-semibold cursor-pointer transition-all shadow-sm"
         title="Recomendaciones de caminata y teléfonos de emergencia" aria-label="Guía de Caminata y Emergencias">
-        <span class="text-sm">🎒</span>
+        <svg class="w-4 h-4 shrink-0 text-emerald-700 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
         <span data-i18n="guia_sos_header">Guía y Emergencias</span>
       </button>
 
@@ -223,14 +233,24 @@
       <div class="relative">
         <button id="btn-panel-accesibilidad" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false" aria-controls="popover-accesibilidad" title="Accesibilidad Universal (WCAG)"
           class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-white text-sm font-semibold transition shadow-sm hover:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <span aria-hidden="true" class="text-base">♿</span>
+          <svg class="w-4 h-4 text-sky-400 dark:text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+            <path d="m19 19-3-6-4 1v4"/>
+            <path d="M7 10h5l1 4"/>
+            <circle cx="9" cy="17" r="4"/>
+          </svg>
         </button>
 
         <!-- Popover Accesibilidad -->
         <div id="popover-accesibilidad" role="dialog" aria-label="Panel de Accesibilidad" class="hidden absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-2xl p-4 z-[999] text-slate-800">
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
             <div class="flex items-center gap-2">
-              <span class="text-xl">♿</span>
+              <svg class="w-5 h-5 text-sky-600 dark:text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                <path d="m19 19-3-6-4 1v4"/>
+                <path d="M7 10h5l1 4"/>
+                <circle cx="9" cy="17" r="4"/>
+              </svg>
               <div>
                 <h3 class="font-bold text-sm text-slate-900" data-i18n="a11y_titulo">Accesibilidad Digital</h3>
                 <p class="text-[11px] text-slate-500" data-i18n="a11y_subtitulo">Adaptá la lectura y visualización a tu medida</p>
@@ -305,12 +325,15 @@
 
     <!-- Botones de Acción (Guía/SOS + Guardar Fichas) -->
     <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-      <!-- Botón Guía de Caminata y Emergencias SOS -->
+      <!-- Botón Guía de Caminata y Emergencias SOS (Solo en móviles para evitar duplicación con el header en desktop) -->
       <button id="btn-abrir-guia-caminata" type="button"
-        class="btn-abrir-guia-caminata flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-800 font-bold rounded-lg border border-emerald-200 transition-colors shrink-0 cursor-pointer text-xs"
+        class="btn-abrir-guia-caminata flex md:hidden items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-800 font-bold rounded-lg border border-emerald-200 transition-colors shrink-0 cursor-pointer text-xs"
         title="Recomendaciones de seguridad en caminata y teléfonos de emergencia"
         aria-label="Abrir guía de caminata y teléfonos de emergencia por ciudad">
-        <span class="text-xs sm:text-sm">🎒</span>
+        <svg class="w-4 h-4 shrink-0 text-emerald-700 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
         <span class="inline sm:hidden" data-i18n="guia_sos_corto">Guía y SOS</span>
         <span class="hidden sm:inline" data-i18n="guia_sos_largo">Guía de Caminata y Emergencias</span>
       </button>
